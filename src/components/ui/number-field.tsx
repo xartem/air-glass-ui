@@ -55,6 +55,7 @@ function NumberField({
       >
         <NumberFieldPrimitive.Decrement
           data-slot="number-field-decrement"
+          aria-label="Decrease"
           className={cn(stepperButtonClass, "border-r border-input")}
         >
           <Minus aria-hidden="true" />
@@ -69,6 +70,7 @@ function NumberField({
         />
         <NumberFieldPrimitive.Increment
           data-slot="number-field-increment"
+          aria-label="Increase"
           className={cn(stepperButtonClass, "border-l border-input")}
         >
           <Plus aria-hidden="true" />
