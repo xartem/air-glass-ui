@@ -46,6 +46,10 @@ const appearancePage = () => lazyPage(() => import('@/features/settings/appearan
 const uiKitPage = () => lazyPage(() => import('@/features/ui-kit/ui-kit-page').then((m) => ({ default: m.UiKitPage })))
 const userEditorPage = () => lazyPage(() => import('@/features/users/user-editor-page').then((m) => ({ default: m.UserEditorPage })))
 const usersListPage = () => lazyPage(() => import('@/features/users/users-list-page').then((m) => ({ default: m.UsersListPage })))
+const ordersPage = () => lazyPage(() => import('@/features/shop/orders-page').then((m) => ({ default: m.OrdersPage })))
+const orderDetailPage = () => lazyPage(() => import('@/features/shop/order-detail-page').then((m) => ({ default: m.OrderDetailPage })))
+const productsPage = () => lazyPage(() => import('@/features/shop/products-page').then((m) => ({ default: m.ProductsPage })))
+const productEditorPage = () => lazyPage(() => import('@/features/shop/product-editor-page').then((m) => ({ default: m.ProductEditorPage })))
 
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
@@ -102,8 +106,6 @@ const PLACEHOLDER_ROUTES: { path: string; perm?: string; titleKey: string; stage
   { path: '/system/backups', perm: 'backups.view', titleKey: 'nav.backups', stage: 15 },
   { path: '/system/updates', perm: 'updates.view', titleKey: 'nav.updates', stage: 15 },
   { path: '/system/modules', perm: 'modules.manage', titleKey: 'nav.modules', stage: 15 },
-  { path: '/shop/orders', perm: 'orders.view', titleKey: 'nav.orders', stage: 16 },
-  { path: '/shop/orders/:id', perm: 'orders.view', titleKey: 'nav.orders', stage: 16 },
   { path: '/shop/customers', perm: 'customers.view', titleKey: 'nav.customers', stage: 16 },
   { path: '/shop/customers/:id', perm: 'customers.view', titleKey: 'nav.customers', stage: 16 },
   { path: '/shop/payments', perm: 'payments.view', titleKey: 'nav.payments', stage: 16 },
@@ -210,6 +212,46 @@ export const router = createBrowserRouter(
         element: (
           <RequirePermission perm="settings.manage">
             {appearancePage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/orders',
+        element: (
+          <RequirePermission perm="orders.view">
+            {ordersPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/orders/:id',
+        element: (
+          <RequirePermission perm="orders.view">
+            {orderDetailPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/products',
+        element: (
+          <RequirePermission perm="products.view">
+            {productsPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/products/new',
+        element: (
+          <RequirePermission perm="products.manage">
+            {productEditorPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/products/:id',
+        element: (
+          <RequirePermission perm="products.manage">
+            {productEditorPage()}
           </RequirePermission>
         ),
       },

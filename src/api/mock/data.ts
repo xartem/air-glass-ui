@@ -22,6 +22,7 @@ export const ALL_PERMISSIONS = [
   'forms.view', 'forms.manage', 'forms.submissions',
   'contacts.view', 'contacts.manage',
   'orders.view', 'orders.manage', 'orders.delivery', 'orders.discounts',
+  'products.view', 'products.manage',
   'customers.view', 'customers.manage', 'customers.impersonate',
   'payments.view', 'payments.manage', 'payments.refund',
   'reviews.moderate',

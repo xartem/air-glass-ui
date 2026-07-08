@@ -61,7 +61,7 @@ export function saveAppearance(body: unknown): { ok: true } {
   if (Object.keys(fields).length > 0) throw new ValidationError('Validation failed', fields)
 
   const current = readStore()
-  const t = input.tokens ?? {}
+  const t: Partial<AppearanceSettings['tokens']> = input.tokens ?? {}
   const next: AppearanceSettings = {
     style: input.style ?? current.style,
     bgLight: input.bgLight ?? current.bgLight,

@@ -692,3 +692,259 @@ export interface AiSpend {
   month: number
   series: AiSpendPoint[]
 }
+
+/* ---- shop: demo commerce catalog (orders, products, customers, payments, invoices, discounts, delivery) ----
+ * Amounts are major units (not cents) with an ISO `currency` code — the same shape a
+ * real store API returns; screens format via src/lib/money.ts. */
+
+export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded'
+export type PaymentState = 'paid' | 'unpaid' | 'partial' | 'refunded'
+
+export interface OrderListItem {
+  id: number
+  number: string
+  customer_name: string
+  created_at: string
+  status: OrderStatus
+  payment_status: PaymentState
+  total: number
+  currency: string
+  items_count: number
+}
+
+export interface OrderLineItem {
+  id: number
+  name: string
+  sku: string
+  qty: number
+  price: number
+}
+
+/** A named block on the order (customer / shipping / billing) — free-form address text. */
+export interface OrderParty {
+  name: string
+  email?: string
+  phone?: string
+  address: string
+}
+
+export interface OrderTotals {
+  subtotal: number
+  shipping: number
+  discount: number
+  tax: number
+  total: number
+}
+
+export interface OrderTimelineEvent {
+  id: number
+  at: string
+  kind: OrderStatus | 'created' | 'note'
+  label: string
+}
+
+export interface OrderDetail extends OrderListItem {
+  customer: OrderParty
+  shipping: OrderParty
+  billing: OrderParty
+  items: OrderLineItem[]
+  totals: OrderTotals
+  timeline: OrderTimelineEvent[]
+  shipping_method: string
+  payment_method: string
+}
+
+export interface OrderFilters {
+  page?: number
+  q?: string
+  status?: OrderStatus
+  from?: string
+  to?: string
+  sort?: 'number' | 'created_at' | 'total'
+  dir?: 'asc' | 'desc'
+}
+
+export type ProductStatus = 'active' | 'draft' | 'archived'
+
+export interface ProductListItem {
+  id: number
+  name: string
+  sku: string
+  price: number
+  currency: string
+  stock: number
+  status: ProductStatus
+  image?: string
+}
+
+export interface Product extends ProductListItem {
+  description: string
+  category: string
+  cost: number
+  compare_at_price: number | null
+  weight: number
+}
+
+export interface ProductFilters {
+  page?: number
+  q?: string
+  status?: ProductStatus
+  sort?: 'name' | 'price' | 'stock'
+  dir?: 'asc' | 'desc'
+}
+
+/** Editor payload — id absent on create. */
+export interface ProductPayload {
+  name: string
+  sku: string
+  description: string
+  status: ProductStatus
+  price: number
+  compare_at_price: number | null
+  cost: number
+  stock: number
+  category: string
+  weight: number
+  image?: string
+}
+
+export type CustomerStatus = 'active' | 'vip' | 'blocked'
+
+export interface CustomerListItem {
+  id: number
+  name: string
+  email: string
+  orders_count: number
+  ltv: number
+  currency: string
+  status: CustomerStatus
+  joined_at: string
+}
+
+export interface CustomerNote {
+  id: number
+  at: string
+  author: string
+  text: string
+}
+
+export interface CustomerDetail extends CustomerListItem {
+  phone: string
+  address: string
+  aov: number
+  recent_orders: OrderListItem[]
+  notes: CustomerNote[]
+}
+
+export interface CustomerFilters {
+  page?: number
+  q?: string
+  status?: CustomerStatus
+  sort?: 'name' | 'orders_count' | 'ltv' | 'joined_at'
+  dir?: 'asc' | 'desc'
+}
+
+export type PaymentTxnStatus = 'captured' | 'pending' | 'refunded' | 'failed'
+export type PaymentMethod = 'card' | 'paypal' | 'transfer' | 'cash'
+
+export interface Payment {
+  id: number
+  txn: string
+  order_number: string
+  customer_name: string
+  method: PaymentMethod
+  amount: number
+  currency: string
+  status: PaymentTxnStatus
+  created_at: string
+}
+
+/** KPI row above the payments table (all figures in `currency`). */
+export interface PaymentStats {
+  captured: number
+  refunded: number
+  pending: number
+  currency: string
+}
+
+export interface PaymentFilters {
+  page?: number
+  q?: string
+  status?: PaymentTxnStatus
+  method?: PaymentMethod
+  from?: string
+  to?: string
+  sort?: 'created_at' | 'amount'
+  dir?: 'asc' | 'desc'
+}
+
+export type InvoiceStatus = 'paid' | 'overdue' | 'draft' | 'sent'
+
+export interface InvoiceListItem {
+  id: number
+  number: string
+  customer_name: string
+  issued_at: string
+  due_at: string
+  amount: number
+  currency: string
+  status: InvoiceStatus
+}
+
+export interface InvoiceDetail extends InvoiceListItem {
+  issuer: OrderParty
+  recipient: OrderParty
+  items: OrderLineItem[]
+  totals: OrderTotals
+  notes: string
+}
+
+export interface InvoiceFilters {
+  page?: number
+  q?: string
+  status?: InvoiceStatus
+  sort?: 'number' | 'issued_at' | 'amount'
+  dir?: 'asc' | 'desc'
+}
+
+export type DiscountType = 'percent' | 'fixed'
+export type DiscountStatus = 'active' | 'scheduled' | 'expired' | 'disabled'
+
+export interface Discount {
+  id: number
+  code: string
+  type: DiscountType
+  value: number
+  currency: string
+  used: number
+  usage_limit: number | null
+  status: DiscountStatus
+  expires_at: string | null
+}
+
+export interface DiscountPayload {
+  code: string
+  type: DiscountType
+  value: number
+  usage_limit: number | null
+  status: DiscountStatus
+  expires_at: string | null
+}
+
+export interface DeliveryMethod {
+  id: number
+  name: string
+  zone: string
+  rate: number
+  currency: string
+  eta_days: number
+  active: boolean
+}
+
+export interface DeliveryPayload {
+  name: string
+  zone: string
+  rate: number
+  eta_days: number
+  active: boolean
+}

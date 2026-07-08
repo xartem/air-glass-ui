@@ -1,0 +1,3 @@
+2026-07-08  Add /shop/orders — e-commerce orders list (DataTable, search + status + date-range filters, status/payment badges).
+2026-07-08  Add /shop/orders/:id — order detail (line items, party panels, totals, timeline, status-change mutation + ConfirmDialog).
+2026-07-08  Add /shop/products (+ /shop/products/:id editor) — products catalog list & react-hook-form + Zod editor (general/pricing/inventory/media, MediaPicker).

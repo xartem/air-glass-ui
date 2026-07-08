@@ -1,5 +1,14 @@
 import { ApiError, ValidationError, type RequestOptions } from '../client'
-import type { ActivityEntry, LayoutOverrides, Me, SettingValue } from '../types'
+import type {
+  ActivityEntry,
+  LayoutOverrides,
+  Me,
+  OrderFilters,
+  OrderStatus,
+  ProductFilters,
+  ProductPayload,
+  SettingValue,
+} from '../types'
 import { getLocale } from '@/lib/i18n'
 import { MOCK_CREDENTIALS, MOCK_USERS, SEARCH_GROUPS, buildActivityFixture, localizeCollections, type MockUser, type MockUserKey } from './data'
 import {
@@ -29,6 +38,14 @@ import {
 } from './settings'
 import { regenerateStatus, startRegenerate } from './media'
 import { getAppearance, saveAppearance } from './appearance'
+import {
+  getOrder,
+  getProduct,
+  listOrders,
+  listProducts,
+  saveProduct,
+  setOrderStatus,
+} from './shop'
 import { helpForScreen, helpPage, helpSearch, helpTree } from './help'
 import {
   aiSpend,
@@ -721,6 +738,85 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
       requireSession()
       localStorage.setItem(IMPERSONATE_KEY, '1')
       return { ok: true }
+    },
+  },
+
+  /* ---- shop: orders ---- */
+  {
+    method: 'GET',
+    pattern: /^\/shop\/orders$/,
+    handler: (options) => {
+      requireSession()
+      const query = options.query ?? {}
+      const filters: OrderFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status: query.status === undefined ? undefined : (String(query.status) as OrderStatus),
+        from: query.from === undefined ? undefined : String(query.from),
+        to: query.to === undefined ? undefined : String(query.to),
+        sort: query.sort === undefined ? undefined : (String(query.sort) as OrderFilters['sort']),
+        dir: query.dir === 'asc' ? 'asc' : 'desc',
+      }
+      return listOrders(filters)
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/shop\/orders\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession()
+      return getOrder(Number(params[0]))
+    },
+  },
+  {
+    method: 'POST',
+    pattern: /^\/shop\/orders\/(\d+)\/status$/,
+    handler: (options, params) => {
+      requireSession()
+      const body = options.body as { status: OrderStatus }
+      return setOrderStatus(Number(params[0]), body.status)
+    },
+  },
+
+  /* ---- shop: products catalog ---- */
+  {
+    method: 'GET',
+    pattern: /^\/shop\/products$/,
+    handler: (options) => {
+      requireSession()
+      const query = options.query ?? {}
+      const filters: ProductFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status: query.status === undefined ? undefined : (String(query.status) as ProductFilters['status']),
+        sort: query.sort === undefined ? undefined : (String(query.sort) as ProductFilters['sort']),
+        dir: query.dir === 'desc' ? 'desc' : 'asc',
+      }
+      return listProducts(filters)
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/shop\/products\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession()
+      return getProduct(Number(params[0]))
+    },
+  },
+  {
+    method: 'POST',
+    pattern: /^\/shop\/products$/,
+    handler: (options) => {
+      requireSession()
+      return saveProduct(options.body as ProductPayload)
+    },
+  },
+  {
+    method: 'PUT',
+    pattern: /^\/shop\/products\/(\d+)$/,
+    handler: (options, params) => {
+      requireSession()
+      return saveProduct(options.body as ProductPayload, Number(params[0]))
     },
   },
 ]

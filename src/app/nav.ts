@@ -158,6 +158,7 @@ export function buildNavGroups(me: Me): NavGroup[] {
       label: t('nav.group.shop'),
       items: [
         { to: '/shop/orders', label: t('nav.orders'), icon: ShoppingCart, perm: 'orders.view' },
+        { to: '/shop/products', label: t('nav.products'), icon: Package, perm: 'products.view' },
         { to: '/shop/customers', label: t('nav.customers'), icon: UserCircle, perm: 'customers.view' },
         { to: '/shop/payments', label: t('nav.payments'), icon: CircleDollarSign, perm: 'payments.view' },
         { to: '/shop/delivery', label: t('nav.delivery'), icon: Truck, perm: 'orders.delivery' },

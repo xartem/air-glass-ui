@@ -23,7 +23,15 @@ import type {
   Me,
   MfaEnrollStart,
   MfaRecoveryCodes,
+  OrderDetail,
+  OrderFilters,
+  OrderListItem,
+  OrderStatus,
   Period,
+  Product,
+  ProductFilters,
+  ProductListItem,
+  ProductPayload,
   MediaListItem,
   MediaPresetsPayload,
   MediaRegenStatus,
@@ -244,6 +252,42 @@ export const api = {
     findings: () => apiFetch<AiFinding[]>('/ai/findings'),
     setFindingStatus: (id: number, status: AiFindingStatus, note?: string) =>
       apiFetch<{ ok: true }>(`/ai/findings/${id}/status`, { method: 'POST', body: { status, note } }),
+  },
+
+  /* Demo commerce (build-demo-screen-catalog): orders + products catalog. */
+  orders: {
+    list: (filters: OrderFilters = {}) =>
+      apiFetch<Paginated<OrderListItem>>('/shop/orders', {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          status: filters.status,
+          from: filters.from,
+          to: filters.to,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    get: (id: number) => apiFetch<OrderDetail>(`/shop/orders/${id}`),
+    setStatus: (id: number, status: OrderStatus) =>
+      apiFetch<OrderDetail>(`/shop/orders/${id}/status`, { method: 'POST', body: { status } }),
+  },
+
+  products: {
+    list: (filters: ProductFilters = {}) =>
+      apiFetch<Paginated<ProductListItem>>('/shop/products', {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          status: filters.status,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    get: (id: number) => apiFetch<Product>(`/shop/products/${id}`),
+    create: (payload: ProductPayload) => apiFetch<Product>('/shop/products', { method: 'POST', body: payload }),
+    update: (id: number, payload: ProductPayload) =>
+      apiFetch<Product>(`/shop/products/${id}`, { method: 'PUT', body: payload }),
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */
