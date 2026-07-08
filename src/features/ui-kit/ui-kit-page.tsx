@@ -21,6 +21,7 @@ import {
   Video,
 } from 'lucide-react'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -181,6 +182,8 @@ function ButtonsSection() {
         <Button variant="secondary">{t('common.save')}</Button>
         <Button variant="outline">{t('common.cancel')}</Button>
         <Button variant="ghost">{t('common.close')}</Button>
+        <Button variant="success">success</Button>
+        <Button variant="warning">warning</Button>
         <Button variant="destructive">{t('common.delete')}</Button>
         <Button variant="destructive-filled">
           <Trash2 />
@@ -260,6 +263,30 @@ function FormsSection() {
             <Checkbox id="demo-error-toggle" checked={withError} onCheckedChange={(v) => setWithError(v === true)} />
             <Label htmlFor="demo-error-toggle">{t('uikit.toggleError')}</Label>
           </div>
+        </div>
+        {/* Size scale (32 / 38 / 42 px) shared across Input, Textarea and Select. */}
+        <div className="space-y-2 md:col-span-2 xl:col-span-3">
+          <p className="text-sm font-medium">sm / default / lg</p>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <Input inputSize="sm" placeholder="sm / 32px" />
+            <Input inputSize="default" placeholder="default / 38px" />
+            <Input inputSize="lg" placeholder="lg / 42px" />
+          </div>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <Textarea inputSize="sm" placeholder="sm" rows={2} />
+            <Textarea inputSize="default" placeholder="default" rows={2} />
+            <Textarea inputSize="lg" placeholder="lg" rows={2} />
+          </div>
+          <Select>
+            <SelectTrigger size="lg" className="w-full">
+              <SelectValue placeholder="Select · lg / 42px" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="services">Услуги</SelectItem>
+              <SelectItem value="projects">Проекты</SelectItem>
+              <SelectItem value="team">Команда</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         {/* SwitchRow (E6): labelled toggle blocks — whole row clickable, stacked with dividers. */}
         <div className="md:col-span-2 xl:col-span-3">
@@ -563,6 +590,43 @@ function BadgesSection() {
             { code: 'pl', state: 'missing' },
           ]}
         />
+      </div>
+      <Separator />
+      {/* Generic Badge variants (distinct from the status-dot StatusBadge above) */}
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge>default</Badge>
+        <Badge variant="secondary">secondary</Badge>
+        <Badge variant="success">success</Badge>
+        <Badge variant="warning">warning</Badge>
+        <Badge variant="info">info</Badge>
+        <Badge variant="destructive">destructive</Badge>
+        <Badge variant="outline">outline</Badge>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge size="sm">sm</Badge>
+        <Badge size="default">default</Badge>
+        <Badge size="lg">lg</Badge>
+      </div>
+    </Section>
+  )
+}
+
+function CardsSection() {
+  const variants = ['default', 'elevated', 'outline', 'interactive'] as const
+  return (
+    <Section id="cards" title="Cards">
+      {/* Card variant axis — literal technical labels (demo-only, no i18n keys). */}
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {variants.map((variant) => (
+          <Card key={variant} variant={variant}>
+            <CardHeader>
+              <CardTitle>{variant}</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground">
+              variant="{variant}"
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </Section>
   )
@@ -1443,6 +1507,7 @@ export function UiKitPage() {
           <LanguageSection />
           <SaveBarSection />
           <BadgesSection />
+          <CardsSection />
           <TreeSection />
           <RepeaterSection />
           <OverlaysSection />
