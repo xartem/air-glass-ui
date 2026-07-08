@@ -53,6 +53,9 @@ AGENTS.md
 *.sln
 *.sw?
 
+# Playwright MCP artifacts
+.playwright-mcp/
+
 # OS files
 .DS_Store
 .DS_Store?
