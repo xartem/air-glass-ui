@@ -948,3 +948,45 @@ export interface DeliveryPayload {
   eta_days: number
   active: boolean
 }
+
+/* ---- analytics dashboard (build-demo-screen-catalog) ---- */
+
+export interface AnalyticsKpi {
+  /** Latest value in its natural unit; `format` tells the screen how to render it. */
+  value: number
+  /** Period-over-period change as a fraction (0.12 = +12%). */
+  delta: number
+}
+
+export interface AnalyticsKpis {
+  sessions: AnalyticsKpi
+  revenue: AnalyticsKpi
+  conversion: AnalyticsKpi
+  aov: AnalyticsKpi
+}
+
+export interface AnalyticsPoint {
+  label: string
+  revenue: number
+  sessions: number
+}
+
+export interface AnalyticsNamedValue {
+  name: string
+  value: number
+}
+
+export interface AnalyticsFunnelStep {
+  key: string
+  value: number
+}
+
+export interface AnalyticsPayload {
+  period: Period
+  currency: string
+  kpis: AnalyticsKpis
+  revenue_series: AnalyticsPoint[]
+  channels: AnalyticsNamedValue[]
+  top_products: AnalyticsNamedValue[]
+  funnel: AnalyticsFunnelStep[]
+}
