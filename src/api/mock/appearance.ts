@@ -18,7 +18,10 @@ export const APPEARANCE_DEFAULTS: AppearanceSettings = {
   customLight: null,
   customDark: null,
   // glass baseline (matches the locked "Light Air Glass" recipe)
-  tokens: { blur: 28, radius: 12, saturate: 160, accent: '#1d8df2' },
+  // accent deepened from #1d8df2 → #176dbd for WCAG AA: it drives --primary at
+  // runtime (see lib/appearance.ts), so white button text, links and the accent
+  // tint all need ≥4.5:1. Same hue family, kept the "Light Air Glass" look.
+  tokens: { blur: 28, radius: 12, saturate: 160, accent: '#176dbd' },
 }
 
 function readStore(): AppearanceSettings {

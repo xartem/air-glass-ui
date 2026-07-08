@@ -64,7 +64,7 @@
     --card-foreground: #15324a;
     --popover: var(--glass-bg-overlay);
     --popover-foreground: #15324a;
-    --primary: #1d8df2;
+    --primary: #176dbd; /* WCAG AA fallback: white button text, links & accent tint ≥4.5:1 (was #1d8df2). Runtime value comes from the Appearance accent — keep in sync with api/mock/appearance.ts */
     /* Accent-family derives from --primary so the Appearance accent token
        flows everywhere: buttons, nav marker, rings, select highlight. */
     --primary-strong: color-mix(in oklab, var(--primary), #000 20%);
@@ -72,11 +72,11 @@
     --secondary: rgba(148, 163, 184, 0.22);
     --secondary-foreground: #385069;
     --muted: rgba(148, 163, 184, 0.12);
-    --muted-foreground: #62758b;
+    --muted-foreground: #5c6f85; /* WCAG AA: ≥4.5:1 as 11px text on bg-muted chips too (was #62758b → 4.18) */
     --foreground-faint: #91a2b5;
     --accent: color-mix(in srgb, var(--primary) 10%, transparent);
     --accent-foreground: var(--primary-strong);
-    --destructive: #dc2626;
+    --destructive: #c81e1e; /* WCAG AA: ≥4.5:1 as text on the destructive tint (was #dc2626 → 4.04) */
     --destructive-foreground: #ffffff;
     --border: rgba(148, 163, 184, 0.20);
     --input: rgba(148, 163, 184, 0.26);
@@ -143,7 +143,7 @@
     --status-pending-bg: rgba(254, 249, 195, 0.8);
     --status-error-fg: #b91c1c;
     --status-error-bg: rgba(254, 226, 226, 0.85);
-    --status-info-fg: #0d6fc5;
+    --status-info-fg: #0b63b4; /* WCAG AA: ≥4.5:1 on info-bg + light card (was #0d6fc5 → 4.29) */
     --status-info-bg: rgba(219, 234, 254, 0.85);
     --status-neutral-fg: #475569;
     --status-neutral-bg: rgba(226, 232, 240, 0.8);
@@ -157,7 +157,7 @@
     --card-foreground: #e2ecf7;
     --popover: var(--glass-bg-overlay);
     --popover-foreground: #e2ecf7;
-    --primary: #1d8df2;
+    --primary: #176dbd; /* WCAG AA fallback: white button text, links & accent tint ≥4.5:1 (was #1d8df2). Runtime value comes from the Appearance accent — keep in sync with api/mock/appearance.ts */
     --primary-strong: color-mix(in oklab, var(--primary), #fff 22%);
     --primary-foreground: #ffffff;
     --secondary: rgba(148, 163, 184, 0.22);
