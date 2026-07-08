@@ -1,5 +1,13 @@
 import { ApiError, ValidationError } from '../client'
 import type {
+  CustomerDetail,
+  CustomerFilters,
+  CustomerListItem,
+  CustomerStatus,
+  InvoiceDetail,
+  InvoiceFilters,
+  InvoiceListItem,
+  InvoiceStatus,
   OrderDetail,
   OrderFilters,
   OrderLineItem,
@@ -7,6 +15,11 @@ import type {
   OrderStatus,
   OrderTimelineEvent,
   Paginated,
+  Payment,
+  PaymentFilters,
+  PaymentMethod,
+  PaymentStats,
+  PaymentTxnStatus,
   Product,
   ProductFilters,
   ProductListItem,
@@ -345,4 +358,257 @@ export function saveProduct(payload: ProductPayload, id?: number): Product {
   store.unshift(created)
   persistProducts()
   return structuredClone(created)
+}
+
+/* ---- customers (CRM) ---- */
+
+const CUSTOMER_STATUSES: CustomerStatus[] = ['active', 'active', 'vip', 'active', 'blocked']
+const CUSTOMERS_PER_PAGE = 12
+
+let customersCache: CustomerDetail[] | null = null
+
+function buildCustomers(): CustomerDetail[] {
+  const base = Date.now()
+  return CUSTOMER_NAMES.map((name, index) => {
+    const ordersCount = (index * 3) % 24
+    const ltv = money(120 + ((index * 37) % 60) * 45)
+    const aov = ordersCount > 0 ? money(ltv / ordersCount) : 0
+    const first = name.split(' ')[0].toLowerCase()
+    return {
+      id: 700 + index,
+      name,
+      email: `${first}@example.com`,
+      orders_count: ordersCount,
+      ltv,
+      currency: CURRENCY,
+      status: CUSTOMER_STATUSES[index % CUSTOMER_STATUSES.length],
+      joined_at: new Date(base - (index + 1) * 9 * 24 * 3600 * 1000).toISOString(),
+      phone: `+1 555 0${(100 + index).toString().slice(-3)}`,
+      address: `${100 + index} Market St\nPortland, OR 972${(10 + (index % 80)).toString().padStart(2, '0')}`,
+      aov,
+      recent_orders: [],
+      notes: [
+        {
+          id: 1,
+          at: new Date(base - (index + 1) * 3 * 24 * 3600 * 1000).toISOString(),
+          author: 'Support',
+          text: 'Reached out about a shipping question — resolved.',
+        },
+      ],
+    }
+  })
+}
+
+function customersStore(): CustomerDetail[] {
+  customersCache ??= buildCustomers()
+  return customersCache
+}
+
+function toCustomerListItem(customer: CustomerDetail): CustomerListItem {
+  return {
+    id: customer.id,
+    name: customer.name,
+    email: customer.email,
+    orders_count: customer.orders_count,
+    ltv: customer.ltv,
+    currency: customer.currency,
+    status: customer.status,
+    joined_at: customer.joined_at,
+  }
+}
+
+export function listCustomers(filters: CustomerFilters): Paginated<CustomerListItem> {
+  let rows = customersStore().slice()
+  const q = filters.q?.toLowerCase().trim()
+  if (q) rows = rows.filter((c) => c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q))
+  if (filters.status) rows = rows.filter((c) => c.status === filters.status)
+  const sort = filters.sort ?? 'name'
+  const dir = filters.dir === 'desc' ? -1 : 1
+  rows.sort((a, b) => {
+    if (sort === 'orders_count') return (a.orders_count - b.orders_count) * dir
+    if (sort === 'ltv') return (a.ltv - b.ltv) * dir
+    if (sort === 'joined_at') return a.joined_at.localeCompare(b.joined_at) * dir
+    return a.name.localeCompare(b.name) * dir
+  })
+  const page = Math.max(1, filters.page ?? 1)
+  return {
+    rows: rows.slice((page - 1) * CUSTOMERS_PER_PAGE, page * CUSTOMERS_PER_PAGE).map(toCustomerListItem),
+    total: rows.length,
+    page,
+    per_page: CUSTOMERS_PER_PAGE,
+  }
+}
+
+export function getCustomer(id: number): CustomerDetail {
+  const customer = customersStore().find((c) => c.id === id)
+  if (!customer) throw new ApiError(404, 'Customer not found')
+  // Recent orders: a slice of the shared orders fixture, relabelled to this customer.
+  const recent = ordersStore()
+    .slice(0, 3)
+    .map((order) => ({ ...toOrderListItem(order), customer_name: customer.name }))
+  return { ...structuredClone(customer), recent_orders: recent }
+}
+
+/* ---- payments ---- */
+
+const PAYMENT_METHODS_ENUM: PaymentMethod[] = ['card', 'paypal', 'transfer', 'cash']
+const PAYMENT_TXN_STATUSES: PaymentTxnStatus[] = ['captured', 'captured', 'pending', 'refunded', 'failed']
+const PAYMENTS_PER_PAGE = 12
+
+let paymentsCache: Payment[] | null = null
+
+function buildPayments(): Payment[] {
+  const base = Date.now() - 3600 * 1000
+  return Array.from({ length: 42 }, (_, index) => {
+    const status = PAYMENT_TXN_STATUSES[index % PAYMENT_TXN_STATUSES.length]
+    return {
+      id: 900 + index,
+      txn: `txn_${(1000000 + index * 7).toString(36)}`,
+      order_number: `#${10500 - (index % 46)}`,
+      customer_name: CUSTOMER_NAMES[index % CUSTOMER_NAMES.length],
+      method: PAYMENT_METHODS_ENUM[index % PAYMENT_METHODS_ENUM.length],
+      amount: money(19.99 + ((index * 11) % 50) * 6.4),
+      currency: CURRENCY,
+      status,
+      created_at: new Date(base - index * 3 * 3600 * 1000).toISOString(),
+    }
+  })
+}
+
+function paymentsStore(): Payment[] {
+  paymentsCache ??= buildPayments()
+  return paymentsCache
+}
+
+export function paymentStats(): PaymentStats {
+  const rows = paymentsStore()
+  const sum = (predicate: (p: Payment) => boolean) => money(rows.filter(predicate).reduce((total, p) => total + p.amount, 0))
+  return {
+    captured: sum((p) => p.status === 'captured'),
+    refunded: sum((p) => p.status === 'refunded'),
+    pending: sum((p) => p.status === 'pending'),
+    currency: CURRENCY,
+  }
+}
+
+export function listPayments(filters: PaymentFilters): Paginated<Payment> {
+  let rows = paymentsStore().slice()
+  const q = filters.q?.toLowerCase().trim()
+  if (q) rows = rows.filter((p) => p.txn.toLowerCase().includes(q) || p.order_number.toLowerCase().includes(q) || p.customer_name.toLowerCase().includes(q))
+  if (filters.status) rows = rows.filter((p) => p.status === filters.status)
+  if (filters.method) rows = rows.filter((p) => p.method === filters.method)
+  if (filters.from) rows = rows.filter((p) => p.created_at >= String(filters.from))
+  if (filters.to) rows = rows.filter((p) => p.created_at <= `${filters.to}T23:59:59Z`)
+  const sort = filters.sort ?? 'created_at'
+  const dir = filters.dir === 'asc' ? 1 : -1
+  rows.sort((a, b) => (sort === 'amount' ? (a.amount - b.amount) * dir : a.created_at.localeCompare(b.created_at) * dir))
+  const page = Math.max(1, filters.page ?? 1)
+  return {
+    rows: rows.slice((page - 1) * PAYMENTS_PER_PAGE, page * PAYMENTS_PER_PAGE),
+    total: rows.length,
+    page,
+    per_page: PAYMENTS_PER_PAGE,
+  }
+}
+
+/** Refund a captured payment (mock write). */
+export function refundPayment(id: number): Payment {
+  const payment = paymentsStore().find((p) => p.id === id)
+  if (!payment) throw new ApiError(404, 'Payment not found')
+  if (payment.status !== 'captured') throw new ValidationError('Validation failed', { _error: 'not_refundable' })
+  payment.status = 'refunded'
+  return structuredClone(payment)
+}
+
+/* ---- invoices ---- */
+
+const INVOICE_STATUSES: InvoiceStatus[] = ['paid', 'sent', 'overdue', 'draft']
+const INVOICES_PER_PAGE = 12
+
+let invoicesCache: InvoiceDetail[] | null = null
+
+function buildInvoices(): InvoiceDetail[] {
+  const base = Date.now()
+  return Array.from({ length: 26 }, (_, index) => {
+    const customerName = CUSTOMER_NAMES[index % CUSTOMER_NAMES.length]
+    const items: OrderLineItem[] = Array.from({ length: 1 + (index % 3) }, (_, j) => ({
+      id: j + 1,
+      name: PRODUCT_NAMES[(index + j) % PRODUCT_NAMES.length],
+      sku: `SKU-${1000 + ((index * 3 + j) % 900)}`,
+      qty: 1 + ((index + j) % 4),
+      price: money(29.99 + ((index * 5 + j) % 30) * 8),
+    }))
+    const subtotal = money(items.reduce((sum, item) => sum + item.price * item.qty, 0))
+    const tax = money(subtotal * 0.08)
+    const total = money(subtotal + tax)
+    const issuedAt = new Date(base - (index + 1) * 6 * 24 * 3600 * 1000).toISOString()
+    return {
+      id: 800 + index,
+      number: `INV-2026-${(1000 + index).toString()}`,
+      customer_name: customerName,
+      issued_at: issuedAt,
+      due_at: new Date(base - (index + 1) * 6 * 24 * 3600 * 1000 + 14 * 24 * 3600 * 1000).toISOString(),
+      amount: total,
+      currency: CURRENCY,
+      status: INVOICE_STATUSES[index % INVOICE_STATUSES.length],
+      issuer: {
+        name: 'Air Glass Store, Inc.',
+        email: 'billing@airglass.example',
+        address: '1 Glassway Ave\nSan Francisco, CA 94107',
+      },
+      recipient: {
+        name: customerName,
+        email: `${customerName.split(' ')[0].toLowerCase()}@example.com`,
+        address: `${100 + index} Market St\nPortland, OR 972${(10 + (index % 80)).toString().padStart(2, '0')}`,
+      },
+      items,
+      totals: { subtotal, shipping: 0, discount: 0, tax, total },
+      notes: 'Payment due within 14 days. Thank you for your business.',
+    }
+  })
+}
+
+function invoicesStore(): InvoiceDetail[] {
+  invoicesCache ??= buildInvoices()
+  return invoicesCache
+}
+
+function toInvoiceListItem(invoice: InvoiceDetail): InvoiceListItem {
+  return {
+    id: invoice.id,
+    number: invoice.number,
+    customer_name: invoice.customer_name,
+    issued_at: invoice.issued_at,
+    due_at: invoice.due_at,
+    amount: invoice.amount,
+    currency: invoice.currency,
+    status: invoice.status,
+  }
+}
+
+export function listInvoices(filters: InvoiceFilters): Paginated<InvoiceListItem> {
+  let rows = invoicesStore().slice()
+  const q = filters.q?.toLowerCase().trim()
+  if (q) rows = rows.filter((inv) => inv.number.toLowerCase().includes(q) || inv.customer_name.toLowerCase().includes(q))
+  if (filters.status) rows = rows.filter((inv) => inv.status === filters.status)
+  const sort = filters.sort ?? 'issued_at'
+  const dir = filters.dir === 'asc' ? 1 : -1
+  rows.sort((a, b) => {
+    if (sort === 'amount') return (a.amount - b.amount) * dir
+    if (sort === 'number') return a.number.localeCompare(b.number) * dir
+    return a.issued_at.localeCompare(b.issued_at) * dir
+  })
+  const page = Math.max(1, filters.page ?? 1)
+  return {
+    rows: rows.slice((page - 1) * INVOICES_PER_PAGE, page * INVOICES_PER_PAGE).map(toInvoiceListItem),
+    total: rows.length,
+    page,
+    per_page: INVOICES_PER_PAGE,
+  }
+}
+
+export function getInvoice(id: number): InvoiceDetail {
+  const invoice = invoicesStore().find((inv) => inv.id === id)
+  if (!invoice) throw new ApiError(404, 'Invoice not found')
+  return structuredClone(invoice)
 }

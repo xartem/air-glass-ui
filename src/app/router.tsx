@@ -50,6 +50,11 @@ const ordersPage = () => lazyPage(() => import('@/features/shop/orders-page').th
 const orderDetailPage = () => lazyPage(() => import('@/features/shop/order-detail-page').then((m) => ({ default: m.OrderDetailPage })))
 const productsPage = () => lazyPage(() => import('@/features/shop/products-page').then((m) => ({ default: m.ProductsPage })))
 const productEditorPage = () => lazyPage(() => import('@/features/shop/product-editor-page').then((m) => ({ default: m.ProductEditorPage })))
+const customersPage = () => lazyPage(() => import('@/features/shop/customers-page').then((m) => ({ default: m.CustomersPage })))
+const customerDetailPage = () => lazyPage(() => import('@/features/shop/customer-detail-page').then((m) => ({ default: m.CustomerDetailPage })))
+const paymentsPage = () => lazyPage(() => import('@/features/shop/payments-page').then((m) => ({ default: m.PaymentsPage })))
+const invoicesPage = () => lazyPage(() => import('@/features/shop/invoices-page').then((m) => ({ default: m.InvoicesPage })))
+const invoiceDetailPage = () => lazyPage(() => import('@/features/shop/invoice-detail-page').then((m) => ({ default: m.InvoiceDetailPage })))
 
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
@@ -106,9 +111,6 @@ const PLACEHOLDER_ROUTES: { path: string; perm?: string; titleKey: string; stage
   { path: '/system/backups', perm: 'backups.view', titleKey: 'nav.backups', stage: 15 },
   { path: '/system/updates', perm: 'updates.view', titleKey: 'nav.updates', stage: 15 },
   { path: '/system/modules', perm: 'modules.manage', titleKey: 'nav.modules', stage: 15 },
-  { path: '/shop/customers', perm: 'customers.view', titleKey: 'nav.customers', stage: 16 },
-  { path: '/shop/customers/:id', perm: 'customers.view', titleKey: 'nav.customers', stage: 16 },
-  { path: '/shop/payments', perm: 'payments.view', titleKey: 'nav.payments', stage: 16 },
   { path: '/shop/delivery', perm: 'orders.delivery', titleKey: 'nav.delivery', stage: 16 },
   { path: '/shop/discounts', perm: 'orders.discounts', titleKey: 'nav.discounts', stage: 16 },
   { path: '/seo', perm: 'seo.manage', titleKey: 'nav.seo', stage: 17 },
@@ -252,6 +254,46 @@ export const router = createBrowserRouter(
         element: (
           <RequirePermission perm="products.manage">
             {productEditorPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/customers',
+        element: (
+          <RequirePermission perm="customers.view">
+            {customersPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/customers/:id',
+        element: (
+          <RequirePermission perm="customers.view">
+            {customerDetailPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/payments',
+        element: (
+          <RequirePermission perm="payments.view">
+            {paymentsPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/invoices',
+        element: (
+          <RequirePermission perm="invoices.view">
+            {invoicesPage()}
+          </RequirePermission>
+        ),
+      },
+      {
+        path: '/shop/invoices/:id',
+        element: (
+          <RequirePermission perm="invoices.view">
+            {invoiceDetailPage()}
           </RequirePermission>
         ),
       },

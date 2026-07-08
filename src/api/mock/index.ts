@@ -1,10 +1,17 @@
 import { ApiError, ValidationError, type RequestOptions } from '../client'
 import type {
   ActivityEntry,
+  CustomerFilters,
+  CustomerStatus,
+  InvoiceFilters,
+  InvoiceStatus,
   LayoutOverrides,
   Me,
   OrderFilters,
   OrderStatus,
+  PaymentFilters,
+  PaymentMethod,
+  PaymentTxnStatus,
   ProductFilters,
   ProductPayload,
   SettingValue,
@@ -39,10 +46,17 @@ import {
 import { regenerateStatus, startRegenerate } from './media'
 import { getAppearance, saveAppearance } from './appearance'
 import {
+  getCustomer,
+  getInvoice,
   getOrder,
   getProduct,
+  listCustomers,
+  listInvoices,
   listOrders,
+  listPayments,
   listProducts,
+  paymentStats,
+  refundPayment,
   saveProduct,
   setOrderStatus,
 } from './shop'
@@ -817,6 +831,95 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (options, params) => {
       requireSession()
       return saveProduct(options.body as ProductPayload, Number(params[0]))
+    },
+  },
+
+  /* ---- shop: customers (CRM) ---- */
+  {
+    method: 'GET',
+    pattern: /^\/shop\/customers$/,
+    handler: (options) => {
+      requireSession()
+      const query = options.query ?? {}
+      const filters: CustomerFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status: query.status === undefined ? undefined : (String(query.status) as CustomerStatus),
+        sort: query.sort === undefined ? undefined : (String(query.sort) as CustomerFilters['sort']),
+        dir: query.dir === 'desc' ? 'desc' : 'asc',
+      }
+      return listCustomers(filters)
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/shop\/customers\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession()
+      return getCustomer(Number(params[0]))
+    },
+  },
+
+  /* ---- shop: payments ---- */
+  {
+    method: 'GET',
+    pattern: /^\/shop\/payments\/stats$/,
+    handler: () => {
+      requireSession()
+      return paymentStats()
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/shop\/payments$/,
+    handler: (options) => {
+      requireSession()
+      const query = options.query ?? {}
+      const filters: PaymentFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status: query.status === undefined ? undefined : (String(query.status) as PaymentTxnStatus),
+        method: query.method === undefined ? undefined : (String(query.method) as PaymentMethod),
+        from: query.from === undefined ? undefined : String(query.from),
+        to: query.to === undefined ? undefined : String(query.to),
+        sort: query.sort === undefined ? undefined : (String(query.sort) as PaymentFilters['sort']),
+        dir: query.dir === 'asc' ? 'asc' : 'desc',
+      }
+      return listPayments(filters)
+    },
+  },
+  {
+    method: 'POST',
+    pattern: /^\/shop\/payments\/(\d+)\/refund$/,
+    handler: (_options, params) => {
+      requireSession()
+      return refundPayment(Number(params[0]))
+    },
+  },
+
+  /* ---- shop: invoices ---- */
+  {
+    method: 'GET',
+    pattern: /^\/shop\/invoices$/,
+    handler: (options) => {
+      requireSession()
+      const query = options.query ?? {}
+      const filters: InvoiceFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status: query.status === undefined ? undefined : (String(query.status) as InvoiceStatus),
+        sort: query.sort === undefined ? undefined : (String(query.sort) as InvoiceFilters['sort']),
+        dir: query.dir === 'asc' ? 'asc' : 'desc',
+      }
+      return listInvoices(filters)
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/shop\/invoices\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession()
+      return getInvoice(Number(params[0]))
     },
   },
 ]

@@ -25,6 +25,7 @@ export const ALL_PERMISSIONS = [
   'products.view', 'products.manage',
   'customers.view', 'customers.manage', 'customers.impersonate',
   'payments.view', 'payments.manage', 'payments.refund',
+  'invoices.view', 'invoices.manage',
   'reviews.moderate',
   'analytics.view',
   'seo.view', 'seo.manage',

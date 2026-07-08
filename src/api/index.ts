@@ -23,10 +23,19 @@ import type {
   Me,
   MfaEnrollStart,
   MfaRecoveryCodes,
+  CustomerDetail,
+  CustomerFilters,
+  CustomerListItem,
+  InvoiceDetail,
+  InvoiceFilters,
+  InvoiceListItem,
   OrderDetail,
   OrderFilters,
   OrderListItem,
   OrderStatus,
+  Payment,
+  PaymentFilters,
+  PaymentStats,
   Period,
   Product,
   ProductFilters,
@@ -288,6 +297,40 @@ export const api = {
     create: (payload: ProductPayload) => apiFetch<Product>('/shop/products', { method: 'POST', body: payload }),
     update: (id: number, payload: ProductPayload) =>
       apiFetch<Product>(`/shop/products/${id}`, { method: 'PUT', body: payload }),
+  },
+
+  customers: {
+    list: (filters: CustomerFilters = {}) =>
+      apiFetch<Paginated<CustomerListItem>>('/shop/customers', {
+        query: { page: filters.page, q: filters.q, status: filters.status, sort: filters.sort, dir: filters.dir },
+      }),
+    get: (id: number) => apiFetch<CustomerDetail>(`/shop/customers/${id}`),
+  },
+
+  payments: {
+    list: (filters: PaymentFilters = {}) =>
+      apiFetch<Paginated<Payment>>('/shop/payments', {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          status: filters.status,
+          method: filters.method,
+          from: filters.from,
+          to: filters.to,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    stats: () => apiFetch<PaymentStats>('/shop/payments/stats'),
+    refund: (id: number) => apiFetch<Payment>(`/shop/payments/${id}/refund`, { method: 'POST' }),
+  },
+
+  invoices: {
+    list: (filters: InvoiceFilters = {}) =>
+      apiFetch<Paginated<InvoiceListItem>>('/shop/invoices', {
+        query: { page: filters.page, q: filters.q, status: filters.status, sort: filters.sort, dir: filters.dir },
+      }),
+    get: (id: number) => apiFetch<InvoiceDetail>(`/shop/invoices/${id}`),
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */
