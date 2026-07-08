@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Air Glass UI — Documentation</title>
+  <meta name="description"
+    content="Buyer documentation for the Air Glass UI admin dashboard template: install, dev/build, theming, adding screens, the mock API, i18n, and a component & screen reference." />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <a class="doc-skip" href="#introduction">Skip to content</a>
+  <div class="doc-shell">
+
+    <!-- ============================ SIDEBAR TABLE OF CONTENTS ============================ -->
+    <aside class="doc-sidebar" aria-label="Documentation navigation">
+      <div class="doc-brand">
+        <div class="doc-brand-logo" aria-hidden="true">A</div>
+        <div>
+          <div class="doc-brand-name">Air Glass UI</div>
+          <div class="doc-brand-ver">Admin Template &middot; v0.0.0</div>
+        </div>
+      </div>
+      <nav>
+        <ul class="doc-toc">
+          <li class="doc-toc-group">Overview</li>
+          <li><a href="#introduction">Introduction &amp; What's Included</a></li>
+          <li class="doc-toc-group">Get started</li>
+          <li><a href="#getting-started">Getting Started</a></li>
+          <li><a href="#theming">Theming &amp; Design Tokens</a></li>
+          <li class="doc-toc-group">Extend the template</li>
+          <li><a href="#adding-a-screen">Adding a New Screen</a></li>
+          <li><a href="#mock-api">Mock API &amp; Real Backend</a></li>
+          <li><a href="#i18n">Internationalization</a></li>
+          <li class="doc-toc-group">Reference</li>
+          <li><a href="#component-reference">Component Reference</a></li>
+          <li><a href="#screen-reference">Screen Reference</a></li>
+          <li class="doc-toc-group">Export</li>
+          <li><a href="#pdf-export">Save as PDF</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- ================================== MAIN CONTENT ================================== -->
+    <main class="doc-content">
+      <div class="doc-inner">
+
+        <!-- ============================ INTRODUCTION (T2) ============================ -->
+        <section id="introduction" class="doc-section">
+          <div class="doc-hero">
+            <span class="doc-eyebrow">Documentation</span>
+            <h1>Air Glass UI — Admin Dashboard Template</h1>
+            <p>
+              A premium, production-grade admin dashboard <strong>UI template</strong> built with
+              React&nbsp;19, TypeScript, Vite and Tailwind CSS&nbsp;v4. It ships with a cohesive
+              &ldquo;Light Air Glass&rdquo; design system, 60+ accessible components, a broad catalog of
+              ready-made screens, full theming with dark mode, RTL-awareness, and an in-repo
+              <strong>mock API</strong> so the whole template runs and demos with <strong>zero backend</strong>.
+            </p>
+            <button type="button" class="doc-print-btn" data-doc-print>
+              &#128424;&nbsp; Print / Save as PDF
+            </button>
+          </div>
+
+          <p>
+            Thank you for purchasing <strong>Air Glass UI</strong>. This document walks you through
+            everything you need to run, customize and extend the template — from a first
+            <code>npm install</code> to adding your own screens and swapping the mock data layer for a
+            real backend. Use the sidebar to jump to any topic; the same content prints as a single
+            linear document (see <a href="#pdf-export">Save as PDF</a>).
+          </p>
+
+          <figure class="doc-shot">
+            <img src="assets/img/dashboard.png" alt="Air Glass UI dashboard screen with the customizable widget grid" loading="lazy" />
+            <figcaption>The customizable widget dashboard — one of many ready-made screens.</figcaption>
+          </figure>
+
+          <div class="doc-gallery">
+            <figure class="doc-shot">
+              <img src="assets/img/login.png" alt="Air Glass UI sign-in screen" loading="lazy" />
+              <figcaption>Authentication</figcaption>
+            </figure>
+            <figure class="doc-shot">
+              <img src="assets/img/command-palette.png" alt="The ⌘K command palette open over the app" loading="lazy" />
+              <figcaption>⌘K command palette</figcaption>
+            </figure>
+          </div>
+
+          <h2>What's included</h2>
+          <div class="doc-grid">
+            <div class="doc-card">
+              <h4>Full source code</h4>
+              <p>React&nbsp;19 + TypeScript sources under <code>src/</code>, built with Vite&nbsp;8.</p>
+            </div>
+            <div class="doc-card">
+              <h4>Design system</h4>
+              <p>&ldquo;Light Air Glass&rdquo; tokens centralized in <code>src/index.css</code> — light &amp; dark.</p>
+            </div>
+            <div class="doc-card">
+              <h4>60+ UI components</h4>
+              <p>Accessible primitives in <code>src/components/ui</code> (shadcn/ui + Radix + Base UI).</p>
+            </div>
+            <div class="doc-card">
+              <h4>Ready-made screens</h4>
+              <p>Auth, dashboard, users &amp; roles, e-commerce, analytics, inbox, kanban, and more.</p>
+            </div>
+            <div class="doc-card">
+              <h4>Mock API</h4>
+              <p>A typed client + fixtures so every screen runs and demos without a server.</p>
+            </div>
+            <div class="doc-card">
+              <h4>This documentation</h4>
+              <p>Self-contained HTML you can open offline, plus a print-to-PDF export.</p>
+            </div>
+          </div>
+
+          <h2>Technology stack</h2>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Area</th><th>Technology</th></tr></thead>
+              <tbody>
+                <tr><td>Language</td><td>TypeScript (strict, target ES2023)</td></tr>
+                <tr><td>UI runtime</td><td>React 19</td></tr>
+                <tr><td>Build tool</td><td>Vite 8 (<code>@vitejs/plugin-react</code>)</td></tr>
+                <tr><td>Styling</td><td>Tailwind CSS v4 (<code>@tailwindcss/vite</code>), <code>tw-animate-css</code>, Geist Variable font</td></tr>
+                <tr><td>Component primitives</td><td>shadcn/ui, Radix UI, Base UI (<code>@base-ui/react</code>)</td></tr>
+                <tr><td>Routing</td><td>react-router v8 (browser router, lazy routes)</td></tr>
+                <tr><td>Data layer</td><td>TanStack Query (mock-backed), TanStack Table</td></tr>
+                <tr><td>Forms &amp; validation</td><td>react-hook-form + Zod (<code>@hookform/resolvers</code>)</td></tr>
+                <tr><td>Charts</td><td>Recharts</td></tr>
+                <tr><td>Editors</td><td>TipTap (rich text), CodeMirror (HTML)</td></tr>
+                <tr><td>Drag &amp; drop</td><td>dnd-kit</td></tr>
+                <tr><td>Tooling</td><td>oxlint (lint), Prettier (format), Vitest + Testing Library + jsdom (tests)</td></tr>
+                <tr><td>Backend</td><td>None — in-repo mock API only (no database)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Browser support</h2>
+          <p>
+            Air Glass UI targets modern evergreen browsers — the latest two versions of
+            <strong>Chrome, Edge, Firefox and Safari</strong>. The glass surfaces use
+            <code>backdrop-filter</code>; where a browser does not support it the layout degrades
+            gracefully to solid surfaces. There is no Internet&nbsp;Explorer support.
+          </p>
+
+          <div class="doc-note">
+            <span class="doc-callout-label">License note.</span>
+            Air Glass UI is distributed under the Envato Market license you purchased (Regular or
+            Extended). Before publishing, review the licensing of every bundled dependency, font and
+            asset for redistribution — the <em>Geist Variable</em> font and all runtime dependencies are
+            open-source, but you are responsible for compliance in your own build. The project's
+            <code>themeforest-prep</code> notes describe the packaging and licensing bar in detail.
+          </div>
+        </section>
+
+        <!-- ============================ GETTING STARTED (T3) ============================ -->
+        <section id="getting-started" class="doc-section">
+          <h2>Getting Started</h2>
+          <p>
+            The template is a standard Vite single-page application. If you have built a React app
+            before, everything here will be familiar.
+          </p>
+
+          <h3>Prerequisites</h3>
+          <ul>
+            <li>
+              <strong>Node.js 20.19+ or 22.12+</strong> (an active LTS release is recommended).
+              Vite&nbsp;8 requires one of these minimum versions — older Node releases are not supported.
+            </li>
+            <li>
+              <strong>npm</strong> (bundled with Node). The commands below use npm; the equivalent
+              <code>pnpm</code> or <code>yarn</code> commands work too if you prefer, but the lockfile in
+              this package is <code>package-lock.json</code> (npm).
+            </li>
+          </ul>
+
+          <h3>Install &amp; run</h3>
+          <p>From the project root, install dependencies and start the dev server:</p>
+          <pre><code>npm install      # install dependencies
+npm run dev      # start the Vite dev server with hot-module reloading</code></pre>
+          <p>
+            The dev server prints a local URL (typically <code>http://localhost:5173/admin-assets/</code>).
+            Open it and you are running the full template on mock data — no backend required.
+          </p>
+
+          <div class="doc-note">
+            <span class="doc-callout-label">Why <code>/admin-assets/</code>?</span>
+            The app is configured with a Vite <code>base</code> of <code>/admin-assets/</code> (see
+            <code>vite.config.ts</code>) because it was designed to be mounted under a sub-path. Change
+            <code>base</code> to <code>'/'</code> if you want to serve it from the domain root. The router reads
+            this value from <code>import.meta.env.BASE_URL</code>, so routing follows the base automatically.
+          </div>
+
+          <h3>Available scripts</h3>
+          <p>All scripts are defined in <code>package.json</code>:</p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><code>npm run dev</code></td><td>Start the Vite dev server with HMR.</td></tr>
+                <tr><td><code>npm run build</code></td><td>Type-check then build for production (<code>tsc -b &amp;&amp; vite build</code>). Output goes to <code>dist/</code>.</td></tr>
+                <tr><td><code>npm run preview</code></td><td>Serve the production build locally to verify it.</td></tr>
+                <tr><td><code>npm run lint</code></td><td>Lint the codebase with oxlint.</td></tr>
+                <tr><td><code>npm run format</code></td><td>Format sources with Prettier (<code>src/**/*.{ts,tsx,css}</code>).</td></tr>
+                <tr><td><code>npm run format:check</code></td><td>Check formatting without writing changes.</td></tr>
+                <tr><td><code>npm run test</code></td><td>Run the test suite once with Vitest.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Building for production</h3>
+          <pre><code>npm run build      # type-checks, then emits static assets into dist/
+npm run preview    # locally preview the dist/ build</code></pre>
+          <p>
+            The contents of <code>dist/</code> are plain static files — HTML, JS and CSS. Deploy them to any
+            static host (Netlify, Vercel, S3/CloudFront, Nginx, GitHub Pages, …). Because the app is an
+            SPA, configure your host to rewrite unknown paths to <code>index.html</code> so client-side routing
+            works on deep links.
+          </p>
+
+          <h3>Project structure</h3>
+          <p>The source tree follows a <strong>feature-sliced</strong> layout:</p>
+          <pre><code>src/
+├── app/              App shell, router and the single navigation map
+│   ├── app-shell.tsx    Authenticated layout: sidebar, header, ⌘K palette
+│   ├── router.tsx       react-router config; feature screens are lazy-loaded
+│   └── nav.ts           ONE navigation map (sidebar + command palette)
+├── features/         Screen-level code, one folder per domain
+│   ├── auth/            login · forgot · reset · MFA enroll · guest layout
+│   ├── dashboard/       customizable widget dashboard
+│   ├── users/          users list · editor · roles/RBAC · profile
+│   ├── settings/        settings + appearance
+│   ├── shop/            orders, products, customers, payments, invoices, …
+│   ├── analytics/ inbox/ kanban/ media/ pricing/ ai/ help/ …
+│   ├── ui-kit/          component showcase
+│   └── placeholder/     fallback screen for un-built routes
+├── components/
+│   ├── ui/              60+ reusable primitives (shadcn/ui + Radix + Base UI)
+│   └── *.tsx            composed app widgets (data-table, page-header, …)
+├── lib/              Cross-cutting helpers (auth, i18n, query, permissions, …)
+├── hooks/            Shared React hooks
+├── api/              API client + types
+│   └── mock/            in-memory fixtures (zero-backend demo)
+├── locales/          8 locale dictionaries (en, de, es, fr, it, pl, ru, uk)
+├── assets/           Static assets
+├── index.css         ALL visual identity: shadcn vars + --glass-* tokens
+└── main.tsx          App entry: providers + RouterProvider</code></pre>
+
+          <p>Root configuration files worth knowing:</p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>vite.config.ts</code></td><td>Vite config: React + Tailwind plugins, <code>base</code>, the <code>@</code> path alias.</td></tr>
+                <tr><td><code>tsconfig.json</code> / <code>tsconfig.app.json</code> / <code>tsconfig.node.json</code></td><td>TypeScript project references (strict mode).</td></tr>
+                <tr><td><code>components.json</code></td><td>shadcn/ui registry config (points its CSS at <code>src/index.css</code>).</td></tr>
+                <tr><td><code>vitest.config.ts</code></td><td>Vitest test runner config (jsdom environment).</td></tr>
+                <tr><td><code>index.html</code></td><td>The Vite HTML entry that mounts <code>main.tsx</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>The <code>@/*</code> path alias</h3>
+          <p>
+            Every import that starts with <code>@/</code> resolves to <code>src/</code>. This is configured in two
+            places that must stay in sync: <code>resolve.alias</code> in <code>vite.config.ts</code> (for the
+            bundler) and <code>compilerOptions.paths</code> in <code>tsconfig.app.json</code> (for TypeScript).
+          </p>
+          <pre><code>// Instead of brittle relative paths…
+import { Button } from '../../../components/ui/button'
+
+// …use the alias:
+import { Button } from '@/components/ui/button'</code></pre>
+        </section>
+
+        <!-- ============================ THEMING (T4) ============================ -->
+        <section id="theming" class="doc-section">
+          <h2>Theming &amp; Design Tokens</h2>
+          <p>
+            Air Glass UI has a <strong>single source of visual truth</strong>:
+            <code>src/index.css</code>. Every color, radius, blur, gradient, shadow and glass surface is
+            defined there as a CSS custom property (design token). Screens and components
+            <strong>consume</strong> tokens — they never hard-code their own colors, blur or mesh. This is an
+            enforced project rule, and it is what lets you rebrand the entire template by editing one file.
+          </p>
+
+          <div class="doc-tip">
+            <span class="doc-callout-label">Rule of thumb.</span>
+            If you find yourself typing a hex color, a <code>blur()</code> value, or a gradient inside a
+            component, stop — add or reuse a token in <code>src/index.css</code> instead. Keeping tokens
+            centralized is what preserves the &ldquo;Light Air Glass&rdquo; consistency across light and dark themes.
+          </div>
+
+          <h3>How the tokens are organized</h3>
+          <p><code>src/index.css</code> is layered top to bottom:</p>
+          <ul>
+            <li>
+              <strong>Imports</strong> — Tailwind v4, <code>tw-animate-css</code>, the shadcn Tailwind preset,
+              and the Geist Variable font.
+            </li>
+            <li>
+              <strong><code>@theme inline</code></strong> — maps Tailwind color utilities
+              (<code>bg-primary</code>, <code>text-muted-foreground</code>, …) to the CSS variables, and defines the
+              radius scale.
+            </li>
+            <li>
+              <strong><code>:root</code></strong> — the <strong>light</strong> palette: the shadcn variables
+              (<code>--background</code>, <code>--foreground</code>, <code>--primary</code>, <code>--card</code>,
+              <code>--border</code>, <code>--radius</code>, chart colors, sidebar colors) <em>and</em> the
+              <code>--glass-*</code> layer (glass backgrounds, blur radii, saturation, borders, highlights, shadows),
+              plus motion, glow and status tokens.
+            </li>
+            <li>
+              <strong><code>.dark</code></strong> — the <strong>dark</strong> overrides: the same token names
+              re-declared on a dark base, so dark mode is a set of value swaps, not a separate stylesheet.
+            </li>
+          </ul>
+
+          <h3>The shadcn palette &amp; the glass layer</h3>
+          <p>
+            Standard shadcn tokens drive component color; the bespoke <code>--glass-*</code> tokens drive the
+            frosted-glass surfaces that give the template its identity. A representative slice of the
+            light theme:
+          </p>
+          <pre><code>:root {
+  /* shadcn palette (light) */
+  --background: #f6faff;
+  --foreground: #15324a;
+  --primary:    #176dbd;   /* accent — buttons, links, rings, nav marker */
+  --card:       var(--glass-bg-card);
+  --border:     rgba(148, 163, 184, 0.20);
+  --radius:     12px;
+  /* charts */
+  --chart-1: #1d8df2;  --chart-2: #34d399;  /* … */
+
+  /* --glass-* layer (consumed only by framework surfaces) */
+  --glass-bg-card:    rgba(255, 255, 255, 0.42);
+  --glass-bg-panel:   rgba(255, 255, 255, 0.50);
+  --glass-blur-card:  28px;
+  --glass-saturate:   160%;
+  --glass-border:     rgba(148, 163, 184, 0.26);
+  --glass-shadow:     0 22px 48px rgba(148, 163, 184, 0.16);
+}
+
+.dark {
+  /* same token names, dark values */
+  --background: #0b1220;
+  --foreground: #e2ecf7;
+  --primary:    #176dbd;
+  /* …glass recipe re-applied on a dark base… */
+}</code></pre>
+          <p>
+            Note how <code>--card</code> points at <code>--glass-bg-card</code>: the accent and neutral families
+            <em>derive</em> from a small number of base tokens, so changing one value cascades everywhere it
+            is referenced.
+          </p>
+
+          <h3>How to rebrand</h3>
+          <p>
+            To restyle the whole template, change a handful of token values in <code>:root</code> (and the
+            matching ones in <code>.dark</code>). The most impactful is <code>--primary</code>, the accent that flows
+            into buttons, links, focus rings, the active-nav marker and select highlights:
+          </p>
+          <pre><code>/* src/index.css — before */
+:root { --primary: #176dbd; }   /* blue */
+.dark { --primary: #176dbd; }
+
+/* after — a violet brand */
+:root { --primary: #7c3aed; }   /* buttons, links, rings, nav marker all follow */
+.dark { --primary: #8b5cf6; }   /* a slightly lighter accent reads better on dark */</code></pre>
+          <p>
+            Save the file and the dev server hot-reloads — every accented surface across every screen
+            updates at once, in both themes, with no per-component edits. To go further, adjust the
+            <code>--glass-bg-*</code> opacity for more or less translucency, the <code>--glass-blur-*</code> radii for a
+            softer or crisper frost, or the <code>--radius*</code> scale for sharper or rounder geometry.
+          </p>
+
+          <div class="doc-warn">
+            <span class="doc-callout-label">Keep light and dark in step.</span>
+            Every token you change in <code>:root</code> should have a considered counterpart in <code>.dark</code>.
+            Also check contrast: several tokens carry a note that they were tuned to meet WCAG&nbsp;AA — keep
+            text/background pairs at 4.5:1 or better when you re-color.
+          </div>
+
+          <h3>Where Tailwind utilities come from</h3>
+          <p>
+            Tailwind CSS v4 is wired in through the <code>@tailwindcss/vite</code> plugin (see
+            <code>vite.config.ts</code>) and the <code>@import "tailwindcss";</code> at the top of
+            <code>src/index.css</code> — there is no separate <code>tailwind.config.js</code>. Utilities such as
+            <code>bg-primary</code> or <code>rounded-lg</code> resolve to your tokens because of the
+            <code>@theme inline</code> block that maps <code>--color-*</code> and <code>--radius-*</code> to the CSS
+            variables. Animations come from <code>tw-animate-css</code>; the UI font is
+            <em>Geist Variable</em> (<code>@fontsource-variable/geist</code>).
+          </p>
+        </section>
+
+        <!-- ============================ ADDING A SCREEN (T5) ============================ -->
+        <section id="adding-a-screen" class="doc-section">
+          <h2>Adding a New Screen</h2>
+          <p>
+            Screens follow a consistent, feature-sliced recipe. Adding one touches six places; do them
+            all and your screen appears in the sidebar and the ⌘K palette, is code-split, permission-gated,
+            localized in all languages, and backed by mock data — exactly like the built-in screens.
+          </p>
+
+          <ol class="doc-steps">
+            <li>
+              <strong>Create the feature file</strong> under <code>src/features/&lt;domain&gt;/</code>. Export a
+              named React component (PascalCase) and reuse the shared page/layout components
+              (<code>PageHeader</code>, <code>ListLayout</code>, <code>DataTable</code>, <code>Card</code>, …) so it
+              matches the rest of the app. Consume design tokens — never hard-code colors.
+            </li>
+            <li>
+              <strong>Register a single navigation entry</strong> in <code>src/app/nav.ts</code>. This one map
+              is consumed by <em>both</em> the sidebar and the ⌘K command palette — add the entry once and it
+              shows up in both, with no drift. Give it a <code>perm</code> if the screen should be gated.
+            </li>
+            <li>
+              <strong>Add a lazy route</strong> in <code>src/app/router.tsx</code>. Feature screens load lazily
+              (code-splitting) so the login screen stays tiny; wrap it in <code>&lt;RequirePermission&gt;</code>
+              if it needs a permission.
+            </li>
+            <li>
+              <strong>Add i18n keys</strong> to <em>all 8</em> locale files under <code>src/locales/</code>
+              (see the <a href="#i18n">Internationalization</a> guide and the <code>i18n-merge.mjs</code> helper).
+            </li>
+            <li>
+              <strong>Add mock data</strong> under <code>src/api/mock/</code> and (optionally) an endpoint on the
+              <code>api</code> object so the screen has something to render with zero backend
+              (see <a href="#mock-api">Mock API</a>).
+            </li>
+            <li>
+              <strong>Gate with a permission</strong> where appropriate — declare it in the nav entry and in
+              the route, and make sure the mock <code>me</code> user carries that permission so you can see the screen.
+            </li>
+          </ol>
+
+          <div class="doc-tip">
+            <span class="doc-callout-label">Shortcut.</span>
+            This project ships an <code>air-glass-screen</code> generator skill that scaffolds all six touch-points
+            for you. The steps below show what it produces so you can also do it by hand.
+          </div>
+
+          <h3>Worked example — a minimal &ldquo;Announcements&rdquo; list screen</h3>
+
+          <h4>1. The feature component</h4>
+          <pre><code>// src/features/announcements/announcements-page.tsx
+import { useQuery } from '@tanstack/react-query'
+import { PageHeader } from '@/components/page-header'
+import { Card } from '@/components/ui/card'
+import { api } from '@/api'
+import { t } from '@/lib/i18n'
+
+export function AnnouncementsPage() {
+  const { data = [] } = useQuery({
+    queryKey: ['announcements'],
+    queryFn: () =&gt; api.announcements.list(),
+  })
+
+  return (
+    &lt;div&gt;
+      &lt;PageHeader title={t('nav.announcements')} /&gt;
+      &lt;div className="grid gap-3"&gt;
+        {data.map((a) =&gt; (
+          &lt;Card key={a.id} className="p-4"&gt;
+            &lt;h3 className="font-medium"&gt;{a.title}&lt;/h3&gt;
+            &lt;p className="text-muted-foreground text-sm"&gt;{a.body}&lt;/p&gt;
+          &lt;/Card&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+
+          <h4>2. One navigation entry (<code>src/app/nav.ts</code>)</h4>
+          <pre><code>import { Megaphone } from 'lucide-react'
+// …inside the appropriate NavGroup's `items` array:
+{
+  to: '/announcements',
+  label: t('nav.announcements'),
+  icon: Megaphone,
+  perm: 'announcements.view',   // omit `perm` for an ungated screen
+},</code></pre>
+
+          <h4>3. A lazy route (<code>src/app/router.tsx</code>)</h4>
+          <pre><code>const announcementsPage = () =&gt;
+  lazyPage(() =&gt;
+    import('@/features/announcements/announcements-page').then((m) =&gt; ({
+      default: m.AnnouncementsPage,
+    })),
+  )
+
+// …inside the authenticated route tree's `children`:
+{
+  path: '/announcements',
+  element: (
+    &lt;RequirePermission perm="announcements.view"&gt;
+      {announcementsPage()}
+    &lt;/RequirePermission&gt;
+  ),
+},</code></pre>
+
+          <h4>4. i18n keys in every locale</h4>
+          <pre><code>// Author them once in a payload and merge into all 8 dictionaries:
+//   node scripts/i18n-merge.mjs payload.json
+// payload.json → { "en": { "nav.announcements": "Announcements" },
+//                  "ru": { "nav.announcements": "Объявления" }, … }</code></pre>
+
+          <h4>5. Mock data (<code>src/api/mock/</code>) + endpoint</h4>
+          <pre><code>// src/api/mock/announcements.ts
+export const announcements = [
+  { id: 1, title: 'Welcome', body: 'The template is running on mock data.' },
+]
+
+// Register it in the mock router (src/api/mock/index.ts) for GET /announcements,
+// and add the typed endpoint on the `api` object in src/api/index.ts:
+//   announcements: { list: () =&gt; apiFetch&lt;Announcement[]&gt;('/announcements') }</code></pre>
+
+          <div class="doc-note">
+            <span class="doc-callout-label">Reuse the shared building blocks.</span>
+            For a consistent look, lean on the composed components in <code>src/components/</code> —
+            <code>PageHeader</code>, <code>ListLayout</code>, <code>SettingsLayout</code>, <code>DataTable</code>,
+            <code>SaveBar</code>, <code>EmptyState</code>, <code>PaginationBar</code> — rather than laying out pages
+            from scratch. The <a href="#screen-reference">Screen Reference</a> shows how the built-in screens
+            are assembled.
+          </div>
+        </section>
+
+        <!-- ============================ MOCK API (T6) ============================ -->
+        <section id="mock-api" class="doc-section">
+          <h2>Mock API &amp; Swapping in a Real Backend</h2>
+          <p>
+            Air Glass UI runs end-to-end with <strong>no server</strong>. A small data layer under
+            <code>src/api/</code> sits between the screens and the network, and in development it transparently
+            serves responses from in-memory fixtures. Screens cannot tell the difference — by design.
+          </p>
+
+          <h3>The data layer</h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>File</th><th>Responsibility</th></tr></thead>
+              <tbody>
+                <tr><td><code>src/api/client.ts</code></td><td>The transport: <code>apiFetch()</code> / <code>apiStream()</code>. Handles JSON, query params, CSRF, and cross-cutting behavior (401 → re-login, 403/422/409 error types). Chooses mock vs. real.</td></tr>
+                <tr><td><code>src/api/index.ts</code></td><td>The typed API surface: the <code>api</code> object whose methods (e.g. <code>api.users.list()</code>) every screen calls. This is the contract.</td></tr>
+                <tr><td><code>src/api/types.ts</code></td><td>All request/response TypeScript types.</td></tr>
+                <tr><td><code>src/api/mock/*</code></td><td>In-memory fixtures per domain (ai, analytics, appearance, dashboard, data, help, inbox, kanban, media, roles, settings, shop, users) plus the mock router in <code>index.ts</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>How screens consume it (TanStack Query)</h3>
+          <p>
+            Screens never call <code>fetch</code> directly. They call an <code>api.*</code> method through
+            TanStack Query, which handles caching, loading and error states:
+          </p>
+          <pre><code>import { useQuery } from '@tanstack/react-query'
+import { api } from '@/api'
+
+const { data, isLoading } = useQuery({
+  queryKey: ['users', filters],
+  queryFn: () =&gt; api.users.list(filters),
+})</code></pre>
+
+          <h3>How the mock switch works</h3>
+          <p>The client decides between mock and real in a single line (<code>src/api/client.ts</code>):</p>
+          <pre><code>const useMock = import.meta.env.DEV &amp;&amp; !import.meta.env.VITE_API_REAL
+const API_BASE = import.meta.env.VITE_API_BASE ?? '/console/api'</code></pre>
+          <p>
+            So by default, in <strong>development</strong> the mock layer is used; in a
+            <strong>production build</strong> (<code>import.meta.env.DEV</code> is false) real HTTP is used. You can
+            also force real requests during development by setting <code>VITE_API_REAL</code>.
+          </p>
+
+          <h3>Swapping in a real backend</h3>
+          <p>Because every screen already talks to the typed <code>api</code> surface, you have two clean options:</p>
+
+          <ol class="doc-steps">
+            <li>
+              <strong>Point the existing client at your server (fastest).</strong> Make your backend speak the
+              same routes and JSON shapes the mock uses, then configure the base URL and disable the mock:
+              <pre><code># .env.local
+VITE_API_REAL=1                       # use real HTTP even in dev
+VITE_API_BASE=https://api.example.com # your backend base URL</code></pre>
+              With <code>VITE_API_REAL</code> set, <code>apiFetch</code> issues real <code>fetch</code> calls to
+              <code>API_BASE + path</code> — no screen or query changes needed.
+            </li>
+            <li>
+              <strong>Rewrite the endpoints (most control).</strong> Keep the shape of the <code>api</code> object in
+              <code>src/api/index.ts</code> but change the implementations to call your own HTTP (fetch/axios) or
+              adjust paths. Screens and queries import from <code>@/api</code> and depend only on the method
+              signatures, so they keep working unchanged.
+            </li>
+          </ol>
+
+          <div class="doc-note">
+            <span class="doc-callout-label">Keep the interface stable.</span>
+            The golden rule when going live: preserve the <em>method signatures and return types</em> of the
+            <code>api</code> object. As long as <code>api.users.list()</code> resolves to the same
+            <code>Paginated&lt;UserListItem&gt;</code>, the UI does not care whether the data came from a fixture or
+            your database. Once you no longer need the demo data, you can delete <code>src/api/mock/</code>.
+          </div>
+
+          <h3>Auth &amp; permissions</h3>
+          <p>
+            Authentication and RBAC in the template are <strong>client-side against the mock</strong>: the
+            current user and their permission set come from <code>GET /me</code> (see
+            <code>api.me()</code>), the <code>&lt;AuthProvider&gt;</code> exposes them, and
+            <code>&lt;RequirePermission&gt;</code> / the nav <code>perm</code> fields gate routes and menu items. The
+            client already implements the real-world cross-cutting flows —
+            <code>401</code> mid-session parks the request and opens a re-login dialog, then retries;
+            <code>403</code> surfaces as an error toast; <code>422</code> becomes a per-field
+            <code>ValidationError</code>; <code>409</code> a <code>ConflictError</code>; and a
+            <code>X-CSRF-Token</code> header (from the <code>XSRF-TOKEN</code> cookie) is sent on every mutation.
+            When you connect a real backend, implement those status codes server-side and this behavior
+            keeps working. <strong>Enforce every permission on the server too</strong> — client-side gating is
+            for UX, not security.
+          </p>
+        </section>
+
+        <!-- ============================ I18N (T7) ============================ -->
+        <section id="i18n" class="doc-section">
+          <h2>Internationalization (i18n)</h2>
+          <p>
+            The admin UI ships in <strong>8 languages</strong>. The system is deliberately lightweight: flat
+            JSON dictionaries bundled into the app and a tiny <code>t()</code> helper. UI language is a per-user
+            preference, independent from any content locales.
+          </p>
+
+          <h3>Shipped locales</h3>
+          <p>Dictionaries live in <code>src/locales/</code>:</p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>File</th><th>Language</th><th>File</th><th>Language</th></tr></thead>
+              <tbody>
+                <tr><td><code>en.json</code></td><td>English <span class="doc-badge doc-badge--green">canonical</span></td><td><code>it.json</code></td><td>Italiano</td></tr>
+                <tr><td><code>ru.json</code></td><td>Русский</td><td><code>pl.json</code></td><td>Polski</td></tr>
+                <tr><td><code>uk.json</code></td><td>Українська</td><td><code>es.json</code></td><td>Español</td></tr>
+                <tr><td><code>de.json</code></td><td>Deutsch</td><td><code>fr.json</code></td><td>Français</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <code>en.json</code> is the <strong>reference dictionary</strong>: <code>t()</code> falls back to the
+            English string when a key is missing in the active locale, and ultimately to the key itself.
+            Keep <code>en.json</code> complete.
+          </p>
+
+          <h3>The <code>t()</code> helper</h3>
+          <p>
+            Import <code>t</code> from <code>@/lib/i18n</code> and translate by key. Hard-coded UI strings are
+            forbidden — always use <code>t()</code>. Placeholders use <code>{name}</code> syntax:
+          </p>
+          <pre><code>import { t } from '@/lib/i18n'
+
+t('nav.dashboard')                       // "Dashboard"
+t('users.greeting', { name: 'Ada' })     // "Welcome, Ada" (from "Welcome, {name}")</code></pre>
+          <p>
+            The active locale is stored in <code>localStorage</code> (<code>admin.ui_locale</code>) and defaults to
+            English. The <code>LocaleSwitcher</code> component and the <code>useLocale()</code> hook read and change it;
+            components re-render on change.
+          </p>
+
+          <h3>Recipe: add a new key</h3>
+          <ol class="doc-steps">
+            <li>Choose a dotted key, e.g. <code>nav.reports</code>.</li>
+            <li>Add it to <strong>all 8</strong> dictionaries with a translated value (at minimum to <code>en.json</code>).</li>
+            <li>Use it in code via <code>t('nav.reports')</code>.</li>
+          </ol>
+          <p>
+            To avoid editing eight files by hand, author one payload and run the bundled merge script:
+          </p>
+          <pre><code>// payload.json
+{
+  "en": { "nav.reports": "Reports" },
+  "ru": { "nav.reports": "Отчёты" },
+  "uk": { "nav.reports": "Звіти" },
+  "de": { "nav.reports": "Berichte" },
+  "fr": { "nav.reports": "Rapports" },
+  "es": { "nav.reports": "Informes" },
+  "it": { "nav.reports": "Report" },
+  "pl": { "nav.reports": "Raporty" }
+}</code></pre>
+          <pre><code>node scripts/i18n-merge.mjs payload.json
+# [i18n-merge] en: +1 keys (1 total in payload)
+# [i18n-merge] ru: +1 keys …
+# …merges the keys into every src/locales/*.json (existing keys are updated)</code></pre>
+
+          <h3>Recipe: add a new locale</h3>
+          <ol class="doc-steps">
+            <li>Copy <code>src/locales/en.json</code> to <code>src/locales/&lt;code&gt;.json</code> and translate the values.</li>
+            <li>
+              In <code>src/lib/i18n.ts</code>: <code>import</code> the new file, add its code to the
+              <code>ADMIN_LOCALES</code> array, its endonym to <code>LOCALE_NAMES</code>, and the import to the
+              <code>dictionaries</code> map.
+            </li>
+            <li>Add the new locale key to the <code>LOCALES</code> list in <code>scripts/i18n-merge.mjs</code> so future merges include it.</li>
+          </ol>
+
+          <div class="doc-note">
+            <span class="doc-callout-label">RTL-awareness.</span>
+            Components are built on Radix / Base UI primitives that respect the document direction, and a
+            <code>Direction</code> provider is available. For a right-to-left language, set
+            <code>dir="rtl"</code> on the document and the layout, spacing and component affordances mirror
+            accordingly.
+          </div>
+        </section>
+
+        <!-- ============================ COMPONENT REFERENCE (T8) ============================ -->
+        <section id="component-reference" class="doc-section">
+          <h2>Component Reference</h2>
+          <p>
+            The template includes <strong>64 UI primitives</strong> in <code>src/components/ui/</code>, plus a
+            layer of composed application widgets in <code>src/components/</code>. Every primitive is a named
+            export you import from <code>@/components/ui/&lt;name&gt;</code>. The interactive
+            <strong>UI-Kit showcase</strong> screen (<code>/ui-kit</code>, and the states showcase at
+            <code>/showcase/states</code>) is the live demo — open it to see each component with its variants and
+            states.
+          </p>
+
+          <div class="doc-tip">
+            <span class="doc-callout-label">This list stays in sync with the source.</span>
+            Run <code>node scripts/build-component-reference.mjs</code> to enumerate
+            <code>src/components/ui</code> directly from disk (add <code>--json</code> for machine-readable output).
+            The script prints the grouped catalog and warns about any new file that has not yet been given a
+            documentation entry, so this reference cannot silently drift.
+          </div>
+
+          <h3>Usage pattern</h3>
+          <pre><code>import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+
+&lt;Card className="p-4"&gt;
+  &lt;Button variant="default"&gt;Save&lt;/Button&gt;
+&lt;/Card&gt;</code></pre>
+
+          <h3>Forms &amp; inputs <span class="doc-badge doc-badge--muted">20</span></h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Import</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>@/components/ui/button</code></td><td>Primary action button with variants &amp; sizes.</td></tr>
+                <tr><td><code>@/components/ui/button-group</code></td><td>Group of segmented / attached buttons.</td></tr>
+                <tr><td><code>@/components/ui/input</code></td><td>Text input field.</td></tr>
+                <tr><td><code>@/components/ui/input-group</code></td><td>Input with leading/trailing addons.</td></tr>
+                <tr><td><code>@/components/ui/input-otp</code></td><td>One-time-code / OTP input.</td></tr>
+                <tr><td><code>@/components/ui/textarea</code></td><td>Multi-line text input.</td></tr>
+                <tr><td><code>@/components/ui/label</code></td><td>Accessible form label.</td></tr>
+                <tr><td><code>@/components/ui/field</code></td><td>Field wrapper (label + control + description/error).</td></tr>
+                <tr><td><code>@/components/ui/checkbox</code></td><td>Checkbox control.</td></tr>
+                <tr><td><code>@/components/ui/radio-group</code></td><td>Mutually-exclusive radio options.</td></tr>
+                <tr><td><code>@/components/ui/switch</code></td><td>On/off toggle switch.</td></tr>
+                <tr><td><code>@/components/ui/select</code></td><td>Styled dropdown select (Radix/Base UI).</td></tr>
+                <tr><td><code>@/components/ui/native-select</code></td><td>Native <code>&lt;select&gt;</code> styled to match.</td></tr>
+                <tr><td><code>@/components/ui/combobox</code></td><td>Autocomplete / searchable select.</td></tr>
+                <tr><td><code>@/components/ui/multi-select</code></td><td>Multi-value select (in <code>src/components/</code>).</td></tr>
+                <tr><td><code>@/components/ui/number-field</code></td><td>Numeric input with steppers.</td></tr>
+                <tr><td><code>@/components/ui/slider</code></td><td>Range slider.</td></tr>
+                <tr><td><code>@/components/ui/toggle</code></td><td>Two-state toggle button.</td></tr>
+                <tr><td><code>@/components/ui/toggle-group</code></td><td>Group of toggles (single/multiple).</td></tr>
+                <tr><td><code>@/components/ui/calendar</code></td><td>Date-picker calendar (react-day-picker).</td></tr>
+                <tr><td><code>@/components/ui/rating</code></td><td>Star rating input/display.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Data display <span class="doc-badge doc-badge--muted">13</span></h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Import</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>@/components/ui/table</code></td><td>Low-level table primitives.</td></tr>
+                <tr><td><code>@/components/ui/card</code></td><td>Glass surface card container.</td></tr>
+                <tr><td><code>@/components/ui/item</code></td><td>List item row primitive.</td></tr>
+                <tr><td><code>@/components/ui/badge</code></td><td>Status/label pill with variants.</td></tr>
+                <tr><td><code>@/components/ui/avatar</code></td><td>User avatar with fallback.</td></tr>
+                <tr><td><code>@/components/ui/aspect-ratio</code></td><td>Fixed aspect-ratio box.</td></tr>
+                <tr><td><code>@/components/ui/chart</code></td><td>Recharts chart container + theming.</td></tr>
+                <tr><td><code>@/components/ui/timeline</code></td><td>Vertical event timeline.</td></tr>
+                <tr><td><code>@/components/ui/stepper</code></td><td>Multi-step progress indicator.</td></tr>
+                <tr><td><code>@/components/ui/kbd</code></td><td>Keyboard-shortcut key hint.</td></tr>
+                <tr><td><code>@/components/ui/marker</code></td><td>Map/point marker element.</td></tr>
+                <tr><td><code>@/components/ui/separator</code></td><td>Horizontal/vertical divider.</td></tr>
+                <tr><td><code>@/components/ui/progress</code></td><td>Determinate progress bar.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Overlays &amp; dialogs <span class="doc-badge doc-badge--muted">11</span></h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Import</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>@/components/ui/dialog</code></td><td>Modal dialog.</td></tr>
+                <tr><td><code>@/components/ui/alert-dialog</code></td><td>Confirmation dialog with actions.</td></tr>
+                <tr><td><code>@/components/ui/sheet</code></td><td>Side sheet panel.</td></tr>
+                <tr><td><code>@/components/ui/drawer</code></td><td>Bottom/side drawer (vaul).</td></tr>
+                <tr><td><code>@/components/ui/popover</code></td><td>Floating popover.</td></tr>
+                <tr><td><code>@/components/ui/hover-card</code></td><td>Hover-triggered info card.</td></tr>
+                <tr><td><code>@/components/ui/tooltip</code></td><td>Tooltip on hover/focus.</td></tr>
+                <tr><td><code>@/components/ui/dropdown-menu</code></td><td>Dropdown action menu.</td></tr>
+                <tr><td><code>@/components/ui/context-menu</code></td><td>Right-click context menu.</td></tr>
+                <tr><td><code>@/components/ui/menubar</code></td><td>Application menu bar.</td></tr>
+                <tr><td><code>@/components/ui/command</code></td><td>Command menu (cmdk) — powers the ⌘K palette.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Navigation <span class="doc-badge doc-badge--muted">11</span></h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Import</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>@/components/ui/sidebar</code></td><td>Collapsible app sidebar primitives.</td></tr>
+                <tr><td><code>@/components/ui/navigation-menu</code></td><td>Horizontal navigation menu.</td></tr>
+                <tr><td><code>@/components/ui/breadcrumb</code></td><td>Breadcrumb trail.</td></tr>
+                <tr><td><code>@/components/ui/pagination</code></td><td>Pagination controls.</td></tr>
+                <tr><td><code>@/components/ui/tabs</code></td><td>Tabbed sections.</td></tr>
+                <tr><td><code>@/components/ui/accordion</code></td><td>Expand/collapse accordion.</td></tr>
+                <tr><td><code>@/components/ui/collapsible</code></td><td>Single collapsible region.</td></tr>
+                <tr><td><code>@/components/ui/scroll-area</code></td><td>Custom-styled scroll container.</td></tr>
+                <tr><td><code>@/components/ui/resizable</code></td><td>Resizable split panels.</td></tr>
+                <tr><td><code>@/components/ui/carousel</code></td><td>Content carousel (embla).</td></tr>
+                <tr><td><code>@/components/ui/direction</code></td><td>LTR/RTL direction provider.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Feedback <span class="doc-badge doc-badge--muted">5</span></h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Import</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>@/components/ui/alert</code></td><td>Inline alert banner.</td></tr>
+                <tr><td><code>@/components/ui/sonner</code></td><td>Toast notifications (sonner).</td></tr>
+                <tr><td><code>@/components/ui/skeleton</code></td><td>Loading skeleton placeholder.</td></tr>
+                <tr><td><code>@/components/ui/spinner</code></td><td>Loading spinner.</td></tr>
+                <tr><td><code>@/components/ui/empty</code></td><td>Empty-state placeholder.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Chat &amp; messaging <span class="doc-badge doc-badge--muted">4</span></h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Import</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>@/components/ui/message</code></td><td>Chat message bubble container.</td></tr>
+                <tr><td><code>@/components/ui/message-scroller</code></td><td>Auto-scrolling message list.</td></tr>
+                <tr><td><code>@/components/ui/bubble</code></td><td>Speech-bubble element.</td></tr>
+                <tr><td><code>@/components/ui/attachment</code></td><td>File attachment chip/preview.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Composed application widgets</h3>
+          <p>
+            Beyond the primitives, <code>src/components/</code> holds higher-level building blocks the screens
+            share — reach for these first when building a page: <code>PageHeader</code>,
+            <code>ListLayout</code>, <code>SettingsLayout</code>, <code>EditorLayout</code>, <code>DataTable</code>,
+            <code>DatePicker</code> / <code>DateRangePicker</code>, <code>SaveBar</code>, <code>EmptyState</code>,
+            <code>StatusBadge</code>, <code>PaginationBar</code>, <code>CommandPalette</code>,
+            <code>RichTextEditor</code>, <code>CodeEditor</code>, <code>MediaPicker</code>,
+            <code>ConfirmDialog</code>, <code>WizardDialog</code>, <code>Toast</code>, <code>WidgetGrid</code> and more.
+          </p>
+        </section>
+
+        <!-- ============================ SCREEN REFERENCE (T9) ============================ -->
+        <section id="screen-reference" class="doc-section">
+          <h2>Screen Reference</h2>
+          <p>
+            Screens live under <code>src/features/*</code>; their routes are declared in
+            <code>src/app/router.tsx</code> and their sidebar labels and permissions in
+            <code>src/app/nav.ts</code>. The table below lists the fully-built screens. Routes wrapped in a
+            <code>&lt;RequirePermission&gt;</code> guard need the listed permission; screens with a dash are
+            available to any authenticated user.
+          </p>
+
+          <h3>Authentication (guest)</h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Route</th><th>Screen</th><th>Permission</th></tr></thead>
+              <tbody>
+                <tr><td><code>/login</code></td><td>Sign-in (with 2FA challenge &amp; impersonation return)</td><td>—</td></tr>
+                <tr><td><code>/forgot</code></td><td>Forgot-password request</td><td>—</td></tr>
+                <tr><td><code>/reset/:token</code></td><td>Password reset</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>An MFA enrollment gate (<code>MfaEnrollGate</code>) can require 2FA setup before the shell loads.</p>
+
+          <h3>Core &amp; administration</h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Route</th><th>Screen</th><th>Permission</th></tr></thead>
+              <tbody>
+                <tr><td><code>/</code></td><td>Dashboard — customizable widget grid</td><td>—</td></tr>
+                <tr><td><code>/users</code></td><td>Users list</td><td><code>users.view</code></td></tr>
+                <tr><td><code>/users/new</code>, <code>/users/:id</code></td><td>User editor</td><td><code>users.manage</code></td></tr>
+                <tr><td><code>/roles</code></td><td>Roles &amp; permissions (RBAC matrix)</td><td><code>roles.manage</code></td></tr>
+                <tr><td><code>/profile</code></td><td>My profile &amp; 2FA self-service</td><td>—</td></tr>
+                <tr><td><code>/settings/:tab?</code></td><td>Site settings (grouped tabs)</td><td><code>settings.manage</code></td></tr>
+                <tr><td><code>/appearance</code></td><td>Appearance (style, backgrounds, accent tokens)</td><td><code>settings.manage</code></td></tr>
+                <tr><td><code>/system/activity</code></td><td>Activity log</td><td><code>activity.view</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>E-commerce (shop)</h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Route</th><th>Screen</th><th>Permission</th></tr></thead>
+              <tbody>
+                <tr><td><code>/shop/orders</code>, <code>/shop/orders/:id</code></td><td>Orders list &amp; detail</td><td><code>orders.view</code></td></tr>
+                <tr><td><code>/shop/products</code></td><td>Products list</td><td><code>products.view</code></td></tr>
+                <tr><td><code>/shop/products/new</code>, <code>/shop/products/:id</code></td><td>Product editor</td><td><code>products.manage</code></td></tr>
+                <tr><td><code>/shop/customers</code>, <code>/shop/customers/:id</code></td><td>Customers (CRM) list &amp; detail</td><td><code>customers.view</code></td></tr>
+                <tr><td><code>/shop/payments</code></td><td>Payments</td><td><code>payments.view</code></td></tr>
+                <tr><td><code>/shop/invoices</code>, <code>/shop/invoices/:id</code></td><td>Invoices list &amp; detail</td><td><code>invoices.view</code></td></tr>
+                <tr><td><code>/shop/discounts</code></td><td>Discounts</td><td><code>orders.discounts</code></td></tr>
+                <tr><td><code>/shop/delivery</code></td><td>Delivery methods</td><td><code>orders.delivery</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Productivity, insight &amp; assistance</h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Route</th><th>Screen</th><th>Permission</th></tr></thead>
+              <tbody>
+                <tr><td><code>/analytics</code></td><td>Analytics dashboard (period-scoped)</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/inbox</code></td><td>Inbox / chat</td><td><code>inbox.view</code></td></tr>
+                <tr><td><code>/kanban</code></td><td>Kanban board (drag &amp; drop)</td><td><code>kanban.view</code></td></tr>
+                <tr><td><code>/media</code></td><td>Media / file manager</td><td><code>media.view</code></td></tr>
+                <tr><td><code>/pricing</code></td><td>Pricing page (presentational)</td><td>—</td></tr>
+                <tr><td><code>/ai</code></td><td>AI assistant (streaming chat)</td><td><code>ai.use</code></td></tr>
+                <tr><td><code>/system/ai</code></td><td>AI settings</td><td><code>ai.manage</code></td></tr>
+                <tr><td><code>/help</code>, <code>/help/:module/:page</code></td><td>Help center</td><td>—</td></tr>
+                <tr><td><code>/ui-kit</code></td><td>UI-Kit component showcase</td><td>—</td></tr>
+                <tr><td><code>/showcase/states</code></td><td>States showcase (loading/empty/error/onboarding)</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="doc-note">
+            <span class="doc-callout-label">Placeholder routes.</span>
+            The navigation map also includes forward-looking routes (pages, blocks, menus, forms, SEO,
+            themes, scheduler, backups, and more) that render a stage-numbered <code>PlaceholderPage</code>. They
+            keep navigation complete out of the box and mark clear extension points — replace a placeholder
+            with a real screen using the <a href="#adding-a-screen">Adding a New Screen</a> recipe.
+          </div>
+        </section>
+
+        <!-- ============================ PDF EXPORT (T10) ============================ -->
+        <section id="pdf-export" class="doc-section">
+          <h2>Save as PDF</h2>
+          <p>
+            This documentation is designed to print cleanly to a single, linear PDF. A dedicated print
+            stylesheet hides the sidebar and chrome, expands every section, adds page-break hints and
+            switches to print-friendly typography.
+          </p>
+
+          <h3>The quickest way</h3>
+          <ol class="doc-steps">
+            <li>Open <code>documentation/index.html</code> in your browser.</li>
+            <li>Press the <strong>Print / Save as PDF</strong> button at the top (or <code>Ctrl/Cmd&nbsp;+&nbsp;P</code>).</li>
+            <li>Choose <strong>&ldquo;Save as PDF&rdquo;</strong> as the destination and save it as <code>documentation.pdf</code>.</li>
+          </ol>
+
+          <h3>Reproducible command-line export</h3>
+          <p>
+            For a scripted, repeatable export, use headless Chrome. A helper is included at
+            <code>scripts/build-docs-pdf.mjs</code>; it shells out to a Chrome/Chromium binary you already
+            have (it adds <strong>no</strong> heavy dependency to <code>package.json</code>):
+          </p>
+          <pre><code># uses $CHROME_BIN, or a common macOS/Linux Chrome/Chromium path
+node scripts/build-docs-pdf.mjs
+
+# or point it at your browser explicitly
+CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  node scripts/build-docs-pdf.mjs</code></pre>
+          <p>The script renders <code>documentation/index.html</code> to <code>documentation/documentation.pdf</code>. Equivalent one-liners:</p>
+          <pre><code># Headless Chrome directly
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf=documentation/documentation.pdf \
+  documentation/index.html
+
+# …or wkhtmltopdf, if you have it installed
+wkhtmltopdf --enable-local-file-access \
+  documentation/index.html documentation/documentation.pdf</code></pre>
+
+          <div class="doc-tip">
+            <span class="doc-callout-label">Tip.</span>
+            In the browser Print dialog, enable <em>&ldquo;Background graphics&rdquo;</em> for the closest match to the
+            on-screen look, and keep margins at the default — the stylesheet already sets a sensible
+            <code>@page</code> margin.
+          </div>
+
+          <hr />
+          <div class="doc-footer doc-noprint">
+            Air Glass UI — Admin Dashboard Template &middot; Documentation &middot; v0.0.0.
+            All content © the template author, distributed under your Envato Market license.
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+  <script src="assets/docs.js"></script>
+</body>
+</html>
