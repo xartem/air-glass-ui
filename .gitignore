@@ -40,6 +40,7 @@ coverage/
 .ai-factory.json
 .mcp.json
 skills-lock.json
+AGENTS.md
 
 # Editor / IDE
 .idea/
