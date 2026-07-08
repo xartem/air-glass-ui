@@ -4,3 +4,4 @@
 2026-07-08  Add /shop/customers (+ /shop/customers/:id) — CRM list & profile (stat tiles, recent orders, notes).
 2026-07-08  Add /shop/payments — transactions ledger (KPI row, status/method/date filters, gated refund).
 2026-07-08  Add /shop/invoices (+ /shop/invoices/:id) — invoice list & print-ready detail (window.print, .invoice-sheet).
+2026-07-08 — Discounts & Delivery CRUD (/shop/discounts, /shop/delivery): replaced both placeholders with DataTable CRUD screens — create/edit dialog (react-hook-form + Zod) and ConfirmDialog-gated delete, on the mock store. api.discounts.* / api.delivery.*.

@@ -435,6 +435,7 @@ export function buildNavGroups(me: Me): NavGroup[] {
         },
         { to: "/help", label: t("nav.help"), icon: CircleHelp },
         { to: "/ui-kit", label: t("nav.uiKit"), icon: FolderTree },
+        { to: "/showcase/states", label: t("nav.states"), icon: Sparkles },
       ],
     },
     {

@@ -31,6 +31,10 @@ import type {
   CustomerDetail,
   CustomerFilters,
   CustomerListItem,
+  DeliveryMethod,
+  DeliveryPayload,
+  Discount,
+  DiscountPayload,
   InvoiceDetail,
   InvoiceFilters,
   InvoiceListItem,
@@ -461,6 +465,37 @@ export const api = {
       }),
     markRead: (id: number) =>
       apiFetch<{ ok: true }>(`/inbox/threads/${id}/read`, { method: "POST" }),
+  },
+
+  /* Shop discounts (build-demo-screen-catalog): simple CRUD over the mock store. */
+  discounts: {
+    list: () => apiFetch<Discount[]>("/shop/discounts"),
+    create: (payload: DiscountPayload) =>
+      apiFetch<Discount>("/shop/discounts", { method: "POST", body: payload }),
+    update: (id: number, payload: DiscountPayload) =>
+      apiFetch<Discount>(`/shop/discounts/${id}`, {
+        method: "PUT",
+        body: payload,
+      }),
+    remove: (id: number) =>
+      apiFetch<{ ok: true }>(`/shop/discounts/${id}`, { method: "DELETE" }),
+  },
+
+  /* Shop delivery methods (build-demo-screen-catalog): simple CRUD over the mock store. */
+  delivery: {
+    list: () => apiFetch<DeliveryMethod[]>("/shop/delivery"),
+    create: (payload: DeliveryPayload) =>
+      apiFetch<DeliveryMethod>("/shop/delivery", {
+        method: "POST",
+        body: payload,
+      }),
+    update: (id: number, payload: DeliveryPayload) =>
+      apiFetch<DeliveryMethod>(`/shop/delivery/${id}`, {
+        method: "PUT",
+        body: payload,
+      }),
+    remove: (id: number) =>
+      apiFetch<{ ok: true }>(`/shop/delivery/${id}`, { method: "DELETE" }),
   },
 
   /* Kanban board (build-demo-screen-catalog): fetch the board + persist card moves. */

@@ -196,6 +196,24 @@ const mediaPage = () =>
       default: m.MediaPage,
     })),
   );
+const discountsPage = () =>
+  lazyPage(() =>
+    import("@/features/shop/discounts-page").then((m) => ({
+      default: m.DiscountsPage,
+    })),
+  );
+const deliveryPage = () =>
+  lazyPage(() =>
+    import("@/features/shop/delivery-page").then((m) => ({
+      default: m.DeliveryPage,
+    })),
+  );
+const statesPage = () =>
+  lazyPage(() =>
+    import("@/features/showcase/states-page").then((m) => ({
+      default: m.StatesPage,
+    })),
+  );
 
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
@@ -345,18 +363,6 @@ const PLACEHOLDER_ROUTES: {
     perm: "modules.manage",
     titleKey: "nav.modules",
     stage: 15,
-  },
-  {
-    path: "/shop/delivery",
-    perm: "orders.delivery",
-    titleKey: "nav.delivery",
-    stage: 16,
-  },
-  {
-    path: "/shop/discounts",
-    perm: "orders.discounts",
-    titleKey: "nav.discounts",
-    stage: 16,
   },
   { path: "/seo", perm: "seo.manage", titleKey: "nav.seo", stage: 17 },
   {
@@ -573,9 +579,29 @@ export const router = createBrowserRouter(
         {
           path: "/media",
           element: (
-            <RequirePermission perm="media.view">{mediaPage()}</RequirePermission>
+            <RequirePermission perm="media.view">
+              {mediaPage()}
+            </RequirePermission>
           ),
         },
+        {
+          path: "/shop/discounts",
+          element: (
+            <RequirePermission perm="orders.discounts">
+              {discountsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/shop/delivery",
+          element: (
+            <RequirePermission perm="orders.delivery">
+              {deliveryPage()}
+            </RequirePermission>
+          ),
+        },
+        // States showcase: presentational demo, any authenticated user (no gate).
+        { path: "/showcase/states", element: statesPage() },
         ...PLACEHOLDER_ROUTES.map((route) => ({
           path: route.path,
           element: (

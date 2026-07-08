@@ -3,6 +3,8 @@ import type {
   ActivityEntry,
   CustomerFilters,
   CustomerStatus,
+  DeliveryPayload,
+  DiscountPayload,
   InboxFolder,
   InvoiceFilters,
   InvoiceStatus,
@@ -71,17 +73,23 @@ import {
 import { regenerateStatus, startRegenerate } from "./media";
 import { getAppearance, saveAppearance } from "./appearance";
 import {
+  deleteDelivery,
+  deleteDiscount,
   getCustomer,
   getInvoice,
   getOrder,
   getProduct,
   listCustomers,
+  listDelivery,
+  listDiscounts,
   listInvoices,
   listOrders,
   listPayments,
   listProducts,
   paymentStats,
   refundPayment,
+  saveDelivery,
+  saveDiscount,
   saveProduct,
   setOrderStatus,
 } from "./shop";
@@ -1151,6 +1159,74 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (_options, params) => {
       requireSession();
       return markRead(Number(params[0]));
+    },
+  },
+
+  /* ---- shop: discounts (CRUD) ---- */
+  {
+    method: "GET",
+    pattern: /^\/shop\/discounts$/,
+    handler: () => {
+      requireSession();
+      return listDiscounts();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/shop\/discounts$/,
+    handler: (options) => {
+      requireSession();
+      return saveDiscount(options.body as DiscountPayload);
+    },
+  },
+  {
+    method: "PUT",
+    pattern: /^\/shop\/discounts\/(\d+)$/,
+    handler: (options, params) => {
+      requireSession();
+      return saveDiscount(options.body as DiscountPayload, Number(params[0]));
+    },
+  },
+  {
+    method: "DELETE",
+    pattern: /^\/shop\/discounts\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return deleteDiscount(Number(params[0]));
+    },
+  },
+
+  /* ---- shop: delivery methods (CRUD) ---- */
+  {
+    method: "GET",
+    pattern: /^\/shop\/delivery$/,
+    handler: () => {
+      requireSession();
+      return listDelivery();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/shop\/delivery$/,
+    handler: (options) => {
+      requireSession();
+      return saveDelivery(options.body as DeliveryPayload);
+    },
+  },
+  {
+    method: "PUT",
+    pattern: /^\/shop\/delivery\/(\d+)$/,
+    handler: (options, params) => {
+      requireSession();
+      return saveDelivery(options.body as DeliveryPayload, Number(params[0]));
+    },
+  },
+  {
+    method: "DELETE",
+    pattern: /^\/shop\/delivery\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return deleteDelivery(Number(params[0]));
     },
   },
 
