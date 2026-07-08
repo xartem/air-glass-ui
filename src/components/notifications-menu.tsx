@@ -40,7 +40,7 @@ export function NotificationsMenu({
         <Button variant="ghost" size="icon" aria-label={t('shell.notifications')} className="relative">
           <Bell />
           {unread > 0 ? (
-            <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-white">
+            <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-destructive-foreground">
               {unread}
             </span>
           ) : null}

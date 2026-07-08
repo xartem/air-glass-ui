@@ -44,7 +44,7 @@ export function ErrorPage({
       </div>
       <p
         aria-hidden
-        className="bg-[linear-gradient(135deg,#1d8df2,#34d399)] bg-clip-text text-7xl leading-none font-bold tracking-tight text-transparent"
+        className="bg-[image:var(--gradient-heading)] bg-clip-text text-7xl leading-none font-bold tracking-tight text-transparent"
       >
         {code}
       </p>

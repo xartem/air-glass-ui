@@ -31,6 +31,7 @@
     --color-input: var(--input);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
     --color-accent-foreground: var(--accent-foreground);
     --color-accent: var(--accent);
     --color-muted-foreground: var(--muted-foreground);
@@ -76,6 +77,7 @@
     --accent: color-mix(in srgb, var(--primary) 10%, transparent);
     --accent-foreground: var(--primary-strong);
     --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
     --border: rgba(148, 163, 184, 0.20);
     --input: rgba(148, 163, 184, 0.26);
     /* Unified fill for form fields (input/textarea/select-trigger) so they read as
@@ -101,7 +103,11 @@
     --gradient-primary: linear-gradient(135deg, var(--primary) 0%, color-mix(in oklab, var(--primary), #fff 22%) 100%);
     --gradient-primary-hover: linear-gradient(135deg, var(--primary-strong) 0%, var(--primary) 100%);
     --gradient-nav-active: linear-gradient(90deg, var(--primary) 0%, #34d399 100%);
+    --gradient-heading: linear-gradient(135deg, var(--primary) 0%, #34d399 100%);
     --gradient-destructive: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    /* Overlay scrim behind modal surfaces (dialog/sheet/drawer/alert). Light keeps
+       the previous bg-black/10 weight; dark goes deliberately darker (10% is too weak). */
+    --overlay-scrim: rgba(15, 23, 42, 0.10);
 
     /* Glass recipe — consumed ONLY by framework components below.
        Cards are MORE translucent than panel/topbar so the mesh shines through. */
@@ -162,6 +168,8 @@
     --accent: color-mix(in srgb, var(--primary) 18%, transparent);
     --accent-foreground: color-mix(in oklab, var(--primary), #fff 30%);
     --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --overlay-scrim: rgba(0, 0, 0, 0.45);
     --border: rgba(148, 163, 184, 0.18);
     --input: rgba(148, 163, 184, 0.22);
     --field-bg: rgba(148, 163, 184, 0.10);
@@ -532,6 +540,10 @@
   }
   [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
     box-shadow: 0 8px 14px color-mix(in srgb, var(--primary) 24%, rgba(14, 116, 144, 0.2));
+  }
+  /* Slider thumb fill centralized here (mirrors switch-thumb) so slider.tsx needs no inline bg. */
+  [data-slot="slider-thumb"] {
+    background: #ffffff;
   }
   .dark [data-slot="switch"] {
     border-color: rgba(148, 163, 184, 0.20);
