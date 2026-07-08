@@ -499,7 +499,7 @@ export function AiChatView({
         signal: controller.signal,
       })
     } catch (cause) {
-      // Dropped stream → «переподключение…», then the history refetch below
+      // Dropped stream → "reconnecting…", then the history refetch below
       // restores the turn from the server (UI:ai §2)
       if (!(cause instanceof DOMException && cause.name === 'AbortError')) {
         setStream((current) => (current ? { ...current, status: 'reconnecting' } : current))

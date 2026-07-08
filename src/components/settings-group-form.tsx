@@ -319,7 +319,7 @@ function SettingField({
   const id = slugifyKey(entry.key)
   const label = t(`settings.field.${entry.key}`)
   // Sensitive keys show the set/unset state ALONGSIDE their regular help text
-  // (UI:settings §1–2: sentry_dsn carries both the hint and «задано/не задано»).
+  // (UI:settings §1–2: sentry_dsn carries both the hint and "set / not set").
   const help = [
     entry.has_help ? t(`settings.help.${entry.key}`) : undefined,
     entry.sensitive

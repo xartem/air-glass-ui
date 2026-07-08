@@ -7,7 +7,6 @@ import { ReloginDialog } from "@/components/relogin-dialog";
 import { GuestLayout } from "@/features/auth/guest-layout";
 import { LoginPage } from "@/features/auth/login-page";
 import { MfaEnrollGate } from "@/features/auth/mfa-enroll-gate";
-import { PlaceholderPage } from "@/features/placeholder/placeholder-page";
 import { Spinner } from "@/components/ui/spinner";
 import { AuthProvider, GuestOnly, RequirePermission } from "@/lib/auth";
 
@@ -220,8 +219,6 @@ const statesPage = () =>
  * everything under <AuthedRoot> requires a session (401 on initial load →
  * redirect to /login with return; 401 mid-work → re-login dialog). Every route
  * declares its permission; missing right renders the 403 archetype in place.
- * Screens not yet built render a stage-numbered placeholder
- * (spec/admin/01-build-order.md) so navigation is complete from day one.
  */
 
 function AuthedRoot() {
@@ -236,143 +233,6 @@ function AuthedRoot() {
   );
 }
 
-/** Route map: path × permission × sidebar label key × build-order stage. */
-const PLACEHOLDER_ROUTES: {
-  path: string;
-  perm?: string;
-  titleKey: string;
-  stage: number;
-}[] = [
-  { path: "/c/:collection", titleKey: "nav.collections", stage: 6 },
-  { path: "/c/:collection/categories", titleKey: "nav.collections", stage: 6 },
-  { path: "/c/:collection/:id", titleKey: "nav.collections", stage: 6 },
-  {
-    path: "/collections",
-    perm: "collections.fields",
-    titleKey: "nav.collections",
-    stage: 6,
-  },
-  {
-    path: "/collections/:slug",
-    perm: "collections.fields",
-    titleKey: "nav.collections",
-    stage: 6,
-  },
-  { path: "/pages", perm: "pages.view", titleKey: "nav.pages", stage: 7 },
-  { path: "/pages/:id", perm: "pages.manage", titleKey: "nav.pages", stage: 7 },
-  { path: "/blocks", perm: "pages.manage", titleKey: "nav.blocks", stage: 7 },
-  { path: "/modals", perm: "pages.modals", titleKey: "nav.modals", stage: 7 },
-  { path: "/menus", perm: "menus.manage", titleKey: "nav.menus", stage: 8 },
-  { path: "/forms", perm: "forms.view", titleKey: "nav.forms", stage: 10 },
-  {
-    path: "/forms/submissions",
-    perm: "forms.submissions",
-    titleKey: "nav.submissions",
-    stage: 10,
-  },
-  {
-    path: "/forms/:id",
-    perm: "forms.manage",
-    titleKey: "nav.forms",
-    stage: 10,
-  },
-  {
-    path: "/contacts",
-    perm: "contacts.view",
-    titleKey: "nav.contacts",
-    stage: 10,
-  },
-  {
-    path: "/reviews",
-    perm: "reviews.moderate",
-    titleKey: "nav.reviews",
-    stage: 10,
-  },
-  {
-    path: "/posts/channels",
-    perm: "posts.manage",
-    titleKey: "nav.postChannels",
-    stage: 11,
-  },
-  {
-    path: "/catalog/axes",
-    perm: "catalog.manage",
-    titleKey: "nav.catalogAxes",
-    stage: 11,
-  },
-  {
-    path: "/catalog/filter",
-    perm: "catalog.manage",
-    titleKey: "nav.catalogFilter",
-    stage: 11,
-  },
-  {
-    path: "/catalog/currencies",
-    perm: "catalog.manage",
-    titleKey: "nav.currencies",
-    stage: 11,
-  },
-  {
-    path: "/catalog/records/:id/variants",
-    perm: "catalog.manage",
-    titleKey: "nav.catalogAxes",
-    stage: 11,
-  },
-  { path: "/system/mail", perm: "mail.view", titleKey: "nav.mail", stage: 12 },
-  {
-    path: "/system/channels",
-    perm: "notifications.channels",
-    titleKey: "nav.channels",
-    stage: 12,
-  },
-  { path: "/notifications", titleKey: "nav.notifications", stage: 12 },
-  { path: "/i18n", perm: "i18n.view", titleKey: "nav.i18n", stage: 13 },
-  { path: "/themes", perm: "themes.view", titleKey: "nav.themes", stage: 14 },
-  {
-    path: "/themes/:slug/customize",
-    perm: "themes.manage",
-    titleKey: "nav.themes",
-    stage: 14,
-  },
-  {
-    path: "/system/scheduler",
-    perm: "scheduler.view",
-    titleKey: "nav.scheduler",
-    stage: 15,
-  },
-  {
-    path: "/system/cache",
-    perm: "cache.view",
-    titleKey: "nav.cache",
-    stage: 15,
-  },
-  {
-    path: "/system/backups",
-    perm: "backups.view",
-    titleKey: "nav.backups",
-    stage: 15,
-  },
-  {
-    path: "/system/updates",
-    perm: "updates.view",
-    titleKey: "nav.updates",
-    stage: 15,
-  },
-  {
-    path: "/system/modules",
-    perm: "modules.manage",
-    titleKey: "nav.modules",
-    stage: 15,
-  },
-  { path: "/seo", perm: "seo.manage", titleKey: "nav.seo", stage: 17 },
-  {
-    path: "/redirects",
-    perm: "redirects.view",
-    titleKey: "nav.redirects",
-    stage: 17,
-  },
-  { path: "/search", perm: "search.manage", titleKey: "nav.search", stage: 17 },
-];
 
 export const router = createBrowserRouter(
   [
@@ -602,14 +462,6 @@ export const router = createBrowserRouter(
         },
         // States showcase: presentational demo, any authenticated user (no gate).
         { path: "/showcase/states", element: statesPage() },
-        ...PLACEHOLDER_ROUTES.map((route) => ({
-          path: route.path,
-          element: (
-            <RequirePermission perm={route.perm}>
-              <PlaceholderPage titleKey={route.titleKey} stage={route.stage} />
-            </RequirePermission>
-          ),
-        })),
         { path: "*", element: <ErrorPage code="404" /> },
       ],
     },

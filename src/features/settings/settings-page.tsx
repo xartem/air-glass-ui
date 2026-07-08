@@ -121,7 +121,7 @@ export function SettingsPage() {
     dirtyRef.current = dirty
   }, [])
 
-  // Route-level dirty-guard (UI:settings §2 «dirty-guard при уходе», E4 §1):
+  // Route-level dirty-guard (UI:settings §2 "dirty-guard on leave", E4 §1):
   // covers tab switches AND leaving for another screen via the sidebar.
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>

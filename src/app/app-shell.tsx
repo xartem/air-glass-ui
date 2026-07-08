@@ -259,14 +259,13 @@ function SidebarNav({
   collapsed?: boolean
   onNavigate?: () => void
 }) {
-  const { me } = useAuth()
   const can = usePermissionChecker()
   const { pathname } = useLocation()
   const [overrides, setOverrides] = useState<Record<string, GroupOverride>>(readGroupOverrides)
   const [parentOverrides, setParentOverrides] = useState<Record<string, GroupOverride>>(readParentOverrides)
 
   // RBAC filter: children first, then parents with no permitted children disappear.
-  const groups = buildNavGroups(me)
+  const groups = buildNavGroups()
     .map((group) => ({
       ...group,
       items: group.items

@@ -9,7 +9,7 @@ import type { KanbanBoard, KanbanCard, KanbanColumn } from "../types";
  */
 
 const ASSIGNEES = [
-  "Ольга Петрова",
+  "Olga Petrova",
   "James Wilson",
   "María García",
   "Luca Rossi",

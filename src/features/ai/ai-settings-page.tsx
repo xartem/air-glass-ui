@@ -19,7 +19,7 @@ import { useLocale } from '@/lib/use-locale'
 /*
  * /system/ai (UI:ai §4, perm ai.manage): SettingsGroupForm(ai) with the
  * provider-dependent fields (only the active provider's key; base URL only for
- * openai-compatible), «Проверить подключение», the daily spend ChartCard and
+ * openai-compatible), "Test connection", the daily spend ChartCard and
  * the log-triage findings section (D:ai §4c).
  */
 

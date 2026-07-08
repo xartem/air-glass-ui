@@ -1,9 +1,8 @@
-import type { AdminLocale } from "@/lib/i18n";
 import type { ActivityEntry, AdminSearchGroup, Me } from "../types";
 
 /*
- * Mock fixtures for stage 0–1. Shapes follow the API DTOs exactly (../types) —
- * the future PHP backend replaces this layer without touching any screen.
+ * Mock fixtures. Shapes follow the API DTOs exactly (../types) — a real backend
+ * replaces this layer without touching any screen.
  * Switch the acting user via localStorage key `mock.user` (admin|editor|viewer).
  */
 
@@ -104,64 +103,23 @@ export const EDITOR_PERMISSIONS = [
   "ai.use",
 ];
 
+// Content locales for the content-language switcher (endonyms, as in LOCALE_NAMES).
 const LOCALES: Me["locales"] = [
-  { code: "ru", label: "Русский", is_default: true },
-  { code: "en", label: "English", is_default: false },
-  { code: "uk", label: "Українська", is_default: false },
+  { code: "en", label: "English", is_default: true },
+  { code: "de", label: "Deutsch", is_default: false },
+  { code: "fr", label: "Français", is_default: false },
 ];
 
-const COLLECTIONS: Me["collections"] = [
-  { slug: "blog", label: "Блог", has_categories: true, kind: "channel" },
-  { slug: "products", label: "Товары", has_categories: true, kind: "catalog" },
-];
-
-/*
- * Collection labels are content (C1, translatable): the real API returns them
- * localized to the operator's UI locale. Mocked per-locale so the sidebar
- * matches the active admin language instead of always showing the ru default
- * (fixes English UI rendering "Блог"). buildMe() resolves via getLocale().
- */
-export const COLLECTION_LABELS: Record<string, Record<AdminLocale, string>> = {
-  blog: {
-    ru: "Блог",
-    uk: "Блог",
-    en: "Blog",
-    de: "Blog",
-    fr: "Blog",
-    es: "Blog",
-    it: "Blog",
-    pl: "Blog",
-  },
-  products: {
-    ru: "Товары",
-    uk: "Товари",
-    en: "Products",
-    de: "Produkte",
-    fr: "Produits",
-    es: "Productos",
-    it: "Prodotti",
-    pl: "Produkty",
-  },
-};
-
-export function localizeCollections(
-  collections: Me["collections"],
-  locale: AdminLocale,
-): Me["collections"] {
-  return collections.map((collection) => ({
-    ...collection,
-    label: COLLECTION_LABELS[collection.slug]?.[locale] ?? collection.label,
-  }));
-}
+const COLLECTIONS: Me["collections"] = [];
 
 export const MOCK_USERS: Record<MockUserKey, Me> = {
   admin: {
     user: {
       id: 1,
-      name: "Анна Админова",
+      name: "Anna Adminson",
       email: "admin@demo.test",
-      role: { key: "admin", label: "Администратор" },
-      ui_locale: "ru",
+      role: { key: "admin", label: "Administrator" },
+      ui_locale: "en",
     },
     permissions: ALL_PERMISSIONS,
     locales: LOCALES,
@@ -175,14 +133,14 @@ export const MOCK_USERS: Record<MockUserKey, Me> = {
   editor: {
     user: {
       id: 2,
-      name: "Евгений Редактор",
+      name: "Evan Editor",
       email: "editor@demo.test",
-      role: { key: "editor", label: "Редактор" },
-      ui_locale: "ru",
+      role: { key: "editor", label: "Editor" },
+      ui_locale: "en",
     },
     permissions: EDITOR_PERMISSIONS,
     locales: LOCALES,
-    collections: COLLECTIONS.filter((c) => c.slug === "blog"),
+    collections: COLLECTIONS,
     impersonator: null,
     maintenance_mode: "off",
     mfa: { enabled: false, enroll_required: false },
@@ -192,10 +150,10 @@ export const MOCK_USERS: Record<MockUserKey, Me> = {
   viewer: {
     user: {
       id: 3,
-      name: "Виктор Новенький",
+      name: "Victor Newman",
       email: "viewer@demo.test",
-      role: { key: "viewer", label: "Наблюдатель" },
-      ui_locale: "ru",
+      role: { key: "viewer", label: "Viewer" },
+      ui_locale: "en",
     },
     permissions: [],
     locales: LOCALES,
@@ -234,16 +192,16 @@ const ACTIONS = [
 ] as const;
 
 const SAMPLE_TITLES = [
-  "Главная страница",
-  "О компании",
-  "Контакты",
-  "Насос ГНОМ-25",
-  "Кровельные работы",
-  "Форма обратной связи",
-  "Меню шапки",
+  "Homepage",
+  "About Us",
+  "Contact",
+  "Getting Started",
+  "Release Notes",
+  "Contact Form",
+  "Header Menu",
   "hero.jpg",
-  "Статья: новинки июля",
-  "Прайс-лист",
+  "Article: July Highlights",
+  "Price List",
 ];
 
 /** Entity-appropriate field diff for the audit fixture — settings show real keys, not a generic title/status. */
@@ -254,10 +212,10 @@ function changesFor(
   if (entityType === "settings") {
     return {
       "general.site_name": {
-        old: "Universal CMS",
-        new: "Universal CMS — Пермь",
+        old: "Acme Admin",
+        new: "Acme Admin — HQ",
       },
-      "general.timezone": { old: "UTC", new: "Europe/Moscow" },
+      "general.timezone": { old: "UTC", new: "Europe/London" },
       "mail.from_email": {
         old: "noreply@example.com",
         new: "hello@example.com",
@@ -266,12 +224,12 @@ function changesFor(
   }
   if (entityType === "user") {
     return {
-      role: { old: "Наблюдатель", new: "Редактор" },
-      is_active: { old: "Нет", new: "Да" },
+      role: { old: "Viewer", new: "Editor" },
+      is_active: { old: "No", new: "Yes" },
     };
   }
   return {
-    title: { old: "Старый заголовок", new: title },
+    title: { old: "Old title", new: title },
     status: { old: "draft", new: "published" },
   };
 }
@@ -290,10 +248,10 @@ export function buildActivityFixture(): ActivityEntry[] {
       actor: isAi
         ? null
         : i % 3 === 0
-          ? { id: 1, name: "Анна Админова" }
-          : { id: 2, name: "Евгений Редактор" },
+          ? { id: 1, name: "Anna Adminson" }
+          : { id: 2, name: "Evan Editor" },
       is_ai: isAi,
-      impersonator: i % 11 === 5 ? { id: 1, name: "Анна Админова" } : null,
+      impersonator: i % 11 === 5 ? { id: 1, name: "Anna Adminson" } : null,
       action,
       entity_type: entityType,
       entity_id: 10 + (i % 9),
@@ -301,18 +259,19 @@ export function buildActivityFixture(): ActivityEntry[] {
       changes: hasChanges
         ? changesFor(entityType, SAMPLE_TITLES[i % SAMPLE_TITLES.length]!)
         : null,
+      // Only surviving screens are linkable; other audit rows have no target.
       url:
-        entityType === "page"
-          ? "/pages/12"
-          : entityType === "record"
-            ? "/c/blog/7"
+        entityType === "media"
+          ? "/media"
+          : entityType === "user"
+            ? "/users"
             : null,
     });
   }
   return rows;
 }
 
-/* ---- users & roles fixtures (D:users §3) ---- */
+/* ---- users & roles fixtures ---- */
 
 export interface MockRole {
   id: number;
@@ -327,21 +286,21 @@ export const ROLE_SEED: MockRole[] = [
   {
     id: 1,
     key: "admin",
-    label: "Администратор",
+    label: "Administrator",
     is_system: true,
     permissions: [...ALL_PERMISSIONS],
   },
   {
     id: 2,
     key: "editor",
-    label: "Редактор",
+    label: "Editor",
     is_system: false,
     permissions: [...EDITOR_PERMISSIONS],
   },
   {
     id: 3,
     key: "viewer",
-    label: "Наблюдатель",
+    label: "Viewer",
     is_system: false,
     permissions: [],
   },
@@ -363,28 +322,30 @@ export interface MockUser {
 }
 
 const USER_NAMES = [
-  "Ольга Петрова",
-  "Дмитрий Соколов",
-  "Мария Кузнецова",
-  "Игорь Волков",
-  "Наталья Смирнова",
-  "Павел Морозов",
-  "Елена Новикова",
-  "Сергей Козлов",
-  "Татьяна Лебедева",
-  "Андрей Попов",
-  "Юлия Егорова",
-  "Максим Орлов",
-  "Ирина Фролова",
-  "Роман Зайцев",
-  "Светлана Титова",
-  "Артём Белов",
-  "Оксана Гусева",
-  "Никита Тарасов",
-  "Вера Комарова",
-  "Алексей Крылов",
-  "Людмила Сорокина",
+  "Olivia Parker",
+  "David Fisher",
+  "Mary Cooper",
+  "Ian Walker",
+  "Natalie Smith",
+  "Paul Morrison",
+  "Ellen Novak",
+  "Simon Cole",
+  "Tara Lane",
+  "Andrew Pope",
+  "Julia Evans",
+  "Max Oliver",
+  "Irene Frost",
+  "Roman Ziegler",
+  "Stella Turner",
+  "Aaron White",
+  "Susan Green",
+  "Nick Tarrant",
+  "Vera Cross",
+  "Alex Crane",
+  "Linda Sorrell",
 ];
+
+const LIST_LOCALES = ["en", "de", "fr", "es"];
 
 /*
  * User list dataset: the three canonical login identities (ids 1–3, aligned
@@ -395,28 +356,28 @@ export function buildUsersFixture(): MockUser[] {
   const users: MockUser[] = [
     {
       id: 1,
-      name: "Анна Админова",
+      name: "Anna Adminson",
       email: "admin@demo.test",
       role_id: 1,
-      ui_locale: "ru",
+      ui_locale: "en",
       is_active: true,
       last_login_at: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
     },
     {
       id: 2,
-      name: "Евгений Редактор",
+      name: "Evan Editor",
       email: "editor@demo.test",
       role_id: 2,
-      ui_locale: "ru",
+      ui_locale: "en",
       is_active: true,
       last_login_at: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
     },
     {
       id: 3,
-      name: "Виктор Новенький",
+      name: "Victor Newman",
       email: "viewer@demo.test",
       role_id: 3,
-      ui_locale: "ru",
+      ui_locale: "en",
       is_active: true,
       last_login_at: null,
     },
@@ -432,7 +393,7 @@ export function buildUsersFixture(): MockUser[] {
       name,
       email: `user${id}@demo.test`,
       role_id: roleCycle[index] ?? 2,
-      ui_locale: index % 3 === 0 ? "en" : "ru",
+      ui_locale: LIST_LOCALES[index % LIST_LOCALES.length]!,
       is_active: active,
       last_login_at:
         active && index % 4 !== 0
@@ -445,36 +406,28 @@ export function buildUsersFixture(): MockUser[] {
 
 export const SEARCH_GROUPS: AdminSearchGroup[] = [
   {
-    key: "pages",
-    label: "Страницы",
+    key: "orders",
+    label: "Orders",
     items: [
-      { title: "Главная страница", url: "/pages/1" },
-      { title: "О компании", url: "/pages/2" },
-      { title: "Насосы — обзор", status: "draft", url: "/pages/31" },
-      { title: "Контакты", url: "/pages/4" },
-      { title: "Доставка и оплата", url: "/pages/5" },
+      { title: "Order #1046", url: "/shop/orders?id=1046" },
+      { title: "Order #1043", url: "/shop/orders?id=1043" },
+      { title: "Order #1039", url: "/shop/orders?id=1039" },
     ],
   },
   {
     key: "products",
-    label: "Товары",
+    label: "Products",
     items: [
-      { title: "Насос ГНОМ-25", hint: "SKU GN-25", url: "/c/products/7" },
-      { title: "Насос дренажный НД-40", status: "draft", url: "/c/products/9" },
+      { title: "Wireless Keyboard", hint: "SKU WK-25", url: "/shop/products/7" },
+      { title: "USB-C Hub", status: "draft", url: "/shop/products/9" },
     ],
   },
   {
-    key: "submissions",
-    label: "Заявки",
+    key: "customers",
+    label: "Customers",
     items: [
-      {
-        title: "№432 — «нужен насос для дачи…»",
-        url: "/forms/submissions?id=432",
-      },
-      {
-        title: "№431 — «перезвоните по кровле»",
-        url: "/forms/submissions?id=431",
-      },
+      { title: "Irene Frost", url: "/shop/customers/1046" },
+      { title: "BuildServ LLC", url: "/shop/customers/1043" },
     ],
   },
 ];

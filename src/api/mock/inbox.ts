@@ -15,14 +15,14 @@ import type {
  */
 
 const PARTICIPANTS = [
-  { name: "Ольга Петрова", email: "olga@example.com" },
+  { name: "Olga Petrova", email: "olga@example.com" },
   { name: "James Wilson", email: "james@example.com" },
   { name: "María García", email: "maria@example.com" },
   { name: "Luca Rossi", email: "luca@example.com" },
   { name: "Anna Nowak", email: "anna@example.com" },
   { name: "Sophie Martin", email: "sophie@example.com" },
   { name: "Noah Schmidt", email: "noah@example.com" },
-  { name: "Емма Джонсон", email: "emma@example.com" },
+  { name: "Emma Johnson", email: "emma@example.com" },
 ];
 
 const SUBJECTS = [

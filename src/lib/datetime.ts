@@ -22,7 +22,7 @@ export function useSiteDateTime() {
       timezone: timeZone,
       /** e.g. "31.12.26, 23:45" — in the site timezone. */
       format: (value: string | Date) => short.format(new Date(value)),
-      /** e.g. "31 дек. 2026 г., 23:45:12" — in the site timezone. */
+      /** e.g. "Dec 31, 2026, 23:45:12" — in the site timezone. */
       formatLong: (value: string | Date) => long.format(new Date(value)),
     }
   }, [locale, timeZone])

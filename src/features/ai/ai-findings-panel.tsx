@@ -37,7 +37,7 @@ import { useSiteDateTime } from '@/lib/datetime'
 import { t } from '@/lib/i18n'
 
 /*
- * «Находки в логах» (UI:ai §4, D:ai §4c): grouped error/critical findings of the
+ * "Log findings" (UI:ai §4, D:ai §4c): grouped error/critical findings of the
  * nightly log triage. Row: severity badge · title/AI summary (expandable sample
  * + context) · count · first/last seen · status · «⋯» with the new→acknowledged
  * →resolved flow (resolve prompts for a note: commit/version of the fix).

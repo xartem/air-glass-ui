@@ -52,7 +52,7 @@ export function CommandPalette({
   const debouncedQuery = useDebounced(query.trim(), 300)
 
   const navItems = useMemo(
-    () => flattenNavItems(buildNavGroups(me)).filter((item) => can(item.perm)),
+    () => flattenNavItems(buildNavGroups()).filter((item) => can(item.perm)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [me],
   )

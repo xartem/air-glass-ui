@@ -19,13 +19,11 @@ import type {
   ProductPayload,
   SettingValue,
 } from "../types";
-import { getLocale } from "@/lib/i18n";
 import {
   MOCK_CREDENTIALS,
   MOCK_USERS,
   SEARCH_GROUPS,
   buildActivityFixture,
-  localizeCollections,
   type MockUser,
   type MockUserKey,
 } from "./data";
@@ -153,7 +151,7 @@ function buildMe(): Me {
   me.maintenance_mode =
     (localStorage.getItem(MAINTENANCE_KEY) as Me["maintenance_mode"]) || "off";
   if (localStorage.getItem(IMPERSONATE_KEY) === "1") {
-    me.impersonator = { id: 1, name: "Анна Админова" };
+    me.impersonator = { id: 1, name: "Anna Adminson" };
   }
   const enabled = mfaEnabled(me.user.id);
   let requiredRoles: string[] = [];
@@ -168,9 +166,6 @@ function buildMe(): Me {
     enabled,
     enroll_required: requiredRoles.includes(me.user.role.key) && !enabled,
   };
-  // Collection labels are content (C1) — API localizes them to the operator's
-  // UI locale; the mock mirrors that so the sidebar follows the active language.
-  me.collections = localizeCollections(me.collections, getLocale());
   // Demo default: the AI module counts as configured; 'mock.aiAvailable'='0'
   // simulates the no-LLM-key state (panel button hidden, UI:ai §1).
   me.ai_available = localStorage.getItem("mock.aiAvailable") !== "0";
@@ -523,9 +518,9 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
       if (q.length < 2) return { groups: [] };
       const permissions = new Set(buildMe().permissions);
       const visibility: Record<string, string> = {
-        pages: "pages.view",
-        products: "collections.products.view",
-        submissions: "forms.submissions",
+        orders: "orders.view",
+        products: "products.view",
+        customers: "customers.view",
       };
       const groups = SEARCH_GROUPS.filter((group) =>
         permissions.has(visibility[group.key]),

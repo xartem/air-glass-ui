@@ -350,7 +350,7 @@ export function StatCard({
     )
   }
 
-  // xl "иная форма" (D:dashboard §4): number + a full-width mini-chart. No series → inherit lg below.
+  // xl "alternate form" (D:dashboard §4): number + a full-width mini-chart. No series → inherit lg below.
   if (size === 'xl' && data.series) {
     return (
       <WidgetCardFrame title={title} href={href} icon={icon} className={className}>
@@ -654,7 +654,7 @@ function RowRating({ rating }: { rating: number }) {
       style={{ color: 'var(--status-pending-fg)' }}
     >
       <Star className="size-3.5 fill-current" />
-      {rating.toLocaleString('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+      {rating.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
     </span>
   )
 }
@@ -723,7 +723,7 @@ export function ListCard({
 }) {
   const items = data.items.slice(0, LIST_ROWS[size])
   const expanded = size === 'lg' || size === 'xl'
-  // xl "иная форма" (D:dashboard §4): a two-column grid uses the full width; too
+  // xl "alternate form" (D:dashboard §4): a two-column grid uses the full width; too
   // few items would look sparse in two columns → inherit the lg single column.
   const twoCol = size === 'xl' && data.items.length > 4
   const viewAll =
@@ -840,7 +840,7 @@ function StatusRowItem({ row, size }: { row: StatusRow; size: WidgetSize }) {
   return <li className="flex items-center justify-between gap-2 text-sm">{inner}</li>
 }
 
-/** xl "иная форма" (D:dashboard §4): rows as an aligned table — label · value · trend. */
+/** xl "alternate form" (D:dashboard §4): rows as an aligned table — label · value · trend. */
 function StatusTable({ rows }: { rows: StatusRow[] }) {
   return (
     <table className="w-full text-sm">

@@ -160,7 +160,7 @@ function readStore(key: string): Record<string, SettingValue> {
   }
 }
 
-/* Cross-mock reads (mock/ai.ts «Проверить подключение» needs provider + key state). */
+/* Cross-mock reads (mock/ai.ts "Test connection" needs provider + key state). */
 
 export function storedSettingValue(key: string): SettingValue {
   const stored = readStore(STORE_KEY)
@@ -200,7 +200,7 @@ export function saveSettingsGroup(group: string, changed: Record<string, Setting
   const fields: Record<string, string> = {}
   for (const [key, value] of Object.entries(changed)) {
     // Preset overrides ride in the media batch without a schema entry of their
-    // own (UI:media §2 — «изменения в общий SaveBar вкладки»; storage D:media §3).
+    // own (changes go to the shared tab SaveBar; storage handled separately).
     if (group === 'media' && key === 'media.preset_sizes') {
       try {
         JSON.parse(String(value ?? '{}'))

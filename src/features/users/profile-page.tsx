@@ -79,7 +79,7 @@ export function ProfilePage() {
 
       <ChangeOwnPasswordCard />
 
-      {/* «Безопасность»: 2FA self-service (D:auth §6) */}
+      {/* "Security": 2FA self-service (D:auth §6) */}
       <SecurityCard />
 
       <SaveBar

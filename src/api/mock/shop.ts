@@ -57,20 +57,20 @@ const ORDER_STATUSES: OrderStatus[] = [
 ];
 const PAYMENT_STATES = ["paid", "unpaid", "partial", "refunded"] as const;
 const CUSTOMER_NAMES = [
-  "Ольга Петрова",
+  "Olga Petrova",
   "Dmitry Sokolov",
   "María García",
   "James Wilson",
   "Sophie Martin",
   "Luca Rossi",
   "Anna Nowak",
-  "Іван Коваленко",
+  "Ivan Kovalenko",
   "Emma Johnson",
   "Noah Schmidt",
   "Chloé Dubois",
   "Marco Bianchi",
   "Piotr Lewandowski",
-  "Олена Шевченко",
+  "Olena Shevchenko",
   "Liam Brown",
   "Hannah Müller",
   "Camille Bernard",

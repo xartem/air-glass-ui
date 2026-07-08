@@ -13,8 +13,8 @@ import uk from '@/locales/uk.json'
  * Hardcoded strings in components are forbidden — always use t('key').
  */
 
-// Starter locale set is canonical in C1 §1: CIS (ru, uk) + popular European.
-export const ADMIN_LOCALES = ['ru', 'uk', 'en', 'de', 'fr', 'es', 'it', 'pl'] as const
+// English is the primary UI language; the rest follow. ru/uk remain available.
+export const ADMIN_LOCALES = ['en', 'de', 'fr', 'es', 'it', 'pl', 'ru', 'uk'] as const
 export type AdminLocale = (typeof ADMIN_LOCALES)[number]
 
 /** Native language names (endonyms) for the UI-locale switcher. */

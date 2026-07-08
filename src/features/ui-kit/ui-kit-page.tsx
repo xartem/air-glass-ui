@@ -120,7 +120,7 @@ type DemoRow = {
 const DEMO_ROWS: DemoRow[] = [
   {
     id: 1,
-    title: 'Главная',
+    title: 'Home',
     status: 'published',
     updatedAt: '2026-07-01',
     locales: [
@@ -131,7 +131,7 @@ const DEMO_ROWS: DemoRow[] = [
   },
   {
     id: 2,
-    title: 'О компании',
+    title: 'About',
     status: 'draft',
     updatedAt: '2026-06-28',
     locales: [
@@ -142,7 +142,7 @@ const DEMO_ROWS: DemoRow[] = [
   },
   {
     id: 3,
-    title: 'Контакты',
+    title: 'Contacts',
     status: 'published',
     updatedAt: '2026-06-25',
     locales: [
@@ -264,9 +264,9 @@ function FormsSection() {
               <SelectValue placeholder="—" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="services">Услуги</SelectItem>
-              <SelectItem value="projects">Проекты</SelectItem>
-              <SelectItem value="team">Команда</SelectItem>
+              <SelectItem value="services">Services</SelectItem>
+              <SelectItem value="projects">Projects</SelectItem>
+              <SelectItem value="team">Team</SelectItem>
             </SelectContent>
           </Select>
         </FormField>
@@ -305,9 +305,9 @@ function FormsSection() {
               <SelectValue placeholder="Select · lg / 42px" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="services">Услуги</SelectItem>
-              <SelectItem value="projects">Проекты</SelectItem>
-              <SelectItem value="team">Команда</SelectItem>
+              <SelectItem value="services">Services</SelectItem>
+              <SelectItem value="projects">Projects</SelectItem>
+              <SelectItem value="team">Team</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -416,7 +416,7 @@ function SaveBarSection() {
 }
 
 function RichTextSection() {
-  const [html, setHtml] = useState('<h2>Заголовок</h2><p>Текст с <strong>жирным</strong> и <a href="https://example.com">ссылкой</a>.</p>')
+  const [html, setHtml] = useState('<h2>Heading</h2><p>Text with <strong>bold</strong> and a <a href="https://example.com">link</a>.</p>')
   return (
     <Section id="richtext" title={t('uikit.section.richtext')}>
       <RichTextEditor value={html} onChange={setHtml} />
@@ -425,10 +425,10 @@ function RichTextSection() {
 }
 
 const DEMO_REFERENCES: ReferenceItem[] = [
-  { id: 1, label: 'Главная', hint: '/' },
-  { id: 2, label: 'О компании', hint: '/about' },
-  { id: 3, label: 'Контакты', hint: '/contacts' },
-  { id: 4, label: 'Услуги', hint: '/services' },
+  { id: 1, label: 'Home', hint: '/' },
+  { id: 2, label: 'About', hint: '/about' },
+  { id: 3, label: 'Inbox', hint: '/inbox' },
+  { id: 4, label: 'Services', hint: '/services' },
 ]
 
 /** Deterministic gradient placeholder standing in for a real thumbnail (media_url later). */
@@ -497,10 +497,10 @@ function PickersSection() {
           <MultiSelect
             id="picker-tags"
             options={[
-              { value: 'services', label: 'Услуги' },
-              { value: 'projects', label: 'Проекты' },
-              { value: 'team', label: 'Команда' },
-              { value: 'news', label: 'Новости' },
+              { value: 'services', label: 'Services' },
+              { value: 'projects', label: 'Projects' },
+              { value: 'team', label: 'Team' },
+              { value: 'news', label: 'News' },
             ]}
             value={tags}
             onChange={setTags}
@@ -533,19 +533,19 @@ function PickersSection() {
 const INITIAL_TREE: TreeNode[] = [
   {
     id: 'home',
-    label: 'Главная',
+    label: 'Home',
     children: [],
   },
   {
     id: 'catalog',
-    label: 'Каталог',
+    label: 'Catalog',
     children: [
-      { id: 'catalog-doors', label: 'Двери' },
-      { id: 'catalog-windows', label: 'Окна' },
+      { id: 'catalog-doors', label: 'Doors' },
+      { id: 'catalog-windows', label: 'Windows' },
     ],
   },
-  { id: 'about', label: 'О компании' },
-  { id: 'contacts', label: 'Контакты' },
+  { id: 'about', label: 'About' },
+  { id: 'contacts', label: 'Contacts' },
 ]
 
 function TreeSection() {
@@ -561,7 +561,7 @@ type DemoRepeaterItem = { label: string; url: string; icon: string }
 
 function RepeaterSection() {
   const [items, setItems] = useState<DemoRepeaterItem[]>([
-    { label: 'Телефон', url: 'tel:+48000000000', icon: 'phone' },
+    { label: 'Phone', url: 'tel:+48000000000', icon: 'phone' },
     { label: 'E-mail', url: 'mailto:hello@example.com', icon: 'mail' },
   ])
   return (
@@ -894,7 +894,7 @@ function ChangePasswordSection() {
       <ChangePasswordDialog
         open={open}
         onOpenChange={setOpen}
-        userName="Ольга Петрова"
+        userName="Olga Petrova"
         onConfirm={() => setOpen(false)}
       />
     </Section>
@@ -991,19 +991,19 @@ const WIDGET_DEMO_CHART = {
 const WIDGET_DEMO_STAT = { value: 148, delta: 12, series: [90, 110, 104, 126, 131, 139, 143, 148] }
 const WIDGET_DEMO_LIST = {
   items: [
-    { title: '№432 — «нужен насос для дачи»', hint: '12:40', badge: 'new' },
-    { title: '№431 — «перезвоните по кровле»', hint: '11:05', badge: 'new' },
-    { title: '№430 — «сколько стоит монтаж?»', hint: '09:32' },
-    { title: '№429 — «есть ли ГНОМ-40 в наличии»', hint: 'вчера' },
-    { title: '№428 — «нужен счёт для юрлица»', hint: 'вчера' },
-    { title: '№427 — «доставка в Тверь?»', hint: '2 дня назад' },
+    { title: '#432 — "Need a pump for the cottage"', hint: '12:40', badge: 'new' },
+    { title: '#431 — "Call me back about roofing"', hint: '11:05', badge: 'new' },
+    { title: '#430 — "How much is installation?"', hint: '09:32' },
+    { title: '#429 — "Is the GNOM-40 in stock?"', hint: 'yesterday' },
+    { title: '#428 — "Need an invoice for a company"', hint: 'yesterday' },
+    { title: '#427 — "Do you deliver to Denver?"', hint: '2 days ago' },
   ],
 }
 const WIDGET_DEMO_STATUS = {
   rows: [
     { label_key: 'scheduler.widget.pending', value: '3', state: 'ok' as const },
     { label_key: 'scheduler.widget.failed', value: '2', state: 'warn' as const },
-    { label_key: 'scheduler.widget.last_tick', value: '2 ч назад', state: 'error' as const },
+    { label_key: 'scheduler.widget.last_tick', value: '2h ago', state: 'error' as const },
   ],
 }
 
@@ -1100,7 +1100,7 @@ function EditorArchetypeSection() {
           <EditorLayout
             className="[&>div.sticky]:static!"
             back={{ href: '/ui-kit' }}
-            title="Главная"
+            title="Home"
             status="draft"
             dirty={dirty}
             primaryAction={{
@@ -1133,7 +1133,7 @@ function EditorArchetypeSection() {
                 content: (
                   <div className="grid max-w-2xl gap-4">
                     <FormField name="editor-title" label={t('uikit.field.title')} required>
-                      <Input id="editor-title" defaultValue="Главная" onChange={() => setDirty(true)} />
+                      <Input id="editor-title" defaultValue="Home" onChange={() => setDirty(true)} />
                     </FormField>
                     <FormField name="editor-slug" label={t('uikit.field.slug')}>
                       <Input id="editor-slug" defaultValue="/" onChange={() => setDirty(true)} />
@@ -1277,7 +1277,7 @@ function WizardSection() {
             content: (
               <div className="grid gap-4">
                 <FormField name="wizard-name" label={t('uikit.field.title')} required>
-                  <Input id="wizard-name" placeholder="Проекты" />
+                  <Input id="wizard-name" placeholder="Projects" />
                 </FormField>
                 <FormField name="wizard-slug" label={t('uikit.field.slug')}>
                   <Input id="wizard-slug" placeholder="projects" />
@@ -1326,17 +1326,17 @@ const BLOCK_ICON: Record<DemoBlock['type'], typeof Type> = {
 
 function CompositionSection() {
   const [regions, setRegions] = useState<Record<string, DemoBlock[]>>({
-    header: [{ type: 'text', label: 'Заголовок-герой' }],
+    header: [{ type: 'text', label: 'Hero heading' }],
     main: [
-      { type: 'text', label: 'Текстовый блок' },
-      { type: 'image', label: 'Галерея' },
-      { type: 'video', label: 'Промо-видео' },
+      { type: 'text', label: 'Text block' },
+      { type: 'image', label: 'Gallery' },
+      { type: 'video', label: 'Promo video' },
     ],
     footer: [],
   })
   const [configuring, setConfiguring] = useState<DemoBlock | null>(null)
 
-  const regionTitles: Record<string, string> = { header: 'Шапка', main: 'Контент', footer: 'Подвал' }
+  const regionTitles: Record<string, string> = { header: 'Header', main: 'Content', footer: 'Footer' }
 
   return (
     <section id="composition" className="space-y-3">
@@ -1352,7 +1352,7 @@ function CompositionSection() {
               <RepeaterField<DemoBlock>
                 value={blocks}
                 onChange={(next) => setRegions({ ...regions, [regionKey]: next })}
-                newItem={() => ({ type: 'text' as const, label: 'Текстовый блок' })}
+                newItem={() => ({ type: 'text' as const, label: 'Text block' })}
                 addLabel={t('composition.addBlock')}
                 renderItem={(block) => {
                   const BlockIcon = BLOCK_ICON[block.type]
@@ -1407,13 +1407,13 @@ function CompositionSection() {
 
 function MenuBuilderSection() {
   const [menu, setMenu] = useState<TreeNode[]>([
-    { id: 'm-home', label: 'Главная' },
+    { id: 'm-home', label: 'Home' },
     {
       id: 'm-catalog',
-      label: 'Каталог',
-      children: [{ id: 'm-doors', label: 'Двери' }],
+      label: 'Catalog',
+      children: [{ id: 'm-doors', label: 'Doors' }],
     },
-    { id: 'm-contacts', label: 'Контакты' },
+    { id: 'm-contacts', label: 'Contacts' },
   ])
   const [reference, setReference] = useState<ReferenceItem | null>(null)
 
@@ -1528,9 +1528,9 @@ function MediaGridSection() {
 }
 
 const MATRIX_DEMO_ROLES: RoleDetail[] = [
-  { id: 1, key: 'admin', label: 'Администратор', is_system: true, users_count: 2, permissions: [] },
-  { id: 2, key: 'editor', label: 'Редактор', is_system: false, users_count: 5, permissions: ['pages.view', 'pages.manage', 'media.view'] },
-  { id: 3, key: 'viewer', label: 'Наблюдатель', is_system: false, users_count: 1, permissions: [] },
+  { id: 1, key: 'admin', label: 'Administrator', is_system: true, users_count: 2, permissions: [] },
+  { id: 2, key: 'editor', label: 'Editor', is_system: false, users_count: 5, permissions: ['pages.view', 'pages.manage', 'media.view'] },
+  { id: 3, key: 'viewer', label: 'Viewer', is_system: false, users_count: 1, permissions: [] },
 ]
 
 const MATRIX_DEMO_PERMISSIONS: Permission[] = [

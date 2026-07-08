@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { History, Plus, Sparkles } from 'lucide-react'
 import { Link, useLocation } from 'react-router'
 
-import { api, type AiScreenContext, type Me } from '@/api'
+import { api, type AiScreenContext } from '@/api'
 import { buildNavGroups, flattenNavItems } from '@/app/nav'
 import { Button } from '@/components/ui/button'
 import {
@@ -36,9 +36,9 @@ function readStoredActive(): number | null {
 }
 
 /** Screen context from the route (v1): the deepest matching nav entry names the screen. */
-function deriveContext(me: Me, pathname: string): AiScreenContext | null {
+function deriveContext(pathname: string): AiScreenContext | null {
   let best: { to: string; label: string } | null = null
-  for (const item of flattenNavItems(buildNavGroups(me))) {
+  for (const item of flattenNavItems(buildNavGroups())) {
     const match = item.to === '/' ? pathname === '/' : pathname === item.to || pathname.startsWith(`${item.to}/`)
     if (match && (!best || item.to.length > best.to.length)) best = item
   }
@@ -50,10 +50,10 @@ export function AiPanel() {
   const canUse = useCan('ai.use')
   // Module inactive without an LLM key — the button disappears (UI:ai §1)
   if (!canUse || !me.ai_available) return null
-  return <AiPanelInner me={me} />
+  return <AiPanelInner />
 }
 
-function AiPanelInner({ me }: { me: Me }) {
+function AiPanelInner() {
   useLocale()
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
@@ -93,7 +93,7 @@ function AiPanelInner({ me }: { me: Me }) {
 
   const active = listQuery.data?.find((conversation) => conversation.id === activeId)
   const title = activeId === null ? t('ai.title') : (active?.title ?? t('ai.untitled'))
-  const screenContext = deriveContext(me, pathname)
+  const screenContext = deriveContext(pathname)
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

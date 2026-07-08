@@ -1,9 +1,9 @@
 import type { HelpArticle, HelpArticleRef, HelpGroup, HelpSearchHit } from '../types'
 
 /*
- * Help fixtures (D:help, C11). Real backend reads modules/{slug}/docs/{locale}/*.md;
- * the mock keeps a few finished articles so the /help screen and the "?" sheet are
- * fully browsable. Content follows C11 §3: human language, no technical terms.
+ * Help fixtures. A real backend reads modules/{slug}/docs/{locale}/*.md; the mock
+ * keeps a few finished articles so the /help screen and the "?" sheet are fully
+ * browsable. Content is written in plain language, no jargon.
  */
 
 interface MockArticle {
@@ -12,7 +12,7 @@ interface MockArticle {
   section: string
   sectionKey: string
   title: string
-  /** Screen key for contextual help (front-matter `screen`, C11 §2). */
+  /** Screen key for contextual help (front-matter `screen`). */
   screen?: string
   /** True → ui_locale translation is "missing", source-locale text shown (fallback demo). */
   isFallback?: boolean
@@ -21,113 +21,113 @@ interface MockArticle {
 
 const ARTICLES: MockArticle[] = [
   {
-    module: 'pages',
-    page: 'index',
-    section: 'Контент',
-    sectionKey: 'content',
-    title: 'Обзор: страницы и блоки',
-    markdown: `Сайт складывается из страниц, а каждая страница — из блоков: текст, галерея, форма, список записей.
+    module: 'dashboard',
+    page: 'overview',
+    section: 'Getting started',
+    sectionKey: 'getting-started',
+    title: 'Get to know your dashboard',
+    screen: 'dashboard',
+    markdown: `The dashboard is the first thing you see after signing in. It gathers the numbers and shortcuts you use most into a grid of widgets.
 
-## Что где находится
+## What you can do
 
-1. **Контент → Страницы** — все страницы сайта: черновики и опубликованные.
-2. Внутри страницы — конструктор: блоки можно добавлять, менять местами и убирать.
-3. Общие для всего сайта данные (телефон, адрес, соцсети) живут в разделе **Контакты** — поменяли один раз, обновилось везде.
+1. **Rearrange widgets** — drag any card to reorder it, and use the size control to make a card wider or taller.
+2. **Pick a period** — the range picker at the top rescales every time-based widget (week, month, quarter).
+3. **Hide what you don't need** — hidden widgets stay available and can be restored at any time.
 
-> **Совет.** Не создавайте страницу «Новости» вручную — записи и ленты ведутся в своих разделах, а на страницу они попадают блоком «Список записей».`,
-  },
-  {
-    module: 'pages',
-    page: 'create-page',
-    section: 'Контент',
-    sectionKey: 'content',
-    title: 'Как создать страницу',
-    screen: 'pages.list',
-    markdown: `Страница — это отдельный адрес на сайте: «О компании», «Контакты», посадочная услуги.
-
-## Шаги
-
-1. Откройте **Контент → Страницы** и нажмите **«Добавить»** в правом верхнем углу.
-2. Введите заголовок — адрес страницы подставится сам. При необходимости поправьте его.
-3. Добавьте блоки кнопкой **«+ Блок»**: текст, галерея, форма, список записей.
-4. Нажмите **«Сохранить»**. Страница появится на сайте после смены статуса на **«Опубликована»**.
-
-> **Почему страницы не видно на сайте?** Проверьте статус — черновики видны только в панели. Опубликованная страница появляется на сайте в течение минуты.`,
+> **Tip.** Layouts are saved per role, so each team sees the widgets that matter to them.`,
   },
   {
     module: 'media',
     page: 'upload',
-    section: 'Контент',
-    sectionKey: 'content',
-    title: 'Как загрузить изображения',
+    section: 'Getting started',
+    sectionKey: 'getting-started',
+    title: 'Upload and manage media',
     screen: 'media.library',
-    markdown: `Все картинки и файлы сайта хранятся в **Медиатеке** — один раз загрузили, используете где угодно.
+    markdown: `All images and files live in the **Media library** — upload once, reuse anywhere.
 
-## Шаги
+## Steps
 
-1. Откройте **Контент → Медиатека** и перетащите файлы прямо в окно — или нажмите **«Загрузить»**.
-2. Заполните **альтернативный текст**: его читают поисковики и экранные дикторы.
-3. Вставляйте изображение в страницы и записи через кнопку выбора из медиатеки.
+1. Open **Media** and drag files straight into the window — or press **"Upload"**.
+2. Fill in the **alt text**: search engines and screen readers rely on it.
+3. Insert an image into any screen through the media picker.
 
-> **Фото слишком большое?** Ничего страшного: система сама подготовит уменьшенные копии для сайта. Оригинал сохранится.`,
+> **Photo too large?** No problem — the system prepares resized copies automatically, and the original is kept.`,
+  },
+  {
+    module: 'orders',
+    page: 'overview',
+    section: 'Shop',
+    sectionKey: 'shop',
+    title: 'Manage orders',
+    screen: 'orders.list',
+    markdown: `The **Orders** screen lists every order with its status, customer and total.
+
+## Working with an order
+
+1. Use the filters and search to narrow the list, then open an order to see its full details.
+2. Update the status as the order moves through **paid → shipped → done**.
+3. Payments and invoices for the order are linked from the same screen.
+
+> **Tip.** Amounts are shown in the store currency and formatted for the active language automatically.`,
+  },
+  {
+    module: 'products',
+    page: 'overview',
+    section: 'Shop',
+    sectionKey: 'shop',
+    title: 'Add and edit products',
+    screen: 'products.list',
+    markdown: `The **Products** screen is your catalog: prices, stock and status in one place.
+
+## Steps
+
+1. Press **"Add"** to create a product, or open an existing one to edit it.
+2. Set the price and stock; save the product as a draft until it's ready.
+3. Switch the status to **published** to make it available.
+
+> **Not showing up?** Draft products are visible only in the admin — publish to make a product live.`,
   },
   {
     module: 'users',
     page: 'roles',
-    section: 'Система',
+    section: 'System',
     sectionKey: 'system',
-    title: 'Пользователи и роли',
+    title: 'Users and roles',
     screen: 'users.list',
-    markdown: `Каждый сотрудник заходит в панель под своим аккаунтом, а роль определяет, что ему доступно.
+    markdown: `Every teammate signs in with their own account, and their role decides what they can access.
 
-## Как устроено
+## How it works
 
-1. **Система → Пользователи** — список аккаунтов: кто активен и когда заходил.
-2. Роль — это набор галочек-разрешений. Готовые роли: Администратор и Редактор; можно создать свою.
-3. Смена роли действует сразу — пользователю не нужно перезаходить.
+1. **Users** — the list of accounts: who is active and when they last signed in.
+2. A role is a set of permission checkboxes. Ready-made roles: Administrator and Editor; you can create your own.
+3. A role change takes effect immediately — the user does not need to sign in again.
 
-> **Сотрудник ушёл из компании?** Не удаляйте аккаунт — выключите его. История действий сохранится, а вход будет закрыт.`,
+> **Someone left the team?** Don't delete the account — deactivate it. The activity history is kept and access is closed.`,
   },
   {
-    module: 'estate_sources',
-    page: 'connection',
-    section: 'Система',
+    module: 'ai',
+    page: 'assistant',
+    section: 'System',
     sectionKey: 'system',
-    title: 'Подключение источника объявлений',
-    isFallback: true,
-    markdown: `Listings can arrive automatically from an external source. Once connected, new properties appear on the site without manual work.
+    title: 'Using the AI assistant',
+    screen: 'ai',
+    markdown: `The AI assistant helps you find things and draft content without leaving the admin.
 
 ## Steps
 
-1. Open **System → Sources** and press **"Add"**.
-2. Paste the access key you received from the provider and press **"Test connection"**.
-3. Turn the source on. The first full import may take a few hours — progress is shown per language.
+1. Open the assistant from the header, or press **⌘J / Ctrl+J** anywhere.
+2. Ask a question or describe what you need — the assistant knows which screen you're on.
+3. Start a fresh conversation with **"+"**; the panel keeps your last dialog for quick reference.
 
-> **Numbers look off?** The photo queue is separate: listings appear first, images follow a bit later. This is normal.`,
-  },
-  {
-    module: 'seo',
-    page: 'basics',
-    section: 'Продвижение',
-    sectionKey: 'promotion',
-    title: 'SEO: с чего начать',
-    screen: 'seo.settings',
-    markdown: `Раздел **Продвижение → SEO** отвечает за то, как сайт выглядит в поиске.
-
-## Три вещи, которые стоит проверить
-
-1. **Заголовок и описание по умолчанию** — их видно в результатах поиска, когда у страницы нет своих.
-2. **Картинка для соцсетей** — показывается, когда ссылкой на сайт делятся в мессенджерах.
-3. У каждой страницы и записи есть вкладка **SEO** — там можно задать свои заголовок и описание.
-
-> **Не спешите закрывать сайт от поисковиков.** Галочка «не индексировать» нужна только для служебных страниц.`,
+> **Button missing?** The assistant appears only when an AI provider key is configured.`,
   },
 ]
 
 const GROUP_ORDER: { key: string; label: string }[] = [
-  { key: 'content', label: 'Контент' },
-  { key: 'promotion', label: 'Продвижение' },
-  { key: 'system', label: 'Система' },
+  { key: 'getting-started', label: 'Getting started' },
+  { key: 'shop', label: 'Shop' },
+  { key: 'system', label: 'System' },
 ]
 
 function ref(a: MockArticle): HelpArticleRef {

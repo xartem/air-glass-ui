@@ -24,7 +24,7 @@ import { useAuth } from '@/lib/auth'
 import { t } from '@/lib/i18n'
 
 /*
- * 2FA self-service (D:auth §6, UI:users-roles §3 «Безопасность»): enroll shows
+ * 2FA self-service (D:auth §6, UI:users-roles §3 "Security"): enroll shows
  * a QR (otpauth URI, drawn client-side) + manual secret, confirms with a code
  * and reveals the 10 recovery codes exactly once. Disable requires a fresh
  * code. The same enroll flow serves the forced-enroll gate (mfa_required_roles).
@@ -144,7 +144,7 @@ export function MfaEnrollFlow({ onDone }: { onDone: () => void }) {
   )
 }
 
-/** «Безопасность» panel on /profile (UI:users-roles §3). */
+/** "Security" panel on /profile (UI:users-roles §3). */
 export function SecurityCard() {
   const { me, refresh } = useAuth()
   const [enrollOpen, setEnrollOpen] = useState(false)
