@@ -1,0 +1,4 @@
+2026-07-04 20:35 · claude (session) · Экран /help против мок-API: дерево по карте меню + поиск со сниппетами + рендер статей (react-markdown, запись E2 §2); контекстная «?»-Sheet через PageHeader.helpKey (демо на /users); словари help.* ×8 локалей; спека admin/help.md
+2026-07-04 21:05 · claude-code · help-page: статья растянута на всю ширину секции (убран max-w-[680px])
+2026-07-04 22:08 · cms-admin-ui · help: screenshot lightbox (Dialog), 404 CTA back to sections, section line moved under H1
+2026-07-04 22:53 · aif-fix · Markdown-тело справки грузится лениво из help-sheet (react-markdown вне main-чанка); маршруты /help — через route-level lazy

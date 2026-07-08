@@ -1,0 +1,257 @@
+import { apiFetch, apiStream } from './client'
+import type {
+  AppearanceSettings,
+  ActivityEntry,
+  AiConversationDetail,
+  AiConversationListItem,
+  AiAttachment,
+  AiFinding,
+  AiFindingStatus,
+  AiScreenContext,
+  AiSpend,
+  AiStreamEvent,
+  HelpArticle,
+  HelpGroup,
+  HelpSearchHit,
+  ActivityFilters,
+  AdminSearchGroup,
+  CreateRolePayload,
+  DashboardPayload,
+  LayoutOverrides,
+  LoginPayload,
+  LoginResult,
+  Me,
+  MfaEnrollStart,
+  MfaRecoveryCodes,
+  Period,
+  MediaListItem,
+  MediaPresetsPayload,
+  MediaRegenStatus,
+  Paginated,
+  Permission,
+  ProfilePasswordPayload,
+  ProfilePayload,
+  ResetPayload,
+  RoleDetail,
+  SettingsPayload,
+  SettingValue,
+  UnreadCount,
+  UserDetail,
+  UserFilters,
+  UserListItem,
+  UserPayload,
+  WidgetData,
+} from './types'
+
+export { ApiError, ConflictError, ValidationError, onReloginRequired, resumeAfterRelogin } from './client'
+export type * from './types'
+
+export const api = {
+  /** Initial-load 401 means "not logged in" (redirect), not a lost session — hence guest. */
+  me: () => apiFetch<Me>('/me', { guest: true }),
+
+  auth: {
+    login: (payload: LoginPayload) =>
+      apiFetch<LoginResult>('/auth/login', { method: 'POST', body: payload, guest: true }),
+    /** Second step after 202 mfa_required: TOTP or a one-time recovery code (D:auth §6). */
+    challenge2fa: (code: string) =>
+      apiFetch<{ ok: true }>('/auth/2fa/challenge', { method: 'POST', body: { code }, guest: true }),
+    logout: () => apiFetch<{ ok: true }>('/auth/logout', { method: 'POST' }),
+    forgot: (email: string) =>
+      apiFetch<{ ok: true }>('/auth/forgot', { method: 'POST', body: { email }, guest: true }),
+    reset: (payload: ResetPayload) =>
+      apiFetch<{ ok: true }>('/auth/reset', { method: 'POST', body: payload, guest: true }),
+    /** Re-login keeps the session context: not a guest call, but 401 must not re-park. */
+    relogin: (payload: LoginPayload) =>
+      apiFetch<{ ok: true }>('/auth/login', { method: 'POST', body: payload, guest: true }),
+    /** Start impersonating a user (D:auth §6, C3 §10) — eligibility is server-enforced. */
+    impersonate: (id: number) => apiFetch<{ ok: true }>(`/auth/impersonate/${id}`, { method: 'POST' }),
+    stopImpersonation: () => apiFetch<{ ok: true }>('/auth/impersonate/stop', { method: 'POST' }),
+  },
+
+  /* 2FA self-service (D:auth §6): no special permission, any authenticated user. */
+  mfa: {
+    enroll: () => apiFetch<MfaEnrollStart>('/mfa/enroll', { method: 'POST' }),
+    /** Returns the 10 recovery codes exactly once (D:auth §4 MfaService). */
+    confirmEnroll: (code: string) =>
+      apiFetch<MfaRecoveryCodes>('/mfa/enroll/confirm', { method: 'POST', body: { code } }),
+    /** Disabling requires a fresh TOTP/recovery code (D:auth §6). */
+    disable: (code: string) => apiFetch<{ ok: true }>('/mfa/disable', { method: 'POST', body: { code } }),
+    regenerateRecoveryCodes: () =>
+      apiFetch<MfaRecoveryCodes>('/mfa/recovery-codes', { method: 'POST' }),
+  },
+
+  /* Dashboard (D:dashboard §6): meta list + per-widget data + per-role layouts. */
+  dashboard: {
+    /** `role` is the customize-mode payload (dashboard.manage): that role's effective set incl. hidden. */
+    get: (role?: string) => apiFetch<DashboardPayload>('/dashboard', { query: { role } }),
+    /** `period` (D:dashboard §4) is sent only for period-aware widgets; the server clamps unknown values. */
+    widget: (key: string, period?: Period) =>
+      apiFetch<WidgetData>(`/dashboard/widgets/${key}`, { query: { period } }),
+    saveLayout: (roleKey: string, overrides: LayoutOverrides) =>
+      apiFetch<{ ok: true }>(`/dashboard/layout/${roleKey}`, { method: 'PUT', body: overrides }),
+    resetLayout: (roleKey: string) =>
+      apiFetch<{ ok: true }>(`/dashboard/layout/${roleKey}`, { method: 'DELETE' }),
+  },
+
+  /* Quick action «Clear cache» (UI:dashboard §3) — the only cache endpoint the SPA needs today. */
+  cache: {
+    clear: () => apiFetch<{ ok: true }>('/cache/clear', { method: 'POST' }),
+  },
+
+  activity: {
+    list: (filters: ActivityFilters = {}) =>
+      apiFetch<Paginated<ActivityEntry>>('/activity', {
+        query: {
+          page: filters.page,
+          actor_id: filters.actor_id,
+          entity_type: filters.entity_type,
+          action: filters.action,
+          only_ai: filters.only_ai ? 1 : undefined,
+          from: filters.from,
+          to: filters.to,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    restore: (id: number) => apiFetch<{ ok: true }>(`/activity/${id}/restore`, { method: 'POST' }),
+  },
+
+  adminSearch: (q: string) => apiFetch<{ groups: AdminSearchGroup[] }>('/admin-search', { query: { q } }),
+
+  notifications: {
+    unreadCount: () => apiFetch<UnreadCount>('/notifications/unread-count'),
+  },
+
+  media: {
+    list: (q: string, page: number) =>
+      apiFetch<Paginated<MediaListItem>>('/media', { query: { q, page } }),
+    /** Declared image presets + operator overrides for the /settings/media table (D:media §3). */
+    presets: () => apiFetch<MediaPresetsPayload>('/media/presets'),
+    /** Manual variant regeneration (D:media §4/§11) — start returns a job, then poll status. */
+    regenerate: {
+      /** Optional owner group — omit to rebuild every preset (D:media §11). */
+      start: (group?: string) =>
+        apiFetch<{ job_id: number; total: number }>('/media/regenerate', {
+          method: 'POST',
+          body: group ? { group } : undefined,
+        }),
+      status: (jobId: number) => apiFetch<MediaRegenStatus>(`/media/regenerate/${jobId}`),
+    },
+  },
+
+  settings: {
+    all: () => apiFetch<SettingsPayload>('/settings'),
+    /** Batch of CHANGED keys only; sending '***' for a sensitive key means "keep". */
+    save: (group: string, changed: Record<string, SettingValue>) =>
+      apiFetch<{ ok: true }>(`/settings/${group}`, { method: 'PUT', body: changed }),
+  },
+
+  /** Site-wide admin appearance (E1 §2.2.1): style, backgrounds, fine-tune tokens. */
+  appearance: {
+    get: () => apiFetch<AppearanceSettings>('/appearance'),
+    save: (payload: AppearanceSettings) =>
+      apiFetch<{ ok: true }>('/appearance', { method: 'PUT', body: payload }),
+  },
+
+  users: {
+    list: (filters: UserFilters = {}) =>
+      apiFetch<Paginated<UserListItem>>('/users', {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          role: filters.role,
+          active: filters.active,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    get: (id: number) => apiFetch<UserDetail>(`/users/${id}`),
+    create: (payload: UserPayload) => apiFetch<UserDetail>('/users', { method: 'POST', body: payload }),
+    update: (id: number, payload: Partial<UserPayload>) =>
+      apiFetch<UserDetail>(`/users/${id}`, { method: 'PUT', body: payload }),
+    deactivate: (id: number) => apiFetch<{ ok: true }>(`/users/${id}/deactivate`, { method: 'POST' }),
+    activate: (id: number) => apiFetch<{ ok: true }>(`/users/${id}/activate`, { method: 'POST' }),
+    /** Reset a lost 2FA device (D:auth §6): drops the secret + recovery codes; audited. */
+    resetMfa: (id: number) => apiFetch<{ ok: true }>(`/users/${id}/mfa/reset`, { method: 'POST' }),
+  },
+
+  roles: {
+    all: () => apiFetch<RoleDetail[]>('/roles'),
+    /** All permission keys of enabled modules, grouped (D:users §6). */
+    permissions: () => apiFetch<Permission[]>('/roles/permissions'),
+    create: (payload: CreateRolePayload) => apiFetch<RoleDetail>('/roles', { method: 'POST', body: payload }),
+    rename: (id: number, label: string) =>
+      apiFetch<{ ok: true }>(`/roles/${id}`, { method: 'PUT', body: { label } }),
+    remove: (id: number) => apiFetch<{ ok: true }>(`/roles/${id}`, { method: 'DELETE' }),
+    /** Idempotent overwrite of a role's permission set (D:users §4 syncPermissions). */
+    savePermissions: (id: number, keys: string[]) =>
+      apiFetch<{ ok: true }>(`/roles/${id}/permissions`, { method: 'PUT', body: { permissions: keys } }),
+  },
+
+  profile: {
+    update: (payload: ProfilePayload) => apiFetch<{ ok: true }>('/profile', { method: 'PUT', body: payload }),
+    changePassword: (payload: ProfilePasswordPayload) =>
+      apiFetch<{ ok: true }>('/profile/password', { method: 'POST', body: payload }),
+  },
+
+  /* AI assistant (D:ai §5): conversations, SSE streaming, plan/confirm gates, settings extras. */
+  ai: {
+    conversations: () => apiFetch<AiConversationListItem[]>('/ai/conversations'),
+    conversation: (id: number) => apiFetch<AiConversationDetail>(`/ai/conversations/${id}`),
+    createConversation: () => apiFetch<AiConversationDetail>('/ai/conversations', { method: 'POST' }),
+    deleteConversation: (id: number) =>
+      apiFetch<{ ok: true }>(`/ai/conversations/${id}`, { method: 'DELETE' }),
+    /**
+     * The agent reply streams on the POST (SSE, D:ai §5). `conversationId: null`
+     * opens a new conversation server-side — the `created` event carries its id.
+     */
+    sendMessage: (
+      conversationId: number | null,
+      message: string,
+      screenContext: AiScreenContext | null,
+      handlers: { onEvent: (event: AiStreamEvent) => void; signal?: AbortSignal },
+      // Already uploaded to the media library (D:ai §4d) — the message carries media_id[].
+      attachments?: AiAttachment[],
+    ) =>
+      apiStream(`/ai/conversations/${conversationId ?? 'new'}/messages`, {
+        body: {
+          message,
+          screen_context: screenContext ?? undefined,
+          attachments: attachments?.length ? attachments : undefined,
+        },
+        onEvent: handlers.onEvent as (event: unknown) => void,
+        signal: handlers.signal,
+      }),
+    /** Approve streams the execution of the plan's write series (D:ai §4b/§5). */
+    approvePlan: (planId: number, handlers: { onEvent: (event: AiStreamEvent) => void; signal?: AbortSignal }) =>
+      apiStream(`/ai/plans/${planId}/approve`, {
+        onEvent: handlers.onEvent as (event: unknown) => void,
+        signal: handlers.signal,
+      }),
+    rejectPlan: (planId: number) => apiFetch<{ ok: true }>(`/ai/plans/${planId}/reject`, { method: 'POST' }),
+    confirmAction: (id: number) => apiFetch<{ ok: true }>(`/ai/actions/${id}/confirm`, { method: 'POST' }),
+    cancelAction: (id: number) => apiFetch<{ ok: true }>(`/ai/actions/${id}/cancel`, { method: 'POST' }),
+    /** Suggested-tool button click (D:ai §4a kind=tool); D:ai §5 names no endpoint yet — see spec note. */
+    runTool: (conversationId: number, tool: string, args: Record<string, unknown>) =>
+      apiFetch<{ ok: true }>(`/ai/conversations/${conversationId}/tools`, {
+        method: 'POST',
+        body: { tool, args },
+      }),
+    /** Test call with the saved provider/key (UI:ai §4) — toast with the result. */
+    test: () => apiFetch<{ ok: boolean }>('/ai/test', { method: 'POST' }),
+    spend: () => apiFetch<AiSpend>('/ai/spend'),
+    findings: () => apiFetch<AiFinding[]>('/ai/findings'),
+    setFindingStatus: (id: number, status: AiFindingStatus, note?: string) =>
+      apiFetch<{ ok: true }>(`/ai/findings/${id}/status`, { method: 'POST', body: { status, note } }),
+  },
+
+  /* Help (D:help §6): read-only, any authenticated user — no permission gates. */
+  help: {
+    tree: () => apiFetch<HelpGroup[]>('/help'),
+    page: (module: string, page: string) => apiFetch<HelpArticle>(`/help/${module}/${page}`),
+    search: (q: string) => apiFetch<HelpSearchHit[]>('/help/search', { query: { q } }),
+    /** Context help for the current screen; null → the "?" button is hidden. */
+    forScreen: (screenKey: string) => apiFetch<HelpArticle | null>(`/help/screen/${screenKey}`),
+  },
+}
