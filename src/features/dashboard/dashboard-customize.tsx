@@ -2,13 +2,20 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   closestCenter,
   DndContext,
+  KeyboardSensor,
   PointerSensor,
   TouchSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
 } from '@dnd-kit/core'
-import { arrayMove, rectSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable'
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+} from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Activity, BarChart3, Eye, EyeOff, GripVertical, List, TrendingUp, Zap } from 'lucide-react'
@@ -134,6 +141,9 @@ export function DashboardCustomize({
     // Drag only via the explicit handle; touch needs a long-press (E2 §5a).
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 8 } }),
+    // Keyboard alternative to dragging (WCAG 2.1.1 / 2.5.7): focus a grip handle,
+    // press Space to pick up, arrow keys to move, Space to drop.
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   )
 
   const saveMutation = useMutation({

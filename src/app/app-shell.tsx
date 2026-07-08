@@ -519,6 +519,14 @@ export function AppShell() {
 
   return (
     <div className="flex min-h-screen">
+      {/* Skip link (WCAG 2.4.1): first tab stop, jumps past the sidebar/topbar to <main>.
+          Visually hidden until focused. */}
+      <a
+        href="#main-content"
+        className="sr-only rounded-lg focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
+        {t('shell.skip_to_content')}
+      </a>
       {/* Mesh background layers — painted once for the whole SPA (E1 §2.1, §2.3).
           The mesh is taller than the viewport so the parallax shift never reveals its edge. */}
       <div ref={meshRef} aria-hidden className="app-mesh fixed inset-x-0 top-0 -z-10 h-[140vh]" />
@@ -645,7 +653,7 @@ export function AppShell() {
 
         <ShellBanners />
 
-        <main className="min-w-0 flex-1 p-3 sm:p-4 md:p-6">
+        <main id="main-content" tabIndex={-1} className="min-w-0 flex-1 p-3 outline-none sm:p-4 md:p-6">
           <Outlet />
         </main>
       </div>
