@@ -24,6 +24,10 @@ const buttonVariants = cva(
           "hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground",
         destructive:
           "border-destructive/25 bg-[var(--field-bg)] text-[var(--status-error-fg)] hover:border-destructive/45 hover:bg-destructive/10 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+        success:
+          "border-[var(--status-success-fg)]/25 bg-[var(--field-bg)] text-[var(--status-success-fg)] hover:border-[var(--status-success-fg)]/45 hover:bg-[var(--status-success-bg)] aria-expanded:bg-[var(--status-success-bg)]",
+        warning:
+          "border-[var(--status-pending-fg)]/25 bg-[var(--field-bg)] text-[var(--status-pending-fg)] hover:border-[var(--status-pending-fg)]/45 hover:bg-[var(--status-pending-bg)] aria-expanded:bg-[var(--status-pending-bg)]",
         "destructive-filled":
           "bg-destructive font-semibold text-destructive-foreground focus-visible:ring-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
