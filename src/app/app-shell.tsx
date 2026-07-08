@@ -229,6 +229,7 @@ function SidebarParent({
       <button
         type="button"
         onClick={onToggle}
+        aria-expanded={open}
         className={cn(
           'flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm transition-colors',
           'text-sidebar-foreground hover:bg-muted hover:text-foreground',
@@ -358,6 +359,7 @@ function SidebarNav({
               <button
                 type="button"
                 onClick={() => toggleGroup(group.key)}
+                aria-expanded={!closed}
                 className="flex w-full items-center justify-between rounded-md px-3 py-1 pb-1 text-[11px] font-medium tracking-wider text-muted-foreground uppercase transition-colors hover:bg-muted/60 hover:text-foreground"
               >
                 <span className="flex items-center gap-1.5">

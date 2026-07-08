@@ -93,6 +93,7 @@ function StepperItem({
         data-slot="stepper-item"
         data-state={state}
         data-orientation={orientation}
+        aria-current={state === "active" ? "step" : undefined}
         className={cn(
           "group/stepper-item flex flex-1 last:flex-none",
           orientation === "horizontal"
