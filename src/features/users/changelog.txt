@@ -1,5 +1,0 @@
-2026-07-04 22:08 · cms-admin-ui · users list: column sorting (name/role/last_login), deactivate disabled+tooltip for self/last admin (is_last_admin from API)
-2026-07-04 22:32 · cms-users · 2FA: SecurityCard on /profile (enroll QR + one-time recovery codes, disable with fresh code, regenerate), reset target 2FA in user editor (users.manage), UserDetail.mfa_enabled; spec users-roles.md gets the Security section
-2026-07-04 22:53 · aif-fix · Guard в debounce поиска: deep-link /users?page=N больше не сбрасывается на 1-ю страницу при монтировании
-2026-07-04 23:02 · cms-dashboard · roles matrix «⋯»: new item «Настроить дашборд роли» (dashboard.manage) → /?customize={role_key}; menu now shown for system roles too (only that item), rename/delete stay non-system
-2026-07-04 23:29 · cms-admin-ui · поиск+фильтры списка перенесены в шапку Panel-секции (слот actions, эталон /system/activity), Toolbar из тела убран

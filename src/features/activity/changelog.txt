@@ -1,4 +1,0 @@
-2026-07-04 22:08 · cms-admin-ui · activity: DateRange period filter, date column sorting, restore hidden without changes, restore onError toast; dropped orphaned i18n keys
-2026-07-04 23:29 · cms-admin-ui · кластер фильтров в шапке Panel приведён к каркасному виду (gap-2, justify-end)
-2026-07-06 15:36 · /aif-implement · activity screen: move «only AI» switch to the front of the filter cluster (UI:shell-auth §2 order)
-2026-07-06 23:45 · /aif-implement · admin absolute time in site.timezone (C7 §4 decision): me.timezone in /me + useSiteDateTime() hook; applied to activity + ai timestamps; DB stays UTC, relative times unchanged. Spec C7 §5 + E2 §5/§9 + cms-admin-ui skill ×3

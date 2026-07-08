@@ -6,9 +6,9 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Admin theme — "Light Air Glass" (spec E1 §2.1, locked).
+ * Admin theme — "Light Air Glass".
  * All visual identity values live in THIS file: shadcn CSS variables + --glass-* layer.
- * Screens never define their own colors, blur or mesh (E1 §2.2, E6 §5).
+ * Screens never define their own colors, blur or mesh.
  */
 
 @theme inline {
@@ -45,7 +45,7 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
-    /* Geometry (E1 §2.1): controls 10px · surfaces 12px · large cards/panels 16px */
+    /* Geometry: controls 10px · surfaces 12px · large cards/panels 16px */
     --radius-sm: 8px;
     --radius-md: 10px;
     --radius-lg: 12px;
@@ -56,7 +56,7 @@
 }
 
 :root {
-    /* Palette (E1 §2.1, light) */
+    /* Palette (light) */
     --background: #f6faff;
     --foreground: #15324a;
     --card: var(--glass-bg-card);
@@ -64,7 +64,7 @@
     --popover: var(--glass-bg-overlay);
     --popover-foreground: #15324a;
     --primary: #1d8df2;
-    /* Accent-family derives from --primary so the Appearance accent token (E1 §2.2.1)
+    /* Accent-family derives from --primary so the Appearance accent token
        flows everywhere: buttons, nav marker, rings, select highlight. */
     --primary-strong: color-mix(in oklab, var(--primary), #000 20%);
     --primary-foreground: #ffffff;
@@ -79,7 +79,7 @@
     --border: rgba(148, 163, 184, 0.20);
     --input: rgba(148, 163, 184, 0.26);
     /* Unified fill for form fields (input/textarea/select-trigger) so they read as
-       recessed fields, consistent with each other on the glass mesh (E1 §2). */
+       recessed fields, consistent with each other on the glass mesh. */
     --field-bg: rgba(255, 255, 255, 0.55);
     --ring: var(--primary);
     --chart-1: #1d8df2;
@@ -97,13 +97,13 @@
     --sidebar-border: rgba(148, 163, 184, 0.16);
     --sidebar-ring: var(--primary);
 
-    /* Accent gradients (E1 §2.1): buttons — diagonal blue→cyan with a light glow */
+    /* Accent gradients: buttons — diagonal blue→cyan with a light glow */
     --gradient-primary: linear-gradient(135deg, var(--primary) 0%, color-mix(in oklab, var(--primary), #fff 22%) 100%);
     --gradient-primary-hover: linear-gradient(135deg, var(--primary-strong) 0%, var(--primary) 100%);
     --gradient-nav-active: linear-gradient(90deg, var(--primary) 0%, #34d399 100%);
     --gradient-destructive: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
 
-    /* Glass recipe (E1 §2.1) — consumed ONLY by framework components below.
+    /* Glass recipe — consumed ONLY by framework components below.
        Cards are MORE translucent than panel/topbar so the mesh shines through. */
     --glass-bg-card: rgba(255, 255, 255, 0.42);
     --glass-bg-panel: rgba(255, 255, 255, 0.5);
@@ -118,19 +118,19 @@
     --glass-shadow: 0 22px 48px rgba(148, 163, 184, 0.16);
     --glass-shadow-small: 0 12px 28px rgba(148, 163, 184, 0.14);
 
-    /* Motion tokens (E1 §2.3): animate entrances and hover only, no perpetual loops */
+    /* Motion tokens: animate entrances and hover only, no perpetual loops */
     --motion-fast: 150ms;
     --motion-base: 200ms;
     --motion-slow: 300ms;
     --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-    /* Accent shadows (E1 §2.3): light colored glow */
+    /* Accent shadows: light colored glow */
     --glow-primary: 0 3px 10px color-mix(in srgb, var(--primary) 35%, transparent);
     --glow-primary-hover: 0 5px 14px color-mix(in srgb, var(--primary) 45%, transparent);
     --glow-destructive: 0 3px 10px rgba(220, 38, 38, 0.32);
 
-    /* Status colors (E1 §2.2 — single map for StatusBadge across all modules) */
+    /* Status colors (single map for StatusBadge across all modules) */
     --status-success-fg: #15803d;
     --status-success-bg: rgba(220, 252, 231, 0.86);
     --status-pending-fg: #a16207;
@@ -144,7 +144,7 @@
 }
 
 .dark {
-    /* Same mesh/glass recipe on a dark base, same accents (E1 §2.2) */
+    /* Same mesh/glass recipe on a dark base, same accents */
     --background: #0b1220;
     --foreground: #e2ecf7;
     --card: var(--glass-bg-card);
@@ -196,7 +196,7 @@
 }
 
 /*
- * Admin appearance styles (E1 §2.2.1) — a `skin-*` class on <html>, orthogonal to `.dark`,
+ * Admin appearance styles — a `skin-*` class on <html>, orthogonal to `.dark`,
  * selectable per instance from Settings → Appearance (see useAppearance in app-shell).
  * Each only re-declares the --glass-* recipe + --radius that framework surfaces already
  * consume, so no component markup changes. Default `.skin-glass` = the locked "Light Air
@@ -266,7 +266,7 @@
   * {
     @apply border-border outline-ring/50;
     }
-  /* Thin, design-matched scrollbars everywhere (E1): 6px, rounded, subtle slate thumb */
+  /* Thin, design-matched scrollbars everywhere: 6px, rounded, subtle slate thumb */
   * {
     scrollbar-width: thin;
     scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
@@ -332,7 +332,7 @@
 
 @layer components {
   /*
-   * Mesh background shell (E1 §2.1) — rendered ONCE by the SPA layout (app/, E2 §3).
+   * Mesh background shell — rendered ONCE by the SPA layout (app/).
    * Gradient underlay + 4 mesh spots + light blobs; grid overlay is a separate element.
    */
   .app-mesh {
@@ -347,7 +347,7 @@
     will-change: transform;
   }
   /*
-   * Background presets (E1 §2.2.1) — an independent axis chosen in Settings → Appearance,
+   * Background presets — an independent axis chosen in Settings → Appearance,
    * driven by data-bg-light / data-bg-dark on <html> (set by useAppearance). Light presets
    * match :root:not(.dark); dark presets match .dark. Absent/"air" = the base .app-mesh above.
    * "aurora" = vivid (pairs well with the liquid style); "calm" = muted; "plain" = near-solid;
@@ -377,7 +377,7 @@
     background-position: center;
     background-repeat: no-repeat;
   }
-  /* Dark mesh glows slightly instead of just tinting (E1 §2.3) */
+  /* Dark mesh glows slightly instead of just tinting */
   .dark .app-mesh {
     background:
       radial-gradient(1100px 700px at 8% -10%, rgba(56, 120, 200, 0.5), transparent 60%),
@@ -409,7 +409,7 @@
     background-position: center;
     background-repeat: no-repeat;
   }
-  /* Barely-visible grain over the mesh — removes the "plastic gradient" flatness (E1 §2.3) */
+  /* Barely-visible grain over the mesh — removes the "plastic gradient" flatness */
   .app-mesh-noise {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 160px 160px;
@@ -435,7 +435,7 @@
       linear-gradient(to bottom, rgba(148, 163, 184, 0.14) 1px, transparent 1px);
   }
 
-  /* Glass surfaces (E1 §2.1 recipe) — used by framework components only */
+  /* Glass surfaces (recipe) — used by framework components only */
   .glass-panel {
     background: var(--glass-bg-panel);
     backdrop-filter: blur(var(--glass-blur-sidebar)) saturate(var(--glass-saturate));
@@ -473,7 +473,7 @@
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
 
-  /* Floating overlays: denser fill, smaller blur (E1 §2.1) */
+  /* Floating overlays: denser fill, smaller blur */
   [data-slot="dialog-content"],
   [data-slot="alert-dialog-content"],
   [data-slot="dropdown-menu-content"],
@@ -494,7 +494,7 @@
   /*
    * Button tiers, sizes and fills live in components/ui/button.tsx (cva).
    * Here — only what utility classes never set: gradient images and shadows
-   * (E1 §2.1, §2.3): quiet single-hue vertical gradient, soft short shadow.
+   * Quiet single-hue vertical gradient, soft short shadow.
    */
   [data-slot="button"][data-variant="default"] {
     background-image: var(--gradient-primary);
@@ -511,7 +511,7 @@
   }
 
   /*
-   * Switch (E1) — glassy toggle, not a flat pill: gradient track (grey→accent),
+   * Switch — glassy toggle, not a flat pill: gradient track (grey→accent),
    * inner top highlight, accent glow when on, floating thumb with its own shadow.
    * The checked track uses --gradient-primary so it follows the appearance accent.
    */
@@ -540,7 +540,7 @@
   }
 
   /*
-   * SwitchRow (E6) — each row is its own glass card: fill + hairline + radius, inner
+   * SwitchRow — each row is its own glass card: fill + hairline + radius, inner
    * top highlight, hover-lift with a soft shadow. Stack with a gap (not divide-y).
    */
   [data-slot="switch-row"] {
@@ -572,7 +572,7 @@
     box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.10);
   }
 
-  /* Global progress bar (E1 §2.3): thin accent gradient under the viewport top */
+  /* Global progress bar: thin accent gradient under the viewport top */
   .global-progress {
     position: fixed;
     inset-inline: 0;
@@ -606,7 +606,7 @@
     }
   }
 
-  /* Table headers: uppercase 12px with letter-spacing (E1 §2.1) */
+  /* Table headers: uppercase 12px with letter-spacing */
   [data-slot="table-head"] {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -614,12 +614,12 @@
     color: var(--muted-foreground);
   }
 
-  /* Empty state: springy icon entrance, accent-tinted circle (E1 §2.3, E4) */
+  /* Empty state: springy icon entrance, accent-tinted circle */
   @media (prefers-reduced-motion: no-preference) {
     [data-slot="empty-state"] {
       animation: fade-rise var(--motion-slow) var(--ease-standard) both;
     }
-    /* SaveBar slides in when a form first becomes dirty (E4 §1) */
+    /* SaveBar slides in when a form first becomes dirty */
     [data-slot="save-bar"] {
       animation: fade-rise var(--motion-base) var(--ease-standard) both;
     }
@@ -672,7 +672,7 @@
     }
   }
 
-  /* Active navigation: blue→mint gradient marker (E1 §2.1) */
+  /* Active navigation: blue→mint gradient marker */
   .nav-item-active {
     position: relative;
     color: var(--sidebar-accent-foreground);
@@ -690,7 +690,7 @@
   }
 
   /*
-   * iOS skin specular sheen (E1 §2.1 experimental variant).
+   * iOS skin specular sheen (experimental variant).
    * A top-down light streak layered over the translucent fill — the "liquid glass" highlight.
    * Done as an extra background layer (not ::before) so it never clips shadows or needs overflow/position.
    * Higher specificity than the base .glass-* rules (same @layer) so it wins under .skin-liquid.

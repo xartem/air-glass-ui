@@ -33,8 +33,13 @@ coverage/
 .env.*
 !.env.example
 
-# Claude Code local settings
-.claude/settings.local.json
+# Claude Code / AI-agent tooling — internal, must NOT ship in the buyer bundle
+.claude/
+.ai-factory/
+.agents/
+.ai-factory.json
+.mcp.json
+skills-lock.json
 
 # Editor / IDE
 .idea/
