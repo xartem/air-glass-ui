@@ -1,3 +1,6 @@
 2026-07-08  Add /shop/orders — e-commerce orders list (DataTable, search + status + date-range filters, status/payment badges).
 2026-07-08  Add /shop/orders/:id — order detail (line items, party panels, totals, timeline, status-change mutation + ConfirmDialog).
 2026-07-08  Add /shop/products (+ /shop/products/:id editor) — products catalog list & react-hook-form + Zod editor (general/pricing/inventory/media, MediaPicker).
+2026-07-08  Add /shop/customers (+ /shop/customers/:id) — CRM list & profile (stat tiles, recent orders, notes).
+2026-07-08  Add /shop/payments — transactions ledger (KPI row, status/method/date filters, gated refund).
+2026-07-08  Add /shop/invoices (+ /shop/invoices/:id) — invoice list & print-ready detail (window.print, .invoice-sheet).
