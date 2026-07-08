@@ -202,6 +202,10 @@ function Sparkline({
   return (
     <ChartContainer
       config={{ y: { label: '', color: 'var(--chart-1)' } }}
+      // Decorative trend line: the headline number/delta it accompanies is already
+      // rendered as text, so hide the (otherwise unlabeled) SVG from assistive tech
+      // instead of exposing empty chart groups (WCAG 1.1.1).
+      aria-hidden="true"
       // fullWidth bleeds edge-to-edge: negative inline margin cancels the card's
       // horizontal padding so the sparkline spans the whole widget (card is
       // overflow-hidden → clipped to its rounded corners, no page overflow).
@@ -480,7 +484,13 @@ export function ChartCard({
           {data.summary.delta !== undefined ? <DeltaPill delta={data.summary.delta} /> : null}
         </div>
       ) : null}
-      <ChartContainer config={config} className="aspect-auto w-full" style={{ height: CHART_HEIGHT[size] }}>
+      <ChartContainer
+        config={config}
+        role="img"
+        aria-label={data.summary?.total ? `${title} — ${data.summary.total}` : title}
+        className="aspect-auto w-full"
+        style={{ height: CHART_HEIGHT[size] }}
+      >
         {data.kind === 'bar' ? (
           <BarChart data={rows} margin={{ top: 4, right: 4, bottom: 0, left: 4 }}>
             <defs>
