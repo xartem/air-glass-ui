@@ -3,6 +3,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import {
   CircleAlert,
   Copy,
+  CreditCard,
   FileText,
   Globe,
   Image,
@@ -11,12 +12,14 @@ import {
   LayoutTemplate,
   Lock,
   Mail,
+  Package,
   Pencil,
   Plus,
   Search,
   Settings2,
   Shapes,
   Trash2,
+  Truck,
   Type,
   Video,
 } from 'lucide-react'
@@ -41,6 +44,26 @@ import { Switch } from '@/components/ui/switch'
 import { SwitchRow } from '@/components/switch-row'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
+import { NumberField } from '@/components/ui/number-field'
+import { Rating } from '@/components/ui/rating'
+import {
+  Stepper,
+  StepperDescription,
+  StepperIndicator,
+  StepperItem,
+  StepperSeparator,
+  StepperTitle,
+} from '@/components/ui/stepper'
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDescription,
+  TimelineIndicator,
+  TimelineItem,
+  TimelineTime,
+  TimelineTitle,
+} from '@/components/ui/timeline'
 
 import type { Permission, RoleDetail } from '@/api'
 import { ChangePasswordDialog } from '@/components/change-password-dialog'
@@ -606,6 +629,134 @@ function BadgesSection() {
         <Badge size="sm">sm</Badge>
         <Badge size="default">default</Badge>
         <Badge size="lg">lg</Badge>
+      </div>
+    </Section>
+  )
+}
+
+function NewComponentsSection() {
+  const [step, setStep] = useState(1)
+  const [rating, setRating] = useState(3)
+  const [quantity, setQuantity] = useState<number | null>(2)
+  // Demo content uses literal technical labels like the other sections;
+  // only the section title is translated (uikit.section.components).
+  const checkoutSteps = ['Cart', 'Shipping', 'Payment']
+  return (
+    <Section id="components" title={t('uikit.section.components')}>
+      {/* Timeline — vertical activity feed / order history */}
+      <div className="max-w-md">
+        <Timeline>
+          <TimelineItem>
+            <TimelineIndicator variant="success">
+              <Package />
+            </TimelineIndicator>
+            <TimelineConnector />
+            <TimelineContent>
+              <TimelineTitle>Order placed</TimelineTitle>
+              <TimelineDescription>Order #1042 was created</TimelineDescription>
+              <TimelineTime>09:24</TimelineTime>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineIndicator variant="info">
+              <CreditCard />
+            </TimelineIndicator>
+            <TimelineConnector />
+            <TimelineContent>
+              <TimelineTitle>Payment confirmed</TimelineTitle>
+              <TimelineDescription>Charged $128.00 to Visa •••• 4242</TimelineDescription>
+              <TimelineTime>09:31</TimelineTime>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineIndicator>
+              <Truck />
+            </TimelineIndicator>
+            <TimelineContent>
+              <TimelineTitle>Awaiting shipment</TimelineTitle>
+              <TimelineDescription>Preparing the package</TimelineDescription>
+              <TimelineTime>—</TimelineTime>
+            </TimelineContent>
+          </TimelineItem>
+        </Timeline>
+      </div>
+      <Separator />
+      {/* Stepper — standalone multi-step progress (horizontal, interactive) */}
+      <div className="space-y-4">
+        <Stepper activeStep={step}>
+          {checkoutSteps.map((title, i) => (
+            <StepperItem key={title} index={i}>
+              <StepperIndicator>{i + 1}</StepperIndicator>
+              <div className="hidden sm:block">
+                <StepperTitle>{title}</StepperTitle>
+                <StepperDescription>Step {i + 1}</StepperDescription>
+              </div>
+              <StepperSeparator />
+            </StepperItem>
+          ))}
+        </Stepper>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={step === 0}
+            onClick={() => setStep((s) => Math.max(0, s - 1))}
+          >
+            {t('common.back')}
+          </Button>
+          <Button
+            size="sm"
+            disabled={step >= checkoutSteps.length - 1}
+            onClick={() => setStep((s) => Math.min(checkoutSteps.length - 1, s + 1))}
+          >
+            {t('wizard.next')}
+          </Button>
+        </div>
+      </div>
+      <Separator />
+      {/* Rating — readonly display + interactive input + size axis */}
+      <div className="flex flex-wrap items-center gap-8">
+        <div className="flex flex-col gap-2">
+          <span className="text-xs text-muted-foreground">readonly</span>
+          <Rating value={4} readOnly />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-xs text-muted-foreground">interactive</span>
+          <Rating value={rating} onValueChange={setRating} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-xs text-muted-foreground">sm / lg</span>
+          <div className="flex items-center gap-3">
+            <Rating value={3} readOnly size="sm" />
+            <Rating value={3} readOnly size="lg" />
+          </div>
+        </div>
+      </div>
+      <Separator />
+      {/* NumberField — steppers, bounds, size axis */}
+      <div className="flex flex-wrap items-end gap-6">
+        <div className="flex w-32 flex-col gap-2">
+          <Label>quantity</Label>
+          <NumberField
+            value={quantity}
+            onValueChange={setQuantity}
+            min={0}
+            max={99}
+            step={1}
+          />
+        </div>
+        <div className="flex w-32 flex-col gap-2">
+          <span className="text-xs text-muted-foreground">sm</span>
+          <NumberField defaultValue={1} min={0} max={10} inputSize="sm" />
+        </div>
+        <div className="flex w-32 flex-col gap-2">
+          <span className="text-xs text-muted-foreground">lg</span>
+          <NumberField defaultValue={1} min={0} max={10} inputSize="lg" />
+        </div>
+        <div className="flex w-32 flex-col gap-2">
+          <span className="text-xs text-muted-foreground">disabled</span>
+          <NumberField defaultValue={5} disabled />
+        </div>
       </div>
     </Section>
   )
@@ -1507,6 +1658,7 @@ export function UiKitPage() {
           <LanguageSection />
           <SaveBarSection />
           <BadgesSection />
+          <NewComponentsSection />
           <CardsSection />
           <TreeSection />
           <RepeaterSection />
