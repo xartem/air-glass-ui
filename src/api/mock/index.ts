@@ -3,6 +3,7 @@ import type {
   ActivityEntry,
   CustomerFilters,
   CustomerStatus,
+  InboxFolder,
   InvoiceFilters,
   InvoiceStatus,
   LayoutOverrides,
@@ -58,6 +59,8 @@ import {
   saveDashboardLayout,
 } from "./dashboard";
 import { getAnalytics } from "./analytics";
+import { getThread, listThreads, markRead, sendMessage } from "./inbox";
+import { getBoard, moveCard } from "./kanban";
 import {
   MEDIA_PRESETS,
   buildSettingsPayload,
@@ -565,6 +568,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
         "#ddd6fe",
         "#a5f3fc",
       ];
+      const base = Date.now();
       const items = names
         .filter((name) => name.includes(q))
         .map((name, index) => ({
@@ -573,6 +577,11 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
           preview_url: `data:image/svg+xml,${encodeURIComponent(
             `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" fill="${swatches[index % swatches.length]}"/></svg>`,
           )}`,
+          // Demo metadata for the file-manager details panel (deterministic, stable-ish).
+          size: 24_000 + ((index * 37_931) % 4_200_000),
+          modified_at: new Date(
+            base - (index + 1) * 8 * 3600 * 1000,
+          ).toISOString(),
         }));
       return { rows: items, total: items.length, page: 1, per_page: 50 };
     },
@@ -1100,6 +1109,71 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
             : String(options.query.period),
         ),
       );
+    },
+  },
+
+  /* ---- inbox / chat ---- */
+  {
+    method: "GET",
+    pattern: /^\/inbox$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const folder = (
+        query.folder === undefined ? "inbox" : String(query.folder)
+      ) as InboxFolder;
+      const q = query.q === undefined ? undefined : String(query.q);
+      return listThreads(folder, q);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/inbox\/threads\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return getThread(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/inbox\/threads\/(\d+)\/messages$/,
+    handler: (options, params) => {
+      requireSession();
+      return sendMessage(
+        Number(params[0]),
+        String((options.body as { body: string }).body ?? ""),
+      );
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/inbox\/threads\/(\d+)\/read$/,
+    handler: (_options, params) => {
+      requireSession();
+      return markRead(Number(params[0]));
+    },
+  },
+
+  /* ---- kanban board ---- */
+  {
+    method: "GET",
+    pattern: /^\/kanban$/,
+    handler: () => {
+      requireSession();
+      return getBoard();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/kanban\/move$/,
+    handler: (options) => {
+      requireSession();
+      const body = options.body as {
+        card_id: string;
+        to_column: string;
+        to_index: number;
+      };
+      return moveCard(body.card_id, body.to_column, Number(body.to_index));
     },
   },
 ];

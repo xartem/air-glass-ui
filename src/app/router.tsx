@@ -178,6 +178,24 @@ const pricingPage = () =>
       default: m.PricingPage,
     })),
   );
+const inboxPage = () =>
+  lazyPage(() =>
+    import("@/features/inbox/inbox-page").then((m) => ({
+      default: m.InboxPage,
+    })),
+  );
+const kanbanPage = () =>
+  lazyPage(() =>
+    import("@/features/kanban/kanban-page").then((m) => ({
+      default: m.KanbanPage,
+    })),
+  );
+const mediaPage = () =>
+  lazyPage(() =>
+    import("@/features/media/media-page").then((m) => ({
+      default: m.MediaPage,
+    })),
+  );
 
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
@@ -207,7 +225,6 @@ const PLACEHOLDER_ROUTES: {
   titleKey: string;
   stage: number;
 }[] = [
-  { path: "/media", perm: "media.view", titleKey: "nav.media", stage: 4 },
   { path: "/c/:collection", titleKey: "nav.collections", stage: 6 },
   { path: "/c/:collection/categories", titleKey: "nav.collections", stage: 6 },
   { path: "/c/:collection/:id", titleKey: "nav.collections", stage: 6 },
@@ -537,6 +554,28 @@ export const router = createBrowserRouter(
         },
         // Pricing: presentational demo, any authenticated user (no permission gate).
         { path: "/pricing", element: pricingPage() },
+        {
+          path: "/inbox",
+          element: (
+            <RequirePermission perm="inbox.view">
+              {inboxPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/kanban",
+          element: (
+            <RequirePermission perm="kanban.view">
+              {kanbanPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/media",
+          element: (
+            <RequirePermission perm="media.view">{mediaPage()}</RequirePermission>
+          ),
+        },
         ...PLACEHOLDER_ROUTES.map((route) => ({
           path: route.path,
           element: (

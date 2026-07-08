@@ -1,0 +1,1 @@
+2026-07-08 — File manager (/media): replaced the placeholder with a real file manager — virtual folder rail + breadcrumb, grid/list view toggle, thumbnails/type icons, single selection with a details panel, and a mock upload action. Consumes api.media.list (extended with size/modified_at). Reachable with media.view.

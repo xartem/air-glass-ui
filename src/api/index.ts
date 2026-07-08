@@ -1,6 +1,10 @@
 import { apiFetch, apiStream } from "./client";
 import type {
   AnalyticsPayload,
+  InboxFolder,
+  InboxListPayload,
+  InboxThread,
+  KanbanBoard,
   AppearanceSettings,
   ActivityEntry,
   AiConversationDetail,
@@ -443,6 +447,30 @@ export const api = {
   analytics: {
     get: (period: Period) =>
       apiFetch<AnalyticsPayload>("/analytics", { query: { period } }),
+  },
+
+  /* Inbox / chat (build-demo-screen-catalog): folders, threads, send + mark-read. */
+  inbox: {
+    list: (folder: InboxFolder, q?: string) =>
+      apiFetch<InboxListPayload>("/inbox", { query: { folder, q } }),
+    get: (id: number) => apiFetch<InboxThread>(`/inbox/threads/${id}`),
+    send: (id: number, body: string) =>
+      apiFetch<InboxThread>(`/inbox/threads/${id}/messages`, {
+        method: "POST",
+        body: { body },
+      }),
+    markRead: (id: number) =>
+      apiFetch<{ ok: true }>(`/inbox/threads/${id}/read`, { method: "POST" }),
+  },
+
+  /* Kanban board (build-demo-screen-catalog): fetch the board + persist card moves. */
+  kanban: {
+    get: () => apiFetch<KanbanBoard>("/kanban"),
+    move: (cardId: string, toColumn: string, toIndex: number) =>
+      apiFetch<KanbanBoard>("/kanban/move", {
+        method: "POST",
+        body: { card_id: cardId, to_column: toColumn, to_index: toIndex },
+      }),
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */
