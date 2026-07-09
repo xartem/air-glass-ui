@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>Universal CMS — Admin</title>
+    <script>
+      // Pre-paint reading direction: seed <html dir> from the saved appearance so an
+      // RTL user never sees an LTR flash before React mounts. applyAppearance() takes
+      // over as the source of truth once hydrated. Fails silently to 'ltr'.
+      try {
+        if (JSON.parse(localStorage.getItem('mock.appearance')).dir === 'rtl') {
+          document.documentElement.dir = 'rtl'
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

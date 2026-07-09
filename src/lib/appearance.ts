@@ -81,5 +81,15 @@ export function useAppearance() {
     setOverride(null)
   }
 
-  return { query, override, effectiveStyle: override ?? site?.style ?? 'glass', cycleStyle, clearOverride }
+  return {
+    query,
+    override,
+    effectiveStyle: override ?? site?.style ?? 'glass',
+    // Effective reading direction, defaulting to 'ltr' until the query resolves — a
+    // style override only previews the skin, never the direction. Consumed by the
+    // global Radix DirectionProvider so overlays mirror in RTL, not just CSS logicals.
+    dir: site?.dir ?? 'ltr',
+    cycleStyle,
+    clearOverride,
+  }
 }

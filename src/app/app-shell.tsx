@@ -24,6 +24,7 @@ import { NavLink, Outlet, useLocation } from 'react-router'
 import { api } from '@/api'
 import { buildNavGroups, isNavParent, type NavEntry, type NavItem, type NavParent } from '@/app/nav'
 import { Button } from '@/components/ui/button'
+import { DirectionProvider } from '@/components/ui/direction'
 import { AiPanel } from '@/components/ai-panel'
 import { ThemeCustomizer } from '@/components/theme-customizer'
 import { CommandPalette, CommandPaletteTrigger } from '@/components/command-palette'
@@ -594,7 +595,8 @@ export function AppShell() {
   const { dark, toggle } = useDarkMode()
   // Site-wide appearance (E1 §2.2.1) applied to <html>; topbar button quick-cycles the style.
   // clearOverride lets the Theme Customizer drop the transient style preview on commit.
-  const { effectiveStyle, cycleStyle, clearOverride } = useAppearance()
+  // dir feeds the Radix DirectionProvider so overlays (menus, selects, sliders) mirror in RTL.
+  const { effectiveStyle, dir, cycleStyle, clearOverride } = useAppearance()
   const meshRef = useMeshParallax()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === '1')
@@ -610,6 +612,7 @@ export function AppShell() {
   }
 
   return (
+    <DirectionProvider dir={dir}>
     <div className="flex min-h-screen">
       {/* Skip link (WCAG 2.4.1): first tab stop, jumps past the sidebar/topbar to <main>.
           Visually hidden until focused. */}
@@ -771,5 +774,6 @@ export function AppShell() {
         }
       />
     </div>
+    </DirectionProvider>
   )
 }
