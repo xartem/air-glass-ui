@@ -1254,5 +1254,19 @@
   "states.wizard.step2.desc": "Ajoutez votre nom et votre avatar pour que votre équipe vous reconnaisse.",
   "states.wizard.step3.label": "Terminer",
   "states.wizard.step3.title": "Tout est prêt",
-  "states.wizard.step3.desc": "Tout est prêt. Cliquez sur Terminer pour accéder à votre tableau de bord."
+  "states.wizard.step3.desc": "Tout est prêt. Cliquez sur Terminer pour accéder à votre tableau de bord.",
+  "nav.group.menu": "Menu",
+  "nav.group.pages": "Pages",
+  "nav.group.components": "Composants",
+  "nav.group.admin": "Administration",
+  "nav.dashboards": "Tableaux de bord",
+  "nav.default": "Par défaut",
+  "nav.apps": "Applications",
+  "nav.ecommerce": "E-commerce",
+  "nav.chat": "Chat",
+  "nav.fileManager": "Gestionnaire de fichiers",
+  "nav.configuration": "Configuration",
+  "nav.access": "Accès",
+  "nav.system": "Système",
+  "nav.profile": "Profil"
 }

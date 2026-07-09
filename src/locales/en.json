@@ -1254,5 +1254,19 @@
   "states.wizard.step2.desc": "Add your name and avatar so your team recognizes you.",
   "states.wizard.step3.label": "Finish",
   "states.wizard.step3.title": "You are all set",
-  "states.wizard.step3.desc": "Everything is ready. Click finish to jump into your dashboard."
+  "states.wizard.step3.desc": "Everything is ready. Click finish to jump into your dashboard.",
+  "nav.group.menu": "Menu",
+  "nav.group.pages": "Pages",
+  "nav.group.components": "Components",
+  "nav.group.admin": "Admin",
+  "nav.dashboards": "Dashboards",
+  "nav.default": "Default",
+  "nav.apps": "Apps",
+  "nav.ecommerce": "Ecommerce",
+  "nav.chat": "Chat",
+  "nav.fileManager": "File Manager",
+  "nav.configuration": "Configuration",
+  "nav.access": "Access",
+  "nav.system": "System",
+  "nav.profile": "Profile"
 }

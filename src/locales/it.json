@@ -1254,5 +1254,19 @@
   "states.wizard.step2.desc": "Aggiungi nome e avatar così il tuo team ti riconosce.",
   "states.wizard.step3.label": "Fine",
   "states.wizard.step3.title": "Tutto pronto",
-  "states.wizard.step3.desc": "Tutto è pronto. Fai clic su Fine per accedere alla dashboard."
+  "states.wizard.step3.desc": "Tutto è pronto. Fai clic su Fine per accedere alla dashboard.",
+  "nav.group.menu": "Menu",
+  "nav.group.pages": "Pagine",
+  "nav.group.components": "Componenti",
+  "nav.group.admin": "Amministrazione",
+  "nav.dashboards": "Dashboard",
+  "nav.default": "Predefinito",
+  "nav.apps": "App",
+  "nav.ecommerce": "E-commerce",
+  "nav.chat": "Chat",
+  "nav.fileManager": "Gestione file",
+  "nav.configuration": "Configurazione",
+  "nav.access": "Accesso",
+  "nav.system": "Sistema",
+  "nav.profile": "Profilo"
 }

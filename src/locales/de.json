@@ -1254,5 +1254,19 @@
   "states.wizard.step2.desc": "Fügen Sie Namen und Avatar hinzu, damit Ihr Team Sie erkennt.",
   "states.wizard.step3.label": "Fertig",
   "states.wizard.step3.title": "Alles bereit",
-  "states.wizard.step3.desc": "Alles ist bereit. Klicken Sie auf Fertig, um zu Ihrem Dashboard zu gelangen."
+  "states.wizard.step3.desc": "Alles ist bereit. Klicken Sie auf Fertig, um zu Ihrem Dashboard zu gelangen.",
+  "nav.group.menu": "Menü",
+  "nav.group.pages": "Seiten",
+  "nav.group.components": "Komponenten",
+  "nav.group.admin": "Administration",
+  "nav.dashboards": "Dashboards",
+  "nav.default": "Standard",
+  "nav.apps": "Apps",
+  "nav.ecommerce": "E-Commerce",
+  "nav.chat": "Chat",
+  "nav.fileManager": "Dateimanager",
+  "nav.configuration": "Konfiguration",
+  "nav.access": "Zugriff",
+  "nav.system": "System",
+  "nav.profile": "Profil"
 }

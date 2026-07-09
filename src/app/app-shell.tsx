@@ -21,7 +21,7 @@ import {
 import { NavLink, Outlet, useLocation } from 'react-router'
 
 import { api } from '@/api'
-import { buildNavGroups, isNavParent, type NavItem, type NavParent } from '@/app/nav'
+import { buildNavGroups, isNavParent, type NavEntry, type NavItem, type NavParent } from '@/app/nav'
 import { Button } from '@/components/ui/button'
 import { AiPanel } from '@/components/ai-panel'
 import { CommandPalette, CommandPaletteTrigger } from '@/components/command-palette'
@@ -35,6 +35,9 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
@@ -119,12 +122,22 @@ function matchesPath(item: { to: string }, pathname: string): boolean {
   return item.to === '/' ? pathname === '/' : pathname === item.to || pathname.startsWith(`${item.to}/`)
 }
 
+/** Depth-first leaf collection — parents are toggles, only leaves carry routes. */
+function collectLeaves(entry: NavEntry): NavItem[] {
+  return isNavParent(entry) ? entry.children.flatMap(collectLeaves) : [entry]
+}
+
+/** All parent keys in a subtree — used to prune stale persisted open/close overrides. */
+function collectParentKeys(entry: NavEntry): string[] {
+  return isNavParent(entry) ? [entry.key, ...entry.children.flatMap(collectParentKeys)] : []
+}
+
 /** Only the DEEPEST matching leaf is active — /c/products must not light up on /c/products/categories. */
-function resolveActiveTo(groups: { items: (NavItem | NavParent)[] }[], pathname: string): string | null {
+function resolveActiveTo(groups: { items: NavEntry[] }[], pathname: string): string | null {
   let best: string | null = null
   for (const group of groups) {
     for (const entry of group.items) {
-      for (const item of isNavParent(entry) ? entry.children : [entry]) {
+      for (const item of collectLeaves(entry)) {
         if (matchesPath(item, pathname) && (best === null || item.to.length > best.length)) best = item.to
       }
     }
@@ -132,16 +145,33 @@ function resolveActiveTo(groups: { items: (NavItem | NavParent)[] }[], pathname:
   return best
 }
 
+/** Ancestor parent keys of the active leaf, outermost first — the whole trail auto-expands. */
+function activeParentTrail(entries: NavEntry[], activeTo: string | null): string[] {
+  if (activeTo === null) return []
+  for (const entry of entries) {
+    if (!isNavParent(entry)) continue
+    if (collectLeaves(entry).some((leaf) => leaf.to === activeTo)) {
+      return [entry.key, ...activeParentTrail(entry.children, activeTo)]
+    }
+  }
+  return []
+}
+
+/** RBAC filter, recursive: leaves drop by permission; a parent disappears once it has no children. */
+function filterEntry(entry: NavEntry, can: (perm?: string) => boolean): NavEntry | null {
+  if (!isNavParent(entry)) return can(entry.perm) ? entry : null
+  const children = entry.children.map((child) => filterEntry(child, can)).filter((child): child is NavEntry => child !== null)
+  return children.length > 0 ? { ...entry, children } : null
+}
+
 function SidebarLeaf({
   item,
   collapsed,
-  indent = false,
   activeTo,
   onNavigate,
 }: {
   item: NavItem
   collapsed: boolean
-  indent?: boolean
   activeTo: string | null
   onNavigate?: () => void
 }) {
@@ -156,7 +186,6 @@ function SidebarLeaf({
       className={cn(
         'flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm transition-colors',
         collapsed && 'justify-center px-0 py-2',
-        !collapsed && indent && 'ms-4',
         active
           ? 'nav-item-active font-medium'
           : 'text-sidebar-foreground hover:bg-muted hover:text-foreground',
@@ -176,23 +205,61 @@ function SidebarLeaf({
   )
 }
 
-/** Second-level node: collapsible sub-tree expanded, flyout menu in the icon rail (shell contract). */
+/** Icon-rail flyout entries: leaves are links; a nested parent becomes a submenu. */
+function RailMenuItems({
+  entries,
+  onNavigate,
+}: {
+  entries: NavEntry[]
+  onNavigate?: () => void
+}) {
+  return (
+    <>
+      {entries.map((entry) =>
+        isNavParent(entry) ? (
+          <DropdownMenuSub key={entry.key}>
+            <DropdownMenuSubTrigger>
+              <entry.icon className="size-4" />
+              {entry.label}
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <RailMenuItems entries={entry.children} onNavigate={onNavigate} />
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        ) : (
+          <DropdownMenuItem key={entry.to} asChild>
+            <NavLink to={entry.to} onClick={onNavigate}>
+              <entry.icon className="size-4" />
+              {entry.label}
+            </NavLink>
+          </DropdownMenuItem>
+        ),
+      )}
+    </>
+  )
+}
+
+/**
+ * Collapsible node, rendered recursively: a nested parent nests one level deeper
+ * (expanded) or opens a submenu (icon rail). Indentation compounds through the
+ * child container's logical inset, so RTL mirrors it automatically.
+ */
 function SidebarParent({
   parent,
   collapsed,
   activeTo,
-  open,
-  onToggle,
+  isParentOpen,
+  onToggleParent,
   onNavigate,
 }: {
   parent: NavParent
   collapsed: boolean
   activeTo: string | null
-  open: boolean
-  onToggle: () => void
+  isParentOpen: (parent: NavParent) => boolean
+  onToggleParent: (parent: NavParent) => void
   onNavigate?: () => void
 }) {
-  const holdsActive = parent.children.some((child) => child.to === activeTo)
+  const holdsActive = collectLeaves(parent).some((leaf) => leaf.to === activeTo)
   if (collapsed) {
     return (
       <DropdownMenu>
@@ -212,23 +279,17 @@ function SidebarParent({
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right" align="start">
           <DropdownMenuLabel>{parent.label}</DropdownMenuLabel>
-          {parent.children.map((child) => (
-            <DropdownMenuItem key={child.to} asChild>
-              <NavLink to={child.to} onClick={onNavigate}>
-                <child.icon className="size-4" />
-                {child.label}
-              </NavLink>
-            </DropdownMenuItem>
-          ))}
+          <RailMenuItems entries={parent.children} onNavigate={onNavigate} />
         </DropdownMenuContent>
       </DropdownMenu>
     )
   }
+  const open = isParentOpen(parent)
   return (
     <div>
       <button
         type="button"
-        onClick={onToggle}
+        onClick={() => onToggleParent(parent)}
         aria-expanded={open}
         className={cn(
           'flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm transition-colors',
@@ -242,10 +303,22 @@ function SidebarParent({
         <ChevronDown className={cn('size-3 shrink-0 transition-transform', !open && '-rotate-90')} />
       </button>
       {open ? (
-        <div className="space-y-0.5">
-          {parent.children.map((child) => (
-            <SidebarLeaf key={child.to} item={child} collapsed={false} indent activeTo={activeTo} onNavigate={onNavigate} />
-          ))}
+        <div className="ms-3 space-y-0.5 border-s border-border/60 ps-1">
+          {parent.children.map((child) =>
+            isNavParent(child) ? (
+              <SidebarParent
+                key={child.key}
+                parent={child}
+                collapsed={false}
+                activeTo={activeTo}
+                isParentOpen={isParentOpen}
+                onToggleParent={onToggleParent}
+                onNavigate={onNavigate}
+              />
+            ) : (
+              <SidebarLeaf key={child.to} item={child} collapsed={false} activeTo={activeTo} onNavigate={onNavigate} />
+            ),
+          )}
         </div>
       ) : null}
     </div>
@@ -264,49 +337,65 @@ function SidebarNav({
   const [overrides, setOverrides] = useState<Record<string, GroupOverride>>(readGroupOverrides)
   const [parentOverrides, setParentOverrides] = useState<Record<string, GroupOverride>>(readParentOverrides)
 
-  // RBAC filter: children first, then parents with no permitted children disappear.
+  // RBAC filter (recursive): leaves drop by permission; a parent with no permitted descendants disappears.
   const groups = buildNavGroups()
     .map((group) => ({
       ...group,
-      items: group.items
-        .map((entry) =>
-          isNavParent(entry) ? { ...entry, children: entry.children.filter((child) => can(child.perm)) } : entry,
-        )
-        .filter((entry) => (isNavParent(entry) ? entry.children.length > 0 : can(entry.perm))),
+      items: group.items.map((entry) => filterEntry(entry, can)).filter((entry): entry is NavEntry => entry !== null),
     }))
     .filter((group) => group.items.length > 0)
 
   const activeTo = resolveActiveTo(groups, pathname)
 
   const activeGroupKey = groups.find((group) =>
-    group.items.some((entry) =>
-      isNavParent(entry) ? entry.children.some((child) => child.to === activeTo) : entry.to === activeTo,
-    ),
+    group.items.some((entry) => collectLeaves(entry).some((leaf) => leaf.to === activeTo)),
   )?.key
 
-  const activeParentKey = groups
-    .flatMap((group) => group.items)
-    .filter(isNavParent)
-    .find((parent) => parent.children.some((child) => child.to === activeTo))?.key
+  // The full chain of ancestor keys, so every parent along the active trail auto-expands.
+  const parentTrail = groups.flatMap((group) => activeParentTrail(group.items, activeTo))
+  const parentTrailKey = parentTrail.join('\n')
+  const activeParentKeys = new Set(parentTrail)
 
   const isParentOpen = (parent: NavParent): boolean =>
-    (parentOverrides[parent.key] ?? (parent.key === activeParentKey ? 'open' : 'closed')) === 'open'
+    (parentOverrides[parent.key] ?? (activeParentKeys.has(parent.key) ? 'open' : 'closed')) === 'open'
 
-  // Navigating into a manually-closed parent re-opens it (mirror of the group behavior).
+  // Drop persisted overrides for keys that no longer exist (e.g. after a nav re-org).
   useEffect(() => {
-    if (!activeParentKey) return
+    const liveKeys = new Set(
+      buildNavGroups().flatMap((group) => group.items.flatMap(collectParentKeys)),
+    )
     setParentOverrides((current) => {
-      if (current[activeParentKey] !== 'closed') return current
+      const stale = Object.keys(current).filter((key) => !liveKeys.has(key))
+      if (stale.length === 0) return current
+      if (import.meta.env.DEV) console.warn('[nav] dropping stale parent keys:', stale)
       const next = { ...current }
-      delete next[activeParentKey]
+      for (const key of stale) delete next[key]
       localStorage.setItem(NAV_PARENTS_KEY, JSON.stringify(next))
       return next
     })
-  }, [activeParentKey])
+  }, [])
+
+  // Navigating into a manually-closed parent re-opens its whole trail (mirror of the group behavior).
+  useEffect(() => {
+    if (!parentTrailKey) return
+    setParentOverrides((current) => {
+      const next = { ...current }
+      let changed = false
+      for (const key of parentTrailKey.split('\n')) {
+        if (next[key] === 'closed') {
+          delete next[key]
+          changed = true
+        }
+      }
+      if (!changed) return current
+      localStorage.setItem(NAV_PARENTS_KEY, JSON.stringify(next))
+      return next
+    })
+  }, [parentTrailKey])
 
   function toggleParent(parent: NavParent) {
     setParentOverrides((current) => {
-      const openNow = (current[parent.key] ?? (parent.key === activeParentKey ? 'open' : 'closed')) === 'open'
+      const openNow = (current[parent.key] ?? (activeParentKeys.has(parent.key) ? 'open' : 'closed')) === 'open'
       const next: Record<string, GroupOverride> = { ...current, [parent.key]: openNow ? 'closed' : 'open' }
       localStorage.setItem(NAV_PARENTS_KEY, JSON.stringify(next))
       return next
@@ -379,8 +468,8 @@ function SidebarNav({
                       parent={entry}
                       collapsed={collapsed}
                       activeTo={activeTo}
-                      open={isParentOpen(entry)}
-                      onToggle={() => toggleParent(entry)}
+                      isParentOpen={isParentOpen}
+                      onToggleParent={toggleParent}
                       onNavigate={onNavigate}
                     />
                   ) : (

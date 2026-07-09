@@ -1254,5 +1254,19 @@
   "states.wizard.step2.desc": "Добавьте имя и аватар, чтобы команда вас узнавала.",
   "states.wizard.step3.label": "Готово",
   "states.wizard.step3.title": "Всё готово",
-  "states.wizard.step3.desc": "Всё готово. Нажмите «Готово», чтобы перейти к дашборду."
+  "states.wizard.step3.desc": "Всё готово. Нажмите «Готово», чтобы перейти к дашборду.",
+  "nav.group.menu": "Меню",
+  "nav.group.pages": "Страницы",
+  "nav.group.components": "Компоненты",
+  "nav.group.admin": "Администрирование",
+  "nav.dashboards": "Дашборды",
+  "nav.default": "Основной",
+  "nav.apps": "Приложения",
+  "nav.ecommerce": "Электронная коммерция",
+  "nav.chat": "Чат",
+  "nav.fileManager": "Файловый менеджер",
+  "nav.configuration": "Конфигурация",
+  "nav.access": "Доступ",
+  "nav.system": "Система",
+  "nav.profile": "Профиль"
 }

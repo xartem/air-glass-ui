@@ -1254,5 +1254,19 @@
   "states.wizard.step2.desc": "Añade tu nombre y avatar para que tu equipo te reconozca.",
   "states.wizard.step3.label": "Finalizar",
   "states.wizard.step3.title": "Todo listo",
-  "states.wizard.step3.desc": "Todo está listo. Haz clic en finalizar para ir a tu panel."
+  "states.wizard.step3.desc": "Todo está listo. Haz clic en finalizar para ir a tu panel.",
+  "nav.group.menu": "Menú",
+  "nav.group.pages": "Páginas",
+  "nav.group.components": "Componentes",
+  "nav.group.admin": "Administración",
+  "nav.dashboards": "Paneles",
+  "nav.default": "Predeterminado",
+  "nav.apps": "Aplicaciones",
+  "nav.ecommerce": "Ecommerce",
+  "nav.chat": "Chat",
+  "nav.fileManager": "Gestor de archivos",
+  "nav.configuration": "Configuración",
+  "nav.access": "Acceso",
+  "nav.system": "Sistema",
+  "nav.profile": "Perfil"
 }

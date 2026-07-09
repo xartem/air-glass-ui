@@ -1254,5 +1254,19 @@
   "states.wizard.step2.desc": "Dodaj imię i awatar, aby zespół Cię rozpoznał.",
   "states.wizard.step3.label": "Zakończ",
   "states.wizard.step3.title": "Wszystko gotowe",
-  "states.wizard.step3.desc": "Wszystko gotowe. Kliknij Zakończ, aby przejść do pulpitu."
+  "states.wizard.step3.desc": "Wszystko gotowe. Kliknij Zakończ, aby przejść do pulpitu.",
+  "nav.group.menu": "Menu",
+  "nav.group.pages": "Strony",
+  "nav.group.components": "Komponenty",
+  "nav.group.admin": "Administracja",
+  "nav.dashboards": "Pulpity",
+  "nav.default": "Domyślny",
+  "nav.apps": "Aplikacje",
+  "nav.ecommerce": "E-commerce",
+  "nav.chat": "Czat",
+  "nav.fileManager": "Menedżer plików",
+  "nav.configuration": "Konfiguracja",
+  "nav.access": "Dostęp",
+  "nav.system": "System",
+  "nav.profile": "Profil"
 }
