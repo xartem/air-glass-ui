@@ -16,8 +16,11 @@ screens, and an in-repo mock API so the whole template runs and demos with **zer
   rich-text & code editors, calendar, OTP, resizable panels, sidebar, and more (shadcn/ui + Radix
   + Base UI).
 - **Ready-made screens** — authentication (login / forgot / reset / MFA enroll), a customizable
-  widget dashboard, users list & editor, roles & permissions (RBAC), profile, settings,
-  appearance, activity log, AI pages, help, and a UI-kit showcase.
+  widget dashboard, an analytics dashboard, a full e-commerce suite (orders, products, customers,
+  payments, invoices, discounts, delivery), a kanban board, an inbox/chat, a media file manager,
+  a pricing page, users list & editor, roles & permissions (RBAC), profile, settings, appearance,
+  activity log, AI pages, help, a states showcase (error / empty / loading / onboarding), and a
+  UI-kit showcase.
 - **Customizable dashboard** — 12-column masonry widget grid with drag-and-drop ordering, size
   tiers, hide/restore, per-role layouts, and a global period picker.
 - **Auth & permissions** — permission-gated routes, guest-only guards, and an MFA enrollment gate,

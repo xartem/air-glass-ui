@@ -1,1 +1,0 @@
-2026-07-08 — Analytics dashboard (/analytics): Recharts screen with a period picker, KPI stat tiles (sessions, revenue, conversion, AOV), revenue/sessions area chart, traffic-channels bar chart, top-products list and a conversion funnel; mock api.analytics.get(period).

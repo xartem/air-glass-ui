@@ -1,1 +1,0 @@
-2026-07-08 — Pricing page (/pricing): presentational demo with a monthly/annual billing toggle, three tier cards (highlighted "popular"), and a feature-comparison table. No permission gate; local mock plan data.

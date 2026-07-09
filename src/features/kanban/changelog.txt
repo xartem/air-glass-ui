@@ -1,1 +1,0 @@
-2026-07-08 — Kanban board (/kanban): dnd-kit board with four columns of draggable cards (title, labels, assignee, due date); cards move within and across columns with pointer/touch/keyboard sensors and a drag overlay, persisted via mock api.kanban.move. Reachable with kanban.view.

@@ -1,1 +1,0 @@
-2026-07-08 — States showcase (/showcase/states): a presentational demo of the template state surfaces — error pages (404/403/500), empty-state variants, a loading-skeleton sample, and a multi-step onboarding wizard (WizardDialog). No mock endpoints; any authenticated user.

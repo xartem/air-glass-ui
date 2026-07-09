@@ -1,1 +1,0 @@
-2026-07-08 — Inbox / chat (/inbox): three-pane messaging screen (folder rail, searchable conversation list with unread badges, message thread + composer); collapses to a single-pane drill-down on mobile. Mock api.inbox.list/get/send/markRead. Reachable with inbox.view.
