@@ -1,14 +1,18 @@
-import { useState } from 'react'
-import { de, enUS, es, fr, it, pl, ru, uk } from 'date-fns/locale'
-import { CalendarIcon, X } from 'lucide-react'
-import type { DateRange } from 'react-day-picker'
+import { useState } from "react";
+import { de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
+import { CalendarIcon, X } from "lucide-react";
+import type { DateRange } from "react-day-picker";
 
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { t, type AdminLocale } from '@/lib/i18n'
-import { useLocale } from '@/lib/use-locale'
-import { cn } from '@/lib/utils'
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { t, type AdminLocale } from "@/lib/i18n";
+import { useLocale } from "@/lib/use-locale";
+import { cn } from "@/lib/utils";
 
 /*
  * DateRangePicker — shared library control (E6): a period filter for lists
@@ -16,26 +20,35 @@ import { cn } from '@/lib/utils'
  * `YYYY-MM-DD` strings so it round-trips through URL search params untouched.
  */
 
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = { ru, en: enUS, uk, de, fr, es, it, pl }
+const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
+  ru,
+  en: enUS,
+  uk,
+  de,
+  fr,
+  es,
+  it,
+  pl,
+};
 
 export interface DateRangeValue {
-  from?: string
-  to?: string
+  from?: string;
+  to?: string;
 }
 
 /** Parse as a LOCAL date — `new Date('YYYY-MM-DD')` is UTC and shifts a day in western TZs. */
 function parseDay(value?: string): Date | undefined {
-  if (!value) return undefined
-  const [year, month, day] = value.split('-').map(Number)
-  if (!year || !month || !day) return undefined
-  return new Date(year, month - 1, day)
+  if (!value) return undefined;
+  const [year, month, day] = value.split("-").map(Number);
+  if (!year || !month || !day) return undefined;
+  return new Date(year, month - 1, day);
 }
 
 function serializeDay(date?: Date): string | undefined {
-  if (!date) return undefined
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${date.getFullYear()}-${month}-${day}`
+  if (!date) return undefined;
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
 }
 
 export function DateRangePicker({
@@ -44,20 +57,22 @@ export function DateRangePicker({
   placeholder,
   className,
 }: {
-  value: DateRangeValue
-  onChange: (next: DateRangeValue) => void
-  placeholder?: string
-  className?: string
+  value: DateRangeValue;
+  onChange: (next: DateRangeValue) => void;
+  placeholder?: string;
+  className?: string;
 }) {
-  const locale = useLocale()
-  const [open, setOpen] = useState(false)
+  const locale = useLocale();
+  const [open, setOpen] = useState(false);
 
-  const from = parseDay(value.from)
-  const to = parseDay(value.to)
-  const selected: DateRange | undefined = from || to ? { from, to } : undefined
+  const from = parseDay(value.from);
+  const to = parseDay(value.to);
+  const selected: DateRange | undefined = from || to ? { from, to } : undefined;
   const label = selected
-    ? [from?.toLocaleDateString(locale), to?.toLocaleDateString(locale)].filter(Boolean).join(' — ')
-    : (placeholder ?? t('common.date_range'))
+    ? [from?.toLocaleDateString(locale), to?.toLocaleDateString(locale)]
+        .filter(Boolean)
+        .join(" — ")
+    : (placeholder ?? t("common.date_range"));
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -67,7 +82,12 @@ export function DateRangePicker({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className={cn('justify-start font-normal', !selected && 'text-muted-foreground', selected && 'pe-10', className)}
+            className={cn(
+              "justify-start font-normal",
+              !selected && "text-muted-foreground",
+              selected && "pe-10",
+              className,
+            )}
           >
             <CalendarIcon className="size-4" />
             <span className="truncate">{label}</span>
@@ -78,7 +98,7 @@ export function DateRangePicker({
             type="button"
             variant="ghost"
             size="icon-xs"
-            aria-label={t('daterange.clear')}
+            aria-label={t("daterange.clear")}
             className="absolute end-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             onClick={() => onChange({})}
           >
@@ -94,11 +114,14 @@ export function DateRangePicker({
           selected={selected}
           locale={DATE_LOCALES[locale]}
           onSelect={(range) => {
-            onChange({ from: serializeDay(range?.from), to: serializeDay(range?.to) })
-            if (range?.from && range?.to) setOpen(false)
+            onChange({
+              from: serializeDay(range?.from),
+              to: serializeDay(range?.to),
+            });
+            if (range?.from && range?.to) setOpen(false);
           }}
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }

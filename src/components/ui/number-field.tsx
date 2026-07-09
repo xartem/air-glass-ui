@@ -1,8 +1,8 @@
-import { NumberField as NumberFieldPrimitive } from "@base-ui/react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { Minus, Plus } from "lucide-react"
+import { NumberField as NumberFieldPrimitive } from "@base-ui/react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Minus, Plus } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /*
  * Numeric input with increment/decrement steppers, wrapping the @base-ui/react
@@ -24,17 +24,17 @@ const numberFieldGroupVariants = cva(
     defaultVariants: {
       inputSize: "default",
     },
-  }
-)
+  },
+);
 
 const stepperButtonClass =
-  "flex aspect-square h-full shrink-0 items-center justify-center text-muted-foreground transition-colors outline-none hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:text-foreground disabled:pointer-events-none disabled:opacity-40 [&>svg]:size-4"
+  "flex aspect-square h-full shrink-0 items-center justify-center text-muted-foreground transition-colors outline-none hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:text-foreground disabled:pointer-events-none disabled:opacity-40 [&>svg]:size-4";
 
 type NumberFieldProps = NumberFieldPrimitive.Root.Props &
   VariantProps<typeof numberFieldGroupVariants> & {
-    className?: string
-    inputClassName?: string
-  }
+    className?: string;
+    inputClassName?: string;
+  };
 
 function NumberField({
   className,
@@ -65,7 +65,7 @@ function NumberField({
           className={cn(
             "w-full min-w-0 flex-1 bg-transparent text-center text-base outline-none tabular-nums md:text-[15px]",
             inputSize === "sm" && "text-sm",
-            inputClassName
+            inputClassName,
           )}
         />
         <NumberFieldPrimitive.Increment
@@ -77,7 +77,7 @@ function NumberField({
         </NumberFieldPrimitive.Increment>
       </NumberFieldPrimitive.Group>
     </NumberFieldPrimitive.Root>
-  )
+  );
 }
 
-export { NumberField, numberFieldGroupVariants }
+export { NumberField, numberFieldGroupVariants };

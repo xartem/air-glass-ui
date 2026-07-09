@@ -1,6 +1,10 @@
-import type { Announcements, Over, ScreenReaderInstructions } from '@dnd-kit/core'
+import type {
+  Announcements,
+  Over,
+  ScreenReaderInstructions,
+} from "@dnd-kit/core";
 
-import { t } from '@/lib/i18n'
+import { t } from "@/lib/i18n";
 
 /*
  * Localized dnd-kit screen-reader feedback (WCAG 4.1.3 Status Messages).
@@ -11,22 +15,27 @@ import { t } from '@/lib/i18n'
  */
 
 function position(over: Over | null): string {
-  const index = (over?.data?.current?.sortable as { index?: number } | undefined)?.index
-  return typeof index === 'number' ? String(index + 1) : ''
+  const index = (
+    over?.data?.current?.sortable as { index?: number } | undefined
+  )?.index;
+  return typeof index === "number" ? String(index + 1) : "";
 }
 
 export function createDndA11y(item: string): {
-  announcements: Announcements
-  screenReaderInstructions: ScreenReaderInstructions
+  announcements: Announcements;
+  screenReaderInstructions: ScreenReaderInstructions;
 } {
   return {
-    screenReaderInstructions: { draggable: t('dnd.instructions') },
+    screenReaderInstructions: { draggable: t("dnd.instructions") },
     announcements: {
-      onDragStart: () => t('dnd.start', { item }),
-      onDragOver: ({ over }) => (over ? t('dnd.over', { item, position: position(over) }) : undefined),
+      onDragStart: () => t("dnd.start", { item }),
+      onDragOver: ({ over }) =>
+        over ? t("dnd.over", { item, position: position(over) }) : undefined,
       onDragEnd: ({ over }) =>
-        over ? t('dnd.end', { item, position: position(over) }) : t('dnd.end_outside', { item }),
-      onDragCancel: () => t('dnd.cancel', { item }),
+        over
+          ? t("dnd.end", { item, position: position(over) })
+          : t("dnd.end_outside", { item }),
+      onDragCancel: () => t("dnd.cancel", { item }),
     },
-  }
+  };
 }

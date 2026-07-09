@@ -418,7 +418,11 @@ export const SEARCH_GROUPS: AdminSearchGroup[] = [
     key: "products",
     label: "Products",
     items: [
-      { title: "Wireless Keyboard", hint: "SKU WK-25", url: "/shop/products/7" },
+      {
+        title: "Wireless Keyboard",
+        hint: "SKU WK-25",
+        url: "/shop/products/7",
+      },
       { title: "USB-C Hub", status: "draft", url: "/shop/products/9" },
     ],
   },

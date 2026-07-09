@@ -1,7 +1,7 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /*
  * Mirrors Input's size axis, but scales min-height/padding instead of a fixed
@@ -20,8 +20,8 @@ const textareaVariants = cva(
     defaultVariants: {
       inputSize: "default",
     },
-  }
-)
+  },
+);
 
 function Textarea({
   className,
@@ -36,7 +36,7 @@ function Textarea({
       className={cn(textareaVariants({ inputSize }), className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Textarea, textareaVariants }
+export { Textarea, textareaVariants };

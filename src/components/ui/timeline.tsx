@@ -1,7 +1,7 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /*
  * Vertical timeline compound for activity feeds / order history / audit trails.
@@ -16,7 +16,7 @@ function Timeline({ className, ...props }: React.ComponentProps<"ol">) {
       className={cn("relative flex flex-col", className)}
       {...props}
     />
-  )
+  );
 }
 
 function TimelineItem({ className, ...props }: React.ComponentProps<"li">) {
@@ -25,11 +25,11 @@ function TimelineItem({ className, ...props }: React.ComponentProps<"li">) {
       data-slot="timeline-item"
       className={cn(
         "relative flex gap-3 pb-6 last:pb-0 [&:last-child_[data-slot=timeline-connector]]:hidden",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 const timelineIndicatorVariants = cva(
@@ -50,8 +50,8 @@ const timelineIndicatorVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
-)
+  },
+);
 
 function TimelineIndicator({
   className,
@@ -66,21 +66,24 @@ function TimelineIndicator({
       className={cn(timelineIndicatorVariants({ variant }), className)}
       {...props}
     />
-  )
+  );
 }
 
-function TimelineConnector({ className, ...props }: React.ComponentProps<"span">) {
+function TimelineConnector({
+  className,
+  ...props
+}: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="timeline-connector"
       aria-hidden="true"
       className={cn(
         "absolute top-8 bottom-0 start-3.5 -z-0 w-px -translate-x-1/2 bg-border",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TimelineContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -90,7 +93,7 @@ function TimelineContent({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("flex flex-col gap-0.5 pt-0.5", className)}
       {...props}
     />
-  )
+  );
 }
 
 function TimelineTitle({ className, ...props }: React.ComponentProps<"p">) {
@@ -100,17 +103,20 @@ function TimelineTitle({ className, ...props }: React.ComponentProps<"p">) {
       className={cn("text-sm font-medium text-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-function TimelineDescription({ className, ...props }: React.ComponentProps<"p">) {
+function TimelineDescription({
+  className,
+  ...props
+}: React.ComponentProps<"p">) {
   return (
     <p
       data-slot="timeline-description"
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 function TimelineTime({ className, ...props }: React.ComponentProps<"span">) {
@@ -120,7 +126,7 @@ function TimelineTime({ className, ...props }: React.ComponentProps<"span">) {
       className={cn("text-xs text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -133,4 +139,4 @@ export {
   TimelineDescription,
   TimelineTime,
   timelineIndicatorVariants,
-}
+};

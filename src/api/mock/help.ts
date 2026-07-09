@@ -1,4 +1,9 @@
-import type { HelpArticle, HelpArticleRef, HelpGroup, HelpSearchHit } from '../types'
+import type {
+  HelpArticle,
+  HelpArticleRef,
+  HelpGroup,
+  HelpSearchHit,
+} from "../types";
 
 /*
  * Help fixtures. A real backend reads modules/{slug}/docs/{locale}/*.md; the mock
@@ -7,26 +12,26 @@ import type { HelpArticle, HelpArticleRef, HelpGroup, HelpSearchHit } from '../t
  */
 
 interface MockArticle {
-  module: string
-  page: string
-  section: string
-  sectionKey: string
-  title: string
+  module: string;
+  page: string;
+  section: string;
+  sectionKey: string;
+  title: string;
   /** Screen key for contextual help (front-matter `screen`). */
-  screen?: string
+  screen?: string;
   /** True → ui_locale translation is "missing", source-locale text shown (fallback demo). */
-  isFallback?: boolean
-  markdown: string
+  isFallback?: boolean;
+  markdown: string;
 }
 
 const ARTICLES: MockArticle[] = [
   {
-    module: 'dashboard',
-    page: 'overview',
-    section: 'Getting started',
-    sectionKey: 'getting-started',
-    title: 'Get to know your dashboard',
-    screen: 'dashboard',
+    module: "dashboard",
+    page: "overview",
+    section: "Getting started",
+    sectionKey: "getting-started",
+    title: "Get to know your dashboard",
+    screen: "dashboard",
     markdown: `The dashboard is the first thing you see after signing in. It gathers the numbers and shortcuts you use most into a grid of widgets.
 
 ## What you can do
@@ -38,12 +43,12 @@ const ARTICLES: MockArticle[] = [
 > **Tip.** Layouts are saved per role, so each team sees the widgets that matter to them.`,
   },
   {
-    module: 'media',
-    page: 'upload',
-    section: 'Getting started',
-    sectionKey: 'getting-started',
-    title: 'Upload and manage media',
-    screen: 'media.library',
+    module: "media",
+    page: "upload",
+    section: "Getting started",
+    sectionKey: "getting-started",
+    title: "Upload and manage media",
+    screen: "media.library",
     markdown: `All images and files live in the **Media library** — upload once, reuse anywhere.
 
 ## Steps
@@ -55,12 +60,12 @@ const ARTICLES: MockArticle[] = [
 > **Photo too large?** No problem — the system prepares resized copies automatically, and the original is kept.`,
   },
   {
-    module: 'orders',
-    page: 'overview',
-    section: 'Shop',
-    sectionKey: 'shop',
-    title: 'Manage orders',
-    screen: 'orders.list',
+    module: "orders",
+    page: "overview",
+    section: "Shop",
+    sectionKey: "shop",
+    title: "Manage orders",
+    screen: "orders.list",
     markdown: `The **Orders** screen lists every order with its status, customer and total.
 
 ## Working with an order
@@ -72,12 +77,12 @@ const ARTICLES: MockArticle[] = [
 > **Tip.** Amounts are shown in the store currency and formatted for the active language automatically.`,
   },
   {
-    module: 'products',
-    page: 'overview',
-    section: 'Shop',
-    sectionKey: 'shop',
-    title: 'Add and edit products',
-    screen: 'products.list',
+    module: "products",
+    page: "overview",
+    section: "Shop",
+    sectionKey: "shop",
+    title: "Add and edit products",
+    screen: "products.list",
     markdown: `The **Products** screen is your catalog: prices, stock and status in one place.
 
 ## Steps
@@ -89,12 +94,12 @@ const ARTICLES: MockArticle[] = [
 > **Not showing up?** Draft products are visible only in the admin — publish to make a product live.`,
   },
   {
-    module: 'users',
-    page: 'roles',
-    section: 'System',
-    sectionKey: 'system',
-    title: 'Users and roles',
-    screen: 'users.list',
+    module: "users",
+    page: "roles",
+    section: "System",
+    sectionKey: "system",
+    title: "Users and roles",
+    screen: "users.list",
     markdown: `Every teammate signs in with their own account, and their role decides what they can access.
 
 ## How it works
@@ -106,12 +111,12 @@ const ARTICLES: MockArticle[] = [
 > **Someone left the team?** Don't delete the account — deactivate it. The activity history is kept and access is closed.`,
   },
   {
-    module: 'ai',
-    page: 'assistant',
-    section: 'System',
-    sectionKey: 'system',
-    title: 'Using the AI assistant',
-    screen: 'ai',
+    module: "ai",
+    page: "assistant",
+    section: "System",
+    sectionKey: "system",
+    title: "Using the AI assistant",
+    screen: "ai",
     markdown: `The AI assistant helps you find things and draft content without leaving the admin.
 
 ## Steps
@@ -122,16 +127,16 @@ const ARTICLES: MockArticle[] = [
 
 > **Button missing?** The assistant appears only when an AI provider key is configured.`,
   },
-]
+];
 
 const GROUP_ORDER: { key: string; label: string }[] = [
-  { key: 'getting-started', label: 'Getting started' },
-  { key: 'shop', label: 'Shop' },
-  { key: 'system', label: 'System' },
-]
+  { key: "getting-started", label: "Getting started" },
+  { key: "shop", label: "Shop" },
+  { key: "system", label: "System" },
+];
 
 function ref(a: MockArticle): HelpArticleRef {
-  return { module: a.module, page: a.page, title: a.title }
+  return { module: a.module, page: a.page, title: a.title };
 }
 
 export function helpTree(): HelpGroup[] {
@@ -139,15 +144,15 @@ export function helpTree(): HelpGroup[] {
     key: g.key,
     label: g.label,
     articles: ARTICLES.filter((a) => a.sectionKey === g.key).map(ref),
-  })).filter((g) => g.articles.length > 0)
+  })).filter((g) => g.articles.length > 0);
 }
 
 export function helpPage(module: string, page: string): HelpArticle | null {
-  const idx = ARTICLES.findIndex((a) => a.module === module && a.page === page)
-  if (idx === -1) return null
-  const a = ARTICLES[idx]
-  const siblings = ARTICLES.filter((s) => s.sectionKey === a.sectionKey)
-  const sIdx = siblings.indexOf(a)
+  const idx = ARTICLES.findIndex((a) => a.module === module && a.page === page);
+  if (idx === -1) return null;
+  const a = ARTICLES[idx];
+  const siblings = ARTICLES.filter((s) => s.sectionKey === a.sectionKey);
+  const sIdx = siblings.indexOf(a);
   return {
     module: a.module,
     page: a.page,
@@ -157,24 +162,33 @@ export function helpPage(module: string, page: string): HelpArticle | null {
     markdown: a.markdown,
     prev: sIdx > 0 ? ref(siblings[sIdx - 1]) : null,
     next: sIdx < siblings.length - 1 ? ref(siblings[sIdx + 1]) : null,
-  }
+  };
 }
 
 export function helpForScreen(screenKey: string): HelpArticle | null {
-  const a = ARTICLES.find((x) => x.screen === screenKey)
-  return a ? helpPage(a.module, a.page) : null
+  const a = ARTICLES.find((x) => x.screen === screenKey);
+  return a ? helpPage(a.module, a.page) : null;
 }
 
 export function helpSearch(q: string): HelpSearchHit[] {
-  const needle = q.trim().toLowerCase()
-  if (needle.length < 2) return []
+  const needle = q.trim().toLowerCase();
+  if (needle.length < 2) return [];
   return ARTICLES.filter(
-    (a) => a.title.toLowerCase().includes(needle) || a.markdown.toLowerCase().includes(needle),
+    (a) =>
+      a.title.toLowerCase().includes(needle) ||
+      a.markdown.toLowerCase().includes(needle),
   ).map((a) => {
-    const text = a.markdown.replace(/[#>*`]/g, '')
-    const pos = text.toLowerCase().indexOf(needle)
-    const start = Math.max(0, pos - 40)
-    const raw = pos === -1 ? text.slice(0, 110) : text.slice(start, pos + needle.length + 70)
-    return { ...ref(a), section: a.section, snippet: (start > 0 ? '…' : '') + raw.trim() + '…' }
-  })
+    const text = a.markdown.replace(/[#>*`]/g, "");
+    const pos = text.toLowerCase().indexOf(needle);
+    const start = Math.max(0, pos - 40);
+    const raw =
+      pos === -1
+        ? text.slice(0, 110)
+        : text.slice(start, pos + needle.length + 70);
+    return {
+      ...ref(a),
+      section: a.section,
+      snippet: (start > 0 ? "…" : "") + raw.trim() + "…",
+    };
+  });
 }

@@ -239,6 +239,48 @@ const analyticsPage = () =>
       default: m.AnalyticsPage,
     })),
   );
+const crmDashboardPage = () =>
+  lazyPage(() =>
+    import("@/features/dashboards/crm-dashboard-page").then((m) => ({
+      default: m.CrmDashboardPage,
+    })),
+  );
+const ecommerceDashboardPage = () =>
+  lazyPage(() =>
+    import("@/features/dashboards/ecommerce-dashboard-page").then((m) => ({
+      default: m.EcommerceDashboardPage,
+    })),
+  );
+const cryptoDashboardPage = () =>
+  lazyPage(() =>
+    import("@/features/dashboards/crypto-dashboard-page").then((m) => ({
+      default: m.CryptoDashboardPage,
+    })),
+  );
+const projectsDashboardPage = () =>
+  lazyPage(() =>
+    import("@/features/dashboards/projects-dashboard-page").then((m) => ({
+      default: m.ProjectsDashboardPage,
+    })),
+  );
+const nftDashboardPage = () =>
+  lazyPage(() =>
+    import("@/features/dashboards/nft-dashboard-page").then((m) => ({
+      default: m.NftDashboardPage,
+    })),
+  );
+const jobsDashboardPage = () =>
+  lazyPage(() =>
+    import("@/features/dashboards/jobs-dashboard-page").then((m) => ({
+      default: m.JobsDashboardPage,
+    })),
+  );
+const blogDashboardPage = () =>
+  lazyPage(() =>
+    import("@/features/dashboards/blog-dashboard-page").then((m) => ({
+      default: m.BlogDashboardPage,
+    })),
+  );
 const pricingPage = () =>
   lazyPage(() =>
     import("@/features/pricing/pricing-page").then((m) => ({
@@ -634,6 +676,62 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="analytics.view">
               {analyticsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/dashboards/crm",
+          element: (
+            <RequirePermission perm="analytics.view">
+              {crmDashboardPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/dashboards/ecommerce",
+          element: (
+            <RequirePermission perm="analytics.view">
+              {ecommerceDashboardPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/dashboards/crypto",
+          element: (
+            <RequirePermission perm="analytics.view">
+              {cryptoDashboardPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/dashboards/projects",
+          element: (
+            <RequirePermission perm="analytics.view">
+              {projectsDashboardPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/dashboards/nft",
+          element: (
+            <RequirePermission perm="analytics.view">
+              {nftDashboardPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/dashboards/jobs",
+          element: (
+            <RequirePermission perm="analytics.view">
+              {jobsDashboardPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/dashboards/blog",
+          element: (
+            <RequirePermission perm="analytics.view">
+              {blogDashboardPage()}
             </RequirePermission>
           ),
         },

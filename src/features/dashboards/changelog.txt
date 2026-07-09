@@ -1,0 +1,10 @@
+2026-07-09  Add dashboards slice: mock payloads (7 verticals), DTOs, and api.dashboards.get.
+2026-07-09  Add shared dashboard shell (period picker + query/states), widget kit (KPI tile, delta pill, ranked list, leaderboard), and chart compositions (trend, category bars, donut, funnel, sparkline).
+2026-07-09  Add Ecommerce dashboard (/dashboards/ecommerce): KPIs, revenue area, category donut, recent orders, best sellers, traffic sources.
+2026-07-09  Add CRM dashboard (/dashboards/crm): KPIs, deals funnel, pipeline by owner, upcoming activities, salespeople leaderboard.
+2026-07-09  Add Projects dashboard (/dashboards/projects): KPIs, burndown line, tasks-by-status donut, project progress, team workload, activity timeline.
+2026-07-09  Add NFT dashboard (/dashboards/nft): KPIs, volume bars, trending collections, live auction countdowns, top creators.
+2026-07-09  Add Jobs dashboard (/dashboards/jobs): KPIs, applications trend, by-department bars, candidate pipeline funnel, recent applicants.
+2026-07-09  Add Blog dashboard (/dashboards/blog): KPIs, views trend, category donut, top posts, recent comments, author leaderboard.
+2026-07-09  Add Crypto dashboard (/dashboards/crypto) with shared treemap + candlestick charts: portfolio, coin sparklines, market treemap, candlestick, activity, watchlist.
+2026-07-09  Wire /dashboards/* routes (analytics.view), nav entries under Dashboards, and dash.* i18n across all 8 locales.

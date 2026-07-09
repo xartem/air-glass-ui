@@ -4,5 +4,5 @@
  * user-facing messaging. Mirrors the `if (import.meta.env.DEV) console.debug`
  * convention already used in query.ts / auth.tsx. */
 export function devDebug(...args: unknown[]): void {
-  if (import.meta.env.DEV) console.debug(...args)
+  if (import.meta.env.DEV) console.debug(...args);
 }

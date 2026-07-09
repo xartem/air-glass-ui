@@ -1,7 +1,7 @@
-import * as React from "react"
-import { Check } from "lucide-react"
+import * as React from "react";
+import { Check } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /*
  * Standalone step-progress indicator for multi-step forms / onboarding / checkout.
@@ -10,34 +10,37 @@ import { cn } from "@/lib/utils"
  * data-state (completed/active/pending) from context + its own index. Token-only.
  */
 
-type StepperOrientation = "horizontal" | "vertical"
-type StepState = "completed" | "active" | "pending"
+type StepperOrientation = "horizontal" | "vertical";
+type StepState = "completed" | "active" | "pending";
 
 type StepperContextValue = {
-  activeStep: number
-  orientation: StepperOrientation
-}
+  activeStep: number;
+  orientation: StepperOrientation;
+};
 
-const StepperContext = React.createContext<StepperContextValue | null>(null)
+const StepperContext = React.createContext<StepperContextValue | null>(null);
 
 function useStepperContext() {
-  const context = React.useContext(StepperContext)
+  const context = React.useContext(StepperContext);
   if (!context) {
-    throw new Error("Stepper compound components must be used within <Stepper>")
+    throw new Error(
+      "Stepper compound components must be used within <Stepper>",
+    );
   }
-  return context
+  return context;
 }
 
-const StepperItemContext = React.createContext<{ index: number; state: StepState } | null>(
-  null
-)
+const StepperItemContext = React.createContext<{
+  index: number;
+  state: StepState;
+} | null>(null);
 
 function useStepperItemContext() {
-  const context = React.useContext(StepperItemContext)
+  const context = React.useContext(StepperItemContext);
   if (!context) {
-    throw new Error("Stepper item parts must be used within <StepperItem>")
+    throw new Error("Stepper item parts must be used within <StepperItem>");
   }
-  return context
+  return context;
 }
 
 function Stepper({
@@ -47,14 +50,14 @@ function Stepper({
   children,
   ...props
 }: Omit<React.ComponentProps<"div">, "children"> & {
-  activeStep: number
-  orientation?: StepperOrientation
-  children: React.ReactNode
+  activeStep: number;
+  orientation?: StepperOrientation;
+  children: React.ReactNode;
 }) {
   const value = React.useMemo(
     () => ({ activeStep, orientation }),
-    [activeStep, orientation]
-  )
+    [activeStep, orientation],
+  );
   return (
     <StepperContext.Provider value={value}>
       <div
@@ -62,17 +65,15 @@ function Stepper({
         data-orientation={orientation}
         className={cn(
           "flex",
-          orientation === "horizontal"
-            ? "flex-row items-start"
-            : "flex-col",
-          className
+          orientation === "horizontal" ? "flex-row items-start" : "flex-col",
+          className,
         )}
         {...props}
       >
         {children}
       </div>
     </StepperContext.Provider>
-  )
+  );
 }
 
 function StepperItem({
@@ -81,11 +82,15 @@ function StepperItem({
   children,
   ...props
 }: React.ComponentProps<"div"> & { index: number }) {
-  const { activeStep, orientation } = useStepperContext()
+  const { activeStep, orientation } = useStepperContext();
   const state: StepState =
-    index < activeStep ? "completed" : index === activeStep ? "active" : "pending"
+    index < activeStep
+      ? "completed"
+      : index === activeStep
+        ? "active"
+        : "pending";
 
-  const itemValue = React.useMemo(() => ({ index, state }), [index, state])
+  const itemValue = React.useMemo(() => ({ index, state }), [index, state]);
 
   return (
     <StepperItemContext.Provider value={itemValue}>
@@ -99,14 +104,14 @@ function StepperItem({
           orientation === "horizontal"
             ? "flex-row items-center gap-2"
             : "flex-col",
-          className
+          className,
         )}
         {...props}
       >
         {children}
       </div>
     </StepperItemContext.Provider>
-  )
+  );
 }
 
 function StepperIndicator({
@@ -114,7 +119,7 @@ function StepperIndicator({
   children,
   ...props
 }: React.ComponentProps<"div">) {
-  const { state } = useStepperItemContext()
+  const { state } = useStepperItemContext();
   return (
     <div
       data-slot="stepper-indicator"
@@ -124,21 +129,21 @@ function StepperIndicator({
         "data-[state=pending]:border-border data-[state=pending]:text-muted-foreground",
         "data-[state=active]:border-[var(--status-info-fg)] data-[state=active]:text-[var(--status-info-fg)]",
         "data-[state=completed]:border-transparent data-[state=completed]:bg-[var(--status-success-bg)] data-[state=completed]:text-[var(--status-success-fg)]",
-        className
+        className,
       )}
       {...props}
     >
       {state === "completed" ? <Check aria-hidden="true" /> : children}
     </div>
-  )
+  );
 }
 
 function StepperSeparator({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { state } = useStepperItemContext()
-  const { orientation } = useStepperContext()
+  const { state } = useStepperItemContext();
+  const { orientation } = useStepperContext();
   return (
     <div
       data-slot="stepper-separator"
@@ -149,26 +154,26 @@ function StepperSeparator({
         orientation === "horizontal"
           ? "h-px flex-1"
           : "ms-4 min-h-6 w-px flex-1",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function StepperContent({ className, ...props }: React.ComponentProps<"div">) {
-  const { orientation } = useStepperContext()
+  const { orientation } = useStepperContext();
   return (
     <div
       data-slot="stepper-content"
       className={cn(
         "flex flex-col gap-0.5",
         orientation === "vertical" && "pt-1 pb-2 ps-2",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function StepperTitle({ className, ...props }: React.ComponentProps<"p">) {
@@ -178,17 +183,20 @@ function StepperTitle({ className, ...props }: React.ComponentProps<"p">) {
       className={cn("text-sm font-medium text-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
-function StepperDescription({ className, ...props }: React.ComponentProps<"p">) {
+function StepperDescription({
+  className,
+  ...props
+}: React.ComponentProps<"p">) {
   return (
     <p
       data-slot="stepper-description"
       className={cn("text-xs text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -199,4 +207,4 @@ export {
   StepperContent,
   StepperTitle,
   StepperDescription,
-}
+};

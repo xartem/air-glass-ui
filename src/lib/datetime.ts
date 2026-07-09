@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo } from "react";
 
-import { useAuth } from '@/lib/auth'
-import { useLocale } from '@/lib/use-locale'
+import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/use-locale";
 
 /*
  * Absolute time in the admin renders in the SITE timezone (C7 §4, decision), not
@@ -11,19 +11,27 @@ import { useLocale } from '@/lib/use-locale'
  * NOT routed through here.
  */
 export function useSiteDateTime() {
-  const locale = useLocale()
-  const { me } = useAuth()
-  const timeZone = me.timezone || 'UTC'
+  const locale = useLocale();
+  const { me } = useAuth();
+  const timeZone = me.timezone || "UTC";
 
   return useMemo(() => {
-    const short = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short', timeZone })
-    const long = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'medium', timeZone })
+    const short = new Intl.DateTimeFormat(locale, {
+      dateStyle: "short",
+      timeStyle: "short",
+      timeZone,
+    });
+    const long = new Intl.DateTimeFormat(locale, {
+      dateStyle: "medium",
+      timeStyle: "medium",
+      timeZone,
+    });
     return {
       timezone: timeZone,
       /** e.g. "31.12.26, 23:45" — in the site timezone. */
       format: (value: string | Date) => short.format(new Date(value)),
       /** e.g. "Dec 31, 2026, 23:45:12" — in the site timezone. */
       formatLong: (value: string | Date) => long.format(new Date(value)),
-    }
-  }, [locale, timeZone])
+    };
+  }, [locale, timeZone]);
 }

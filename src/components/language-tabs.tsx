@@ -1,7 +1,10 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { TranslationDot, type TranslationState } from '@/components/translation-dots'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  TranslationDot,
+  type TranslationState,
+} from "@/components/translation-dots";
 
 /*
  * LanguageTabs (E6 §3.1, C1 §5): translatable fields render inside these tabs,
@@ -15,16 +18,20 @@ export function LanguageTabs({
   defaultLocale,
   children,
 }: {
-  locales: { code: string; label?: string; state: TranslationState }[]
-  defaultLocale?: string
-  children: (localeCode: string) => ReactNode
+  locales: { code: string; label?: string; state: TranslationState }[];
+  defaultLocale?: string;
+  children: (localeCode: string) => ReactNode;
 }) {
-  const fallback = defaultLocale ?? locales[0]?.code
+  const fallback = defaultLocale ?? locales[0]?.code;
   return (
     <Tabs data-slot="language-tabs" defaultValue={fallback}>
       <TabsList>
         {locales.map((locale) => (
-          <TabsTrigger key={locale.code} value={locale.code} className="gap-1.5 uppercase">
+          <TabsTrigger
+            key={locale.code}
+            value={locale.code}
+            className="gap-1.5 uppercase"
+          >
             <TranslationDot state={locale.state} />
             {locale.label ?? locale.code}
           </TabsTrigger>
@@ -36,5 +43,5 @@ export function LanguageTabs({
         </TabsContent>
       ))}
     </Tabs>
-  )
+  );
 }

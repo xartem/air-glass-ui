@@ -1,14 +1,14 @@
-import { useId } from 'react'
+import { useId } from "react";
 
-import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 /*
  * ColorPicker (E2 §7: field type `color` → this widget → hex).
  * Native color input as the swatch + hex text field, one control height (42px).
  */
 
-const HEX_RE = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i
+const HEX_RE = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
 
 export function ColorPicker({
   id,
@@ -16,18 +16,18 @@ export function ColorPicker({
   onChange,
   className,
 }: {
-  id?: string
+  id?: string;
   /** Hex color (#rrggbb) or undefined. */
-  value?: string
-  onChange: (value: string) => void
-  className?: string
+  value?: string;
+  onChange: (value: string) => void;
+  className?: string;
 }) {
-  const fallbackId = useId()
-  const inputId = id ?? fallbackId
-  const hex = value && HEX_RE.test(value) ? value : '#1d8df2'
+  const fallbackId = useId();
+  const inputId = id ?? fallbackId;
+  const hex = value && HEX_RE.test(value) ? value : "#1d8df2";
 
   return (
-    <div className={cn('flex items-center gap-2', className)}>
+    <div className={cn("flex items-center gap-2", className)}>
       <label
         className="relative flex size-[42px] shrink-0 cursor-pointer items-center justify-center rounded-md border"
         style={{ backgroundColor: hex }}
@@ -42,12 +42,12 @@ export function ColorPicker({
       </label>
       <Input
         id={inputId}
-        value={value ?? ''}
+        value={value ?? ""}
         placeholder="#1d8df2"
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={value ? !HEX_RE.test(value) : undefined}
         className="w-32 font-mono"
       />
     </div>
-  )
+  );
 }

@@ -1,7 +1,14 @@
-import { TranslationDot, type TranslationState } from '@/components/translation-dots'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { t } from '@/lib/i18n'
-import { cn } from '@/lib/utils'
+import {
+  TranslationDot,
+  type TranslationState,
+} from "@/components/translation-dots";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { t } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 /*
  * LocaleSwitcher (E2 §7): the ONE global content-locale switch of an editor
@@ -11,11 +18,11 @@ import { cn } from '@/lib/utils'
  */
 
 export interface SwitcherLocale {
-  code: string
-  label: string
-  is_default: boolean
+  code: string;
+  label: string;
+  is_default: boolean;
   /** Optional per-locale completeness for the indicator dots (C1 §5). */
-  state?: TranslationState
+  state?: TranslationState;
 }
 
 export function LocaleSwitcher({
@@ -24,20 +31,23 @@ export function LocaleSwitcher({
   onChange,
   className,
 }: {
-  locales: SwitcherLocale[]
-  value: string
-  onChange: (code: string) => void
-  className?: string
+  locales: SwitcherLocale[];
+  value: string;
+  onChange: (code: string) => void;
+  className?: string;
 }) {
   return (
     <div
       data-slot="locale-switcher"
       role="tablist"
-      aria-label={t('locale_switcher.label')}
-      className={cn('bg-muted/60 inline-flex items-center gap-0.5 rounded-lg p-0.5', className)}
+      aria-label={t("locale_switcher.label")}
+      className={cn(
+        "bg-muted/60 inline-flex items-center gap-0.5 rounded-lg p-0.5",
+        className,
+      )}
     >
       {locales.map((locale) => {
-        const active = locale.code === value
+        const active = locale.code === value;
         return (
           <Tooltip key={locale.code}>
             <TooltipTrigger asChild>
@@ -47,10 +57,10 @@ export function LocaleSwitcher({
                 aria-selected={active}
                 onClick={() => onChange(locale.code)}
                 className={cn(
-                  'inline-flex h-7 items-center gap-1.5 rounded-md px-2.5 text-xs font-medium uppercase transition-colors',
+                  "inline-flex h-7 items-center gap-1.5 rounded-md px-2.5 text-xs font-medium uppercase transition-colors",
                   active
-                    ? 'bg-background text-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground',
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {locale.state ? <TranslationDot state={locale.state} /> : null}
@@ -59,11 +69,11 @@ export function LocaleSwitcher({
             </TooltipTrigger>
             <TooltipContent>
               {locale.label}
-              {locale.is_default ? ` · ${t('locale_switcher.default')}` : ''}
+              {locale.is_default ? ` · ${t("locale_switcher.default")}` : ""}
             </TooltipContent>
           </Tooltip>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

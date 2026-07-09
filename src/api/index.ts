@@ -30,6 +30,8 @@ import type {
   CreatePasswordPayload,
   CreateRolePayload,
   DashboardPayload,
+  DashboardPayloadMap,
+  DashboardVertical,
   LayoutOverrides,
   LoginPayload,
   LoginResult,
@@ -487,6 +489,14 @@ export const api = {
   analytics: {
     get: (period: Period) =>
       apiFetch<AnalyticsPayload>("/analytics", { query: { period } }),
+  },
+
+  /* Dashboard verticals (W2): one typed period-scoped payload per vertical. */
+  dashboards: {
+    get: <V extends DashboardVertical>(vertical: V, period: Period) =>
+      apiFetch<DashboardPayloadMap[V]>(`/dashboards/${vertical}`, {
+        query: { period },
+      }),
   },
 
   /* Inbox / chat (build-demo-screen-catalog): folders, threads, send + mark-read. */

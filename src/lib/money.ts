@@ -1,4 +1,4 @@
-import type { AdminLocale } from '@/lib/i18n'
+import type { AdminLocale } from "@/lib/i18n";
 
 /*
  * Shared money/number formatting for the demo commerce screens (orders, products,
@@ -8,24 +8,32 @@ import type { AdminLocale } from '@/lib/i18n'
  * active admin locale (grouping, symbol placement).
  */
 
-export function formatMoney(amount: number, currency: string, locale: AdminLocale): string {
+export function formatMoney(
+  amount: number,
+  currency: string,
+  locale: AdminLocale,
+): string {
   return new Intl.NumberFormat(locale, {
-    style: 'currency',
+    style: "currency",
     currency,
     maximumFractionDigits: 2,
-  }).format(amount)
+  }).format(amount);
 }
 
 /** Compact figure for stat tiles / KPI rows (e.g. "1.2K", "3.4M"). */
-export function formatCompactMoney(amount: number, currency: string, locale: AdminLocale): string {
+export function formatCompactMoney(
+  amount: number,
+  currency: string,
+  locale: AdminLocale,
+): string {
   return new Intl.NumberFormat(locale, {
-    style: 'currency',
+    style: "currency",
     currency,
-    notation: 'compact',
+    notation: "compact",
     maximumFractionDigits: 1,
-  }).format(amount)
+  }).format(amount);
 }
 
 export function formatNumber(value: number, locale: AdminLocale): string {
-  return new Intl.NumberFormat(locale).format(value)
+  return new Intl.NumberFormat(locale).format(value);
 }

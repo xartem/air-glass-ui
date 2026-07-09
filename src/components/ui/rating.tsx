@@ -1,8 +1,8 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { Star } from "lucide-react"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Star } from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /*
  * Star rating for product reviews / feedback. Interactive (buttons, keyboard,
@@ -21,28 +21,28 @@ const ratingVariants = cva("inline-flex items-center", {
   defaultVariants: {
     size: "default",
   },
-})
+});
 
 const starClass = (filled: boolean) =>
   cn(
     "transition-colors",
     filled
       ? "fill-current text-[var(--status-pending-fg)]"
-      : "text-muted-foreground/40"
-  )
+      : "text-muted-foreground/40",
+  );
 
 type RatingProps = Omit<
   React.ComponentProps<"div">,
   "onChange" | "defaultValue"
 > &
   VariantProps<typeof ratingVariants> & {
-    value: number
-    onValueChange?: (value: number) => void
-    max?: number
-    readOnly?: boolean
-    disabled?: boolean
-    label?: string
-  }
+    value: number;
+    onValueChange?: (value: number) => void;
+    max?: number;
+    readOnly?: boolean;
+    disabled?: boolean;
+    label?: string;
+  };
 
 function Rating({
   className,
@@ -55,10 +55,10 @@ function Rating({
   label = "Rating",
   ...props
 }: RatingProps) {
-  const [hovered, setHovered] = React.useState<number | null>(null)
-  const interactive = !readOnly && !disabled
-  const displayValue = hovered ?? value
-  const stars = Array.from({ length: max }, (_, i) => i + 1)
+  const [hovered, setHovered] = React.useState<number | null>(null);
+  const interactive = !readOnly && !disabled;
+  const displayValue = hovered ?? value;
+  const stars = Array.from({ length: max }, (_, i) => i + 1);
 
   if (!interactive) {
     return (
@@ -72,7 +72,7 @@ function Rating({
         className={cn(
           ratingVariants({ size }),
           disabled && "opacity-50",
-          className
+          className,
         )}
         {...props}
       >
@@ -84,26 +84,26 @@ function Rating({
           />
         ))}
       </div>
-    )
+    );
   }
 
   function setValue(next: number) {
-    onValueChange?.(next)
+    onValueChange?.(next);
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     if (event.key === "ArrowRight" || event.key === "ArrowUp") {
-      event.preventDefault()
-      setValue(Math.min(max, value + 1))
+      event.preventDefault();
+      setValue(Math.min(max, value + 1));
     } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
-      event.preventDefault()
-      setValue(Math.max(0, value - 1))
+      event.preventDefault();
+      setValue(Math.max(0, value - 1));
     } else if (event.key === "Home") {
-      event.preventDefault()
-      setValue(0)
+      event.preventDefault();
+      setValue(0);
     } else if (event.key === "End") {
-      event.preventDefault()
-      setValue(max)
+      event.preventDefault();
+      setValue(max);
     }
   }
 
@@ -123,7 +123,7 @@ function Rating({
       className={cn(
         ratingVariants({ size }),
         "rounded-md outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
-        className
+        className,
       )}
       {...props}
     >
@@ -138,11 +138,14 @@ function Rating({
           onMouseLeave={() => setHovered(null)}
           className="cursor-pointer rounded-sm outline-none transition-transform hover:scale-110"
         >
-          <Star aria-hidden="true" className={starClass(star <= displayValue)} />
+          <Star
+            aria-hidden="true"
+            className={starClass(star <= displayValue)}
+          />
         </button>
       ))}
     </div>
-  )
+  );
 }
 
-export { Rating, ratingVariants }
+export { Rating, ratingVariants };

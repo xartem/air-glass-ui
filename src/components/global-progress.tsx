@@ -1,7 +1,7 @@
-import { useSyncExternalStore } from 'react'
-import { useIsFetching, useIsMutating } from '@tanstack/react-query'
+import { useSyncExternalStore } from "react";
+import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 
-import { getProgressCount, onProgressChange } from '@/lib/progress'
+import { getProgressCount, onProgressChange } from "@/lib/progress";
 
 /*
  * GlobalProgress (E1 §2.3): thin accent-gradient bar at the viewport top,
@@ -10,10 +10,16 @@ import { getProgressCount, onProgressChange } from '@/lib/progress'
  */
 
 export function GlobalProgress() {
-  const manual = useSyncExternalStore(onProgressChange, getProgressCount)
-  const fetching = useIsFetching()
-  const mutating = useIsMutating()
-  const active = manual + fetching + mutating > 0
+  const manual = useSyncExternalStore(onProgressChange, getProgressCount);
+  const fetching = useIsFetching();
+  const mutating = useIsMutating();
+  const active = manual + fetching + mutating > 0;
 
-  return <div className="global-progress" data-active={active ? 'true' : 'false'} aria-hidden />
+  return (
+    <div
+      className="global-progress"
+      data-active={active ? "true" : "false"}
+      aria-hidden
+    />
+  );
 }

@@ -60,6 +60,10 @@ import {
   saveDashboardLayout,
 } from "./dashboard";
 import { getAnalytics } from "./analytics";
+import {
+  getDashboard as getVerticalDashboard,
+  isDashboardVertical,
+} from "./dashboards";
 import { getThread, listThreads, markRead, sendMessage } from "./inbox";
 import { getBoard, moveCard } from "./kanban";
 import {
@@ -1141,6 +1145,25 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
             : String(options.query.period),
         ),
       );
+    },
+  },
+
+  /* ---- dashboard verticals (W2) ---- */
+  {
+    method: "GET",
+    pattern: /^\/dashboards\/([a-z]+)$/,
+    handler: (options, params) => {
+      requireSession();
+      const vertical = params[0];
+      if (!isDashboardVertical(vertical))
+        throw new ApiError(404, `Unknown dashboard vertical: ${vertical}`);
+      const period = clampPeriod(
+        options.query?.period === undefined
+          ? undefined
+          : String(options.query.period),
+      );
+      devDebug("[mock:dashboards] get", { vertical, period });
+      return getVerticalDashboard(vertical, period);
     },
   },
 

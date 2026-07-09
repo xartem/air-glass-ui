@@ -1,7 +1,7 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /*
  * Size is an orthogonal axis; every state class (field fill, focus ring,
@@ -21,8 +21,8 @@ const inputVariants = cva(
     defaultVariants: {
       inputSize: "default",
     },
-  }
-)
+  },
+);
 
 function Input({
   className,
@@ -39,7 +39,7 @@ function Input({
       className={cn(inputVariants({ inputSize }), className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Input, inputVariants }
+export { Input, inputVariants };

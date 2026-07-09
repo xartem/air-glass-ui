@@ -1,7 +1,7 @@
-import { useEffect, useId, useState } from 'react'
-import { ChevronsUpDown, X } from 'lucide-react'
+import { useEffect, useId, useState } from "react";
+import { ChevronsUpDown, X } from "lucide-react";
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -9,11 +9,15 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Spinner } from '@/components/ui/spinner'
-import { t } from '@/lib/i18n'
-import { cn } from '@/lib/utils'
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Spinner } from "@/components/ui/spinner";
+import { t } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 /*
  * ReferencePicker (E6 §3, E2 §7: field type `reference` → record id).
@@ -21,7 +25,11 @@ import { cn } from '@/lib/utils'
  * The search callback goes through the api client (TanStack Query in the screen hook).
  */
 
-export type ReferenceItem = { id: string | number; label: string; hint?: string }
+export type ReferenceItem = {
+  id: string | number;
+  label: string;
+  hint?: string;
+};
 
 export function ReferencePicker({
   id,
@@ -31,38 +39,38 @@ export function ReferencePicker({
   placeholder,
   className,
 }: {
-  id?: string
-  value: ReferenceItem | null
-  onChange: (value: ReferenceItem | null) => void
+  id?: string;
+  value: ReferenceItem | null;
+  onChange: (value: ReferenceItem | null) => void;
   /** Async record search (debounced here). */
-  search: (query: string) => Promise<ReferenceItem[]>
-  placeholder?: string
-  className?: string
+  search: (query: string) => Promise<ReferenceItem[]>;
+  placeholder?: string;
+  className?: string;
 }) {
-  const [open, setOpen] = useState(false)
-  const listboxId = useId()
-  const [query, setQuery] = useState('')
-  const [items, setItems] = useState<ReferenceItem[]>([])
-  const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useState(false);
+  const listboxId = useId();
+  const [query, setQuery] = useState("");
+  const [items, setItems] = useState<ReferenceItem[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!open) return
-    let cancelled = false
-    setLoading(true)
+    if (!open) return;
+    let cancelled = false;
+    setLoading(true);
     const timer = setTimeout(() => {
       search(query)
         .then((results) => {
-          if (!cancelled) setItems(results)
+          if (!cancelled) setItems(results);
         })
         .finally(() => {
-          if (!cancelled) setLoading(false)
-        })
-    }, 250)
+          if (!cancelled) setLoading(false);
+        });
+    }, 250);
     return () => {
-      cancelled = true
-      clearTimeout(timer)
-    }
-  }, [open, query, search])
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [open, query, search]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -76,9 +84,18 @@ export function ReferencePicker({
             role="combobox"
             aria-expanded={open}
             aria-controls={listboxId}
-            className={cn('w-full justify-between font-normal', !value && 'text-muted-foreground', value && 'pe-16', className)}
+            className={cn(
+              "w-full justify-between font-normal",
+              !value && "text-muted-foreground",
+              value && "pe-16",
+              className,
+            )}
           >
-            <span className="truncate">{value ? value.label : (placeholder ?? t('reference.placeholder'))}</span>
+            <span className="truncate">
+              {value
+                ? value.label
+                : (placeholder ?? t("reference.placeholder"))}
+            </span>
             <ChevronsUpDown className="size-4 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -87,7 +104,7 @@ export function ReferencePicker({
             type="button"
             variant="ghost"
             size="icon-xs"
-            aria-label={t('reference.clear')}
+            aria-label={t("reference.clear")}
             className="absolute end-8 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             onClick={() => onChange(null)}
           >
@@ -95,9 +112,16 @@ export function ReferencePicker({
           </Button>
         ) : null}
       </div>
-      <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
+      <PopoverContent
+        className="w-(--radix-popover-trigger-width) p-0"
+        align="start"
+      >
         <Command shouldFilter={false}>
-          <CommandInput placeholder={t('common.search')} value={query} onValueChange={setQuery} />
+          <CommandInput
+            placeholder={t("common.search")}
+            value={query}
+            onValueChange={setQuery}
+          />
           <CommandList id={listboxId}>
             {loading ? (
               <div className="flex items-center justify-center py-6">
@@ -105,19 +129,23 @@ export function ReferencePicker({
               </div>
             ) : (
               <>
-                <CommandEmpty>{t('reference.empty')}</CommandEmpty>
+                <CommandEmpty>{t("reference.empty")}</CommandEmpty>
                 <CommandGroup>
                   {items.map((item) => (
                     <CommandItem
                       key={item.id}
                       value={String(item.id)}
                       onSelect={() => {
-                        onChange(item)
-                        setOpen(false)
+                        onChange(item);
+                        setOpen(false);
                       }}
                     >
                       <span className="flex-1 truncate">{item.label}</span>
-                      {item.hint ? <span className="text-xs text-muted-foreground">{item.hint}</span> : null}
+                      {item.hint ? (
+                        <span className="text-xs text-muted-foreground">
+                          {item.hint}
+                        </span>
+                      ) : null}
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -127,5 +155,5 @@ export function ReferencePicker({
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

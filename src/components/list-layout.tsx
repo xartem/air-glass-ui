@@ -1,5 +1,5 @@
-import { useState, type ComponentType, type ReactNode } from 'react'
-import type { ColumnDef } from '@tanstack/react-table'
+import { useState, type ComponentType, type ReactNode } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
 
 import {
   DataTable,
@@ -7,10 +7,10 @@ import {
   type PaginationMeta,
   type RowAction,
   type SortState,
-} from '@/components/data-table'
-import { PageHeader, type HeaderAction } from '@/components/page-header'
-import { Panel } from '@/components/panel'
-import { BulkBar, SearchInput, type BulkAction } from '@/components/toolbar'
+} from "@/components/data-table";
+import { PageHeader, type HeaderAction } from "@/components/page-header";
+import { Panel } from "@/components/panel";
+import { BulkBar, SearchInput, type BulkAction } from "@/components/toolbar";
 
 /*
  * ListLayout (E6 §1A) — the WHOLE list-page archetype as one component:
@@ -36,7 +36,7 @@ export function ListLayout<TData>({
   bulkActions,
   columns,
   data,
-  state = 'ready',
+  state = "ready",
   rowActions,
   pagination,
   sort,
@@ -48,49 +48,57 @@ export function ListLayout<TData>({
   children,
 }: {
   /* Header (E6 §2: primary action top-right) */
-  title: string
-  icon?: ComponentType<{ className?: string }>
+  title: string;
+  icon?: ComponentType<{ className?: string }>;
   /** Panel-header subtitle (one line under the section title). */
-  description?: string
-  primaryAction?: HeaderAction
-  secondaryActions?: HeaderAction[]
-  breadcrumbs?: { label: string; href?: string }[]
+  description?: string;
+  primaryAction?: HeaderAction;
+  secondaryActions?: HeaderAction[];
+  breadcrumbs?: { label: string; href?: string }[];
   /* Panel-header cluster (search first, filters right of it) */
-  search: { value: string; onChange: (value: string) => void; placeholder?: string }
-  filters?: ReactNode
-  view?: ReactNode
+  search: {
+    value: string;
+    onChange: (value: string) => void;
+    placeholder?: string;
+  };
+  filters?: ReactNode;
+  view?: ReactNode;
   /** Enables row selection; receives the selected rows and a selection reset. */
-  bulkActions?: (selected: TData[], clear: () => void) => BulkAction[]
+  bulkActions?: (selected: TData[], clear: () => void) => BulkAction[];
   /* Table */
-  columns: ColumnDef<TData, unknown>[]
-  data: TData[]
-  state?: DataTableState
-  rowActions?: RowAction<TData>[]
-  pagination?: PaginationMeta
-  sort?: SortState
-  onSort?: (column: string, dir: 'asc' | 'desc') => void
-  onPage?: (page: number) => void
-  onRetry?: () => void
-  emptyState?: { title?: string; description?: string; action?: { label: string; onClick: () => void } }
-  getRowId?: (row: TData) => string
+  columns: ColumnDef<TData, unknown>[];
+  data: TData[];
+  state?: DataTableState;
+  rowActions?: RowAction<TData>[];
+  pagination?: PaginationMeta;
+  sort?: SortState;
+  onSort?: (column: string, dir: "asc" | "desc") => void;
+  onPage?: (page: number) => void;
+  onRetry?: () => void;
+  emptyState?: {
+    title?: string;
+    description?: string;
+    action?: { label: string; onClick: () => void };
+  };
+  getRowId?: (row: TData) => string;
   /** Extra content below the table (dialogs, sheets). */
-  children?: ReactNode
+  children?: ReactNode;
 }) {
-  const [selected, setSelected] = useState<TData[]>([])
-  const [selectionEpoch, setSelectionEpoch] = useState(0)
+  const [selected, setSelected] = useState<TData[]>([]);
+  const [selectionEpoch, setSelectionEpoch] = useState(0);
 
   const clearSelection = () => {
-    setSelected([])
-    setSelectionEpoch((epoch) => epoch + 1)
-  }
+    setSelected([]);
+    setSelectionEpoch((epoch) => epoch + 1);
+  };
 
   const handlePage = (page: number) => {
     // Selection does not survive a page switch — it refers to rows no longer shown
-    clearSelection()
-    onPage?.(page)
-  }
+    clearSelection();
+    onPage?.(page);
+  };
 
-  const bulk = bulkActions ? bulkActions(selected, clearSelection) : []
+  const bulk = bulkActions ? bulkActions(selected, clearSelection) : [];
 
   return (
     <div data-slot="list-layout" className="flex min-h-full flex-col gap-4">
@@ -141,5 +149,5 @@ export function ListLayout<TData>({
       </Panel>
       {children}
     </div>
-  )
+  );
 }

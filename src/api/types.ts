@@ -1047,6 +1047,284 @@ export interface AnalyticsPayload {
   funnel: AnalyticsFunnelStep[];
 }
 
+/* ---- dashboard verticals (build-w2-screens-dashboard-verticals) ---- */
+
+/** The seven period-scoped vertical dashboards under /dashboards/*. */
+export type DashboardVertical =
+  "crm" | "ecommerce" | "crypto" | "projects" | "nft" | "jobs" | "blog";
+
+/** KPI tile value + period-over-period change as a fraction (0.12 = +12%). */
+export interface DashKpi {
+  value: number;
+  delta: number;
+}
+
+/** Ranked-list / category-bar / funnel-step row: a label and a magnitude. */
+export interface RankedRow {
+  label: string;
+  value: number;
+  /** Optional secondary hint rendered muted (e.g. a 24h % or a category). */
+  hint?: string;
+}
+
+/** Leaderboard row: a person, a headline metric and an optional quota target. */
+export interface LeaderRow {
+  name: string;
+  avatar?: string;
+  metric: number;
+  /** Target the metric is measured against; renders a quota progress bar. */
+  quota?: number;
+}
+
+/** Generic single-series time point (trend / sparkline / volume). */
+export interface SeriesPoint {
+  label: string;
+  value: number;
+}
+
+/** Open/high/low/close candle for the crypto candlestick. */
+export interface OhlcPoint {
+  label: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+}
+
+export interface CrmActivityRow {
+  id: number;
+  task: string;
+  contact: string;
+  /** ISO date the task is due. */
+  due: string;
+}
+
+export interface CrmDashboardPayload {
+  period: Period;
+  currency: string;
+  kpis: {
+    leads: DashKpi;
+    dealsWon: DashKpi;
+    revenue: DashKpi;
+    conversion: DashKpi;
+  };
+  /** Deal stages by count. */
+  funnel: RankedRow[];
+  /** Open pipeline value by stage/owner (money). */
+  pipeline: RankedRow[];
+  activities: CrmActivityRow[];
+  /** Top salespeople: metric = amount closed, quota = target. */
+  leaders: LeaderRow[];
+}
+
+export interface DashOrderRow {
+  id: number;
+  code: string;
+  customer: string;
+  total: number;
+  status: OrderStatus;
+}
+
+export interface EcommerceDashboardPayload {
+  period: Period;
+  currency: string;
+  kpis: {
+    revenue: DashKpi;
+    orders: DashKpi;
+    aov: DashKpi;
+    refunds: DashKpi;
+  };
+  revenue: SeriesPoint[];
+  categories: RankedRow[];
+  recentOrders: DashOrderRow[];
+  topProducts: RankedRow[];
+  sources: RankedRow[];
+}
+
+export interface CryptoCoinRow {
+  id: string;
+  name: string;
+  symbol: string;
+  price: number;
+  /** 24h price change as a fraction. */
+  change24h: number;
+  /** Axis-less sparkline series. */
+  spark: number[];
+}
+
+export interface CryptoActivityRow {
+  id: number;
+  side: "buy" | "sell";
+  asset: string;
+  amount: number;
+  /** ISO timestamp. */
+  at: string;
+}
+
+export interface CryptoWatchRow {
+  symbol: string;
+  name: string;
+  price: number;
+  change24h: number;
+}
+
+export interface CryptoDashboardPayload {
+  period: Period;
+  currency: string;
+  portfolio: {
+    value: number;
+    /** 24h change as a fraction. */
+    delta: number;
+  };
+  coins: CryptoCoinRow[];
+  /** Market-cap treemap slices (value = market cap in currency). */
+  marketCap: RankedRow[];
+  /** Selected pair label, e.g. "BTC/USD". */
+  pair: string;
+  ohlc: OhlcPoint[];
+  activity: CryptoActivityRow[];
+  watchlist: CryptoWatchRow[];
+}
+
+export interface BurndownPoint {
+  label: string;
+  remaining: number;
+  ideal: number;
+}
+
+export interface ProjectProgressRow {
+  id: number;
+  name: string;
+  /** Completion as a fraction. */
+  progress: number;
+  /** ISO deadline date. */
+  deadline: string;
+}
+
+export interface ProjectActivityRow {
+  id: number;
+  title: string;
+  meta: string;
+  at: string;
+  kind: "success" | "info" | "warning" | "default";
+}
+
+export interface ProjectsDashboardPayload {
+  period: Period;
+  currency: string;
+  kpis: {
+    active: DashKpi;
+    completed: DashKpi;
+    overdue: DashKpi;
+    teamLoad: DashKpi;
+  };
+  burndown: BurndownPoint[];
+  /** Tasks by status (donut). */
+  statusSplit: RankedRow[];
+  projects: ProjectProgressRow[];
+  /** Assigned tasks per team member. */
+  workload: RankedRow[];
+  activity: ProjectActivityRow[];
+}
+
+export interface NftCollectionRow {
+  id: number;
+  name: string;
+  floor: number;
+  change24h: number;
+}
+
+export interface NftAuctionRow {
+  id: number;
+  name: string;
+  bid: number;
+  /** ISO timestamp the auction ends. */
+  endsAt: string;
+}
+
+export interface NftDashboardPayload {
+  period: Period;
+  /** Native token label used for floor/volume amounts (e.g. "ETH"). */
+  token: string;
+  currency: string;
+  kpis: {
+    floor: DashKpi;
+    volume: DashKpi;
+    sales: DashKpi;
+    wallets: DashKpi;
+  };
+  volume: SeriesPoint[];
+  collections: NftCollectionRow[];
+  auctions: NftAuctionRow[];
+  /** Top creators: metric = trading volume (token). */
+  creators: LeaderRow[];
+}
+
+export type JobApplicantStage =
+  "applied" | "screening" | "interview" | "offer" | "hired";
+
+export interface JobApplicantRow {
+  id: number;
+  name: string;
+  role: string;
+  stage: JobApplicantStage;
+}
+
+export interface JobsDashboardPayload {
+  period: Period;
+  kpis: {
+    openRoles: DashKpi;
+    applicants: DashKpi;
+    hires: DashKpi;
+    timeToFill: DashKpi;
+  };
+  applications: SeriesPoint[];
+  departments: RankedRow[];
+  /** Candidate pipeline stages by count (funnel). */
+  pipeline: RankedRow[];
+  applicants: JobApplicantRow[];
+}
+
+export interface BlogTopPostRow {
+  id: number;
+  title: string;
+  views: number;
+}
+
+export interface BlogCommentRow {
+  id: number;
+  author: string;
+  excerpt: string;
+  at: string;
+}
+
+export interface BlogDashboardPayload {
+  period: Period;
+  kpis: {
+    posts: DashKpi;
+    views: DashKpi;
+    subscribers: DashKpi;
+    comments: DashKpi;
+  };
+  views: SeriesPoint[];
+  categories: RankedRow[];
+  topPosts: BlogTopPostRow[];
+  comments: BlogCommentRow[];
+  /** Top authors: metric = total views. */
+  authors: LeaderRow[];
+}
+
+/** Per-vertical payload lookup so api.dashboards.get is typed by vertical. */
+export interface DashboardPayloadMap {
+  crm: CrmDashboardPayload;
+  ecommerce: EcommerceDashboardPayload;
+  crypto: CryptoDashboardPayload;
+  projects: ProjectsDashboardPayload;
+  nft: NftDashboardPayload;
+  jobs: JobsDashboardPayload;
+  blog: BlogDashboardPayload;
+}
+
 /* ---- inbox / chat (build-demo-screen-catalog) ---- */
 
 export type InboxFolder = "inbox" | "starred" | "sent" | "archived";

@@ -1,7 +1,7 @@
-import type { ComponentType, ReactNode } from 'react'
-import { Link } from 'react-router'
+import type { ComponentType, ReactNode } from "react";
+import { Link } from "react-router";
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,10 +9,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { HelpSheetButton } from '@/components/help-sheet'
-import { Can } from '@/lib/permissions'
-import { cn } from '@/lib/utils'
+} from "@/components/ui/breadcrumb";
+import { HelpSheetButton } from "@/components/help-sheet";
+import { Can } from "@/lib/permissions";
+import { cn } from "@/lib/utils";
 
 /*
  * PageHeader (E6 §3.1):
@@ -21,21 +21,27 @@ import { cn } from '@/lib/utils'
  */
 
 export type HeaderAction = {
-  label: string
-  onClick?: () => void
-  href?: string
-  icon?: ReactNode
-  permission?: string
-  disabled?: boolean
-}
+  label: string;
+  onClick?: () => void;
+  href?: string;
+  icon?: ReactNode;
+  permission?: string;
+  disabled?: boolean;
+};
 
-function ActionButton({ action, variant }: { action: HeaderAction; variant: 'default' | 'outline' }) {
+function ActionButton({
+  action,
+  variant,
+}: {
+  action: HeaderAction;
+  variant: "default" | "outline";
+}) {
   const inner = (
     <>
       {action.icon}
       {action.label}
     </>
-  )
+  );
   return (
     <Can perm={action.permission}>
       {action.href ? (
@@ -43,12 +49,16 @@ function ActionButton({ action, variant }: { action: HeaderAction; variant: 'def
           <Link to={action.href}>{inner}</Link>
         </Button>
       ) : (
-        <Button variant={variant} onClick={action.onClick} disabled={action.disabled}>
+        <Button
+          variant={variant}
+          onClick={action.onClick}
+          disabled={action.disabled}
+        >
           {inner}
         </Button>
       )}
     </Can>
-  )
+  );
 }
 
 export function PageHeader({
@@ -60,17 +70,20 @@ export function PageHeader({
   helpKey,
   className,
 }: {
-  title: string
-  icon?: ComponentType<{ className?: string }>
-  primaryAction?: HeaderAction
-  secondaryActions?: HeaderAction[]
-  breadcrumbs?: { label: string; href?: string }[]
+  title: string;
+  icon?: ComponentType<{ className?: string }>;
+  primaryAction?: HeaderAction;
+  secondaryActions?: HeaderAction[];
+  breadcrumbs?: { label: string; href?: string }[];
   /** Screen key of a contextual help article (C11); renders the "?" button when the doc exists. */
-  helpKey?: string
-  className?: string
+  helpKey?: string;
+  className?: string;
 }) {
   return (
-    <header data-slot="page-header" className={cn('flex flex-col gap-2', className)}>
+    <header
+      data-slot="page-header"
+      className={cn("flex flex-col gap-2", className)}
+    >
       {breadcrumbs && breadcrumbs.length > 0 ? (
         <Breadcrumb>
           <BreadcrumbList>
@@ -97,11 +110,17 @@ export function PageHeader({
         <div className="flex flex-wrap items-center gap-2">
           {helpKey ? <HelpSheetButton screenKey={helpKey} /> : null}
           {secondaryActions.map((action) => (
-            <ActionButton key={action.label} action={action} variant="outline" />
+            <ActionButton
+              key={action.label}
+              action={action}
+              variant="outline"
+            />
           ))}
-          {primaryAction ? <ActionButton action={primaryAction} variant="default" /> : null}
+          {primaryAction ? (
+            <ActionButton action={primaryAction} variant="default" />
+          ) : null}
         </div>
       </div>
     </header>
-  )
+  );
 }
