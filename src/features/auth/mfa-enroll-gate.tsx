@@ -1,12 +1,12 @@
-import type { ReactNode } from 'react'
-import { LogOut, ShieldCheck } from 'lucide-react'
+import type { ReactNode } from "react";
+import { LogOut, ShieldCheck } from "lucide-react";
 
-import { api } from '@/api'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { MfaEnrollFlow } from '@/features/users/mfa'
-import { useAuth } from '@/lib/auth'
-import { t } from '@/lib/i18n'
+import { api } from "@/api";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MfaEnrollFlow } from "@/features/users/mfa";
+import { useAuth } from "@/lib/auth";
+import { t } from "@/lib/i18n";
 
 /*
  * Forced 2FA enroll (D:auth §3, §6): a role listed in security.mfa_required_roles
@@ -15,13 +15,15 @@ import { t } from '@/lib/i18n'
  */
 
 export function MfaEnrollGate({ children }: { children: ReactNode }) {
-  const { me, refresh } = useAuth()
+  const { me, refresh } = useAuth();
 
-  if (!me.mfa.enroll_required) return <>{children}</>
+  if (!me.mfa.enroll_required) return <>{children}</>;
 
   async function logout() {
-    await api.auth.logout()
-    window.location.assign(`${import.meta.env.BASE_URL.replace(/\/$/, '')}/login`)
+    await api.auth.logout();
+    window.location.assign(
+      `${import.meta.env.BASE_URL.replace(/\/$/, "")}/login`,
+    );
   }
 
   return (
@@ -32,8 +34,12 @@ export function MfaEnrollGate({ children }: { children: ReactNode }) {
             <span className="flex size-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
               <ShieldCheck className="size-6" />
             </span>
-            <CardTitle className="text-lg">{t('mfa.enroll_required_title')}</CardTitle>
-            <p className="text-sm text-muted-foreground">{t('mfa.enroll_required_hint')}</p>
+            <CardTitle className="text-lg">
+              {t("mfa.enroll_required_title")}
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              {t("mfa.enroll_required_hint")}
+            </p>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -41,11 +47,11 @@ export function MfaEnrollGate({ children }: { children: ReactNode }) {
           <p className="text-center">
             <Button variant="link" size="sm" onClick={() => void logout()}>
               <LogOut className="size-3.5" />
-              {t('shell.logout')}
+              {t("shell.logout")}
             </Button>
           </p>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

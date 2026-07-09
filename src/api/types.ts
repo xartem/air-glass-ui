@@ -81,6 +81,19 @@ export interface ResetPayload {
   password: string;
 }
 
+/** Sign-up (demo, mock — no real persistence). */
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
+/** First-time password set from an invite link. */
+export interface CreatePasswordPayload {
+  token?: string;
+  password: string;
+}
+
 export interface ActivityActor {
   id: number;
   name: string;
@@ -1099,4 +1112,86 @@ export interface KanbanColumn {
 export interface KanbanBoard {
   columns: KanbanColumn[];
   cards: Record<string, KanbanCard>;
+}
+
+/* ---- W1 utility pages (team, timeline, FAQ) ---- */
+
+export interface TeamMemberSocials {
+  twitter?: string;
+  github?: string;
+  linkedin?: string;
+  dribbble?: string;
+}
+
+export interface TeamMember {
+  id: number;
+  name: string;
+  initials: string;
+  title: string;
+  /** Filter key under team.department.* */
+  department: string;
+  email: string;
+  /** Avatar fallback swatch (token-safe demo color). */
+  color: string;
+  socials: TeamMemberSocials;
+}
+
+export type TimelineCategory = "release" | "update" | "meeting" | "note";
+
+export interface TimelineEvent {
+  id: number;
+  date: string;
+  title: string;
+  description: string;
+  category: TimelineCategory;
+  actor: string | null;
+}
+
+export interface FaqEntry {
+  id: number;
+  /** Category key under faq.category.* */
+  category: string;
+  question: string;
+  answer: string;
+}
+
+/* ---- W1 blog ---- */
+
+export interface BlogAuthor {
+  name: string;
+  initials: string;
+}
+
+export interface BlogListItem {
+  id: number;
+  title: string;
+  excerpt: string;
+  coverColor: string;
+  /** Category key under blog.category.* */
+  category: string;
+  author: BlogAuthor;
+  date: string;
+  tags: string[];
+  readMinutes: number;
+}
+
+export interface BlogComment {
+  id: number;
+  author: string;
+  initials: string;
+  date: string;
+  body: string;
+}
+
+export interface BlogPost extends BlogListItem {
+  /** Article body as ordered paragraphs. */
+  body: string[];
+  related: BlogListItem[];
+  comments: BlogComment[];
+}
+
+export interface BlogListParams {
+  page?: number;
+  q?: string;
+  category?: string;
 }

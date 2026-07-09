@@ -1,4 +1,5 @@
 import { ApiError, ValidationError, type RequestOptions } from "../client";
+import { devDebug } from "../../lib/debug";
 import type {
   ActivityEntry,
   CustomerFilters,
@@ -70,6 +71,9 @@ import {
 } from "./settings";
 import { regenerateStatus, startRegenerate } from "./media";
 import { getAppearance, saveAppearance } from "./appearance";
+import { createPassword, registerAccount, reauth, verifyOtp } from "./auth";
+import { listFaq, listTeam, listTimeline } from "./pages";
+import { addBlogComment, getBlogPost, listBlog } from "./blog";
 import {
   deleteDelivery,
   deleteDiscount,
@@ -360,6 +364,31 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: () => {
       localStorage.removeItem(IMPERSONATE_KEY);
       return { ok: true };
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/auth\/register$/,
+    handler: (options) =>
+      registerAccount(options.body as Parameters<typeof registerAccount>[0]),
+  },
+  {
+    method: "POST",
+    pattern: /^\/auth\/password\/create$/,
+    handler: (options) =>
+      createPassword(options.body as Parameters<typeof createPassword>[0]),
+  },
+  {
+    method: "POST",
+    pattern: /^\/auth\/verify$/,
+    handler: (options) => verifyOtp((options.body as { code: string }).code),
+  },
+  {
+    method: "POST",
+    pattern: /^\/auth\/reauth$/,
+    handler: (options) => {
+      requireSession();
+      return reauth((options.body as { password: string }).password);
     },
   },
   {
@@ -1245,6 +1274,73 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
         to_index: number;
       };
       return moveCard(body.card_id, body.to_column, Number(body.to_index));
+    },
+  },
+
+  /* ---- W1 utility pages (team, timeline, FAQ) ---- */
+  {
+    method: "GET",
+    pattern: /^\/pages\/team$/,
+    handler: () => {
+      requireSession();
+      devDebug("[mock:pages] listTeam");
+      return listTeam();
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/pages\/timeline$/,
+    handler: () => {
+      requireSession();
+      devDebug("[mock:pages] listTimeline");
+      return listTimeline();
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/pages\/faq$/,
+    handler: () => {
+      requireSession();
+      devDebug("[mock:pages] listFaq");
+      return listFaq();
+    },
+  },
+
+  /* ---- W1 blog ---- */
+  {
+    method: "GET",
+    pattern: /^\/blog$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      devDebug("[mock:blog] list", query);
+      return listBlog({
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        category:
+          query.category === undefined ? undefined : String(query.category),
+      });
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/blog\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      devDebug("[mock:blog] get", params[0]);
+      return getBlogPost(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/blog\/(\d+)\/comments$/,
+    handler: (options, params) => {
+      requireSession();
+      devDebug("[mock:blog] comment", params[0]);
+      return addBlogComment(
+        Number(params[0]),
+        String((options.body as { body: string }).body ?? ""),
+      );
     },
   },
 ];

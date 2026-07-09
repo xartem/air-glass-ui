@@ -1,0 +1,6 @@
+2026-07-09  Add Starter and Sitemap utility pages (sitemap derived from nav map).
+2026-07-09  Add Team directory and Timeline pages (mock pages module).
+2026-07-09  Add FAQ (tabs + accordion) and Search Results (typed tabs + pagination) pages.
+2026-07-09  Add Gallery page (masonry, category chips, lightbox).
+2026-07-09  Add Maintenance and Coming Soon public splash pages (shared countdown).
+2026-07-09  Add Privacy and Terms long-form legal pages (shared LegalPage + TOC).

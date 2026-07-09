@@ -4,7 +4,10 @@ import { createBrowserRouter } from "react-router";
 import { AppShell } from "@/app/app-shell";
 import { ErrorPage, RouteErrorPage } from "@/components/error-page";
 import { ReloginDialog } from "@/components/relogin-dialog";
+import { CoverLayout } from "@/features/auth/cover-layout";
 import { GuestLayout } from "@/features/auth/guest-layout";
+import { PublicLayout } from "@/app/public-layout";
+import { StatusLayout } from "@/app/status-layout";
 import { LoginPage } from "@/features/auth/login-page";
 import { MfaEnrollGate } from "@/features/auth/mfa-enroll-gate";
 import { Spinner } from "@/components/ui/spinner";
@@ -41,6 +44,71 @@ const resetPage = () =>
   lazyPage(() =>
     import("@/features/auth/reset-page").then((m) => ({
       default: m.ResetPage,
+    })),
+  );
+const loginCover = () => <LoginPage />;
+const signupPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/signup-page").then((m) => ({
+      default: m.SignupPage,
+    })),
+  );
+const passwordCreatePage = () =>
+  lazyPage(() =>
+    import("@/features/auth/password-create-page").then((m) => ({
+      default: m.PasswordCreatePage,
+    })),
+  );
+const verifyPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/verify-page").then((m) => ({
+      default: m.VerifyPage,
+    })),
+  );
+const lockPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/lock-page").then((m) => ({ default: m.LockPage })),
+  );
+const logoutPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/logout-page").then((m) => ({
+      default: m.LogoutPage,
+    })),
+  );
+const authSuccessPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/auth-success-page").then((m) => ({
+      default: m.AuthSuccessPage,
+    })),
+  );
+const notFoundPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/error-pages").then((m) => ({
+      default: m.NotFoundPage,
+    })),
+  );
+const notFoundCoverPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/error-pages").then((m) => ({
+      default: m.NotFoundCoverPage,
+    })),
+  );
+const notFoundAltPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/error-pages").then((m) => ({
+      default: m.NotFoundAltPage,
+    })),
+  );
+const serverErrorPage = () =>
+  lazyPage(() =>
+    import("@/features/auth/error-pages").then((m) => ({
+      default: m.ServerErrorPage,
+    })),
+  );
+const offlinePage = () =>
+  lazyPage(() =>
+    import("@/features/auth/error-pages").then((m) => ({
+      default: m.OfflinePage,
     })),
   );
 const activityPage = () =>
@@ -213,6 +281,90 @@ const statesPage = () =>
       default: m.StatesPage,
     })),
   );
+const starterPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/starter-page").then((m) => ({
+      default: m.StarterPage,
+    })),
+  );
+const sitemapPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/sitemap-page").then((m) => ({
+      default: m.SitemapPage,
+    })),
+  );
+const teamPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/team-page").then((m) => ({
+      default: m.TeamPage,
+    })),
+  );
+const timelinePage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/timeline-page").then((m) => ({
+      default: m.TimelinePage,
+    })),
+  );
+const faqPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/faq-page").then((m) => ({
+      default: m.FaqPage,
+    })),
+  );
+const searchResultsPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/search-results-page").then((m) => ({
+      default: m.SearchResultsPage,
+    })),
+  );
+const galleryPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/gallery-page").then((m) => ({
+      default: m.GalleryPage,
+    })),
+  );
+const maintenancePage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/maintenance-page").then((m) => ({
+      default: m.MaintenancePage,
+    })),
+  );
+const comingSoonPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/coming-soon-page").then((m) => ({
+      default: m.ComingSoonPage,
+    })),
+  );
+const privacyPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/privacy-page").then((m) => ({
+      default: m.PrivacyPage,
+    })),
+  );
+const termsPage = () =>
+  lazyPage(() =>
+    import("@/features/pages-extra/terms-page").then((m) => ({
+      default: m.TermsPage,
+    })),
+  );
+const blogListPage = () =>
+  lazyPage(() =>
+    import("@/features/blog/blog-list-page").then((m) => ({
+      default: m.BlogListPage,
+    })),
+  );
+const blogGridPage = () =>
+  lazyPage(() =>
+    import("@/features/blog/blog-grid-page").then((m) => ({
+      default: m.BlogGridPage,
+    })),
+  );
+const blogOverviewPage = () =>
+  lazyPage(() =>
+    import("@/features/blog/blog-overview-page").then((m) => ({
+      default: m.BlogOverviewPage,
+    })),
+  );
 
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
@@ -233,7 +385,6 @@ function AuthedRoot() {
   );
 }
 
-
 export const router = createBrowserRouter(
   [
     {
@@ -247,7 +398,75 @@ export const router = createBrowserRouter(
         { path: "/login", element: <LoginPage /> },
         { path: "/forgot", element: forgotPage() },
         { path: "/reset/:token", element: resetPage() },
+        { path: "/signup", element: signupPage() },
+        { path: "/password-create", element: passwordCreatePage() },
+        { path: "/verify", element: verifyPage() },
       ],
+    },
+    {
+      element: (
+        <GuestOnly>
+          <CoverLayout />
+        </GuestOnly>
+      ),
+      errorElement: <RouteErrorPage />,
+      children: [
+        { path: "/login/cover", element: loginCover() },
+        { path: "/forgot/cover", element: forgotPage() },
+        { path: "/reset/:token/cover", element: resetPage() },
+        { path: "/signup/cover", element: signupPage() },
+        { path: "/password-create/cover", element: passwordCreatePage() },
+        { path: "/verify/cover", element: verifyPage() },
+      ],
+    },
+    {
+      element: <PublicLayout />,
+      errorElement: <RouteErrorPage />,
+      children: [
+        { path: "/404", element: notFoundPage() },
+        { path: "/404-cover", element: notFoundCoverPage() },
+        { path: "/404-alt", element: notFoundAltPage() },
+        { path: "/500", element: serverErrorPage() },
+        { path: "/offline", element: offlinePage() },
+        { path: "/maintenance", element: maintenancePage() },
+        { path: "/coming-soon", element: comingSoonPage() },
+        { path: "/privacy", element: privacyPage() },
+        { path: "/terms", element: termsPage() },
+      ],
+    },
+    {
+      element: <StatusLayout />,
+      errorElement: <RouteErrorPage />,
+      children: [
+        { path: "/logout", element: logoutPage() },
+        { path: "/auth-success", element: authSuccessPage() },
+      ],
+    },
+    {
+      element: <CoverLayout />,
+      errorElement: <RouteErrorPage />,
+      children: [
+        { path: "/logout/cover", element: logoutPage() },
+        { path: "/auth-success/cover", element: authSuccessPage() },
+      ],
+    },
+    {
+      element: (
+        <AuthProvider>
+          <StatusLayout />
+        </AuthProvider>
+      ),
+      errorElement: <RouteErrorPage />,
+      children: [{ path: "/lock", element: lockPage() }],
+    },
+    {
+      element: (
+        <AuthProvider>
+          <CoverLayout />
+        </AuthProvider>
+      ),
+      errorElement: <RouteErrorPage />,
+      children: [{ path: "/lock/cover", element: lockPage() }],
     },
     {
       element: <AuthedRoot />,
@@ -462,6 +681,18 @@ export const router = createBrowserRouter(
         },
         // States showcase: presentational demo, any authenticated user (no gate).
         { path: "/showcase/states", element: statesPage() },
+        // W1 utility pages: any authenticated user (no permission gate).
+        { path: "/starter", element: starterPage() },
+        { path: "/sitemap", element: sitemapPage() },
+        { path: "/team", element: teamPage() },
+        { path: "/timeline", element: timelinePage() },
+        { path: "/faq", element: faqPage() },
+        { path: "/search-results", element: searchResultsPage() },
+        { path: "/gallery", element: galleryPage() },
+        // W1 blog: any authenticated user (no permission gate).
+        { path: "/blog/list", element: blogListPage() },
+        { path: "/blog/grid", element: blogGridPage() },
+        { path: "/blog/:id", element: blogOverviewPage() },
         { path: "*", element: <ErrorPage code="404" /> },
       ],
     },

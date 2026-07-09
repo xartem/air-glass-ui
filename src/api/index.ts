@@ -1,6 +1,13 @@
 import { apiFetch, apiStream } from "./client";
 import type {
   AnalyticsPayload,
+  BlogComment,
+  BlogListItem,
+  BlogListParams,
+  BlogPost,
+  FaqEntry,
+  TeamMember,
+  TimelineEvent,
   InboxFolder,
   InboxListPayload,
   InboxThread,
@@ -20,6 +27,7 @@ import type {
   HelpSearchHit,
   ActivityFilters,
   AdminSearchGroup,
+  CreatePasswordPayload,
   CreateRolePayload,
   DashboardPayload,
   LayoutOverrides,
@@ -57,6 +65,7 @@ import type {
   Permission,
   ProfilePasswordPayload,
   ProfilePayload,
+  RegisterPayload,
   ResetPayload,
   RoleDetail,
   SettingsPayload,
@@ -97,6 +106,33 @@ export const api = {
         guest: true,
       }),
     logout: () => apiFetch<{ ok: true }>("/auth/logout", { method: "POST" }),
+    /** Sign-up (demo): creates nothing, exercises the success/validation flow. */
+    register: (payload: RegisterPayload) =>
+      apiFetch<{ ok: true }>("/auth/register", {
+        method: "POST",
+        body: payload,
+        guest: true,
+      }),
+    /** First-time password set from an invite link. */
+    createPassword: (payload: CreatePasswordPayload) =>
+      apiFetch<{ ok: true }>("/auth/password/create", {
+        method: "POST",
+        body: payload,
+        guest: true,
+      }),
+    /** Standalone 2-step verification (distinct from the login MFA challenge). */
+    verifyOtp: (code: string) =>
+      apiFetch<{ ok: true }>("/auth/verify", {
+        method: "POST",
+        body: { code },
+        guest: true,
+      }),
+    /** Lock-screen re-auth: keeps the session, only re-checks the password. */
+    reauth: (password: string) =>
+      apiFetch<{ ok: true }>("/auth/reauth", {
+        method: "POST",
+        body: { password },
+      }),
     forgot: (email: string) =>
       apiFetch<{ ok: true }>("/auth/forgot", {
         method: "POST",
@@ -505,6 +541,31 @@ export const api = {
       apiFetch<KanbanBoard>("/kanban/move", {
         method: "POST",
         body: { card_id: cardId, to_column: toColumn, to_index: toIndex },
+      }),
+  },
+
+  /* W1 utility pages (any authenticated): team directory, activity timeline, FAQ. */
+  pages: {
+    team: () => apiFetch<TeamMember[]>("/pages/team"),
+    timeline: () => apiFetch<TimelineEvent[]>("/pages/timeline"),
+    faq: () => apiFetch<FaqEntry[]>("/pages/faq"),
+  },
+
+  /* W1 blog (any authenticated): list/grid share the query; article + comments. */
+  blog: {
+    list: (params: BlogListParams = {}) =>
+      apiFetch<Paginated<BlogListItem>>("/blog", {
+        query: {
+          page: params.page,
+          q: params.q,
+          category: params.category,
+        },
+      }),
+    get: (id: number) => apiFetch<BlogPost>(`/blog/${id}`),
+    comment: (id: number, body: string) =>
+      apiFetch<BlogComment>(`/blog/${id}/comments`, {
+        method: "POST",
+        body: { body },
       }),
   },
 

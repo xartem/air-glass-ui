@@ -1,0 +1,7 @@
+2026-07-09  Add split-screen cover-layout wrapper and shared auth cover/social i18n keys.
+2026-07-09  Extend ErrorPage with variant (basic/cover/alt) + offline code for W1 error pages.
+2026-07-09  Add guest auth mock: register, createPassword, verifyOtp, and lock-screen reauth.
+2026-07-09  Add Sign Up page (RHF+Zod, strength meter) + login/signup/forgot/reset cover routes.
+2026-07-09  Add Password Create page (rules checklist + strength) with basic/cover routes.
+2026-07-09  Add Two-Step Verification page + shared OtpField (6-cell), basic/cover routes.
+2026-07-09  Add Lock, Logout, Success pages + standalone 404/404-cover/404-alt/500/offline routes.
