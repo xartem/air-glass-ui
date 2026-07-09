@@ -165,13 +165,13 @@ export function LoginPage() {
                 onChange={(event) => setPassword(event.target.value)}
                 autoComplete="current-password"
                 required
-                className="pr-9"
+                className="pe-9"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((value) => !value)}
                 aria-label={t(showPassword ? 'login.hide_password' : 'login.show_password')}
-                className="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-muted-foreground hover:text-foreground"
+                className="absolute inset-y-0 end-0 flex w-9 items-center justify-center text-muted-foreground hover:text-foreground"
               >
                 {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
               </button>

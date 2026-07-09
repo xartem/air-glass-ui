@@ -117,7 +117,7 @@ export function AppearancePage() {
               onClick={() => selectStyle(key)}
               aria-pressed={draft.style === key}
               className={cn(
-                'flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-all',
+                'flex flex-col items-start gap-2 rounded-xl border p-4 text-start transition-all',
                 draft.style === key ? 'border-primary ring-3 ring-ring/40' : 'hover:border-ring/60',
               )}
             >

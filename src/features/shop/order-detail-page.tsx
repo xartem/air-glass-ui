@@ -144,7 +144,7 @@ export function OrderDetailPage() {
           {
             label: t('common.back'),
             href: '/shop/orders',
-            icon: <ArrowLeft />,
+            icon: <ArrowLeft className="rtl:-scale-x-100" />,
             permission: undefined,
           },
         ]}
@@ -187,9 +187,9 @@ export function OrderDetailPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>{t('shop.orders.detail.item')}</TableHead>
-                      <TableHead className="text-right">{t('shop.orders.detail.qty')}</TableHead>
-                      <TableHead className="text-right">{t('shop.orders.detail.price')}</TableHead>
-                      <TableHead className="text-right">{t('shop.orders.detail.subtotal')}</TableHead>
+                      <TableHead className="text-end">{t('shop.orders.detail.qty')}</TableHead>
+                      <TableHead className="text-end">{t('shop.orders.detail.price')}</TableHead>
+                      <TableHead className="text-end">{t('shop.orders.detail.subtotal')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -199,11 +199,11 @@ export function OrderDetailPage() {
                           <div className="font-medium">{item.name}</div>
                           <div className="text-xs text-muted-foreground">{item.sku}</div>
                         </TableCell>
-                        <TableCell className="text-right tabular-nums">{item.qty}</TableCell>
-                        <TableCell className="text-right tabular-nums">
+                        <TableCell className="text-end tabular-nums">{item.qty}</TableCell>
+                        <TableCell className="text-end tabular-nums">
                           {formatMoney(item.price, order.currency, locale)}
                         </TableCell>
-                        <TableCell className="text-right tabular-nums">
+                        <TableCell className="text-end tabular-nums">
                           {formatMoney(item.price * item.qty, order.currency, locale)}
                         </TableCell>
                       </TableRow>

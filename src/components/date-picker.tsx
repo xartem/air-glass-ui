@@ -62,7 +62,7 @@ export function DatePicker({
           className={cn('w-full justify-start font-normal', !selected && 'text-muted-foreground', className)}
         >
           <CalendarIcon className="size-4" />
-          <span className="flex-1 text-left">{display}</span>
+          <span className="flex-1 text-start">{display}</span>
           {clearable && selected ? (
             <span
               role="button"

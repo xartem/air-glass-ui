@@ -108,10 +108,10 @@ function AiPanelInner() {
         className="flex flex-col gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-md"
       >
         <SheetHeader className="border-b">
-          <SheetTitle className="flex items-center gap-2 pr-8">
+          <SheetTitle className="flex items-center gap-2 pe-8">
             <Sparkles className="size-4 shrink-0 text-primary" />
             <span className="min-w-0 truncate">{title}</span>
-            <span className="ml-auto flex shrink-0 items-center gap-0.5">
+            <span className="ms-auto flex shrink-0 items-center gap-0.5">
               <Button variant="ghost" size="icon-sm" aria-label={t('ai.newChat')} onClick={() => setActive(null)}>
                 <Plus />
               </Button>

@@ -73,7 +73,7 @@ export function DateRangePicker({
               role="button"
               tabIndex={0}
               aria-label={t('common.clear')}
-              className="ml-auto rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+              className="ms-auto rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
               onPointerDown={(event) => event.stopPropagation()}
               onClick={(event) => {
                 event.stopPropagation()

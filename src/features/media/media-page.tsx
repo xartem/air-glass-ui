@@ -149,7 +149,7 @@ export function MediaPage() {
               className="flex items-center gap-1 text-sm text-muted-foreground"
             >
               <span>{t("media.fm.title")}</span>
-              <ChevronRight className="size-3.5" />
+              <ChevronRight className="size-3.5 rtl:rotate-180" />
               <span className="font-medium text-foreground">
                 {t(`media.fm.folder.${folder}`)}
               </span>
@@ -300,7 +300,7 @@ function FileTile({
       type="button"
       onClick={onSelect}
       className={cn(
-        "group flex flex-col overflow-hidden rounded-xl border text-left transition-colors",
+        "group flex flex-col overflow-hidden rounded-xl border text-start transition-colors",
         active
           ? "border-primary ring-2 ring-primary/40"
           : "border-border/50 hover:border-primary/40",
@@ -330,7 +330,7 @@ function FileRow({
         type="button"
         onClick={onSelect}
         className={cn(
-          "flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left text-sm transition-colors",
+          "flex w-full items-center gap-3 rounded-lg px-2 py-2 text-start text-sm transition-colors",
           active ? "bg-primary/5" : "hover:bg-accent/40",
         )}
         aria-pressed={active}

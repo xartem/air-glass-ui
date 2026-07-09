@@ -156,7 +156,7 @@ function SidebarLeaf({
       className={cn(
         'flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm transition-colors',
         collapsed && 'justify-center px-0 py-2',
-        !collapsed && indent && 'ml-4',
+        !collapsed && indent && 'ms-4',
         active
           ? 'nav-item-active font-medium'
           : 'text-sidebar-foreground hover:bg-muted hover:text-foreground',
@@ -236,7 +236,7 @@ function SidebarParent({
         )}
       >
         <parent.icon className="size-4 shrink-0" />
-        <span className="min-w-0 flex-1 truncate text-left">{parent.label}</span>
+        <span className="min-w-0 flex-1 truncate text-start">{parent.label}</span>
         {/* A collapsed parent still signals where the active screen lives. */}
         {!open && holdsActive ? <span className="size-1.5 shrink-0 rounded-full bg-primary" /> : null}
         <ChevronDown className={cn('size-3 shrink-0 transition-transform', !open && '-rotate-90')} />
@@ -522,7 +522,7 @@ export function AppShell() {
           Visually hidden until focused. */}
       <a
         href="#main-content"
-        className="sr-only rounded-lg focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="sr-only rounded-lg focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-50 focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {t('shell.skip_to_content')}
       </a>
@@ -537,7 +537,7 @@ export function AppShell() {
       <aside
         data-collapsed={collapsed}
         className={cn(
-          'glass-panel group/sidebar sticky top-4 m-4 mr-0 hidden h-[calc(100vh-2rem)] shrink-0 flex-col rounded-2xl p-3 transition-[width] lg:flex',
+          'glass-panel group/sidebar sticky top-4 m-4 me-0 hidden h-[calc(100vh-2rem)] shrink-0 flex-col rounded-2xl p-3 transition-[width] lg:flex',
           collapsed ? 'w-16 items-stretch' : 'w-60',
         )}
       >
@@ -550,7 +550,8 @@ export function AppShell() {
           aria-label={t(collapsed ? 'shell.sidebar_expand' : 'shell.sidebar_collapse')}
           className={cn('mt-2', collapsed ? 'self-center' : 'self-end')}
         >
-          {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
+          {/* Sidebar-collapse icons imply a start-docked panel; mirror under RTL. */}
+          {collapsed ? <PanelLeftOpen className="rtl:-scale-x-100" /> : <PanelLeftClose className="rtl:-scale-x-100" />}
         </Button>
       </aside>
 
@@ -578,7 +579,7 @@ export function AppShell() {
           {/* Search field-styled trigger ≥md; an icon below md — both open the ⌘K palette */}
           <CommandPaletteTrigger className="hidden flex-1 md:flex md:max-w-md" />
           <MobilePaletteButton />
-          <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
+          <div className="ms-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
             <NotificationsMenu
               initialItems={Array.from({ length: unread }, (_, index) => ({
                 id: `unread-${index}`,

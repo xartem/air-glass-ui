@@ -40,7 +40,7 @@ export function NotificationsMenu({
         <Button variant="ghost" size="icon" aria-label={t('shell.notifications')} className="relative">
           <Bell />
           {unread > 0 ? (
-            <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-destructive-foreground">
+            <span className="absolute top-1.5 end-1.5 flex size-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-destructive-foreground">
               {unread}
             </span>
           ) : null}
@@ -48,7 +48,7 @@ export function NotificationsMenu({
       </PopoverTrigger>
       {/* Full width on phones (pinned under the header via .mobile-full-popover); 320px from sm up */}
       <PopoverContent align="end" collisionPadding={8} className="mobile-full-popover w-80 p-0">
-        <div className="flex items-center justify-between py-1 pr-1 pl-3">
+        <div className="flex items-center justify-between py-1 pe-1 ps-3">
           <p className="text-sm font-medium">{t('notifications.title')}</p>
           {unread > 0 ? (
             <Button variant="ghost" size="sm" onClick={markAllRead}>
@@ -71,7 +71,7 @@ export function NotificationsMenu({
                   type="button"
                   onClick={() => markRead(item.id)}
                   className={cn(
-                    'flex w-full items-start gap-2.5 px-3 py-2.5 text-left transition-colors hover:bg-muted',
+                    'flex w-full items-start gap-2.5 px-3 py-2.5 text-start transition-colors hover:bg-muted',
                     !item.read && 'bg-accent/50',
                   )}
                 >

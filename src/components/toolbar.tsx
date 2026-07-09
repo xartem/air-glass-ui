@@ -34,12 +34,12 @@ export function SearchInput({
 }) {
   return (
     <div className={cn('relative', className)}>
-      <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+      <Search className="pointer-events-none absolute top-1/2 start-3 size-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder ?? t('common.search')}
-        className="pl-9"
+        className="ps-9"
         aria-label={t('common.search')}
       />
     </div>
@@ -52,7 +52,7 @@ export function BulkBar({ actions, selectedCount }: { actions: BulkAction[]; sel
       <span className="text-sm font-medium text-accent-foreground">
         {t('common.selected', { count: selectedCount })}
       </span>
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ms-auto flex items-center gap-2">
         {actions.map((action) => (
           <Button
             key={action.label}
@@ -101,7 +101,7 @@ export function Toolbar({
             className="w-full sm:max-w-72"
           />
           {filters}
-          {view ? <div className="ml-auto">{view}</div> : null}
+          {view ? <div className="ms-auto">{view}</div> : null}
         </>
       )}
     </div>

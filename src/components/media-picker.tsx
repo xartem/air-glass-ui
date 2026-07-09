@@ -41,7 +41,7 @@ export function MediaTile({
       type="button"
       onClick={onClick}
       className={cn(
-        'group relative flex aspect-square flex-col overflow-hidden rounded-lg border text-left transition-all',
+        'group relative flex aspect-square flex-col overflow-hidden rounded-lg border text-start transition-all',
         selected ? 'border-primary ring-3 ring-ring/40' : 'hover:border-ring/60',
       )}
     >
@@ -138,7 +138,7 @@ export function MediaPicker({
                 type="button"
                 aria-label={t('media.remove')}
                 onClick={() => onChange(value.filter((p) => p !== path))}
-                className="absolute top-1 right-1 flex size-5 items-center justify-center rounded-full bg-background/85 opacity-0 backdrop-blur-sm transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-background"
+                className="absolute top-1 end-1 flex size-5 items-center justify-center rounded-full bg-background/85 opacity-0 backdrop-blur-sm transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-background"
               >
                 <X className="size-3" />
               </button>

@@ -143,8 +143,8 @@ export function PricingPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[32rem] text-sm">
             <thead>
-              <tr className="border-b border-border/60 text-left">
-                <th className="py-2 pr-3 font-medium text-muted-foreground">
+              <tr className="border-b border-border/60 text-start">
+                <th className="py-2 pe-3 font-medium text-muted-foreground">
                   {t("pricing.compare_feature")}
                 </th>
                 {TIER_ORDER.map((key) => (
@@ -160,7 +160,7 @@ export function PricingPage() {
                   key={row.key}
                   className="border-b border-border/40 last:border-0"
                 >
-                  <td className="py-2.5 pr-3 text-muted-foreground">
+                  <td className="py-2.5 pe-3 text-muted-foreground">
                     {t(`pricing.feature.${row.key}`)}
                   </td>
                   {TIER_ORDER.map((key) => (
@@ -218,7 +218,7 @@ function PricingCard({
       )}
     >
       {tier.popular ? (
-        <Badge className="absolute -top-2.5 left-6 bg-primary text-primary-foreground">
+        <Badge className="absolute -top-2.5 start-6 bg-primary text-primary-foreground">
           {t("pricing.popular")}
         </Badge>
       ) : null}

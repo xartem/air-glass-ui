@@ -111,11 +111,11 @@ export function CommandPalette({
               >
                 <span className="min-w-0 truncate">{item.title}</span>
                 {item.status === 'draft' ? (
-                  <Badge variant="secondary" className="ml-auto shrink-0">
+                  <Badge variant="secondary" className="ms-auto shrink-0">
                     {t('common.draft')}
                   </Badge>
                 ) : item.hint ? (
-                  <span className="ml-auto shrink-0 text-xs text-muted-foreground">{item.hint}</span>
+                  <span className="ms-auto shrink-0 text-xs text-muted-foreground">{item.hint}</span>
                 ) : null}
               </CommandItem>
             ))}
@@ -159,7 +159,7 @@ export function CommandPaletteTrigger({ className }: { className?: string }) {
         )}
       >
         <Search className="size-4 shrink-0" />
-        <span className="min-w-0 flex-1 truncate text-left">{t('shell.searchPlaceholder')}</span>
+        <span className="min-w-0 flex-1 truncate text-start">{t('shell.searchPlaceholder')}</span>
         <Kbd className="max-sm:hidden">⌘K</Kbd>
       </button>
       <CommandPalette open={open} onOpenChange={setOpen} />

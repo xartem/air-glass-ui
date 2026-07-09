@@ -85,7 +85,7 @@ export function CustomerDetailPage() {
         title={customer?.name ?? t('shop.customers.detail.title')}
         icon={UserCircle}
         breadcrumbs={[{ label: t('nav.customers'), href: '/shop/customers' }, { label: customer?.name ?? '…' }]}
-        secondaryActions={[{ label: t('common.back'), href: '/shop/customers', icon: <ArrowLeft /> }]}
+        secondaryActions={[{ label: t('common.back'), href: '/shop/customers', icon: <ArrowLeft className="rtl:-scale-x-100" /> }]}
       />
 
       {loading || !customer ? (
@@ -136,7 +136,7 @@ export function CustomerDetailPage() {
                         <TableRow>
                           <TableHead>{t('shop.orders.col.number')}</TableHead>
                           <TableHead>{t('shop.orders.col.status')}</TableHead>
-                          <TableHead className="text-right">{t('shop.orders.col.total')}</TableHead>
+                          <TableHead className="text-end">{t('shop.orders.col.total')}</TableHead>
                           <TableHead className="w-0" />
                         </TableRow>
                       </TableHeader>
@@ -147,10 +147,10 @@ export function CustomerDetailPage() {
                             <TableCell>
                               <StatusBadge status={orderStatusKind[order.status]} label={t(`shop.orders.status.${order.status}`)} />
                             </TableCell>
-                            <TableCell className="text-right tabular-nums">
+                            <TableCell className="text-end tabular-nums">
                               {formatMoney(order.total, order.currency, locale)}
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="text-end">
                               <Button variant="ghost" size="sm" onClick={() => navigate(`/shop/orders/${order.id}`)}>
                                 {t('shop.orders.view')}
                               </Button>

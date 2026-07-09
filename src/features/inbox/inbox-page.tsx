@@ -244,7 +244,7 @@ function ThreadRow({
         type="button"
         onClick={onSelect}
         className={cn(
-          "flex w-full items-start gap-3 border-b border-border/40 p-3 text-left transition-colors",
+          "flex w-full items-start gap-3 border-b border-border/40 p-3 text-start transition-colors",
           active ? "bg-primary/5" : "hover:bg-accent/40",
         )}
       >
@@ -425,7 +425,7 @@ function ThreadPane({ id, onBack }: { id: number; onBack: () => void }) {
           disabled={!draft.trim() || sendMutation.isPending}
           aria-label={t("inbox.send")}
         >
-          <SendHorizontal />
+          <SendHorizontal className="rtl:-scale-x-100" />
           <span className="max-sm:sr-only">{t("inbox.send")}</span>
         </Button>
       </div>
@@ -451,7 +451,7 @@ function ThreadHeader({
         onClick={onBack}
         aria-label={t("common.back")}
       >
-        <ArrowLeft />
+        <ArrowLeft className="rtl:-scale-x-100" />
       </Button>
       <div className="min-w-0">
         <h2 className="truncate text-sm font-semibold">{title}</h2>

@@ -67,26 +67,26 @@ function SearchBox({ value, onChange }: { value: string; onChange: (v: string) =
 
   return (
     <div className="relative">
-      <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+      <Search className="pointer-events-none absolute top-1/2 start-3 size-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         ref={inputRef}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === 'Escape' && onChange('')}
         placeholder={t('help.searchPlaceholder')}
-        className="pr-9 pl-9"
+        className="pe-9 ps-9"
       />
       {value ? (
         <button
           type="button"
           aria-label={t('help.searchClear')}
           onClick={() => onChange('')}
-          className="absolute top-1/2 right-2 grid size-6 -translate-y-1/2 place-items-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
+          className="absolute top-1/2 end-2 grid size-6 -translate-y-1/2 place-items-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
         >
           <X className="size-3.5" />
         </button>
       ) : (
-        <Kbd className="absolute top-1/2 right-2.5 -translate-y-1/2">/</Kbd>
+        <Kbd className="absolute top-1/2 end-2.5 -translate-y-1/2">/</Kbd>
       )}
     </div>
   )
@@ -126,14 +126,14 @@ function TreeNav({
             <button
               type="button"
               onClick={() => setClosed((s) => ({ ...s, [group.key]: !isClosed }))}
-              className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-[13.5px] font-semibold text-secondary-foreground hover:bg-secondary"
+              className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-start text-[13.5px] font-semibold text-secondary-foreground hover:bg-secondary"
             >
               <Icon className="size-4 text-muted-foreground" />
               {group.label}
-              <ChevronDown className={cn('ml-auto size-3.5 text-muted-foreground transition-transform', isClosed && '-rotate-90')} />
+              <ChevronDown className={cn('ms-auto size-3.5 text-muted-foreground transition-transform', isClosed && '-rotate-90')} />
             </button>
             {!isClosed ? (
-              <div className="flex flex-col gap-px py-1 pl-1.5">
+              <div className="flex flex-col gap-px py-1 ps-1.5">
                 {group.articles.map((article) => {
                   const isActive = article.module === active.module && article.page === active.page
                   return (
@@ -142,9 +142,9 @@ function TreeNav({
                       to={`/help/${article.module}/${article.page}`}
                       onClick={onNavigate}
                       className={cn(
-                        'relative rounded-lg py-1.5 pr-2 pl-5 text-[14px]',
+                        'relative rounded-lg py-1.5 pe-2 ps-5 text-[14px]',
                         isActive
-                          ? 'bg-accent font-semibold text-accent-foreground before:absolute before:top-1/2 before:left-2 before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-primary'
+                          ? 'bg-accent font-semibold text-accent-foreground before:absolute before:top-1/2 before:start-2 before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-primary'
                           : 'text-muted-foreground hover:bg-secondary hover:text-secondary-foreground',
                       )}
                     >
@@ -240,16 +240,16 @@ function ArticlePane({ module, page }: { module: string; page: string }) {
         <div className="mt-8 flex items-center justify-between gap-4 border-t border-border pt-4 text-[14px]">
           {article.prev ? (
             <Link to={`/help/${article.prev.module}/${article.prev.page}`} className="flex min-w-0 items-center gap-1 font-medium text-primary hover:underline">
-              <ChevronLeft className="size-4 shrink-0" />
+              <ChevronLeft className="size-4 shrink-0 rtl:rotate-180" />
               <span className="truncate">{article.prev.title}</span>
             </Link>
           ) : (
             <span />
           )}
           {article.next ? (
-            <Link to={`/help/${article.next.module}/${article.next.page}`} className="flex min-w-0 items-center gap-1 text-right font-medium text-primary hover:underline">
+            <Link to={`/help/${article.next.module}/${article.next.page}`} className="flex min-w-0 items-center gap-1 text-end font-medium text-primary hover:underline">
               <span className="truncate">{article.next.title}</span>
-              <ChevronRight className="size-4 shrink-0" />
+              <ChevronRight className="size-4 shrink-0 rtl:rotate-180" />
             </Link>
           ) : (
             <span />
@@ -300,7 +300,7 @@ export function HelpPage() {
       ) : treeQuery.isPending ? (
         <div className="flex flex-col gap-2 py-1">
           {[0, 1, 2, 3, 4, 5].map((i) => (
-            <Skeleton key={i} className={cn('h-7 rounded-lg', i % 3 === 0 ? 'w-2/5' : 'ml-4 w-4/5')} />
+            <Skeleton key={i} className={cn('h-7 rounded-lg', i % 3 === 0 ? 'w-2/5' : 'ms-4 w-4/5')} />
           ))}
         </div>
       ) : (

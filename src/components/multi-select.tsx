@@ -55,7 +55,7 @@ export function MultiSelect({
           aria-expanded={open}
           className={cn('min-h-[42px] w-full justify-between font-normal', className)}
         >
-          <span className="flex flex-1 flex-wrap gap-1 text-left">
+          <span className="flex flex-1 flex-wrap gap-1 text-start">
             {selectedOptions.length === 0 ? (
               <span className="text-muted-foreground">{placeholder ?? t('multiselect.placeholder')}</span>
             ) : (

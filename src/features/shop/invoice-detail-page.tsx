@@ -76,7 +76,7 @@ export function InvoiceDetailPage() {
         title={invoice?.number ?? t('shop.invoices.detail.title')}
         icon={ReceiptText}
         breadcrumbs={[{ label: t('nav.invoices'), href: '/shop/invoices' }, { label: invoice?.number ?? '…' }]}
-        secondaryActions={[{ label: t('common.back'), href: '/shop/invoices', icon: <ArrowLeft /> }]}
+        secondaryActions={[{ label: t('common.back'), href: '/shop/invoices', icon: <ArrowLeft className="rtl:-scale-x-100" /> }]}
         primaryAction={{ label: t('shop.invoices.detail.print'), onClick: print, icon: <Printer /> }}
       />
 
@@ -100,7 +100,7 @@ export function InvoiceDetailPage() {
                 <div className="text-sm text-muted-foreground">{invoice.issuer.email}</div>
                 <div className="whitespace-pre-line text-sm text-muted-foreground">{invoice.issuer.address}</div>
               </div>
-              <div className="sm:text-right">
+              <div className="sm:text-end">
                 <div className="text-xs font-medium text-muted-foreground uppercase">{t('shop.invoices.detail.to')}</div>
                 <div className="mt-1 text-sm font-medium">{invoice.recipient.name}</div>
                 <div className="text-sm text-muted-foreground">{invoice.recipient.email}</div>
@@ -123,9 +123,9 @@ export function InvoiceDetailPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('shop.orders.detail.item')}</TableHead>
-                  <TableHead className="text-right">{t('shop.orders.detail.qty')}</TableHead>
-                  <TableHead className="text-right">{t('shop.orders.detail.price')}</TableHead>
-                  <TableHead className="text-right">{t('shop.orders.detail.subtotal')}</TableHead>
+                  <TableHead className="text-end">{t('shop.orders.detail.qty')}</TableHead>
+                  <TableHead className="text-end">{t('shop.orders.detail.price')}</TableHead>
+                  <TableHead className="text-end">{t('shop.orders.detail.subtotal')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -135,9 +135,9 @@ export function InvoiceDetailPage() {
                       <div className="font-medium">{item.name}</div>
                       <div className="text-xs text-muted-foreground">{item.sku}</div>
                     </TableCell>
-                    <TableCell className="text-right tabular-nums">{item.qty}</TableCell>
-                    <TableCell className="text-right tabular-nums">{formatMoney(item.price, invoice.currency, locale)}</TableCell>
-                    <TableCell className="text-right tabular-nums">
+                    <TableCell className="text-end tabular-nums">{item.qty}</TableCell>
+                    <TableCell className="text-end tabular-nums">{formatMoney(item.price, invoice.currency, locale)}</TableCell>
+                    <TableCell className="text-end tabular-nums">
                       {formatMoney(item.price * item.qty, invoice.currency, locale)}
                     </TableCell>
                   </TableRow>

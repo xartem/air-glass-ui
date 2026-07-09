@@ -126,7 +126,7 @@ export function AiPage() {
                     type="button"
                     onClick={() => setSelectedId(conversation.id)}
                     className={cn(
-                      'w-full rounded-lg px-3 py-2.5 pr-10 text-left transition-colors',
+                      'w-full rounded-lg px-3 py-2.5 pe-10 text-start transition-colors',
                       conversation.id === selected?.id ? 'nav-item-active' : 'hover:bg-muted',
                     )}
                   >
@@ -136,12 +136,12 @@ export function AiPage() {
                         {conversation.title ?? t('ai.untitled')}
                       </span>
                     </span>
-                    <span className="mt-0.5 block truncate pl-6 text-xs text-muted-foreground">
+                    <span className="mt-0.5 block truncate ps-6 text-xs text-muted-foreground">
                       {formatTime(conversation.updated_at)} · {formatTokens(conversation.tokens)} tok ·{' '}
                       {formatUsd(conversation.cost, locale)}
                     </span>
                   </button>
-                  <span className="absolute top-2 right-1.5">
+                  <span className="absolute top-2 end-1.5">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon-xs" aria-label={t('common.actions')}>

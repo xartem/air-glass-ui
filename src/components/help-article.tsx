@@ -31,9 +31,9 @@ export function HelpArticleBody({ markdown, isFallback, className }: {
           h2: ({ children }) => <h2 className="mt-6 mb-2 text-lg font-semibold tracking-tight text-foreground">{children}</h2>,
           h3: ({ children }) => <h3 className="mt-5 mb-1.5 text-[15px] font-semibold text-foreground">{children}</h3>,
           p: ({ children }) => <p className="my-3">{children}</p>,
-          ol: ({ children }) => <ol className="my-3 flex list-decimal flex-col gap-2 pl-6 marker:font-semibold marker:text-primary">{children}</ol>,
-          ul: ({ children }) => <ul className="my-3 flex list-disc flex-col gap-2 pl-6 marker:text-primary">{children}</ul>,
-          li: ({ children }) => <li className="pl-1">{children}</li>,
+          ol: ({ children }) => <ol className="my-3 flex list-decimal flex-col gap-2 ps-6 marker:font-semibold marker:text-primary">{children}</ol>,
+          ul: ({ children }) => <ul className="my-3 flex list-disc flex-col gap-2 ps-6 marker:text-primary">{children}</ul>,
+          li: ({ children }) => <li className="ps-1">{children}</li>,
           strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
           code: ({ children }) => (
             <code className="rounded-[5px] bg-secondary px-1.5 py-0.5 font-mono text-[0.9em]">{children}</code>

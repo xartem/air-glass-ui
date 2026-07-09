@@ -91,7 +91,7 @@ function AttachmentChip({
     </>
   )
   return (
-    <span className="flex max-w-full items-center gap-1.5 rounded-lg border bg-background/60 py-1 pr-1 pl-1.5 text-xs">
+    <span className="flex max-w-full items-center gap-1.5 rounded-lg border bg-background/60 py-1 pe-1 ps-1.5 text-xs">
       {onRemove ? (
         <span className="flex min-w-0 items-center gap-1.5">{body}</span>
       ) : (
@@ -105,7 +105,7 @@ function AttachmentChip({
           type="button"
           aria-label={t('common.delete')}
           onClick={onRemove}
-          className="ml-0.5 flex size-4 shrink-0 items-center justify-center rounded-full hover:bg-muted"
+          className="ms-0.5 flex size-4 shrink-0 items-center justify-center rounded-full hover:bg-muted"
         >
           <X className="size-3" />
         </button>
@@ -561,7 +561,7 @@ export function AiChatView({
       <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
         {conversationId !== null && detailQuery.isPending ? (
           <div className="space-y-3">
-            <Skeleton className="ml-auto h-9 w-2/3 rounded-xl" />
+            <Skeleton className="ms-auto h-9 w-2/3 rounded-xl" />
             <Skeleton className="h-16 w-3/4 rounded-xl" />
           </div>
         ) : conversationId !== null && detailQuery.isError ? (
@@ -580,7 +580,7 @@ export function AiChatView({
                 <button
                   key={example.key}
                   type="button"
-                  className="rounded-lg border bg-background/60 px-3 py-2 text-left text-sm transition-colors hover:bg-muted"
+                  className="rounded-lg border bg-background/60 px-3 py-2 text-start text-sm transition-colors hover:bg-muted"
                   onClick={() => {
                     setDraft(t(example.key))
                     inputRef.current?.focus()

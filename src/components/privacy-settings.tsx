@@ -148,7 +148,7 @@ export function PrivacyCategories({
                 size="icon-sm"
                 disabled={locked}
                 aria-label={t('privacy.categories.remove')}
-                className="ml-auto"
+                className="ms-auto"
                 onClick={() => setCategories((current) => current.filter((_, i) => i !== index))}
               >
                 <Trash2 />

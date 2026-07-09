@@ -64,7 +64,7 @@ function FindingRow({
     <li>
       <Collapsible>
         <div className="flex items-center gap-3 py-3">
-          <CollapsibleTrigger className="group flex min-w-0 flex-1 items-center gap-3 text-left">
+          <CollapsibleTrigger className="group flex min-w-0 flex-1 items-center gap-3 text-start">
             <StatusBadge
               status={SEVERITY_BADGE[finding.severity]}
               label={t(`ai.findings.severity.${finding.severity}`)}

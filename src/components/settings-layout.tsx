@@ -47,7 +47,7 @@ export function SettingsLayout({
                 type="button"
                 onClick={() => onSectionChange(section.key)}
                 className={cn(
-                  'flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm whitespace-nowrap transition-colors lg:w-full',
+                  'flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-start text-sm whitespace-nowrap transition-colors lg:w-full',
                   isActive ? 'nav-item-active font-medium' : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                 )}
               >

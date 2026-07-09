@@ -93,7 +93,7 @@ export function RoleMatrix({
       <table className="w-full border-separate border-spacing-0 text-sm">
         <thead>
           <tr>
-            <th className="sticky top-0 left-0 z-20 bg-[var(--glass-bg)] px-3 py-2.5 text-left align-bottom backdrop-blur">
+            <th className="sticky top-0 start-0 z-20 bg-[var(--glass-bg)] px-3 py-2.5 text-start align-bottom backdrop-blur">
               <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
                 {t('roles.permission')}
               </span>
@@ -168,7 +168,7 @@ function GroupRows({
   return (
     <>
       <tr className="border-t bg-muted/30">
-        <th className="sticky left-0 z-10 bg-[var(--glass-bg)] px-3 py-2 text-left backdrop-blur">
+        <th className="sticky start-0 z-10 bg-[var(--glass-bg)] px-3 py-2 text-start backdrop-blur">
           <button
             type="button"
             className="flex items-center gap-1.5 font-medium hover:text-foreground"
@@ -193,7 +193,7 @@ function GroupRows({
       {!collapsed
         ? keys.map((key) => (
             <tr key={key} className="border-t hover:bg-muted/20">
-              <td className="sticky left-0 z-10 bg-[var(--glass-bg)] px-3 py-1.5 pl-9 backdrop-blur">
+              <td className="sticky start-0 z-10 bg-[var(--glass-bg)] px-3 py-1.5 ps-9 backdrop-blur">
                 <span className="font-mono text-xs text-muted-foreground">{key}</span>
               </td>
               {roles.map((role) => (
