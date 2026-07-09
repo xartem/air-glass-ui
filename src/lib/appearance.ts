@@ -33,6 +33,9 @@ export function applyAppearance(a: AppearanceSettings): void {
   root.dir = a.dir ?? 'ltr'
   root.dataset.bgLight = a.bgLight
   root.dataset.bgDark = a.bgDark
+  // Layout dimensions (density / content width) — CSS in index.css keys off these attrs.
+  root.dataset.density = a.density
+  root.dataset.contentWidth = a.contentWidth
 
   const s = root.style
   s.setProperty('--glass-blur-sidebar', `${a.tokens.blur}px`)
@@ -71,5 +74,12 @@ export function useAppearance() {
     setOverride(next)
   }
 
-  return { query, override, effectiveStyle: override ?? site?.style ?? 'glass', cycleStyle }
+  // Drop the transient topbar preview so the saved config becomes authoritative —
+  // the customizer calls this when the user commits to a style there (E1 §2.2.1).
+  function clearOverride() {
+    localStorage.removeItem(OVERRIDE_KEY)
+    setOverride(null)
+  }
+
+  return { query, override, effectiveStyle: override ?? site?.style ?? 'glass', cycleStyle, clearOverride }
 }

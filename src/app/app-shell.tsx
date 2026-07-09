@@ -12,6 +12,7 @@ import {
   PanelLeftOpen,
   RefreshCw,
   Search,
+  SlidersHorizontal,
   Sparkles,
   Square,
   Sun,
@@ -24,6 +25,7 @@ import { api } from '@/api'
 import { buildNavGroups, isNavParent, type NavEntry, type NavItem, type NavParent } from '@/app/nav'
 import { Button } from '@/components/ui/button'
 import { AiPanel } from '@/components/ai-panel'
+import { ThemeCustomizer } from '@/components/theme-customizer'
 import { CommandPalette, CommandPaletteTrigger } from '@/components/command-palette'
 import { GlobalProgress } from '@/components/global-progress'
 import { NotificationsMenu } from '@/components/notifications-menu'
@@ -591,7 +593,8 @@ export function AppShell() {
   const { me, logout } = useAuth()
   const { dark, toggle } = useDarkMode()
   // Site-wide appearance (E1 §2.2.1) applied to <html>; topbar button quick-cycles the style.
-  const { effectiveStyle, cycleStyle } = useAppearance()
+  // clearOverride lets the Theme Customizer drop the transient style preview on commit.
+  const { effectiveStyle, cycleStyle, clearOverride } = useAppearance()
   const meshRef = useMeshParallax()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === '1')
@@ -743,10 +746,30 @@ export function AppShell() {
 
         <ShellBanners />
 
-        <main id="main-content" tabIndex={-1} className="min-w-0 flex-1 p-3 outline-none sm:p-4 md:p-6">
+        {/* .app-main is the stable hook for the boxed content-width rule (index.css). */}
+        <main id="main-content" tabIndex={-1} className="app-main min-w-0 flex-1 p-3 outline-none sm:p-4 md:p-6">
           <Outlet />
         </main>
       </div>
+
+      {/* Theme Customizer (W0.5): global drawer reachable from every screen via a floating
+          trigger. Dark mode is shared (not forked) so the topbar sun/moon stays in sync;
+          RTL-aware via the logical `end` inset. */}
+      <ThemeCustomizer
+        dark={dark}
+        onToggleDark={toggle}
+        onClearStyleOverride={clearOverride}
+        trigger={
+          <Button
+            size="icon"
+            aria-label={t('customizer.open')}
+            title={t('customizer.open')}
+            className="fixed bottom-4 end-4 z-30 size-11 rounded-full shadow-lg"
+          >
+            <SlidersHorizontal />
+          </Button>
+        }
+      />
     </div>
   )
 }

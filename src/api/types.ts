@@ -239,6 +239,10 @@ export type AppearanceStyle = "glass" | "liquid" | "flat";
 export type AppearanceBg = "air" | "aurora" | "calm" | "plain" | "custom";
 /** Reading direction reflected onto `<html dir>`; drives RTL mirroring of logical layouts. */
 export type AppearanceDir = "ltr" | "rtl";
+/** UI spacing scale: comfortable (default) or compact (denser tables/cards). */
+export type AppearanceDensity = "comfortable" | "compact";
+/** Main content sizing: fluid (full width, default) or boxed (centered, max-width). */
+export type AppearanceContentWidth = "fluid" | "boxed";
 
 /** Theme-agnostic fine-tune knobs injected as CSS-var overrides on :root. */
 export interface AppearanceTokens {
@@ -261,6 +265,10 @@ export interface AppearanceSettings {
   /** Media path for the custom light background (used when bgLight === 'custom'). */
   customLight: string | null;
   customDark: string | null;
+  /** UI spacing scale; reflected onto `<html data-density>` so spacing tightens app-wide. */
+  density: AppearanceDensity;
+  /** Main content sizing; reflected onto `<html data-content-width>` (boxed = centered). */
+  contentWidth: AppearanceContentWidth;
   tokens: AppearanceTokens;
 }
 

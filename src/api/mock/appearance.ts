@@ -1,5 +1,12 @@
 import { ValidationError } from '../client'
-import type { AppearanceBg, AppearanceDir, AppearanceSettings, AppearanceStyle } from '../types'
+import type {
+  AppearanceBg,
+  AppearanceContentWidth,
+  AppearanceDensity,
+  AppearanceDir,
+  AppearanceSettings,
+  AppearanceStyle,
+} from '../types'
 
 /*
  * Mock of the site-wide appearance config (E1 §2.2.1). Persisted in localStorage;
@@ -11,6 +18,8 @@ const STORE_KEY = 'mock.appearance'
 const STYLES: AppearanceStyle[] = ['glass', 'liquid', 'flat']
 const BGS: AppearanceBg[] = ['air', 'aurora', 'calm', 'plain', 'custom']
 const DIRS: AppearanceDir[] = ['ltr', 'rtl']
+const DENSITIES: AppearanceDensity[] = ['comfortable', 'compact']
+const CONTENT_WIDTHS: AppearanceContentWidth[] = ['fluid', 'boxed']
 
 export const APPEARANCE_DEFAULTS: AppearanceSettings = {
   style: 'glass',
@@ -19,6 +28,8 @@ export const APPEARANCE_DEFAULTS: AppearanceSettings = {
   bgDark: 'air',
   customLight: null,
   customDark: null,
+  density: 'comfortable',
+  contentWidth: 'fluid',
   // glass baseline (matches the locked "Light Air Glass" recipe)
   // accent deepened from #1d8df2 → #176dbd for WCAG AA: it drives --primary at
   // runtime (see lib/appearance.ts), so white button text, links and the accent
@@ -30,11 +41,18 @@ function readStore(): AppearanceSettings {
   try {
     const raw: unknown = JSON.parse(localStorage.getItem(STORE_KEY) ?? 'null')
     if (!raw || typeof raw !== 'object') return { ...APPEARANCE_DEFAULTS }
-    // Merge over defaults so a partial/older stored shape stays valid.
+    // Merge over defaults so a partial/older stored shape stays valid — a payload
+    // predating density/contentWidth is backfilled from the defaults here.
     const stored = raw as Partial<AppearanceSettings>
     return {
       ...APPEARANCE_DEFAULTS,
       ...stored,
+      density: DENSITIES.includes(stored.density as AppearanceDensity)
+        ? (stored.density as AppearanceDensity)
+        : APPEARANCE_DEFAULTS.density,
+      contentWidth: CONTENT_WIDTHS.includes(stored.contentWidth as AppearanceContentWidth)
+        ? (stored.contentWidth as AppearanceContentWidth)
+        : APPEARANCE_DEFAULTS.contentWidth,
       tokens: { ...APPEARANCE_DEFAULTS.tokens, ...(stored.tokens ?? {}) },
     }
   } catch {
@@ -57,6 +75,9 @@ export function saveAppearance(body: unknown): { ok: true } {
   if (input.dir !== undefined && !DIRS.includes(input.dir)) fields.dir = 'Unknown direction'
   if (input.bgLight !== undefined && !BGS.includes(input.bgLight)) fields.bgLight = 'Unknown background'
   if (input.bgDark !== undefined && !BGS.includes(input.bgDark)) fields.bgDark = 'Unknown background'
+  if (input.density !== undefined && !DENSITIES.includes(input.density)) fields.density = 'Unknown density'
+  if (input.contentWidth !== undefined && !CONTENT_WIDTHS.includes(input.contentWidth))
+    fields.contentWidth = 'Unknown content width'
   if (input.tokens?.accent !== undefined && !HEX.test(input.tokens.accent)) fields.accent = 'Expected #rrggbb'
   if (input.bgLight === 'custom' && !input.customLight) fields.customLight = 'Pick an image'
   if (input.bgDark === 'custom' && !input.customDark) fields.customDark = 'Pick an image'
@@ -72,6 +93,8 @@ export function saveAppearance(body: unknown): { ok: true } {
     bgDark: input.bgDark ?? current.bgDark,
     customLight: input.customLight ?? current.customLight,
     customDark: input.customDark ?? current.customDark,
+    density: input.density ?? current.density,
+    contentWidth: input.contentWidth ?? current.contentWidth,
     tokens: {
       blur: clamp(Math.round(t.blur ?? current.tokens.blur), 0, 48),
       radius: clamp(Math.round(t.radius ?? current.tokens.radius), 6, 24),

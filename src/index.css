@@ -865,6 +865,27 @@
 }
 
 /*
+ * Layout dimensions (Theme Customizer): density + content width. Reflected onto
+ * <html> as data-density / data-content-width by applyAppearance() (lib/appearance.ts),
+ * so the whole SPA responds without any per-component wiring.
+ */
+
+/* Compact density tightens Tailwind's global --spacing base, so every gap / padding /
+   margin utility (p-*, gap-*, space-y-*, …) shrinks proportionally app-wide — denser
+   tables and cards — without touching component internals. Default is 0.25rem. */
+[data-density="compact"] {
+  --spacing: 0.22rem;
+}
+
+/* Boxed constrains and centers the main content column; fluid (default) stays full width.
+   Uses the .app-main hook class on <main> (app-shell.tsx). margin-inline keeps it RTL-safe. */
+[data-content-width="boxed"] .app-main {
+  max-width: 88rem;
+  margin-inline: auto;
+  width: 100%;
+}
+
+/*
  * Print isolation for the invoice detail (build-demo-screen-catalog): when printing,
  * hide the app chrome and expose only the `.invoice-sheet` so a clean invoice comes
  * out. Uses visibility only — no new colors, respects the existing token surfaces.
