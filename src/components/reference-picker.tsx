@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { ChevronsUpDown, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -40,6 +40,7 @@ export function ReferencePicker({
   className?: string
 }) {
   const [open, setOpen] = useState(false)
+  const listboxId = useId()
   const [query, setQuery] = useState('')
   const [items, setItems] = useState<ReferenceItem[]>([])
   const [loading, setLoading] = useState(false)
@@ -74,6 +75,7 @@ export function ReferencePicker({
             variant="outline"
             role="combobox"
             aria-expanded={open}
+            aria-controls={listboxId}
             className={cn('w-full justify-between font-normal', !value && 'text-muted-foreground', value && 'pe-16', className)}
           >
             <span className="truncate">{value ? value.label : (placeholder ?? t('reference.placeholder'))}</span>
@@ -96,7 +98,7 @@ export function ReferencePicker({
       <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
         <Command shouldFilter={false}>
           <CommandInput placeholder={t('common.search')} value={query} onValueChange={setQuery} />
-          <CommandList>
+          <CommandList id={listboxId}>
             {loading ? (
               <div className="flex items-center justify-center py-6">
                 <Spinner className="size-4" />

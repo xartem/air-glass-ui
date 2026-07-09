@@ -70,6 +70,7 @@ export function NotificationsMenu({
                 <button
                   type="button"
                   onClick={() => markRead(item.id)}
+                  aria-label={item.title}
                   className={cn(
                     'flex w-full items-start gap-2.5 px-3 py-2.5 text-start transition-colors hover:bg-muted',
                     !item.read && 'bg-accent/50',

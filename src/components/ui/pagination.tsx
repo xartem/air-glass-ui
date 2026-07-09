@@ -51,6 +51,7 @@ function PaginationLink({
       size={size}
       className={cn(className)}
     >
+      {/* oxlint-disable-next-line jsx-a11y/anchor-has-content -- content (page number / icon+label) is always supplied by the caller via children */}
       <a
         aria-current={isActive ? "page" : undefined}
         data-slot="pagination-link"

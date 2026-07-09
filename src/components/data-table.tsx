@@ -98,6 +98,7 @@ function RowActionItem<TData>({ row, action }: { row: TData; action: RowAction<T
   return (
     <Tooltip>
       <TooltipTrigger asChild>
+        {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- intentional: the wrapper must be focusable so the tooltip explaining WHY the row action is disabled reaches keyboard users (Radix strips pointer events from the disabled item) */}
         <span className="block" tabIndex={0}>
           {item}
         </span>

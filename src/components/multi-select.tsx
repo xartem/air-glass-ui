@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Check, ChevronsUpDown, X } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
@@ -38,6 +38,7 @@ export function MultiSelect({
   className?: string
 }) {
   const [open, setOpen] = useState(false)
+  const listboxId = useId()
 
   const toggle = (key: string) => {
     onChange(value.includes(key) ? value.filter((v) => v !== key) : [...value, key])
@@ -85,6 +86,7 @@ export function MultiSelect({
               size="icon-sm"
               role="combobox"
               aria-expanded={open}
+              aria-controls={listboxId}
               aria-label={placeholder ?? t('multiselect.placeholder')}
               className="shrink-0 text-muted-foreground"
             >
@@ -96,7 +98,7 @@ export function MultiSelect({
       <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
         <Command>
           <CommandInput placeholder={t('common.search')} />
-          <CommandList>
+          <CommandList id={listboxId}>
             <CommandEmpty>{t('reference.empty')}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
