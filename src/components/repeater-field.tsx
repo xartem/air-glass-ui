@@ -19,6 +19,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { GripVertical, Plus, Trash2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { createDndA11y } from '@/lib/dnd-a11y'
 import { t } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
@@ -109,7 +110,12 @@ export function RepeaterField<T>({
 
   return (
     <div data-slot="repeater-field" className={cn('space-y-2', className)}>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        accessibility={createDndA11y(t('dnd.item.row'))}
+      >
         <SortableContext items={keys} strategy={verticalListSortingStrategy}>
           <div className="space-y-2">
             {value.map((item, index) => (

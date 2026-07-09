@@ -42,6 +42,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { WidgetGrid, WIDGET_SPAN } from '@/components/widget-grid'
 import { dashboardIcon } from '@/lib/dashboard-icons'
+import { createDndA11y } from '@/lib/dnd-a11y'
 import { t } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
@@ -296,7 +297,12 @@ export function DashboardCustomize({
         </WidgetGrid>
       ) : (
         <>
-          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={onDragEnd}
+            accessibility={createDndA11y(t('dnd.item.widget'))}
+          >
             <SortableContext items={visible.map((tile) => tile.key)} strategy={rectSortingStrategy}>
               <WidgetGrid>
                 {visible.map((tile) => (
@@ -317,7 +323,12 @@ export function DashboardCustomize({
               {visibleActions.length === 0 ? (
                 <p className="text-sm text-muted-foreground">{t('dashboard.customize.actions_all_hidden')}</p>
               ) : (
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onActionDragEnd}>
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={onActionDragEnd}
+                  accessibility={createDndA11y(t('dnd.item.action'))}
+                >
                   <SortableContext items={visibleActions.map((action) => action.key)} strategy={rectSortingStrategy}>
                     <div className="flex flex-col gap-2">
                       {visibleActions.map((action) => (

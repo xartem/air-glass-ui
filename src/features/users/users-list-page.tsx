@@ -291,6 +291,7 @@ export function UsersListPage() {
         contentClassName="p-2 sm:p-3"
       >
         <DataTable<UserListItem>
+          label={t('nav.users')}
           columns={columns}
           data={data?.rows ?? []}
           state={state}

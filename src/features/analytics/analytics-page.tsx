@@ -222,6 +222,7 @@ function RevenueChart({ data }: { data: AnalyticsPayload }) {
       ) : (
         <ChartContainer
           config={config}
+          ariaLabel={t("analytics.chart.revenue_title")}
           className="aspect-auto h-[260px] w-full"
         >
           <AreaChart
@@ -344,6 +345,7 @@ function ChannelsChart({ data }: { data: AnalyticsPayload }) {
       ) : (
         <ChartContainer
           config={config}
+          ariaLabel={t("analytics.channels_title")}
           className="aspect-auto h-[260px] w-full"
         >
           <BarChart

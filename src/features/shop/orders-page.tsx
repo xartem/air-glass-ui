@@ -219,6 +219,7 @@ export function OrdersPage() {
         contentClassName="p-2 sm:p-3"
       >
         <DataTable<OrderListItem>
+          label={t('nav.orders')}
           columns={columns}
           data={data?.rows ?? []}
           state={state}

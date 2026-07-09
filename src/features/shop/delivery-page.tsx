@@ -169,6 +169,7 @@ export function DeliveryPage() {
 
       <Panel contentClassName="p-2 sm:p-3">
         <DataTable<DeliveryMethod>
+          label={t("nav.delivery")}
           columns={columns}
           data={rows}
           state={state}

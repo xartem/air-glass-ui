@@ -294,6 +294,7 @@ export function ActivityPage() {
         contentClassName="p-2 sm:p-3"
       >
         <DataTable<ActivityEntry>
+          label={t('nav.activity')}
           columns={columns}
           data={data?.rows ?? []}
           state={state}

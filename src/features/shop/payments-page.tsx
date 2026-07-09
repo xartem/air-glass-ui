@@ -243,6 +243,7 @@ export function PaymentsPage() {
         contentClassName="p-2 sm:p-3"
       >
         <DataTable<Payment>
+          label={t('nav.payments')}
           columns={columns}
           data={data?.rows ?? []}
           state={state}

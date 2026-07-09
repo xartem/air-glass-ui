@@ -207,6 +207,7 @@ export function DiscountsPage() {
 
       <Panel contentClassName="p-2 sm:p-3">
         <DataTable<Discount>
+          label={t("nav.discounts")}
           columns={columns}
           data={rows}
           state={state}

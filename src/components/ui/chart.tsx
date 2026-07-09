@@ -44,10 +44,23 @@ function ChartContainer({
   className,
   children,
   config,
+  ariaLabel,
+  description,
   initialDimension = INITIAL_DIMENSION,
   ...props
 }: React.ComponentProps<"div"> & {
   config: ChartConfig
+  /**
+   * Accessible name for the chart, exposing it as a labelled image to screen
+   * readers so it is not announced as an unlabelled graphic (WCAG 1.1.1).
+   * Widgets pass localized text (e.g. the chart title).
+   */
+  ariaLabel?: string
+  /**
+   * Optional longer text alternative / data summary, rendered visually hidden
+   * and associated via aria-describedby.
+   */
+  description?: React.ReactNode
   children: React.ComponentProps<
     typeof RechartsPrimitive.ResponsiveContainer
   >["children"]
@@ -58,18 +71,31 @@ function ChartContainer({
 }) {
   const uniqueId = React.useId()
   const chartId = `chart-${id ?? uniqueId.replace(/:/g, "")}`
+  const descriptionId = description ? `${chartId}-desc` : undefined
 
   return (
     <ChartContext.Provider value={{ config }}>
       <div
         data-slot="chart"
         data-chart={chartId}
+        // A chart is a graphic: give it a text alternative so non-visual users
+        // get a meaningful summary instead of an unlabelled SVG (WCAG 1.1.1).
+        // The interactive Recharts accessibilityLayer stays enabled for the
+        // sighted keyboard/pointer tooltip.
+        role={ariaLabel ? "img" : undefined}
+        aria-label={ariaLabel}
+        aria-describedby={descriptionId}
         className={cn(
           "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
           className
         )}
         {...props}
       >
+        {description ? (
+          <span id={descriptionId} className="sr-only">
+            {description}
+          </span>
+        ) : null}
         <ChartStyle id={chartId} config={config} />
         <RechartsPrimitive.ResponsiveContainer
           initialDimension={initialDimension}

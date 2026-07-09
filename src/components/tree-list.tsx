@@ -19,6 +19,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { ChevronDown, ChevronRight, GripVertical, IndentDecrease, IndentIncrease } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { createDndA11y } from '@/lib/dnd-a11y'
 import { t } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 
@@ -185,7 +186,12 @@ function TreeLevel({
   }
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      accessibility={createDndA11y(t('dnd.item.node'))}
+    >
       <SortableContext items={nodes.map((n) => n.id)} strategy={verticalListSortingStrategy}>
         <div className="space-y-1">
           {nodes.map((node, index) => {

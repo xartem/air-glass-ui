@@ -171,6 +171,7 @@ export function InvoicesPage() {
         contentClassName="p-2 sm:p-3"
       >
         <DataTable<InvoiceListItem>
+          label={t('nav.invoices')}
           columns={columns}
           data={data?.rows ?? []}
           state={state}

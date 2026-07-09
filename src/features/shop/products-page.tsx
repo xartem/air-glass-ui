@@ -177,6 +177,7 @@ export function ProductsPage() {
         contentClassName="p-2 sm:p-3"
       >
         <DataTable<ProductListItem>
+          label={t('nav.products')}
           columns={columns}
           data={data?.rows ?? []}
           state={state}

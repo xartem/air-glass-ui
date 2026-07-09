@@ -177,6 +177,7 @@ export function CustomersPage() {
         contentClassName="p-2 sm:p-3"
       >
         <DataTable<CustomerListItem>
+          label={t('nav.customers')}
           columns={columns}
           data={data?.rows ?? []}
           state={state}

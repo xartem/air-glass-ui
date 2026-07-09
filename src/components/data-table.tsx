@@ -122,6 +122,7 @@ export function DataTable<TData>({
   onRetry,
   emptyState,
   getRowId,
+  label,
   className,
 }: {
   columns: ColumnDef<TData, unknown>[]
@@ -140,6 +141,8 @@ export function DataTable<TData>({
   onRetry?: () => void
   emptyState?: { title?: string; description?: string; action?: { label: string; onClick: () => void } }
   getRowId?: (row: TData) => string
+  /** Accessible name for the table (WCAG 1.3.1) — screens pass a localized list name. */
+  label?: string
   className?: string
 }) {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -209,7 +212,7 @@ export function DataTable<TData>({
 
   return (
     <div data-slot="data-table" className={cn('flex flex-col', className)}>
-      <Table>
+      <Table aria-label={label ?? t('table.label')}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -218,8 +221,20 @@ export function DataTable<TData>({
                 const meta = header.column.columnDef.meta as { sortable?: boolean } | undefined
                 const sortable = Boolean(onSort) && !header.id.startsWith('_') && meta?.sortable === true
                 const isSorted = sort?.column === header.id
+                // Reflect the TanStack sort state so SR users hear the current sort direction (WCAG 4.1.2).
+                const ariaSort = sortable
+                  ? isSorted
+                    ? sort?.dir === 'asc'
+                      ? 'ascending'
+                      : 'descending'
+                    : 'none'
+                  : undefined
                 return (
-                  <TableHead key={header.id} style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}>
+                  <TableHead
+                    key={header.id}
+                    aria-sort={ariaSort}
+                    style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
+                  >
                     {header.isPlaceholder ? null : sortable ? (
                       <button
                         type="button"

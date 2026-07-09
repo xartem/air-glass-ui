@@ -63,10 +63,13 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   )
 }
 
-function TableHead({ className, ...props }: React.ComponentProps<"th">) {
+function TableHead({ scope = "col", className, ...props }: React.ComponentProps<"th">) {
   return (
     <th
       data-slot="table-head"
+      // Header cells default to column scope so screen readers announce the
+      // column/cell relationship (WCAG 1.3.1); callers can override for row headers.
+      scope={scope}
       className={cn(
         "h-10 px-2 text-start align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pe-0",
         className

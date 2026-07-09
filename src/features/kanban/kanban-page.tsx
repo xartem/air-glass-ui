@@ -32,6 +32,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSiteDateTime } from "@/lib/datetime";
+import { createDndA11y } from "@/lib/dnd-a11y";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -201,6 +202,7 @@ export function KanbanPage() {
         onDragOver={onDragOver}
         onDragEnd={onDragEnd}
         onDragCancel={() => setActiveId(null)}
+        accessibility={createDndA11y(t("dnd.item.card"))}
       >
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {board.columns.map((column) => (
