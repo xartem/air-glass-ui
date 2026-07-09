@@ -65,34 +65,34 @@ export function ReferencePicker({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          id={id}
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className={cn('w-full justify-between font-normal', !value && 'text-muted-foreground', className)}
-        >
-          <span className="truncate">{value ? value.label : (placeholder ?? t('reference.placeholder'))}</span>
-          <span className="flex items-center gap-1">
-            {value ? (
-              <span
-                role="button"
-                tabIndex={-1}
-                aria-label={t('common.delete')}
-                className="rounded p-0.5 hover:bg-muted"
-                onClick={(event) => {
-                  event.stopPropagation()
-                  onChange(null)
-                }}
-              >
-                <X className="size-3.5" />
-              </span>
-            ) : null}
+      {/* Clear control is a real sibling <button>, sitting just before the chevron,
+          not a span nested inside the trigger button (WCAG 2.1.1, 4.1.2). */}
+      <div className="relative">
+        <PopoverTrigger asChild>
+          <Button
+            id={id}
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className={cn('w-full justify-between font-normal', !value && 'text-muted-foreground', value && 'pe-16', className)}
+          >
+            <span className="truncate">{value ? value.label : (placeholder ?? t('reference.placeholder'))}</span>
             <ChevronsUpDown className="size-4 opacity-50" />
-          </span>
-        </Button>
-      </PopoverTrigger>
+          </Button>
+        </PopoverTrigger>
+        {value ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            aria-label={t('reference.clear')}
+            className="absolute end-8 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            onClick={() => onChange(null)}
+          >
+            <X className="size-3.5" />
+          </Button>
+        ) : null}
+      </div>
       <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
         <Command shouldFilter={false}>
           <CommandInput placeholder={t('common.search')} value={query} onValueChange={setQuery} />

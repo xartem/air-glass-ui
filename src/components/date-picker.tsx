@@ -55,30 +55,38 @@ export function DatePicker({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          id={id}
-          variant="outline"
-          className={cn('w-full justify-start font-normal', !selected && 'text-muted-foreground', className)}
-        >
-          <CalendarIcon className="size-4" />
-          <span className="flex-1 text-start">{display}</span>
-          {clearable && selected ? (
-            <span
-              role="button"
-              tabIndex={-1}
-              aria-label={t('common.close')}
-              className="rounded p-0.5 hover:bg-muted"
-              onClick={(event) => {
-                event.stopPropagation()
-                onChange(undefined)
-              }}
-            >
-              <X className="size-3.5" />
-            </span>
-          ) : null}
-        </Button>
-      </PopoverTrigger>
+      {/* Clear control is a real sibling <button>, not a span nested inside the
+          trigger button — keyboard-operable and no interactive-in-interactive
+          nesting (WCAG 2.1.1, 4.1.2). */}
+      <div className="relative">
+        <PopoverTrigger asChild>
+          <Button
+            id={id}
+            variant="outline"
+            className={cn(
+              'w-full justify-start font-normal',
+              !selected && 'text-muted-foreground',
+              clearable && selected && 'pe-10',
+              className,
+            )}
+          >
+            <CalendarIcon className="size-4" />
+            <span className="flex-1 text-start">{display}</span>
+          </Button>
+        </PopoverTrigger>
+        {clearable && selected ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            aria-label={t('datepicker.clear')}
+            className="absolute end-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            onClick={() => onChange(undefined)}
+          >
+            <X className="size-3.5" />
+          </Button>
+        ) : null}
+      </div>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"

@@ -61,37 +61,31 @@ export function DateRangePicker({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className={cn('justify-start font-normal', !selected && 'text-muted-foreground', className)}
-        >
-          <CalendarIcon className="size-4" />
-          <span className="truncate">{label}</span>
-          {selected ? (
-            <span
-              role="button"
-              tabIndex={0}
-              aria-label={t('common.clear')}
-              className="ms-auto rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
-              onPointerDown={(event) => event.stopPropagation()}
-              onClick={(event) => {
-                event.stopPropagation()
-                onChange({})
-              }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault()
-                  event.stopPropagation()
-                  onChange({})
-                }
-              }}
-            >
-              <X className="size-3.5" />
-            </span>
-          ) : null}
-        </Button>
-      </PopoverTrigger>
+      {/* Clear control is a real sibling <button>, not a span nested inside the
+          trigger button (WCAG 2.1.1, 4.1.2). */}
+      <div className="relative">
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn('justify-start font-normal', !selected && 'text-muted-foreground', selected && 'pe-10', className)}
+          >
+            <CalendarIcon className="size-4" />
+            <span className="truncate">{label}</span>
+          </Button>
+        </PopoverTrigger>
+        {selected ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            aria-label={t('daterange.clear')}
+            className="absolute end-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            onClick={() => onChange({})}
+          >
+            <X className="size-3.5" />
+          </Button>
+        ) : null}
+      </div>
       <PopoverContent className="w-auto p-0" align="end">
         <Calendar
           mode="range"
