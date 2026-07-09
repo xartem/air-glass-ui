@@ -148,7 +148,7 @@ function StepperSeparator({
         "shrink-0 bg-border transition-colors group-last/stepper-item:hidden data-[state=completed]:bg-[var(--status-success-fg)]",
         orientation === "horizontal"
           ? "h-px flex-1"
-          : "ml-4 min-h-6 w-px flex-1",
+          : "ms-4 min-h-6 w-px flex-1",
         className
       )}
       {...props}
@@ -163,7 +163,7 @@ function StepperContent({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="stepper-content"
       className={cn(
         "flex flex-col gap-0.5",
-        orientation === "vertical" && "pt-1 pb-2 pl-2",
+        orientation === "vertical" && "pt-1 pb-2 ps-2",
         className
       )}
       {...props}

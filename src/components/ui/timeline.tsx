@@ -75,7 +75,7 @@ function TimelineConnector({ className, ...props }: React.ComponentProps<"span">
       data-slot="timeline-connector"
       aria-hidden="true"
       className={cn(
-        "absolute top-8 bottom-0 left-3.5 -z-0 w-px -translate-x-1/2 bg-border",
+        "absolute top-8 bottom-0 start-3.5 -z-0 w-px -translate-x-1/2 bg-border",
         className
       )}
       {...props}
