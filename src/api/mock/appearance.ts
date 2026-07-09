@@ -1,5 +1,5 @@
 import { ValidationError } from '../client'
-import type { AppearanceBg, AppearanceSettings, AppearanceStyle } from '../types'
+import type { AppearanceBg, AppearanceDir, AppearanceSettings, AppearanceStyle } from '../types'
 
 /*
  * Mock of the site-wide appearance config (E1 §2.2.1). Persisted in localStorage;
@@ -10,9 +10,11 @@ const STORE_KEY = 'mock.appearance'
 
 const STYLES: AppearanceStyle[] = ['glass', 'liquid', 'flat']
 const BGS: AppearanceBg[] = ['air', 'aurora', 'calm', 'plain', 'custom']
+const DIRS: AppearanceDir[] = ['ltr', 'rtl']
 
 export const APPEARANCE_DEFAULTS: AppearanceSettings = {
   style: 'glass',
+  dir: 'ltr',
   bgLight: 'air',
   bgDark: 'air',
   customLight: null,
@@ -52,6 +54,7 @@ export function saveAppearance(body: unknown): { ok: true } {
   const fields: Record<string, string> = {}
 
   if (input.style !== undefined && !STYLES.includes(input.style)) fields.style = 'Unknown style'
+  if (input.dir !== undefined && !DIRS.includes(input.dir)) fields.dir = 'Unknown direction'
   if (input.bgLight !== undefined && !BGS.includes(input.bgLight)) fields.bgLight = 'Unknown background'
   if (input.bgDark !== undefined && !BGS.includes(input.bgDark)) fields.bgDark = 'Unknown background'
   if (input.tokens?.accent !== undefined && !HEX.test(input.tokens.accent)) fields.accent = 'Expected #rrggbb'
@@ -64,6 +67,7 @@ export function saveAppearance(body: unknown): { ok: true } {
   const t: Partial<AppearanceSettings['tokens']> = input.tokens ?? {}
   const next: AppearanceSettings = {
     style: input.style ?? current.style,
+    dir: input.dir ?? current.dir,
     bgLight: input.bgLight ?? current.bgLight,
     bgDark: input.bgDark ?? current.bgDark,
     customLight: input.customLight ?? current.customLight,

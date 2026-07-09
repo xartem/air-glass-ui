@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Droplet, Image as ImageIcon, Palette, Sparkles, SlidersHorizontal, Square } from 'lucide-react'
+import { ArrowLeftRight, Droplet, Image as ImageIcon, Palette, Sparkles, SlidersHorizontal, Square } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { api, type AppearanceBg, type AppearanceSettings, type AppearanceStyle } from '@/api'
+import { api, type AppearanceBg, type AppearanceDir, type AppearanceSettings, type AppearanceStyle } from '@/api'
 import { MediaPicker, type MediaPage } from '@/components/media-picker'
 import { PageHeader } from '@/components/page-header'
 import { Panel } from '@/components/panel'
@@ -20,6 +20,8 @@ const STYLE_META: { key: AppearanceStyle; icon: typeof Droplet }[] = [
 ]
 
 const BG_KEYS: AppearanceBg[] = ['air', 'aurora', 'calm', 'plain', 'custom']
+
+const DIR_KEYS: AppearanceDir[] = ['ltr', 'rtl']
 
 /** Simplified swatch gradients mirroring the .app-mesh presets (index.css) for the picker tiles. */
 const BG_SWATCH: Record<'light' | 'dark', Record<AppearanceBg, string>> = {
@@ -124,6 +126,33 @@ export function AppearancePage() {
               </span>
               <span className="text-sm font-medium">{t(`settings.appearance.style.${key}`)}</span>
               <span className="text-xs text-muted-foreground">{t(`settings.appearance.style.${key}_desc`)}</span>
+            </button>
+          ))}
+        </div>
+      </Panel>
+
+      {/* Direction */}
+      <Panel
+        icon={ArrowLeftRight}
+        title={t('settings.appearance.direction')}
+        description={t('settings.appearance.direction_desc')}
+      >
+        <div className="grid gap-3 sm:grid-cols-2">
+          {DIR_KEYS.map((dir) => (
+            <button
+              key={dir}
+              type="button"
+              onClick={() => patch({ dir })}
+              aria-pressed={draft.dir === dir}
+              className={cn(
+                'flex items-center gap-3 rounded-xl border p-4 text-start transition-all',
+                draft.dir === dir ? 'border-primary ring-3 ring-ring/40' : 'hover:border-ring/60',
+              )}
+            >
+              <span className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <ArrowLeftRight className={cn('size-5', dir === 'rtl' && '-scale-x-100')} />
+              </span>
+              <span className="text-sm font-medium">{t(`settings.appearance.dir.${dir}`)}</span>
             </button>
           ))}
         </div>

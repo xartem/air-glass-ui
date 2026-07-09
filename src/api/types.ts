@@ -237,6 +237,8 @@ export interface SettingsPayload {
 export type AppearanceStyle = "glass" | "liquid" | "flat";
 /** Background preset per theme; 'custom' pairs with a customLight/customDark image path. */
 export type AppearanceBg = "air" | "aurora" | "calm" | "plain" | "custom";
+/** Reading direction reflected onto `<html dir>`; drives RTL mirroring of logical layouts. */
+export type AppearanceDir = "ltr" | "rtl";
 
 /** Theme-agnostic fine-tune knobs injected as CSS-var overrides on :root. */
 export interface AppearanceTokens {
@@ -252,6 +254,8 @@ export interface AppearanceTokens {
 
 export interface AppearanceSettings {
   style: AppearanceStyle;
+  /** Reading direction; reflected onto `<html dir>` so logical layouts mirror in RTL. */
+  dir: AppearanceDir;
   bgLight: AppearanceBg;
   bgDark: AppearanceBg;
   /** Media path for the custom light background (used when bgLight === 'custom'). */

@@ -30,6 +30,7 @@ function readOverride(): AppearanceStyle | null {
 export function applyAppearance(a: AppearanceSettings): void {
   const root = document.documentElement
   for (const style of APPEARANCE_STYLES) root.classList.toggle(`skin-${style}`, a.style === style)
+  root.dir = a.dir ?? 'ltr'
   root.dataset.bgLight = a.bgLight
   root.dataset.bgDark = a.bgDark
 
