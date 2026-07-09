@@ -117,7 +117,7 @@ function TreeNav({
   const [closed, setClosed] = useState<Record<string, boolean>>({})
 
   return (
-    <nav className="flex flex-col gap-1">
+    <nav aria-label={t('help.nav_label')} className="flex flex-col gap-1">
       {groups.map((group) => {
         const Icon = GROUP_ICONS[group.key] ?? BookOpen
         const isClosed = closed[group.key] ?? group.key !== (activeGroupKey ?? groups[0]?.key)

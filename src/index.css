@@ -73,7 +73,7 @@
     --secondary-foreground: #385069;
     --muted: rgba(148, 163, 184, 0.12);
     --muted-foreground: #5c6f85; /* WCAG AA: ≥4.5:1 as 11px text on bg-muted chips too (was #62758b → 4.18) */
-    --foreground-faint: #91a2b5;
+    --foreground-faint: #63758a; /* WCAG AA: ≥4.5:1 as normal text over the translucent glass card/panel (was #91a2b5 → 2.54) */
     --accent: color-mix(in srgb, var(--primary) 10%, transparent);
     --accent-foreground: var(--primary-strong);
     --destructive: #c81e1e; /* WCAG AA: ≥4.5:1 as text on the destructive tint (was #dc2626 → 4.04) */
@@ -164,7 +164,7 @@
     --secondary-foreground: #c3d3e5;
     --muted: rgba(148, 163, 184, 0.12);
     --muted-foreground: #8fa3ba;
-    --foreground-faint: #64788f;
+    --foreground-faint: #728699; /* WCAG AA: ≥4.5:1 as normal text over the translucent glass card/panel (was #64788f → 4.05) */
     --accent: color-mix(in srgb, var(--primary) 18%, transparent);
     --accent-foreground: color-mix(in oklab, var(--primary), #fff 30%);
     --destructive: #ef4444;

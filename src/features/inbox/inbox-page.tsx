@@ -243,6 +243,7 @@ function ThreadRow({
       <button
         type="button"
         onClick={onSelect}
+        aria-current={active ? "true" : undefined}
         className={cn(
           "flex w-full items-start gap-3 border-b border-border/40 p-3 text-start transition-colors",
           active ? "bg-primary/5" : "hover:bg-accent/40",

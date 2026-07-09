@@ -37,7 +37,10 @@ export function SettingsLayout({
     <div data-slot="settings-layout" className={cn('flex min-h-full flex-col gap-4', className)}>
       {/* Section nav: vertical column ≥lg, horizontal scrollable strip below (E1 §4) */}
       <div className="flex flex-1 flex-col items-stretch gap-4 lg:flex-row lg:items-start lg:gap-6">
-        <nav className="flex w-full shrink-0 gap-1 overflow-x-auto pb-1 lg:w-56 lg:flex-col lg:space-y-1 lg:gap-0 lg:overflow-visible lg:pb-0">
+        <nav
+          aria-label={t('settings.nav_label')}
+          className="flex w-full shrink-0 gap-1 overflow-x-auto pb-1 lg:w-56 lg:flex-col lg:space-y-1 lg:gap-0 lg:overflow-visible lg:pb-0"
+        >
           {sections.map((section) => {
             const Icon = section.icon
             const isActive = section.key === active
@@ -45,6 +48,7 @@ export function SettingsLayout({
               <button
                 key={section.key}
                 type="button"
+                aria-current={isActive ? 'true' : undefined}
                 onClick={() => onSectionChange(section.key)}
                 className={cn(
                   'flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-start text-sm whitespace-nowrap transition-colors lg:w-full',

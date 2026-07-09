@@ -340,6 +340,7 @@ function SidebarNav({
 
   return (
     <nav
+      aria-label={t('shell.nav_label')}
       className={cn(
         'scrollbar-hover mt-2 flex-1 space-y-2 overflow-y-auto overflow-x-hidden',
         // Icons-only mode: hide the bar (wheel still scrolls) and add breathing room
