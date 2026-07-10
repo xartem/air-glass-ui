@@ -25,6 +25,17 @@ import type {
   HelpArticle,
   HelpGroup,
   HelpSearchHit,
+  ProjectDetail,
+  ProjectFile,
+  ProjectFilters,
+  ProjectListItem,
+  ProjectPayload,
+  ProjectTaskRow,
+  TaskComment,
+  TaskDetail,
+  TaskFilters,
+  TaskListItem,
+  TaskStatus,
   ActivityFilters,
   AdminSearchGroup,
   CreatePasswordPayload,
@@ -628,6 +639,58 @@ export const api = {
       apiFetch<BlogComment>(`/blog/${id}/comments`, {
         method: "POST",
         body: { body },
+      }),
+  },
+
+  /* Projects (W3): list/detail with tasks + files, and create. */
+  projects: {
+    list: (filters: ProjectFilters = {}) =>
+      apiFetch<Paginated<ProjectListItem>>("/projects", {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          status: filters.status,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    get: (id: number) => apiFetch<ProjectDetail>(`/projects/${id}`),
+    tasks: (id: number) =>
+      apiFetch<ProjectTaskRow[]>(`/projects/${id}/tasks`),
+    files: (id: number) => apiFetch<ProjectFile[]>(`/projects/${id}/files`),
+    create: (payload: ProjectPayload) =>
+      apiFetch<ProjectDetail>("/projects", { method: "POST", body: payload }),
+  },
+
+  /* Tasks (W3): flat task list + details with optimistic status/subtasks. */
+  tasks: {
+    list: (filters: TaskFilters = {}) =>
+      apiFetch<Paginated<TaskListItem>>("/tasks", {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          project: filters.project,
+          assignee: filters.assignee,
+          priority: filters.priority,
+          status: filters.status,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    get: (id: number) => apiFetch<TaskDetail>(`/tasks/${id}`),
+    setStatus: (id: number, status: TaskStatus) =>
+      apiFetch<TaskListItem>(`/tasks/${id}/status`, {
+        method: "POST",
+        body: { status },
+      }),
+    comment: (id: number, body: string) =>
+      apiFetch<TaskComment>(`/tasks/${id}/comments`, {
+        method: "POST",
+        body: { body },
+      }),
+    toggleSubtask: (id: number, subtaskId: number) =>
+      apiFetch<TaskDetail>(`/tasks/${id}/subtasks/${subtaskId}`, {
+        method: "POST",
       }),
   },
 

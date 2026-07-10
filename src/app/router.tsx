@@ -323,6 +323,36 @@ const pricingPage = () =>
       default: m.PricingPage,
     })),
   );
+const projectsListPage = () =>
+  lazyPage(() =>
+    import("@/features/projects/projects-list-page").then((m) => ({
+      default: m.ProjectsListPage,
+    })),
+  );
+const projectOverviewPage = () =>
+  lazyPage(() =>
+    import("@/features/projects/project-overview-page").then((m) => ({
+      default: m.ProjectOverviewPage,
+    })),
+  );
+const createProjectPage = () =>
+  lazyPage(() =>
+    import("@/features/projects/create-project-page").then((m) => ({
+      default: m.CreateProjectPage,
+    })),
+  );
+const taskListPage = () =>
+  lazyPage(() =>
+    import("@/features/tasks/task-list-page").then((m) => ({
+      default: m.TaskListPage,
+    })),
+  );
+const taskDetailPage = () =>
+  lazyPage(() =>
+    import("@/features/tasks/task-detail-page").then((m) => ({
+      default: m.TaskDetailPage,
+    })),
+  );
 const inboxPage = () =>
   lazyPage(() =>
     import("@/features/inbox/inbox-page").then((m) => ({
@@ -816,6 +846,46 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="analytics.view">
               {blogDashboardPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/projects",
+          element: (
+            <RequirePermission perm="projects.view">
+              {projectsListPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/projects/new",
+          element: (
+            <RequirePermission perm="projects.manage">
+              {createProjectPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/projects/:id",
+          element: (
+            <RequirePermission perm="projects.view">
+              {projectOverviewPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/tasks",
+          element: (
+            <RequirePermission perm="tasks.view">
+              {taskListPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/tasks/:id",
+          element: (
+            <RequirePermission perm="tasks.view">
+              {taskDetailPage()}
             </RequirePermission>
           ),
         },

@@ -1579,3 +1579,131 @@ export interface BlogListParams {
   q?: string;
   category?: string;
 }
+
+/* ---- projects (W3) ---- */
+
+export type ProjectStatus = "planning" | "active" | "on_hold" | "completed";
+
+export interface ProjectTeamMember {
+  id: number;
+  name: string;
+}
+
+export interface ProjectListItem {
+  id: number;
+  name: string;
+  client: string;
+  status: ProjectStatus;
+  /** Completion percentage 0–100. */
+  progress: number;
+  deadline: string;
+  team: ProjectTeamMember[];
+}
+
+export interface Milestone {
+  id: number;
+  title: string;
+  due: string;
+  done: boolean;
+}
+
+export interface ProjectTaskRow {
+  id: number;
+  title: string;
+  assignee: string;
+  status: TaskStatus;
+  due: string;
+}
+
+export interface ProjectFile {
+  id: number;
+  name: string;
+  size: number;
+  uploaded_at: string;
+}
+
+export interface ProjectActivityEntry {
+  id: number;
+  at: string;
+  text: string;
+}
+
+export interface ProjectDetail extends ProjectListItem {
+  description: string;
+  start_date: string;
+  budget: number;
+  budget_used: number;
+  currency: string;
+  tasks_total: number;
+  tasks_done: number;
+  tags: string[];
+  milestones: Milestone[];
+  activity: ProjectActivityEntry[];
+}
+
+export interface ProjectFilters {
+  page?: number;
+  q?: string;
+  status?: ProjectStatus;
+  sort?: "name" | "deadline" | "progress";
+  dir?: "asc" | "desc";
+}
+
+export interface ProjectPayload {
+  name: string;
+  client: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  budget: number;
+  team: number[];
+  status: ProjectStatus;
+  tags: string[];
+}
+
+/* ---- tasks (W3) ---- */
+
+export type TaskStatus = "todo" | "in_progress" | "review" | "done";
+export type TaskPriority = "low" | "medium" | "high" | "urgent";
+
+export interface TaskListItem {
+  id: number;
+  title: string;
+  project: string;
+  assignee: string;
+  priority: TaskPriority;
+  status: TaskStatus;
+  due: string;
+}
+
+export interface Subtask {
+  id: number;
+  title: string;
+  done: boolean;
+}
+
+export interface TaskComment {
+  id: number;
+  author: string;
+  at: string;
+  body: string;
+}
+
+export interface TaskDetail extends TaskListItem {
+  description: string;
+  labels: string[];
+  subtasks: Subtask[];
+  comments: TaskComment[];
+  created_at: string;
+}
+
+export interface TaskFilters {
+  page?: number;
+  q?: string;
+  project?: string;
+  assignee?: string;
+  priority?: TaskPriority;
+  status?: TaskStatus;
+  sort?: "title" | "due" | "priority";
+  dir?: "asc" | "desc";
+}

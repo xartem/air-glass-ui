@@ -22,6 +22,7 @@ import {
   KeyRound,
   LayoutDashboard,
   LayoutGrid,
+  ListTodo,
   MessageSquareText,
   Network,
   Newspaper,
@@ -233,6 +234,18 @@ export function buildNavGroups(): NavGroup[] {
                   perm: "orders.delivery",
                 },
               ],
+            },
+            {
+              to: "/projects",
+              label: t("nav.projects"),
+              icon: FolderKanban,
+              perm: "projects.view",
+            },
+            {
+              to: "/tasks",
+              label: t("nav.tasks"),
+              icon: ListTodo,
+              perm: "tasks.view",
             },
             {
               to: "/kanban",

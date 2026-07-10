@@ -20,6 +20,12 @@ import type {
   PlaceOrderPayload,
   ProductFilters,
   ProductPayload,
+  ProjectFilters,
+  ProjectPayload,
+  ProjectStatus,
+  TaskFilters,
+  TaskPriority,
+  TaskStatus,
   SellerFilters,
   SellerStatus,
   SettingValue,
@@ -114,6 +120,20 @@ import {
   shippingMethods,
   updateCartItem,
 } from "./shop";
+import {
+  createProject,
+  getProject,
+  listProjects,
+  projectFiles,
+  projectTasks,
+} from "./projects";
+import {
+  addTaskComment,
+  getTask,
+  listTasks,
+  setTaskStatus,
+  toggleSubtask,
+} from "./tasks";
 import { helpForScreen, helpPage, helpSearch, helpTree } from "./help";
 import {
   aiSpend,
@@ -1486,6 +1506,131 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
         Number(params[0]),
         String((options.body as { body: string }).body ?? ""),
       );
+    },
+  },
+
+  /* ---- projects (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/projects$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: ProjectFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status:
+          query.status === undefined
+            ? undefined
+            : (String(query.status) as ProjectStatus),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as ProjectFilters["sort"]),
+        dir: query.dir === "desc" ? "desc" : "asc",
+      };
+      return listProjects(filters);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/projects$/,
+    handler: (options) => {
+      requireSession();
+      return createProject(options.body as ProjectPayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/projects\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return getProject(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/projects\/(\d+)\/tasks$/,
+    handler: (_options, params) => {
+      requireSession();
+      return projectTasks(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/projects\/(\d+)\/files$/,
+    handler: (_options, params) => {
+      requireSession();
+      return projectFiles(Number(params[0]));
+    },
+  },
+
+  /* ---- tasks (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/tasks$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: TaskFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        project: query.project === undefined ? undefined : String(query.project),
+        assignee:
+          query.assignee === undefined ? undefined : String(query.assignee),
+        priority:
+          query.priority === undefined
+            ? undefined
+            : (String(query.priority) as TaskPriority),
+        status:
+          query.status === undefined
+            ? undefined
+            : (String(query.status) as TaskStatus),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as TaskFilters["sort"]),
+        dir: query.dir === "desc" ? "desc" : "asc",
+      };
+      return listTasks(filters);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/tasks\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return getTask(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/tasks\/(\d+)\/status$/,
+    handler: (options, params) => {
+      requireSession();
+      return setTaskStatus(
+        Number(params[0]),
+        (options.body as { status: TaskStatus }).status,
+      );
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/tasks\/(\d+)\/comments$/,
+    handler: (options, params) => {
+      requireSession();
+      return addTaskComment(
+        Number(params[0]),
+        String((options.body as { body: string }).body ?? ""),
+      );
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/tasks\/(\d+)\/subtasks\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return toggleSubtask(Number(params[0]), Number(params[1]));
     },
   },
 ];
