@@ -1,4 +1,10 @@
-import type { FaqEntry, TeamMember, TimelineEvent } from "../types";
+import type {
+  FaqEntry,
+  GalleryCategory,
+  GalleryPhoto,
+  TeamMember,
+  TimelineEvent,
+} from "../types";
 
 /*
  * Fixtures for the W1 utility pages (team directory, activity timeline, FAQ).
@@ -291,4 +297,36 @@ const FAQ: FaqEntry[] = [
 
 export function listFaq(): FaqEntry[] {
   return FAQ;
+}
+
+const GALLERY_PALETTES: Record<GalleryCategory, [string, string]> = {
+  nature: ["#059669", "#a3e635"],
+  city: ["#0ea5e9", "#6366f1"],
+  abstract: ["#f43f5e", "#f59e0b"],
+  people: ["#8b5cf6", "#ec4899"],
+};
+
+const GALLERY_RATIOS = [1, 1.4, 0.75, 1.2, 0.85, 1.6];
+
+const GALLERY_CATEGORIES: GalleryCategory[] = [
+  "nature",
+  "city",
+  "abstract",
+  "people",
+];
+
+const GALLERY: GalleryPhoto[] = Array.from({ length: 16 }, (_, index) => {
+  const category = GALLERY_CATEGORIES[index % GALLERY_CATEGORIES.length];
+  const [from, to] = GALLERY_PALETTES[category];
+  return {
+    id: index + 1,
+    category,
+    from,
+    to,
+    ratio: GALLERY_RATIOS[index % GALLERY_RATIOS.length],
+  };
+});
+
+export function listGallery(): GalleryPhoto[] {
+  return GALLERY;
 }

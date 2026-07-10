@@ -1,0 +1,12 @@
+2026-07-10  W4 Jobs / Recruitment niche — new `jobs` slice (10 screens).
+            Statistics (KPIs + applications trend, by-department bars, pipeline
+            funnel, recent applicants), Job List (table) + Job Grid (cards)
+            sharing one `api.jobs.list` query, Job Overview (`/jobs/:id`, tabbed
+            description/requirements/applicants + apply panel), Candidates list +
+            grid sharing `api.jobs.candidates`, Application stepper (personal →
+            resume upload → screening questions → submitted), New Job form
+            (RHF+Zod, requirements repeater, rich-text description, SaveBar),
+            Companies directory with detail drawer, and Job Categories CRUD
+            (dialog + ConfirmDialog). Mock `mock/jobs.ts`, DTOs in `types.ts`,
+            `api.jobs.*`, nav parent under Apps, i18n ×8, perms jobs.view /
+            jobs.manage.

@@ -1541,6 +1541,18 @@ export interface FaqEntry {
   answer: string;
 }
 
+export type GalleryCategory = "nature" | "city" | "abstract" | "people";
+
+export interface GalleryPhoto {
+  id: number;
+  category: GalleryCategory;
+  /** Gradient stops for the generated placeholder artwork (data, not UI chrome). */
+  from: string;
+  to: string;
+  /** Width / height aspect ratio of the placeholder. */
+  ratio: number;
+}
+
 /* ---- W1 blog ---- */
 
 export interface BlogAuthor {
@@ -2298,4 +2310,191 @@ export interface NftMintResult {
   name: string;
   status: "minted";
   token_id: string;
+}
+
+/* ---- jobs (W4 recruitment niche) — postings, candidates, companies, categories,
+ * applications. Company/candidate avatars are generated gradient SVG (no external
+ * hosts). Salaries carry an ISO currency code as elsewhere in the demo. */
+
+export type JobDepartment =
+  "engineering" | "sales" | "marketing" | "design" | "support";
+export type JobType =
+  "full_time" | "part_time" | "contract" | "internship" | "temporary";
+export type JobStatus = "published" | "draft" | "closed" | "archived";
+export type CandidateStage =
+  "applied" | "screening" | "interview" | "offer" | "hired" | "rejected";
+
+/** Deterministic two-stop gradient (placeholder logo/avatar), per entity id. */
+export type JobGradient = [string, string];
+
+export interface Job {
+  id: number;
+  title: string;
+  department: JobDepartment;
+  company: string;
+  company_id: number;
+  type: JobType;
+  location: string;
+  remote: boolean;
+  salary_min: number;
+  salary_max: number;
+  currency: string;
+  applicants: number;
+  status: JobStatus;
+  posted_at: string;
+  gradient: JobGradient;
+}
+
+export interface JobFilters {
+  page?: number;
+  q?: string;
+  department?: JobDepartment;
+  type?: JobType;
+  status?: JobStatus;
+  sort?: "posted" | "applicants" | "title";
+  dir?: "asc" | "desc";
+}
+
+export interface JobApplicant {
+  id: number;
+  name: string;
+  role: string;
+  stage: CandidateStage;
+  rating: number;
+  experience: number;
+  applied_at: string;
+  gradient: JobGradient;
+}
+
+export interface JobDetail extends Job {
+  /** HTML description (sanitized server-side on save, C3). */
+  description: string;
+  requirements: string[];
+  responsibilities: string[];
+  benefits: string[];
+}
+
+export interface Candidate {
+  id: number;
+  name: string;
+  /** Role the candidate applied for. */
+  role: string;
+  /** Years of experience. */
+  experience: number;
+  stage: CandidateStage;
+  rating: number;
+  applied_at: string;
+  skills: string[];
+  location: string;
+  gradient: JobGradient;
+}
+
+export interface CandidateFilters {
+  page?: number;
+  q?: string;
+  stage?: CandidateStage;
+  sort?: "applied" | "rating" | "experience" | "name";
+  dir?: "asc" | "desc";
+}
+
+export interface JobCompany {
+  id: number;
+  name: string;
+  industry: string;
+  location: string;
+  size: string;
+  open_roles: number;
+  gradient: JobGradient;
+}
+
+export interface JobCompanyRole {
+  id: number;
+  title: string;
+  location: string;
+  type: JobType;
+}
+
+export interface JobCompanyDetail extends JobCompany {
+  about: string;
+  website: string;
+  roles: JobCompanyRole[];
+}
+
+export interface JobCompanyFilters {
+  page?: number;
+  q?: string;
+}
+
+export interface JobCategory {
+  id: number;
+  name: string;
+  slug: string;
+  jobs_count: number;
+}
+
+export interface JobCategoryPayload {
+  id?: number;
+  name: string;
+  slug: string;
+}
+
+export interface JobCreatePayload {
+  title: string;
+  department: JobDepartment;
+  type: JobType;
+  location: string;
+  salary_min: number;
+  salary_max: number;
+  /** HTML description (sanitized server-side on save, C3). */
+  description: string;
+  requirements: string[];
+  status: JobStatus;
+}
+
+export interface JobCreateResult {
+  id: number;
+  title: string;
+  status: JobStatus;
+}
+
+export interface ApplicationQuestion {
+  question: string;
+  answer: string;
+}
+
+export interface ApplicationPayload {
+  job_id?: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  portfolio: string;
+  linkedin: string;
+  /** File name of the uploaded resume (mock — no real upload). */
+  resume: string;
+  /** HTML cover letter (sanitized server-side on save, C3). */
+  cover_letter: string;
+  answers: ApplicationQuestion[];
+}
+
+export interface Application {
+  id: number;
+  status: "submitted";
+  submitted_at: string;
+}
+
+export interface JobsStats {
+  kpis: {
+    openRoles: DashKpi;
+    applicants: DashKpi;
+    interviews: DashKpi;
+    hires: DashKpi;
+  };
+  /** Applications trend across the period (label = bucket). */
+  applications: Array<{ label: string; value: number }>;
+  /** By department (label = department key). */
+  departments: Array<{ label: JobDepartment; value: number }>;
+  /** Candidate pipeline (label = stage key). */
+  pipeline: Array<{ label: CandidateStage; value: number }>;
+  recent: JobApplicant[];
 }

@@ -472,7 +472,7 @@ export function ActivityPage() {
                             {change.old ?? "—"}
                           </span>
                           <ArrowRight className="size-3.5 shrink-0 text-muted-foreground" />
-                          <span className="rounded bg-emerald-500/12 px-1.5 py-0.5 break-all text-emerald-600 dark:text-emerald-400">
+                          <span className="rounded bg-[var(--status-success-bg)] px-1.5 py-0.5 break-all text-[var(--status-success-fg)]">
                             {change.new ?? "—"}
                           </span>
                         </div>

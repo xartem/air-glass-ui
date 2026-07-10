@@ -60,6 +60,16 @@ import type {
   NftItemFilters,
   NftItemStatus,
   NftRankingPeriod,
+  ApplicationPayload,
+  CandidateFilters,
+  CandidateStage,
+  JobCategoryPayload,
+  JobCompanyFilters,
+  JobCreatePayload,
+  JobDepartment,
+  JobFilters,
+  JobStatus,
+  JobType,
 } from "../types";
 import {
   MOCK_CREDENTIALS,
@@ -117,7 +127,7 @@ import {
 import { regenerateStatus, startRegenerate } from "./media";
 import { getAppearance, saveAppearance } from "./appearance";
 import { createPassword, registerAccount, reauth, verifyOtp } from "./auth";
-import { listFaq, listTeam, listTimeline } from "./pages";
+import { listFaq, listGallery, listTeam, listTimeline } from "./pages";
 import { addBlogComment, getBlogPost, listBlog } from "./blog";
 import {
   applyPromo,
@@ -228,6 +238,20 @@ import {
   nftItems,
   nftRanking,
 } from "./nft";
+import {
+  jobsApplicants,
+  jobsApply,
+  jobsCandidates,
+  jobsCategories,
+  jobsCompanies,
+  jobsCompany,
+  jobsCreate,
+  jobsDeleteCategory,
+  jobsGet,
+  jobsList,
+  jobsSaveCategory,
+  jobsStats,
+} from "./jobs";
 import { helpForScreen, helpPage, helpSearch, helpTree } from "./help";
 import {
   aiSpend,
@@ -1564,6 +1588,15 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
       return listFaq();
     },
   },
+  {
+    method: "GET",
+    pattern: /^\/pages\/gallery$/,
+    handler: () => {
+      requireSession();
+      devDebug("[mock:pages] listGallery");
+      return listGallery();
+    },
+  },
 
   /* ---- W1 blog ---- */
   {
@@ -2338,6 +2371,145 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (_options, params) => {
       requireSession();
       return nftItem(Number(params[0]));
+    },
+  },
+
+  /* ---- jobs / recruitment (W4 niche) ---- */
+  {
+    method: "GET",
+    pattern: /^\/jobs\/stats$/,
+    handler: () => {
+      requireSession();
+      return jobsStats();
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/jobs\/candidates$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: CandidateFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        stage:
+          query.stage === undefined
+            ? undefined
+            : (String(query.stage) as CandidateStage),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as CandidateFilters["sort"]),
+        dir: query.dir === "asc" ? "asc" : "desc",
+      };
+      return jobsCandidates(filters);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/jobs\/companies$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: JobCompanyFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+      };
+      return jobsCompanies(filters);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/jobs\/companies\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return jobsCompany(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/jobs\/categories$/,
+    handler: () => {
+      requireSession();
+      return jobsCategories();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/jobs\/categories$/,
+    handler: (options) => {
+      requireSession();
+      return jobsSaveCategory(options.body as JobCategoryPayload);
+    },
+  },
+  {
+    method: "DELETE",
+    pattern: /^\/jobs\/categories\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return jobsDeleteCategory(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/jobs\/apply$/,
+    handler: (options) => {
+      requireSession();
+      return jobsApply(options.body as ApplicationPayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/jobs$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: JobFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        department:
+          query.department === undefined
+            ? undefined
+            : (String(query.department) as JobDepartment),
+        type:
+          query.type === undefined
+            ? undefined
+            : (String(query.type) as JobType),
+        status:
+          query.status === undefined
+            ? undefined
+            : (String(query.status) as JobStatus),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as JobFilters["sort"]),
+        dir: query.dir === "asc" ? "asc" : "desc",
+      };
+      return jobsList(filters);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/jobs$/,
+    handler: (options) => {
+      requireSession();
+      return jobsCreate(options.body as JobCreatePayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/jobs\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return jobsGet(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/jobs\/(\d+)\/applicants$/,
+    handler: (_options, params) => {
+      requireSession();
+      return jobsApplicants(Number(params[0]));
     },
   },
 ];

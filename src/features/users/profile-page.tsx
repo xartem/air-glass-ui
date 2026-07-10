@@ -84,7 +84,7 @@ function ProfileHeader({ name, role }: { name: string; role: string }) {
       <div className="flex flex-col gap-4 px-5 pb-5 sm:flex-row sm:items-end">
         <Avatar
           size="lg"
-          className="-mt-10 size-20 ring-4 ring-[var(--glass-bg)]"
+          className="-mt-10 size-20 ring-4 ring-background"
         >
           <AvatarFallback className="text-xl">
             {initialsOf(name)}

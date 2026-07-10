@@ -641,6 +641,66 @@ const nftCreatePage = () =>
       default: m.NftCreatePage,
     })),
   );
+const jobsStatisticsPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-statistics-page").then((m) => ({
+      default: m.JobsStatisticsPage,
+    })),
+  );
+const jobsListPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-list-page").then((m) => ({
+      default: m.JobsListPage,
+    })),
+  );
+const jobsGridPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-grid-page").then((m) => ({
+      default: m.JobsGridPage,
+    })),
+  );
+const jobsOverviewPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-overview-page").then((m) => ({
+      default: m.JobsOverviewPage,
+    })),
+  );
+const jobsCandidatesPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-candidates-page").then((m) => ({
+      default: m.JobsCandidatesPage,
+    })),
+  );
+const jobsCandidatesGridPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-candidates-grid-page").then((m) => ({
+      default: m.JobsCandidatesGridPage,
+    })),
+  );
+const jobsApplicationPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-application-page").then((m) => ({
+      default: m.JobsApplicationPage,
+    })),
+  );
+const jobsNewPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-new-page").then((m) => ({
+      default: m.JobsNewPage,
+    })),
+  );
+const jobsCompaniesPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-companies-page").then((m) => ({
+      default: m.JobsCompaniesPage,
+    })),
+  );
+const jobsCategoriesPage = () =>
+  lazyPage(() =>
+    import("@/features/jobs/jobs-categories-page").then((m) => ({
+      default: m.JobsCategoriesPage,
+    })),
+  );
 
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
@@ -1276,6 +1336,86 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="nft.manage">
               {nftCreatePage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/statistics",
+          element: (
+            <RequirePermission perm="jobs.view">
+              {jobsStatisticsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/list",
+          element: (
+            <RequirePermission perm="jobs.view">
+              {jobsListPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/grid",
+          element: (
+            <RequirePermission perm="jobs.view">
+              {jobsGridPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/candidates",
+          element: (
+            <RequirePermission perm="jobs.view">
+              {jobsCandidatesPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/candidates/grid",
+          element: (
+            <RequirePermission perm="jobs.view">
+              {jobsCandidatesGridPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/application",
+          element: (
+            <RequirePermission perm="jobs.view">
+              {jobsApplicationPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/new",
+          element: (
+            <RequirePermission perm="jobs.manage">
+              {jobsNewPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/companies",
+          element: (
+            <RequirePermission perm="jobs.view">
+              {jobsCompaniesPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/categories",
+          element: (
+            <RequirePermission perm="jobs.manage">
+              {jobsCategoriesPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/jobs/:id",
+          element: (
+            <RequirePermission perm="jobs.view">
+              {jobsOverviewPage()}
             </RequirePermission>
           ),
         },

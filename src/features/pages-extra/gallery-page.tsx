@@ -1,56 +1,29 @@
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { devDebug } from "@/lib/debug";
 import { Images } from "lucide-react";
 
+import { api } from "@/api";
+import type { GalleryPhoto } from "@/api/types";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
  * /gallery: a filterable masonry image gallery with a lightbox. Images are
- * generated gradient placeholders (no external assets) rendered as lazy <img>.
+ * generated gradient placeholders (no external assets) rendered as lazy <img>;
+ * the gradient colors come from the mock-API data layer, not from the UI.
  */
 
 const CATEGORIES = ["all", "nature", "city", "abstract", "people"] as const;
-type Category = Exclude<(typeof CATEGORIES)[number], "all">;
 
-interface Photo {
-  id: number;
-  category: Category;
-  from: string;
-  to: string;
-  ratio: number;
-}
-
-const PALETTES: Record<Category, [string, string]> = {
-  nature: ["#059669", "#a3e635"],
-  city: ["#0ea5e9", "#6366f1"],
-  abstract: ["#f43f5e", "#f59e0b"],
-  people: ["#8b5cf6", "#ec4899"],
-};
-
-const RATIOS = [1, 1.4, 0.75, 1.2, 0.85, 1.6];
-
-const PHOTOS: Photo[] = Array.from({ length: 16 }, (_, index) => {
-  const category = (["nature", "city", "abstract", "people"] as Category[])[
-    index % 4
-  ];
-  const [from, to] = PALETTES[category];
-  return {
-    id: index + 1,
-    category,
-    from,
-    to,
-    ratio: RATIOS[index % RATIOS.length],
-  };
-});
-
-function gradientUri(photo: Photo, width = 480): string {
+function gradientUri(photo: GalleryPhoto, width = 480): string {
   const height = Math.round(width / photo.ratio);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${photo.from}"/><stop offset="1" stop-color="${photo.to}"/></linearGradient></defs><rect width="${width}" height="${height}" fill="url(#g)"/></svg>`;
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
@@ -59,14 +32,19 @@ function gradientUri(photo: Photo, width = 480): string {
 export function GalleryPage() {
   useLocale();
   const [category, setCategory] = useState<string>("all");
-  const [active, setActive] = useState<Photo | null>(null);
+  const [active, setActive] = useState<GalleryPhoto | null>(null);
+
+  const galleryQuery = useQuery({
+    queryKey: ["pages", "gallery"],
+    queryFn: api.pages.gallery,
+  });
 
   const photos = useMemo(
     () =>
-      PHOTOS.filter(
+      (galleryQuery.data ?? []).filter(
         (photo) => category === "all" || photo.category === category,
       ),
-    [category],
+    [galleryQuery.data, category],
   );
 
   return (
@@ -95,7 +73,18 @@ export function GalleryPage() {
           </div>
         }
       >
-        {photos.length === 0 ? (
+        {galleryQuery.isPending ? (
+          <div className="columns-2 gap-3 md:columns-3 lg:columns-4 [&>*]:mb-3">
+            {Array.from({ length: 8 }, (_, index) => (
+              <Skeleton key={index} className="h-40 w-full rounded-xl" />
+            ))}
+          </div>
+        ) : galleryQuery.isError ? (
+          <EmptyState
+            title={t("table.error.title")}
+            description={t("table.error.description")}
+          />
+        ) : photos.length === 0 ? (
           <EmptyState
             icon={Images}
             title={t("gallery.empty.title")}

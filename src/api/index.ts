@@ -6,6 +6,7 @@ import type {
   BlogListParams,
   BlogPost,
   FaqEntry,
+  GalleryPhoto,
   TeamMember,
   TimelineEvent,
   InboxFolder,
@@ -89,6 +90,22 @@ import type {
   NftMintResult,
   NftRankingPeriod,
   RankingRow,
+  Application,
+  ApplicationPayload,
+  Candidate,
+  CandidateFilters,
+  Job,
+  JobApplicant,
+  JobCategory,
+  JobCategoryPayload,
+  JobCompany,
+  JobCompanyDetail,
+  JobCompanyFilters,
+  JobCreatePayload,
+  JobCreateResult,
+  JobDetail,
+  JobFilters,
+  JobsStats,
   ActivityFilters,
   AdminSearchGroup,
   CreatePasswordPayload,
@@ -675,6 +692,7 @@ export const api = {
     team: () => apiFetch<TeamMember[]>("/pages/team"),
     timeline: () => apiFetch<TimelineEvent[]>("/pages/timeline"),
     faq: () => apiFetch<FaqEntry[]>("/pages/faq"),
+    gallery: () => apiFetch<GalleryPhoto[]>("/pages/gallery"),
   },
 
   /* W1 blog (any authenticated): list/grid share the query; article + comments. */
@@ -990,6 +1008,56 @@ export const api = {
       apiFetch<RankingRow[]>("/nft/ranking", { query: { period } }),
     create: (payload: NftCreatePayload) =>
       apiFetch<NftMintResult>("/nft/items", { method: "POST", body: payload }),
+  },
+
+  /* Jobs / Recruitment (W4 niche): recruiter stats, postings (list/grid share one
+   * query), candidates, companies directory, category CRUD and the apply form.
+   * Reachable with jobs.view (jobs.manage to post jobs and manage categories). */
+  jobs: {
+    stats: () => apiFetch<JobsStats>("/jobs/stats"),
+    list: (filters: JobFilters = {}) =>
+      apiFetch<Paginated<Job>>("/jobs", {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          department: filters.department,
+          type: filters.type,
+          status: filters.status,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    get: (id: number) => apiFetch<JobDetail>(`/jobs/${id}`),
+    applicants: (id: number) =>
+      apiFetch<JobApplicant[]>(`/jobs/${id}/applicants`),
+    candidates: (filters: CandidateFilters = {}) =>
+      apiFetch<Paginated<Candidate>>("/jobs/candidates", {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          stage: filters.stage,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    apply: (payload: ApplicationPayload) =>
+      apiFetch<Application>("/jobs/apply", { method: "POST", body: payload }),
+    create: (payload: JobCreatePayload) =>
+      apiFetch<JobCreateResult>("/jobs", { method: "POST", body: payload }),
+    companies: (filters: JobCompanyFilters = {}) =>
+      apiFetch<Paginated<JobCompany>>("/jobs/companies", {
+        query: { page: filters.page, q: filters.q },
+      }),
+    company: (id: number) =>
+      apiFetch<JobCompanyDetail>(`/jobs/companies/${id}`),
+    categories: () => apiFetch<JobCategory[]>("/jobs/categories"),
+    saveCategory: (payload: JobCategoryPayload) =>
+      apiFetch<JobCategory>("/jobs/categories", {
+        method: "POST",
+        body: payload,
+      }),
+    deleteCategory: (id: number) =>
+      apiFetch<{ id: number }>(`/jobs/categories/${id}`, { method: "DELETE" }),
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */
