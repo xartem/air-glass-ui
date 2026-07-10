@@ -702,6 +702,32 @@ const jobsCategoriesPage = () =>
     })),
   );
 
+// W6 — Layout demos (shell chrome variants; each flips the site-wide layout on mount).
+const horizontalLayoutPage = () =>
+  lazyPage(() =>
+    import("@/features/layouts/layout-demo-page").then((m) => ({
+      default: m.HorizontalLayoutPage,
+    })),
+  );
+const detachedLayoutPage = () =>
+  lazyPage(() =>
+    import("@/features/layouts/layout-demo-page").then((m) => ({
+      default: m.DetachedLayoutPage,
+    })),
+  );
+const twoColumnLayoutPage = () =>
+  lazyPage(() =>
+    import("@/features/layouts/layout-demo-page").then((m) => ({
+      default: m.TwoColumnLayoutPage,
+    })),
+  );
+const hoveredLayoutPage = () =>
+  lazyPage(() =>
+    import("@/features/layouts/layout-demo-page").then((m) => ({
+      default: m.HoveredLayoutPage,
+    })),
+  );
+
 // W5 — Components showcase route table (78 static, authenticated-only pages).
 const showcaseRoutes = [
   {
@@ -1369,6 +1395,12 @@ export const router = createBrowserRouter(
         { path: "/help", element: helpPage() },
         { path: "/help/:module/:page", element: helpPage() },
         { path: "/ui-kit", element: uiKitPage() },
+        // W6 — Layout demos (any authenticated user, no perm gate). Each route flips the
+        // shell layout; they live under AuthedRoot so the app-shell wraps them.
+        { path: "/layouts/horizontal", element: horizontalLayoutPage() },
+        { path: "/layouts/detached", element: detachedLayoutPage() },
+        { path: "/layouts/two-column", element: twoColumnLayoutPage() },
+        { path: "/layouts/hovered", element: hoveredLayoutPage() },
         // W5 — Components showcase (any authenticated user, no perm gate).
         ...showcaseRoutes,
         {

@@ -13,6 +13,7 @@ import {
   CalendarDays,
   CalendarRange,
   CircleDollarSign,
+  Columns2,
   Columns3,
   Compass,
   Contact,
@@ -43,6 +44,8 @@ import {
   Newspaper,
   Package,
   Paintbrush,
+  PanelLeftClose,
+  PanelTop,
   Percent,
   ReceiptText,
   CreditCard,
@@ -550,6 +553,35 @@ export function buildNavGroups(): NavGroup[] {
               label: t("nav.apiKeys"),
               icon: KeyRound,
               perm: "apikeys.view",
+            },
+          ],
+        },
+        // Layouts — shell chrome demos (MENU-SPEC §1.3). No permission gate; each route
+        // flips the site-wide layout appearance and every variant shares the single nav map.
+        {
+          key: "menu.layouts",
+          label: t("nav.layouts"),
+          icon: LayoutGrid,
+          children: [
+            {
+              to: "/layouts/horizontal",
+              label: t("nav.layoutHorizontal"),
+              icon: PanelTop,
+            },
+            {
+              to: "/layouts/detached",
+              label: t("nav.layoutDetached"),
+              icon: Layers,
+            },
+            {
+              to: "/layouts/two-column",
+              label: t("nav.layoutTwoColumn"),
+              icon: Columns2,
+            },
+            {
+              to: "/layouts/hovered",
+              label: t("nav.layoutHovered"),
+              icon: PanelLeftClose,
             },
           ],
         },
