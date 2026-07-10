@@ -1,47 +1,23 @@
 import { useEffect, useState } from "react";
-import {
-  closestCorners,
-  DndContext,
-  DragOverlay,
-  KeyboardSensor,
-  PointerSensor,
-  TouchSensor,
-  useDroppable,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-  type DragOverEvent,
-  type DragStartEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CalendarClock, Columns3 } from "lucide-react";
 import { toast } from "sonner";
 
 import { api, type KanbanBoard, type KanbanCard } from "@/api";
+import { Board, type BoardColumn } from "@/components/board/board";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSiteDateTime } from "@/lib/datetime";
-import { createDndA11y } from "@/lib/dnd-a11y";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * /kanban (build-demo-screen-catalog): a drag-and-drop board built on dnd-kit.
- * Cards drag within and across columns; the final position is persisted via a
- * mock mutation. Pointer, touch (long-press) and keyboard sensors make it
- * accessible (focus a card, Space to pick up, arrows to move, Space to drop).
- * Reachable with kanban.view.
+ * /kanban (build-demo-screen-catalog): a drag-and-drop board built on the shared
+ * Board component (dnd-kit). Cards drag within and across columns; the final
+ * position is persisted via a mock mutation. Reachable with kanban.view.
  */
 
 function initials(name: string): string {
@@ -58,21 +34,10 @@ export function KanbanPage() {
   const query = useQuery({ queryKey: ["kanban"], queryFn: api.kanban.get });
 
   const [board, setBoard] = useState<KanbanBoard | null>(null);
-  const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
     if (query.data) setBoard(query.data);
   }, [query.data]);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
-    useSensor(TouchSensor, {
-      activationConstraint: { delay: 250, tolerance: 8 },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
 
   const moveMutation = useMutation({
     mutationFn: ({
@@ -101,71 +66,6 @@ export function KanbanPage() {
     },
   });
 
-  const columnOf = (itemId: string): string | undefined => {
-    if (!board) return undefined;
-    if (board.columns.some((column) => column.id === itemId)) return itemId;
-    return board.columns.find((column) => column.card_ids.includes(itemId))?.id;
-  };
-
-  const onDragStart = (event: DragStartEvent) =>
-    setActiveId(String(event.active.id));
-
-  const onDragOver = (event: DragOverEvent) => {
-    const { active, over } = event;
-    if (!over || !board) return;
-    const activeCol = columnOf(String(active.id));
-    const overCol = columnOf(String(over.id));
-    if (!activeCol || !overCol || activeCol === overCol) return;
-    setBoard((current) => {
-      if (!current) return current;
-      const columns = current.columns.map((column) => ({
-        ...column,
-        card_ids: [...column.card_ids],
-      }));
-      const from = columns.find((column) => column.id === activeCol)!;
-      const to = columns.find((column) => column.id === overCol)!;
-      from.card_ids = from.card_ids.filter((id) => id !== active.id);
-      const overIndex = to.card_ids.indexOf(String(over.id));
-      const insertAt = overIndex >= 0 ? overIndex : to.card_ids.length;
-      to.card_ids.splice(insertAt, 0, String(active.id));
-      return { ...current, columns };
-    });
-  };
-
-  const onDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveId(null);
-    if (!over || !board) return;
-    const activeCol = columnOf(String(active.id));
-    const overCol = columnOf(String(over.id));
-    if (!activeCol || !overCol) return;
-
-    let finalBoard = board;
-    if (activeCol === overCol && active.id !== over.id) {
-      finalBoard = {
-        ...board,
-        columns: board.columns.map((column) => {
-          if (column.id !== activeCol) return column;
-          const from = column.card_ids.indexOf(String(active.id));
-          const to = column.card_ids.indexOf(String(over.id));
-          if (from < 0 || to < 0) return column;
-          return { ...column, card_ids: arrayMove(column.card_ids, from, to) };
-        }),
-      };
-      setBoard(finalBoard);
-    }
-
-    const target = finalBoard.columns.find((column) => column.id === overCol)!;
-    const index = target.card_ids.indexOf(String(active.id));
-    moveMutation.mutate({
-      cardId: String(active.id),
-      toColumn: overCol,
-      toIndex: Math.max(0, index),
-    });
-  };
-
-  const activeCard = activeId && board ? board.cards[activeId] : null;
-
   if (query.isPending || !board) {
     return (
       <div className="space-y-4">
@@ -191,99 +91,44 @@ export function KanbanPage() {
     );
   }
 
+  const columns: BoardColumn[] = board.columns.map((column) => ({
+    id: column.id,
+    title: t(column.title_key),
+    cardIds: column.card_ids,
+  }));
+
+  const setColumns = (next: BoardColumn[]) => {
+    setBoard((current) =>
+      current
+        ? {
+            ...current,
+            columns: current.columns.map((column) => {
+              const updated = next.find((item) => item.id === column.id);
+              return updated
+                ? { ...column, card_ids: updated.cardIds }
+                : column;
+            }),
+          }
+        : current,
+    );
+  };
+
   return (
     <div className="space-y-4">
       <PageHeader title={t("nav.kanban")} icon={Columns3} />
-
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDragEnd={onDragEnd}
-        onDragCancel={() => setActiveId(null)}
-        accessibility={createDndA11y(t("dnd.item.card"))}
-      >
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {board.columns.map((column) => (
-            <BoardColumn
-              key={column.id}
-              id={column.id}
-              title={t(column.title_key)}
-              cardIds={column.card_ids}
-              cards={board.cards}
-            />
-          ))}
-        </div>
-        <DragOverlay>
-          {activeCard ? <CardBody card={activeCard} dragging /> : null}
-        </DragOverlay>
-      </DndContext>
-    </div>
-  );
-}
-
-function BoardColumn({
-  id,
-  title,
-  cardIds,
-  cards,
-}: {
-  id: string;
-  title: string;
-  cardIds: string[];
-  cards: Record<string, KanbanCard>;
-}) {
-  const { setNodeRef, isOver } = useDroppable({ id });
-  return (
-    <section className="glass-card flex min-h-[8rem] flex-col rounded-2xl p-3">
-      <div className="mb-3 flex items-center justify-between px-1">
-        <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
-        <Badge variant="secondary" className="tabular-nums">
-          {cardIds.length}
-        </Badge>
-      </div>
-      <SortableContext items={cardIds} strategy={verticalListSortingStrategy}>
-        <div
-          ref={setNodeRef}
-          className={cn(
-            "flex min-h-24 flex-1 flex-col gap-2 rounded-xl p-1 transition-colors",
-            isOver && "bg-primary/5",
-          )}
-        >
-          {cardIds.length === 0 ? (
-            <p className="flex flex-1 items-center justify-center py-6 text-center text-xs text-muted-foreground">
-              {t("kanban.empty_column")}
-            </p>
-          ) : (
-            cardIds.map((cardId) => (
-              <SortableCard key={cardId} card={cards[cardId]!} />
-            ))
-          )}
-        </div>
-      </SortableContext>
-    </section>
-  );
-}
-
-function SortableCard({ card }: { card: KanbanCard }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: card.id });
-  return (
-    <div
-      ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={cn(isDragging && "opacity-40")}
-      {...attributes}
-      {...listeners}
-    >
-      <CardBody card={card} />
+      <Board
+        columns={columns}
+        cards={board.cards}
+        onColumnsChange={setColumns}
+        onMove={(cardId, toColumn, toIndex) =>
+          moveMutation.mutate({ cardId, toColumn, toIndex })
+        }
+        renderCard={(card, { dragging }) => (
+          <CardBody card={card} dragging={dragging} />
+        )}
+        itemLabel={t("dnd.item.card")}
+        emptyColumnLabel={t("kanban.empty_column")}
+      />
     </div>
   );
 }

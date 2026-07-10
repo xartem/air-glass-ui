@@ -1,0 +1,1 @@
+2026-07-10  Extract three-pane shell to shared components/three-pane-layout; consume ThreePaneLayout here (no behavior change).

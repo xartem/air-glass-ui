@@ -84,6 +84,22 @@ export const ALL_PERMISSIONS = [
   "dashboard.manage",
   "ai.use",
   "ai.manage",
+  // W3 app suites
+  "sellers.view",
+  "sellers.manage",
+  "projects.view",
+  "projects.manage",
+  "tasks.view",
+  "crm.companies",
+  "crm.deals",
+  "crm.leads",
+  "calendar.view",
+  "email.view",
+  "support.view",
+  "support.manage",
+  "todo.view",
+  "apikeys.view",
+  "apikeys.manage",
 ];
 
 export const EDITOR_PERMISSIONS = [
@@ -101,6 +117,19 @@ export const EDITOR_PERMISSIONS = [
   "contacts.view",
   "activity.view",
   "ai.use",
+  // W3 app suites: the editor role manages the day-to-day app screens.
+  "sellers.view",
+  "projects.view",
+  "projects.manage",
+  "tasks.view",
+  "crm.companies",
+  "crm.deals",
+  "crm.leads",
+  "calendar.view",
+  "email.view",
+  "support.view",
+  "todo.view",
+  "apikeys.view",
 ];
 
 // Content locales for the content-language switcher (endonyms, as in LOCALE_NAMES).

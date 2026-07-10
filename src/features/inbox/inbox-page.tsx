@@ -19,6 +19,7 @@ import {
 } from "@/api";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
+import { ThreePaneLayout } from "@/components/three-pane-layout";
 import { SearchInput } from "@/components/toolbar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -81,137 +82,122 @@ export function InboxPage() {
   const threads = listQuery.data?.threads ?? [];
   const counts = listQuery.data?.counts;
 
+  const selectFolder = (key: InboxFolder) => {
+    setFolder(key);
+    setSelectedId(null);
+  };
+
   return (
     <div className="flex h-[calc(100vh-9rem)] flex-col gap-4">
       <PageHeader title={t("nav.inbox")} icon={Inbox} />
 
-      <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[13rem_20rem_1fr]">
-        {/* folder rail — hidden on mobile (folder chips move into the list header) */}
-        <aside className="hidden min-h-0 flex-col gap-1 lg:flex">
-          {FOLDERS.map(({ key, icon: Icon }) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => {
-                setFolder(key);
-                setSelectedId(null);
-              }}
-              className={cn(
-                "flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm transition-colors",
-                folder === key
-                  ? "bg-primary/10 text-primary"
-                  : "hover:bg-accent/40",
-              )}
-              aria-current={folder === key ? "true" : undefined}
-            >
-              <span className="flex items-center gap-2">
-                <Icon className="size-4" />
-                {t(`inbox.folder.${key}`)}
-              </span>
-              {counts && counts[key] > 0 ? (
-                <Badge
-                  variant="secondary"
-                  className="bg-primary/10 text-primary tabular-nums"
-                >
-                  {counts[key]}
-                </Badge>
-              ) : null}
-            </button>
-          ))}
-        </aside>
-
-        {/* conversation list */}
-        <section
-          className={cn(
-            "glass-card flex min-h-0 flex-col overflow-hidden rounded-2xl",
-            selectedId !== null && "max-lg:hidden",
-          )}
-        >
-          <div className="space-y-2 border-b border-border/50 p-3">
-            {/* mobile folder switch */}
-            <div className="flex gap-1 overflow-x-auto lg:hidden">
-              {FOLDERS.map(({ key, icon: Icon }) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => {
-                    setFolder(key);
-                    setSelectedId(null);
-                  }}
-                  className={cn(
-                    "flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs transition-colors",
-                    folder === key
-                      ? "bg-primary/10 text-primary"
-                      : "hover:bg-accent/40",
-                  )}
-                >
-                  <Icon className="size-3.5" />
-                  {t(`inbox.folder.${key}`)}
-                  {counts && counts[key] > 0 ? (
-                    <span className="tabular-nums">({counts[key]})</span>
-                  ) : null}
-                </button>
-              ))}
-            </div>
-            <SearchInput
-              value={search}
-              onChange={setSearch}
-              placeholder={t("inbox.search_placeholder")}
-            />
-          </div>
-
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            {listQuery.isPending ? (
-              <ul className="space-y-1 p-2">
-                {Array.from({ length: 6 }, (_, index) => (
-                  <li key={index} className="flex items-center gap-3 p-2">
-                    <Skeleton className="size-9 rounded-full" />
-                    <div className="flex-1 space-y-1.5">
-                      <Skeleton className="h-3.5 w-32" />
-                      <Skeleton className="h-3 w-full" />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : listQuery.isError ? (
-              <EmptyState
-                icon={Inbox}
-                title={t("table.error.title")}
-                description={t("table.error.description")}
-                action={{
-                  label: t("common.retry"),
-                  onClick: () => void listQuery.refetch(),
-                }}
-              />
-            ) : threads.length === 0 ? (
-              <EmptyState
-                icon={Inbox}
-                title={t("inbox.empty")}
-                description={t("inbox.empty_hint")}
-              />
-            ) : (
-              <ul>
-                {threads.map((thread) => (
-                  <ThreadRow
-                    key={thread.id}
-                    thread={thread}
-                    active={thread.id === selectedId}
-                    onSelect={() => openThread(thread.id)}
-                  />
-                ))}
-              </ul>
+      <ThreePaneLayout
+        showDetail={selectedId !== null}
+        rail={FOLDERS.map(({ key, icon: Icon }) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => selectFolder(key)}
+            className={cn(
+              "flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm transition-colors",
+              folder === key
+                ? "bg-primary/10 text-primary"
+                : "hover:bg-accent/40",
             )}
-          </div>
-        </section>
+            aria-current={folder === key ? "true" : undefined}
+          >
+            <span className="flex items-center gap-2">
+              <Icon className="size-4" />
+              {t(`inbox.folder.${key}`)}
+            </span>
+            {counts && counts[key] > 0 ? (
+              <Badge
+                variant="secondary"
+                className="bg-primary/10 text-primary tabular-nums"
+              >
+                {counts[key]}
+              </Badge>
+            ) : null}
+          </button>
+        ))}
+        list={
+          <>
+            <div className="space-y-2 border-b border-border/50 p-3">
+              {/* mobile folder switch */}
+              <div className="flex gap-1 overflow-x-auto lg:hidden">
+                {FOLDERS.map(({ key, icon: Icon }) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => selectFolder(key)}
+                    className={cn(
+                      "flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs transition-colors",
+                      folder === key
+                        ? "bg-primary/10 text-primary"
+                        : "hover:bg-accent/40",
+                    )}
+                  >
+                    <Icon className="size-3.5" />
+                    {t(`inbox.folder.${key}`)}
+                    {counts && counts[key] > 0 ? (
+                      <span className="tabular-nums">({counts[key]})</span>
+                    ) : null}
+                  </button>
+                ))}
+              </div>
+              <SearchInput
+                value={search}
+                onChange={setSearch}
+                placeholder={t("inbox.search_placeholder")}
+              />
+            </div>
 
-        {/* thread pane */}
-        <section
-          className={cn(
-            "glass-card flex min-h-0 flex-col overflow-hidden rounded-2xl",
-            selectedId === null && "max-lg:hidden",
-          )}
-        >
-          {selectedId === null ? (
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              {listQuery.isPending ? (
+                <ul className="space-y-1 p-2">
+                  {Array.from({ length: 6 }, (_, index) => (
+                    <li key={index} className="flex items-center gap-3 p-2">
+                      <Skeleton className="size-9 rounded-full" />
+                      <div className="flex-1 space-y-1.5">
+                        <Skeleton className="h-3.5 w-32" />
+                        <Skeleton className="h-3 w-full" />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : listQuery.isError ? (
+                <EmptyState
+                  icon={Inbox}
+                  title={t("table.error.title")}
+                  description={t("table.error.description")}
+                  action={{
+                    label: t("common.retry"),
+                    onClick: () => void listQuery.refetch(),
+                  }}
+                />
+              ) : threads.length === 0 ? (
+                <EmptyState
+                  icon={Inbox}
+                  title={t("inbox.empty")}
+                  description={t("inbox.empty_hint")}
+                />
+              ) : (
+                <ul>
+                  {threads.map((thread) => (
+                    <ThreadRow
+                      key={thread.id}
+                      thread={thread}
+                      active={thread.id === selectedId}
+                      onSelect={() => openThread(thread.id)}
+                    />
+                  ))}
+                </ul>
+              )}
+            </div>
+          </>
+        }
+        detail={
+          selectedId === null ? (
             <div className="hidden h-full items-center justify-center lg:flex">
               <EmptyState
                 icon={Inbox}
@@ -221,9 +207,9 @@ export function InboxPage() {
             </div>
           ) : (
             <ThreadPane id={selectedId} onBack={() => setSelectedId(null)} />
-          )}
-        </section>
-      </div>
+          )
+        }
+      />
     </div>
   );
 }
