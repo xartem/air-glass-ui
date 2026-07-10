@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
+import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { CalendarIcon, X } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 
@@ -29,6 +29,7 @@ const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
   es,
   it,
   pl,
+  ar,
 };
 
 export interface DateRangeValue {

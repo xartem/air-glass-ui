@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
+import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { formatDistanceToNow } from "date-fns";
 import { Activity, ArrowRight, Bot, Eye, History, UserCog } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
@@ -61,6 +61,7 @@ const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
   es,
   it,
   pl,
+  ar,
 };
 
 const ENTITY_TYPES = [

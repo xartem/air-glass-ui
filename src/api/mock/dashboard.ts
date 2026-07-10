@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
-import { de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
+import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 
 import { getLocale, type AdminLocale } from "@/lib/i18n";
 import { actionLabel, entityLabel, entityTitle } from "@/lib/activity-labels";
@@ -39,6 +39,7 @@ const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
   es,
   it,
   pl,
+  ar,
 };
 
 function ago(date: Date | string): string {

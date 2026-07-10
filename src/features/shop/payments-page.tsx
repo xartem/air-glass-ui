@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
+import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { CircleDollarSign, Undo2 } from "lucide-react";
 import { toast } from "sonner";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -47,6 +47,7 @@ const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
   es,
   it,
   pl,
+  ar,
 };
 
 const STATUS_KIND: Record<PaymentTxnStatus, StatusKind> = {

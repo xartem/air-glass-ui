@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
+import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { Eye, LogIn, UserCircle } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -40,6 +40,7 @@ const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
   es,
   it,
   pl,
+  ar,
 };
 
 const STATUS_KIND: Record<CustomerStatus, StatusKind> = {

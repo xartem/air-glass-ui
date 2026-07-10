@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
+import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { Eye, ReceiptText } from "lucide-react";
 import { useNavigate } from "react-router";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -39,6 +39,7 @@ const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
   es,
   it,
   pl,
+  ar,
 };
 
 const STATUS_KIND: Record<InvoiceStatus, StatusKind> = {

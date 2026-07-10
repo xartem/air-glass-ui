@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
+import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { formatDistanceToNow } from "date-fns";
 import { KeyRound, LogIn, Pencil, UserCheck, Users, UserX } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -46,6 +46,7 @@ const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
   es,
   it,
   pl,
+  ar,
 };
 
 export function UsersListPage() {
