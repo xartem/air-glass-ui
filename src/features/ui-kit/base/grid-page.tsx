@@ -12,7 +12,13 @@ import { useLocale } from "@/lib/use-locale";
  */
 
 /** A labelled cell used to visualise grid placement. */
-function Cell({ children, className }: { children: ReactNode; className?: string }) {
+function Cell({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <div
       className={cn(

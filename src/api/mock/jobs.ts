@@ -210,9 +210,7 @@ function buildJobs(): Job[] {
       currency: CURRENCY,
       applicants: 8 + ((index * 37) % 240),
       status: JOB_STATUSES[index % JOB_STATUSES.length]!,
-      posted_at: new Date(
-        base - (index + 1) * 30 * 3600 * 1000,
-      ).toISOString(),
+      posted_at: new Date(base - (index + 1) * 30 * 3600 * 1000).toISOString(),
       gradient: gradientFor(companyIndex),
     };
   });
@@ -362,7 +360,9 @@ function buildCandidates(): Candidate[] {
   });
 }
 
-export function jobsCandidates(filters: CandidateFilters): Paginated<Candidate> {
+export function jobsCandidates(
+  filters: CandidateFilters,
+): Paginated<Candidate> {
   devDebug("[mock:jobs] candidates", filters);
   let rows = buildCandidates();
   const q = filters.q?.toLowerCase().trim();
@@ -469,7 +469,9 @@ function buildCategories(): JobCategory[] {
 function categoriesStore(): JobCategory[] {
   if (categoriesCache) return categoriesCache;
   const raw = localStorage.getItem(CATEGORIES_KEY);
-  categoriesCache = raw ? (JSON.parse(raw) as JobCategory[]) : buildCategories();
+  categoriesCache = raw
+    ? (JSON.parse(raw) as JobCategory[])
+    : buildCategories();
   persistCategories();
   return categoriesCache;
 }
@@ -482,7 +484,9 @@ function persistCategories(): void {
 export function jobsCategories(): JobCategory[] {
   devDebug("[mock:jobs] categories");
   return structuredClone(
-    categoriesStore().slice().sort((a, b) => a.name.localeCompare(b.name)),
+    categoriesStore()
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name)),
   );
 }
 
@@ -576,7 +580,10 @@ export function jobsApply(payload: ApplicationPayload): Application {
   const fields: Record<string, string> = {};
   if (!payload.first_name?.trim()) fields.first_name = "required";
   if (!payload.last_name?.trim()) fields.last_name = "required";
-  if (!payload.email?.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email))
+  if (
+    !payload.email?.trim() ||
+    !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)
+  )
     fields.email = "invalid";
   if (!payload.phone?.trim()) fields.phone = "required";
   if (!payload.resume?.trim()) fields.resume = "required";
@@ -623,8 +630,7 @@ export function jobsStats(): JobsStats {
     value:
       store
         .filter((job) => job.department === label)
-        .reduce((sum, job) => sum + job.applicants, 0) ||
-      80 + index * 25,
+        .reduce((sum, job) => sum + job.applicants, 0) || 80 + index * 25,
   }));
   const stageCounts: Array<{ label: CandidateStage; value: number }> = [
     { label: "applied", value: applicants },

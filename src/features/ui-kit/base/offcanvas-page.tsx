@@ -67,7 +67,9 @@ export function OffcanvasPage() {
             </SheetTrigger>
             <SheetContent side={side}>
               <SheetHeader>
-                <SheetTitle>{t("showcase.base.offcanvas.panelTitle")}</SheetTitle>
+                <SheetTitle>
+                  {t("showcase.base.offcanvas.panelTitle")}
+                </SheetTitle>
                 <SheetDescription>
                   {t("showcase.base.offcanvas.panelDesc")}
                 </SheetDescription>

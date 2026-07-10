@@ -65,8 +65,16 @@ const WIDGET_DEMO_STAT = {
 
 const WIDGET_DEMO_LIST = {
   items: [
-    { title: '#432 — "Need a pump for the cottage"', hint: "12:40", badge: "new" },
-    { title: '#431 — "Call me back about roofing"', hint: "11:05", badge: "new" },
+    {
+      title: '#432 — "Need a pump for the cottage"',
+      hint: "12:40",
+      badge: "new",
+    },
+    {
+      title: '#431 — "Call me back about roofing"',
+      hint: "11:05",
+      badge: "new",
+    },
     { title: '#430 — "How much is installation?"', hint: "09:32" },
     { title: '#429 — "Is the GNOM-40 in stock?"', hint: "yesterday" },
     { title: '#428 — "Need an invoice for a company"', hint: "yesterday" },
@@ -77,7 +85,11 @@ const WIDGET_DEMO_LIST = {
 const WIDGET_DEMO_STATUS = {
   rows: [
     { label_key: "scheduler.widget.pending", value: "3", state: "ok" as const },
-    { label_key: "scheduler.widget.failed", value: "2", state: "warn" as const },
+    {
+      label_key: "scheduler.widget.failed",
+      value: "2",
+      state: "warn" as const,
+    },
     {
       label_key: "scheduler.widget.last_tick",
       value: "2h ago",

@@ -1,9 +1,4 @@
-import {
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Line, LineChart, XAxis, YAxis } from "recharts";
 
 import { ComponentDemo, ShowcasePage } from "@/components/component-demo";
 import {

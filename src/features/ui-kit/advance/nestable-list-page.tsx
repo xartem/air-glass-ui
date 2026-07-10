@@ -1,10 +1,7 @@
 import { useState } from "react";
 
 import { ComponentDemo, ShowcasePage } from "@/components/component-demo";
-import {
-  NestableList,
-  type NestableItem,
-} from "@/components/nestable-list";
+import { NestableList, type NestableItem } from "@/components/nestable-list";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 

@@ -54,7 +54,9 @@ export function UtilitiesPage() {
       >
         {radii.map(({ label, cls }) => (
           <div key={label} className="flex flex-col items-center gap-2">
-            <div className={`size-16 bg-primary/15 ring-1 ring-primary/30 ${cls}`} />
+            <div
+              className={`size-16 bg-primary/15 ring-1 ring-primary/30 ${cls}`}
+            />
             <span className="font-mono text-xs text-muted-foreground">
               {label}
             </span>
@@ -111,7 +113,9 @@ export function UtilitiesPage() {
       >
         {borders.map(({ label, cls }) => (
           <div key={label} className="flex flex-col items-center gap-2">
-            <div className={`size-16 rounded-xl border-border bg-transparent ${cls}`} />
+            <div
+              className={`size-16 rounded-xl border-border bg-transparent ${cls}`}
+            />
             <span className="font-mono text-xs text-muted-foreground">
               {label}
             </span>

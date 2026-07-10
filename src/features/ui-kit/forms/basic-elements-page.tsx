@@ -104,22 +104,16 @@ export function BasicElementsPage() {
             <Label htmlFor="basic-readonly">
               {t("showcase.forms.basicElements.readOnly")}
             </Label>
-            <Input
-              id="basic-readonly"
-              defaultValue="Locked value"
-              readOnly
-            />
+            <Input id="basic-readonly" defaultValue="Locked value" readOnly />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="basic-disabled">{t("showcase.s.disabled")}</Label>
-            <Input
-              id="basic-disabled"
-              defaultValue="Disabled value"
-              disabled
-            />
+            <Input id="basic-disabled" defaultValue="Disabled value" disabled />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="basic-disabled-ta">{t("showcase.s.disabled")}</Label>
+            <Label htmlFor="basic-disabled-ta">
+              {t("showcase.s.disabled")}
+            </Label>
             <Textarea
               id="basic-disabled-ta"
               rows={2}

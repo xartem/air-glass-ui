@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  CircleAlert,
-  CircleCheck,
-  Info,
-  TriangleAlert,
-  X,
-} from "lucide-react";
+import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from "lucide-react";
 
 import { ComponentDemo, ShowcasePage } from "@/components/component-demo";
 import {

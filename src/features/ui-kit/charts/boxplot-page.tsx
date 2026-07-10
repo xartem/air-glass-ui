@@ -59,10 +59,7 @@ export function ChartsBoxplotPage() {
   ariaLabel="Score distribution"
 />`}
       >
-        <BoxPlot
-          data={SCORES}
-          ariaLabel={t("showcase.charts.boxplot.title")}
-        />
+        <BoxPlot data={SCORES} ariaLabel={t("showcase.charts.boxplot.title")} />
       </ComponentDemo>
     </ShowcasePage>
   );

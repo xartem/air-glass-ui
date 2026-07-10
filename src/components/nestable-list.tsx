@@ -64,7 +64,8 @@ function flatten(
 function buildTree(flat: FlatItem[]): NestableItem[] {
   const roots: NestableItem[] = [];
   const nodes = new Map<string, NestableItem>();
-  for (const item of flat) nodes.set(item.id, { id: item.id, label: item.label });
+  for (const item of flat)
+    nodes.set(item.id, { id: item.id, label: item.label });
   for (const item of flat) {
     const node = nodes.get(item.id)!;
     if (item.parentId && nodes.has(item.parentId)) {

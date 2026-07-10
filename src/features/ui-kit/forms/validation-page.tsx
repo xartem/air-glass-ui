@@ -41,7 +41,9 @@ export function ValidationPage() {
   const onSubmit = handleSubmit(async (values) => {
     // Simulate an async submit so the pending state is reviewable (no network).
     await new Promise((resolve) => setTimeout(resolve, 500));
-    toast.success(t("showcase.forms.validation.success", { name: values.name }));
+    toast.success(
+      t("showcase.forms.validation.success", { name: values.name }),
+    );
     reset();
   });
 
@@ -69,7 +71,11 @@ const { register, handleSubmit, formState: { errors } } =
   </FormField>
 </form>`}
       >
-        <form onSubmit={onSubmit} noValidate className="w-full max-w-md space-y-4">
+        <form
+          onSubmit={onSubmit}
+          noValidate
+          className="w-full max-w-md space-y-4"
+        >
           <FormField
             name="name"
             label={t("showcase.forms.validation.name")}

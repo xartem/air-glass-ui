@@ -16,7 +16,7 @@ import { useLocale } from "@/lib/use-locale";
 export function EditorsPage() {
   useLocale();
   const [html, setHtml] = useState(
-    "<h2>Release notes</h2><p>This build ships the <strong>Forms</strong> showcase with a <a href=\"https://example.com\">live editor</a>.</p>",
+    '<h2>Release notes</h2><p>This build ships the <strong>Forms</strong> showcase with a <a href="https://example.com">live editor</a>.</p>',
   );
   const [code, setCode] = useState(
     `<section class="card">\n  <h3>Hello</h3>\n  <button onclick="alert('hi')">Click</button>\n</section>`,

@@ -27,7 +27,8 @@ function GradientFill({ className }: { className?: string }) {
     <div
       className={cn("size-full", className)}
       style={{
-        backgroundImage: "linear-gradient(135deg, var(--chart-1), var(--chart-3))",
+        backgroundImage:
+          "linear-gradient(135deg, var(--chart-1), var(--chart-3))",
       }}
     />
   );

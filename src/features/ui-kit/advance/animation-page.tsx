@@ -65,7 +65,10 @@ function EntranceDemo() {
         ))}
       </div>
       <div className="flex h-28 items-center justify-center rounded-lg border border-[var(--glass-border)] bg-background/40">
-        <div key={`${entrance.key}-${replay}`} className={cn(BOX, entrance.cls)}>
+        <div
+          key={`${entrance.key}-${replay}`}
+          className={cn(BOX, entrance.cls)}
+        >
           {t("showcase.advance.animation.boxLabel")}
         </div>
       </div>

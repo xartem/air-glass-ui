@@ -1,11 +1,7 @@
 import { forwardRef, type ComponentProps } from "react";
 
 import { Input } from "@/components/ui/input";
-import {
-  applyMask,
-  maskInputMode,
-  type MaskKind,
-} from "@/lib/input-mask";
+import { applyMask, maskInputMode, type MaskKind } from "@/lib/input-mask";
 
 /*
  * MaskedInput (W5): a controlled Input that formats keystrokes through an input

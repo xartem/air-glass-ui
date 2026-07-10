@@ -13,9 +13,21 @@ export function MediaPage() {
   useLocale();
 
   const people = [
-    { name: "Ava Thompson", initials: "AT", role: t("showcase.base.media.role1") },
-    { name: "Liam Carter", initials: "LC", role: t("showcase.base.media.role2") },
-    { name: "Noah Bennett", initials: "NB", role: t("showcase.base.media.role3") },
+    {
+      name: "Ava Thompson",
+      initials: "AT",
+      role: t("showcase.base.media.role1"),
+    },
+    {
+      name: "Liam Carter",
+      initials: "LC",
+      role: t("showcase.base.media.role2"),
+    },
+    {
+      name: "Noah Bennett",
+      initials: "NB",
+      role: t("showcase.base.media.role3"),
+    },
   ];
 
   return (

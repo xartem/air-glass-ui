@@ -121,10 +121,16 @@ export function FormLayoutsPage() {
 </div>`}
       >
         <div className="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
-          <FormField name="gl-first" label={t("showcase.forms.formLayouts.first")}>
+          <FormField
+            name="gl-first"
+            label={t("showcase.forms.formLayouts.first")}
+          >
             <Input id="gl-first" placeholder="Jane" />
           </FormField>
-          <FormField name="gl-last" label={t("showcase.forms.formLayouts.last")}>
+          <FormField
+            name="gl-last"
+            label={t("showcase.forms.formLayouts.last")}
+          >
             <Input id="gl-last" placeholder="Cooper" />
           </FormField>
           <FormField

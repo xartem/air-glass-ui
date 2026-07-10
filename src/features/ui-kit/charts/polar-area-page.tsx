@@ -1,10 +1,7 @@
 import { Pie, PieChart } from "recharts";
 
 import { ComponentDemo, ShowcasePage } from "@/components/component-demo";
-import {
-  ChartContainer,
-  type ChartConfig,
-} from "@/components/ui/chart";
+import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 

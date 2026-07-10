@@ -119,7 +119,8 @@ function BoxTooltip({
 }) {
   if (!active || !payload?.length) return null;
   const point = payload[0]!.payload;
-  const fmt = (value: number) => (formatValue ? formatValue(value) : `${value}`);
+  const fmt = (value: number) =>
+    formatValue ? formatValue(value) : `${value}`;
   const rows: Array<[string, number]> = [
     ["Max", point.max],
     ["Q3", point.q3],

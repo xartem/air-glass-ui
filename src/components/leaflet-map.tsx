@@ -1,6 +1,12 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { CircleMarker, MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import {
+  CircleMarker,
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+} from "react-leaflet";
 
 import { devDebug } from "@/lib/debug";
 import { cn } from "@/lib/utils";

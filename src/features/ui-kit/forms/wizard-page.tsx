@@ -110,9 +110,7 @@ export function WizardPage() {
               <Button
                 size="sm"
                 onClick={() =>
-                  setStep((current) =>
-                    Math.min(steps.length - 1, current + 1),
-                  )
+                  setStep((current) => Math.min(steps.length - 1, current + 1))
                 }
               >
                 {t("wizard.next")}

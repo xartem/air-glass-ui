@@ -1,9 +1,4 @@
-import {
-  PolarAngleAxis,
-  PolarGrid,
-  Radar,
-  RadarChart,
-} from "recharts";
+import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 
 import { ComponentDemo, ShowcasePage } from "@/components/component-demo";
 import {

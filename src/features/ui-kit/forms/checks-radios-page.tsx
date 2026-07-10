@@ -119,7 +119,9 @@ export function ChecksRadiosPage() {
           </div>
           <div className="flex items-center gap-2">
             <Switch id="sw-off" />
-            <Label htmlFor="sw-off">{t("showcase.forms.checksRadios.off")}</Label>
+            <Label htmlFor="sw-off">
+              {t("showcase.forms.checksRadios.off")}
+            </Label>
           </div>
           <div className="flex items-center gap-2">
             <Switch id="sw-sm" size="sm" defaultChecked />

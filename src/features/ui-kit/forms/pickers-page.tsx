@@ -40,7 +40,10 @@ export function PickersPage() {
 <DatePicker id="date" value={date} onChange={setDate} />`}
       >
         <div className="w-full max-w-xs">
-          <FormField name="picker-date" label={t("showcase.forms.pickers.date")}>
+          <FormField
+            name="picker-date"
+            label={t("showcase.forms.pickers.date")}
+          >
             <DatePicker id="picker-date" value={date} onChange={setDate} />
           </FormField>
         </div>

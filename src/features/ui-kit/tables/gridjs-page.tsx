@@ -80,7 +80,9 @@ export function TablesGridJsPage() {
     const active = sortKey === column;
     return (
       <TableHead
-        aria-sort={active ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
+        aria-sort={
+          active ? (sortDir === "asc" ? "ascending" : "descending") : "none"
+        }
         className={align === "end" ? "text-end" : undefined}
       >
         <button

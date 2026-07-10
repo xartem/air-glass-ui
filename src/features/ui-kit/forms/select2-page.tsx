@@ -68,16 +68,16 @@ export function Select2Page() {
 </Combobox>`}
       >
         <div className="w-full max-w-xs">
-          <FormField name="s2-country" label={t("showcase.forms.select2.country")}>
+          <FormField
+            name="s2-country"
+            label={t("showcase.forms.select2.country")}
+          >
             <Combobox
               items={COUNTRIES}
               value={country}
               onValueChange={setCountry}
             >
-              <ComboboxInput
-                id="s2-country"
-                placeholder={t("common.search")}
-              />
+              <ComboboxInput id="s2-country" placeholder={t("common.search")} />
               <ComboboxContent>
                 <ComboboxEmpty>{t("reference.empty")}</ComboboxEmpty>
                 <ComboboxList>

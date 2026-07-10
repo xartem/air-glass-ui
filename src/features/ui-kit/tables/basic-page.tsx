@@ -27,10 +27,30 @@ type Member = {
 };
 
 const MEMBERS: Member[] = [
-  { name: "Olga Petrova", role: "Admin", email: "olga@example.com", status: "published" },
-  { name: "Marek Nowak", role: "Editor", email: "marek@example.com", status: "pending" },
-  { name: "Chen Wei", role: "Author", email: "chen@example.com", status: "published" },
-  { name: "Amara Okafor", role: "Viewer", email: "amara@example.com", status: "draft" },
+  {
+    name: "Olga Petrova",
+    role: "Admin",
+    email: "olga@example.com",
+    status: "published",
+  },
+  {
+    name: "Marek Nowak",
+    role: "Editor",
+    email: "marek@example.com",
+    status: "pending",
+  },
+  {
+    name: "Chen Wei",
+    role: "Author",
+    email: "chen@example.com",
+    status: "published",
+  },
+  {
+    name: "Amara Okafor",
+    role: "Viewer",
+    email: "amara@example.com",
+    status: "draft",
+  },
 ];
 
 type LineItem = { item: string; qty: number; amount: number };
@@ -198,7 +218,9 @@ export function TablesBasicPage() {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={2}>{t("showcase.tables.col.total")}</TableCell>
+              <TableCell colSpan={2}>
+                {t("showcase.tables.col.total")}
+              </TableCell>
               <TableCell className="text-end tabular-nums">${total}</TableCell>
             </TableRow>
           </TableFooter>

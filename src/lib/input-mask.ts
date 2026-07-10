@@ -41,7 +41,9 @@ function maskAmount(value: string): string {
   const cleaned = value.replace(/[^\d.]/g, "");
   const [intPart = "", ...rest] = cleaned.split(".");
   const decimals = rest.join("").slice(0, 8);
-  const grouped = intPart.replace(/^0+(?=\d)/, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const grouped = intPart
+    .replace(/^0+(?=\d)/, "")
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const hasDot = cleaned.includes(".");
   return hasDot ? `${grouped || "0"}.${decimals}` : grouped;
 }

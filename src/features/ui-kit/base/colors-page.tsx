@@ -22,7 +22,15 @@ function Swatch({ token }: { token: string }) {
 }
 
 /** A status token pair rendered as its own bg/fg combination. */
-function StatusSwatch({ name, bg, fg }: { name: string; bg: string; fg: string }) {
+function StatusSwatch({
+  name,
+  bg,
+  fg,
+}: {
+  name: string;
+  bg: string;
+  fg: string;
+}) {
   return (
     <div
       className="flex h-14 items-center justify-center rounded-lg text-xs font-medium ring-1 ring-foreground/10"

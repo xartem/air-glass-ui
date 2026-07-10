@@ -116,9 +116,7 @@ export function ModalsPage() {
 />`}
       >
         <ConfirmDialog
-          trigger={
-            <Button variant="destructive-filled">Delete project</Button>
-          }
+          trigger={<Button variant="destructive-filled">Delete project</Button>}
           title="Delete project?"
           description="This permanently removes the project and all of its data. This action cannot be undone."
           confirmLabel="Delete"

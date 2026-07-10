@@ -26,9 +26,7 @@ export function useScrollSpy(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
-          );
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) setActive(visible[0].target.id);
       },
       { rootMargin, threshold: 0 },

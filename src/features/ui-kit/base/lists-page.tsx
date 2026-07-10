@@ -18,9 +18,18 @@ export function ListsPage() {
   ];
 
   const terms = [
-    { term: t("showcase.base.lists.term1"), desc: t("showcase.base.lists.desc1") },
-    { term: t("showcase.base.lists.term2"), desc: t("showcase.base.lists.desc2") },
-    { term: t("showcase.base.lists.term3"), desc: t("showcase.base.lists.desc3") },
+    {
+      term: t("showcase.base.lists.term1"),
+      desc: t("showcase.base.lists.desc1"),
+    },
+    {
+      term: t("showcase.base.lists.term2"),
+      desc: t("showcase.base.lists.desc2"),
+    },
+    {
+      term: t("showcase.base.lists.term3"),
+      desc: t("showcase.base.lists.desc3"),
+    },
   ];
 
   const rows = [
@@ -90,7 +99,10 @@ export function ListsPage() {
       >
         <ul className="w-full max-w-sm divide-y divide-border rounded-lg border border-border">
           {rows.map((row) => (
-            <li key={row} className="flex items-center gap-2 px-3 py-2.5 text-sm">
+            <li
+              key={row}
+              className="flex items-center gap-2 px-3 py-2.5 text-sm"
+            >
               <Check className="size-4 text-primary" />
               {row}
             </li>

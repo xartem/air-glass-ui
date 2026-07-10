@@ -75,7 +75,9 @@ export function ComponentDemo({
             {title}
           </h3>
           {description ? (
-            <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {description}
+            </p>
           ) : null}
         </div>
         {code ? (
@@ -87,7 +89,9 @@ export function ComponentDemo({
             onClick={() => setShowCode((value) => !value)}
           >
             <ChevronsUpDown />
-            {showCode ? t("showcase.demo.hideCode") : t("showcase.demo.showCode")}
+            {showCode
+              ? t("showcase.demo.hideCode")
+              : t("showcase.demo.showCode")}
           </Button>
         ) : null}
       </header>
