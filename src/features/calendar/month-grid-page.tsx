@@ -48,6 +48,8 @@ export function MonthGridPage() {
   const moveMutation = useMutation({
     mutationFn: ({ id, start, end }: { id: number; start: string; end: string }) =>
       api.calendar.move(id, start, end),
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: ["calendar", "events"] }),
     onError: () => {
       toast.error(t("common.request_failed"));
       void queryClient.invalidateQueries({ queryKey: ["calendar", "events"] });

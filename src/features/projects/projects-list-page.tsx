@@ -11,6 +11,7 @@ import { Panel } from "@/components/panel";
 import { StatusBadge, type StatusKind } from "@/components/status-badge";
 import { SearchInput } from "@/components/toolbar";
 import { EmptyState } from "@/components/empty-state";
+import { PaginationBar } from "@/components/pagination-bar";
 import { Button } from "@/components/ui/button";
 import {
   Avatar,
@@ -288,7 +289,8 @@ export function ProjectsListPage() {
             }}
           />
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {data?.rows.map((project) => (
               <button
                 key={project.id}
@@ -324,6 +326,19 @@ export function ProjectsListPage() {
                 </div>
               </button>
             ))}
+            </div>
+            {data ? (
+              <PaginationBar
+                pagination={{
+                  page: data.page,
+                  perPage: data.per_page,
+                  total: data.total,
+                  pages: Math.max(1, Math.ceil(data.total / data.per_page)),
+                }}
+                shown={data.rows.length}
+                onPage={(page) => params.setPage(page)}
+              />
+            ) : null}
           </div>
         )}
       </Panel>

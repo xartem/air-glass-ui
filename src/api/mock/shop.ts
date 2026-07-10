@@ -1084,6 +1084,14 @@ export function placeOrder(payload: PlaceOrderPayload): OrderDetail {
     price: item.price,
   }));
   const addressText = `${address.address}\n${address.city}, ${address.zip}\n${address.country}`;
+  const shippingCost = payload.shipping_price ?? cart.totals.shipping;
+  const totals = {
+    ...cart.totals,
+    shipping: shippingCost,
+    total: money(
+      cart.totals.subtotal + shippingCost - cart.totals.discount + cart.totals.tax,
+    ),
+  };
   const order: OrderDetail = {
     id,
     number: `#${10500 + id - 1000}`,
@@ -1091,7 +1099,7 @@ export function placeOrder(payload: PlaceOrderPayload): OrderDetail {
     created_at: now,
     status: "processing",
     payment_status: "paid",
-    total: cart.totals.total,
+    total: totals.total,
     currency: CURRENCY,
     items_count: lines.length,
     customer: {
@@ -1103,7 +1111,7 @@ export function placeOrder(payload: PlaceOrderPayload): OrderDetail {
     shipping: { name: address.name, address: addressText },
     billing: { name: address.name, address: addressText },
     items: lines,
-    totals: cart.totals,
+    totals,
     timeline: [
       { id: 1, at: now, kind: "created", label: "Order placed" },
       { id: 2, at: now, kind: "processing", label: "Payment captured" },

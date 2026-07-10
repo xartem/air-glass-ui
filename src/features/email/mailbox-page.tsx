@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft,
@@ -483,16 +483,21 @@ function ComposeDialog({
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
 
+  // Radix does not fire onOpenChange when `open` is driven programmatically, so
+  // seed the fields from `value` whenever a Reply/Forward opens the dialog.
+  useEffect(() => {
+    if (value) {
+      setTo(value.to);
+      setSubject(value.subject);
+      setBody("");
+    }
+  }, [value]);
+
   return (
     <Dialog
       open={value !== null}
       onOpenChange={(open) => {
         if (!open) onClose();
-        else if (value) {
-          setTo(value.to);
-          setSubject(value.subject);
-          setBody("");
-        }
       }}
     >
       <DialogContent className="sm:max-w-lg">

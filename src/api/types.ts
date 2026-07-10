@@ -1062,6 +1062,8 @@ export interface CheckoutAddress {
 export interface PlaceOrderPayload {
   address: CheckoutAddress;
   shipping_method: string;
+  /** Price of the selected shipping method; the order total is recomputed with it. */
+  shipping_price?: number;
   payment_method: string;
 }
 

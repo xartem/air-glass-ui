@@ -94,13 +94,13 @@ export function CheckoutPage() {
   const placeMutation = useMutation({
     mutationFn: () => {
       const address = form.getValues();
-      const method =
-        shippingQuery.data?.find((entry) => entry.id === shippingId)?.name ??
-        shippingId;
+      const selected = shippingQuery.data?.find((entry) => entry.id === shippingId);
+      const method = selected?.name ?? shippingId;
       console.debug("[CheckoutPage] placeOrder", { method, payment });
       return api.orders.place({
         address,
         shipping_method: method,
+        shipping_price: selected?.price,
         payment_method: t(`shop.checkout.payment.${payment}`),
       });
     },
@@ -350,6 +350,12 @@ export function CheckoutPage() {
                   locale,
                 )}
               />
+              {cart.totals.discount > 0 ? (
+                <SummaryRow
+                  label={t("shop.cart.discount")}
+                  value={`−${formatMoney(cart.totals.discount, currency, locale)}`}
+                />
+              ) : null}
               <SummaryRow
                 label={t("shop.cart.tax")}
                 value={formatMoney(cart.totals.tax, currency, locale)}
@@ -358,7 +364,14 @@ export function CheckoutPage() {
               <div className="flex items-center justify-between text-base font-semibold">
                 <span>{t("shop.cart.total")}</span>
                 <span className="tabular-nums">
-                  {formatMoney(cart.totals.total, currency, locale)}
+                  {formatMoney(
+                    cart.totals.subtotal +
+                      (selectedShipping?.price ?? cart.totals.shipping) -
+                      cart.totals.discount +
+                      cart.totals.tax,
+                    currency,
+                    locale,
+                  )}
                 </span>
               </div>
             </div>

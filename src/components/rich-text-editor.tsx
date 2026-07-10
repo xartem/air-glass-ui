@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
@@ -155,6 +155,15 @@ export function RichTextEditor({
       },
     },
   });
+
+  // Sync external `value` changes (canned responses, programmatic clear after
+  // send) into the editor. Guard on getHTML() so typing never triggers a reset;
+  // setContent defaults to emitUpdate:false in TipTap v3, so no update loop.
+  useEffect(() => {
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value);
+    }
+  }, [editor, value]);
 
   if (!editor) return null;
 

@@ -79,6 +79,8 @@ export function CalendarPage() {
       console.debug("[CalendarPage] move", { id, start, end });
       return api.calendar.move(id, start, end);
     },
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: ["calendar", "events"] }),
     onError: () => {
       toast.error(t("common.request_failed"));
       void queryClient.invalidateQueries({ queryKey: ["calendar", "events"] });
