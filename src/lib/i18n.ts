@@ -1,3 +1,4 @@
+import ar from "@/locales/ar.json";
 import de from "@/locales/de.json";
 import en from "@/locales/en.json";
 import es from "@/locales/es.json";
@@ -23,6 +24,7 @@ export const ADMIN_LOCALES = [
   "pl",
   "ru",
   "uk",
+  "ar",
 ] as const;
 export type AdminLocale = (typeof ADMIN_LOCALES)[number];
 
@@ -36,6 +38,7 @@ export const LOCALE_NAMES: Record<AdminLocale, string> = {
   es: "Español",
   it: "Italiano",
   pl: "Polski",
+  ar: "العربية",
 };
 
 const dictionaries: Record<AdminLocale, Record<string, string>> = {
@@ -47,6 +50,7 @@ const dictionaries: Record<AdminLocale, Record<string, string>> = {
   es,
   it,
   pl,
+  ar,
 };
 
 const STORAGE_KEY = "admin.ui_locale";

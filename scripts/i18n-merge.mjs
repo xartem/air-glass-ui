@@ -1,11 +1,11 @@
-// Dev helper (shipped with the template): merge new flat i18n keys into all 8
-// locale dictionaries in one pass, so you don't have to hand-edit eight files.
+// Dev helper (shipped with the template): merge new flat i18n keys into all 9
+// locale dictionaries in one pass, so you don't have to hand-edit nine files.
 // Usage: node scripts/i18n-merge.mjs <payload.json>
 // payload shape: { "en": { "key": "value" }, "ru": {...}, ... } for every locale.
 // Referenced by the buyer documentation (Internationalization guide).
 import { readFileSync, writeFileSync } from 'node:fs'
 
-const LOCALES = ['en', 'ru', 'uk', 'de', 'fr', 'es', 'it', 'pl']
+const LOCALES = ['en', 'ru', 'uk', 'de', 'fr', 'es', 'it', 'pl', 'ar']
 const payload = JSON.parse(readFileSync(process.argv[2], 'utf8'))
 
 for (const loc of LOCALES) {
