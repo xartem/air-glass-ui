@@ -167,13 +167,6 @@ const uiKitPage = () =>
       default: m.UiKitPage,
     })),
   );
-// W5 component showcase pages (static, authenticated-only, no perm gate).
-const baseButtonsPage = () =>
-  lazyPage(() =>
-    import("@/features/ui-kit/base/buttons-page").then((m) => ({
-      default: m.ButtonsPage,
-    })),
-  );
 const userEditorPage = () =>
   lazyPage(() =>
     import("@/features/users/user-editor-page").then((m) => ({
@@ -709,6 +702,88 @@ const jobsCategoriesPage = () =>
     })),
   );
 
+// W5 — Components showcase route table (78 static, authenticated-only pages).
+const showcaseRoutes = [
+  { path: "/components/base/buttons", loader: () => import("@/features/ui-kit/base/buttons-page").then((m) => ({ default: m.ButtonsPage })) },
+  { path: "/components/base/alerts", loader: () => import("@/features/ui-kit/base/alerts-page").then((m) => ({ default: m.AlertsPage })) },
+  { path: "/components/base/badges", loader: () => import("@/features/ui-kit/base/badges-page").then((m) => ({ default: m.BadgesPage })) },
+  { path: "/components/base/colors", loader: () => import("@/features/ui-kit/base/colors-page").then((m) => ({ default: m.ColorsPage })) },
+  { path: "/components/base/cards", loader: () => import("@/features/ui-kit/base/cards-page").then((m) => ({ default: m.CardsPage })) },
+  { path: "/components/base/carousel", loader: () => import("@/features/ui-kit/base/carousel-page").then((m) => ({ default: m.CarouselPage })) },
+  { path: "/components/base/dropdowns", loader: () => import("@/features/ui-kit/base/dropdowns-page").then((m) => ({ default: m.DropdownsPage })) },
+  { path: "/components/base/grid", loader: () => import("@/features/ui-kit/base/grid-page").then((m) => ({ default: m.GridPage })) },
+  { path: "/components/base/images", loader: () => import("@/features/ui-kit/base/images-page").then((m) => ({ default: m.ImagesPage })) },
+  { path: "/components/base/tabs", loader: () => import("@/features/ui-kit/base/tabs-page").then((m) => ({ default: m.TabsPage })) },
+  { path: "/components/base/accordion", loader: () => import("@/features/ui-kit/base/accordion-page").then((m) => ({ default: m.AccordionPage })) },
+  { path: "/components/base/modals", loader: () => import("@/features/ui-kit/base/modals-page").then((m) => ({ default: m.ModalsPage })) },
+  { path: "/components/base/offcanvas", loader: () => import("@/features/ui-kit/base/offcanvas-page").then((m) => ({ default: m.OffcanvasPage })) },
+  { path: "/components/base/placeholders", loader: () => import("@/features/ui-kit/base/placeholders-page").then((m) => ({ default: m.PlaceholdersPage })) },
+  { path: "/components/base/progress", loader: () => import("@/features/ui-kit/base/progress-page").then((m) => ({ default: m.ProgressPage })) },
+  { path: "/components/base/notifications", loader: () => import("@/features/ui-kit/base/notifications-page").then((m) => ({ default: m.NotificationsPage })) },
+  { path: "/components/base/media", loader: () => import("@/features/ui-kit/base/media-page").then((m) => ({ default: m.MediaPage })) },
+  { path: "/components/base/video", loader: () => import("@/features/ui-kit/base/video-page").then((m) => ({ default: m.VideoPage })) },
+  { path: "/components/base/typography", loader: () => import("@/features/ui-kit/base/typography-page").then((m) => ({ default: m.TypographyPage })) },
+  { path: "/components/base/lists", loader: () => import("@/features/ui-kit/base/lists-page").then((m) => ({ default: m.ListsPage })) },
+  { path: "/components/base/links", loader: () => import("@/features/ui-kit/base/links-page").then((m) => ({ default: m.LinksPage })) },
+  { path: "/components/base/general", loader: () => import("@/features/ui-kit/base/general-page").then((m) => ({ default: m.GeneralPage })) },
+  { path: "/components/base/ribbons", loader: () => import("@/features/ui-kit/base/ribbons-page").then((m) => ({ default: m.RibbonsPage })) },
+  { path: "/components/base/utilities", loader: () => import("@/features/ui-kit/base/utilities-page").then((m) => ({ default: m.UtilitiesPage })) },
+  { path: "/components/advance/sweet-alerts", loader: () => import("@/features/ui-kit/advance/sweet-alerts-page").then((m) => ({ default: m.SweetAlertsPage })) },
+  { path: "/components/advance/nestable-list", loader: () => import("@/features/ui-kit/advance/nestable-list-page").then((m) => ({ default: m.NestableListPage })) },
+  { path: "/components/advance/scrollbar", loader: () => import("@/features/ui-kit/advance/scrollbar-page").then((m) => ({ default: m.ScrollbarPage })) },
+  { path: "/components/advance/animation", loader: () => import("@/features/ui-kit/advance/animation-page").then((m) => ({ default: m.AnimationPage })) },
+  { path: "/components/advance/tour", loader: () => import("@/features/ui-kit/advance/tour-page").then((m) => ({ default: m.TourPage })) },
+  { path: "/components/advance/swiper-slider", loader: () => import("@/features/ui-kit/advance/swiper-slider-page").then((m) => ({ default: m.SwiperSliderPage })) },
+  { path: "/components/advance/ratings", loader: () => import("@/features/ui-kit/advance/ratings-page").then((m) => ({ default: m.RatingsPage })) },
+  { path: "/components/advance/highlight", loader: () => import("@/features/ui-kit/advance/highlight-page").then((m) => ({ default: m.HighlightPage })) },
+  { path: "/components/advance/scrollspy", loader: () => import("@/features/ui-kit/advance/scrollspy-page").then((m) => ({ default: m.ScrollSpyPage })) },
+  { path: "/components/forms/basic-elements", loader: () => import("@/features/ui-kit/forms/basic-elements-page").then((m) => ({ default: m.BasicElementsPage })) },
+  { path: "/components/forms/form-select", loader: () => import("@/features/ui-kit/forms/form-select-page").then((m) => ({ default: m.FormSelectPage })) },
+  { path: "/components/forms/checks-radios", loader: () => import("@/features/ui-kit/forms/checks-radios-page").then((m) => ({ default: m.ChecksRadiosPage })) },
+  { path: "/components/forms/pickers", loader: () => import("@/features/ui-kit/forms/pickers-page").then((m) => ({ default: m.PickersPage })) },
+  { path: "/components/forms/input-masks", loader: () => import("@/features/ui-kit/forms/input-masks-page").then((m) => ({ default: m.InputMasksPage })) },
+  { path: "/components/forms/advanced", loader: () => import("@/features/ui-kit/forms/advanced-page").then((m) => ({ default: m.AdvancedPage })) },
+  { path: "/components/forms/range-slider", loader: () => import("@/features/ui-kit/forms/range-slider-page").then((m) => ({ default: m.RangeSliderPage })) },
+  { path: "/components/forms/validation", loader: () => import("@/features/ui-kit/forms/validation-page").then((m) => ({ default: m.ValidationPage })) },
+  { path: "/components/forms/wizard", loader: () => import("@/features/ui-kit/forms/wizard-page").then((m) => ({ default: m.WizardPage })) },
+  { path: "/components/forms/editors", loader: () => import("@/features/ui-kit/forms/editors-page").then((m) => ({ default: m.EditorsPage })) },
+  { path: "/components/forms/file-uploads", loader: () => import("@/features/ui-kit/forms/file-uploads-page").then((m) => ({ default: m.FileUploadsPage })) },
+  { path: "/components/forms/form-layouts", loader: () => import("@/features/ui-kit/forms/form-layouts-page").then((m) => ({ default: m.FormLayoutsPage })) },
+  { path: "/components/forms/select2", loader: () => import("@/features/ui-kit/forms/select2-page").then((m) => ({ default: m.Select2Page })) },
+  { path: "/components/widgets", loader: () => import("@/features/ui-kit/widgets-page").then((m) => ({ default: m.WidgetsPage })) },
+  { path: "/components/tables/basic", loader: () => import("@/features/ui-kit/tables/basic-page").then((m) => ({ default: m.TablesBasicPage })) },
+  { path: "/components/tables/gridjs", loader: () => import("@/features/ui-kit/tables/gridjs-page").then((m) => ({ default: m.TablesGridJsPage })) },
+  { path: "/components/tables/listjs", loader: () => import("@/features/ui-kit/tables/listjs-page").then((m) => ({ default: m.TablesListJsPage })) },
+  { path: "/components/tables/datatables", loader: () => import("@/features/ui-kit/tables/datatables-page").then((m) => ({ default: m.TablesDatatablesPage })) },
+  { path: "/components/charts/line", loader: () => import("@/features/ui-kit/charts/line-page").then((m) => ({ default: m.ChartsLinePage })) },
+  { path: "/components/charts/area", loader: () => import("@/features/ui-kit/charts/area-page").then((m) => ({ default: m.ChartsAreaPage })) },
+  { path: "/components/charts/column", loader: () => import("@/features/ui-kit/charts/column-page").then((m) => ({ default: m.ChartsColumnPage })) },
+  { path: "/components/charts/bar", loader: () => import("@/features/ui-kit/charts/bar-page").then((m) => ({ default: m.ChartsBarPage })) },
+  { path: "/components/charts/mixed", loader: () => import("@/features/ui-kit/charts/mixed-page").then((m) => ({ default: m.ChartsMixedPage })) },
+  { path: "/components/charts/timeline", loader: () => import("@/features/ui-kit/charts/timeline-page").then((m) => ({ default: m.ChartsTimelinePage })) },
+  { path: "/components/charts/range-area", loader: () => import("@/features/ui-kit/charts/range-area-page").then((m) => ({ default: m.ChartsRangeAreaPage })) },
+  { path: "/components/charts/funnel", loader: () => import("@/features/ui-kit/charts/funnel-page").then((m) => ({ default: m.ChartsFunnelPage })) },
+  { path: "/components/charts/candlestick", loader: () => import("@/features/ui-kit/charts/candlestick-page").then((m) => ({ default: m.ChartsCandlestickPage })) },
+  { path: "/components/charts/boxplot", loader: () => import("@/features/ui-kit/charts/boxplot-page").then((m) => ({ default: m.ChartsBoxplotPage })) },
+  { path: "/components/charts/bubble", loader: () => import("@/features/ui-kit/charts/bubble-page").then((m) => ({ default: m.ChartsBubblePage })) },
+  { path: "/components/charts/scatter", loader: () => import("@/features/ui-kit/charts/scatter-page").then((m) => ({ default: m.ChartsScatterPage })) },
+  { path: "/components/charts/heatmap", loader: () => import("@/features/ui-kit/charts/heatmap-page").then((m) => ({ default: m.ChartsHeatmapPage })) },
+  { path: "/components/charts/treemap", loader: () => import("@/features/ui-kit/charts/treemap-page").then((m) => ({ default: m.ChartsTreemapPage })) },
+  { path: "/components/charts/pie", loader: () => import("@/features/ui-kit/charts/pie-page").then((m) => ({ default: m.ChartsPiePage })) },
+  { path: "/components/charts/radialbar", loader: () => import("@/features/ui-kit/charts/radialbar-page").then((m) => ({ default: m.ChartsRadialbarPage })) },
+  { path: "/components/charts/radar", loader: () => import("@/features/ui-kit/charts/radar-page").then((m) => ({ default: m.ChartsRadarPage })) },
+  { path: "/components/charts/polar-area", loader: () => import("@/features/ui-kit/charts/polar-area-page").then((m) => ({ default: m.ChartsPolarAreaPage })) },
+  { path: "/components/charts/slope", loader: () => import("@/features/ui-kit/charts/slope-page").then((m) => ({ default: m.ChartsSlopePage })) },
+  { path: "/components/charts/chartjs", loader: () => import("@/features/ui-kit/charts/chartjs-page").then((m) => ({ default: m.ChartsChartjsPage })) },
+  { path: "/components/charts/echarts", loader: () => import("@/features/ui-kit/charts/echarts-page").then((m) => ({ default: m.ChartsEchartsPage })) },
+  { path: "/components/icons", loader: () => import("@/features/ui-kit/icons-page").then((m) => ({ default: m.IconsPage })) },
+  { path: "/components/maps/base", loader: () => import("@/features/ui-kit/maps/base-page").then((m) => ({ default: m.MapsBasePage })) },
+  { path: "/components/maps/markers", loader: () => import("@/features/ui-kit/maps/markers-page").then((m) => ({ default: m.MapsMarkersPage })) },
+  { path: "/components/maps/substitution", loader: () => import("@/features/ui-kit/maps/substitution-page").then((m) => ({ default: m.MapsSubstitutionPage })) },
+  { path: "/components/multi-level/page-1", loader: () => import("@/features/ui-kit/multi-level/level-one-page").then((m) => ({ default: m.MultiLevelOnePage })) },
+  { path: "/components/multi-level/page-2", loader: () => import("@/features/ui-kit/multi-level/level-two-page").then((m) => ({ default: m.MultiLevelTwoPage })) },
+].map(({ path, loader }) => ({ path, element: lazyPage(loader) }));
+
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
  * everything under <AuthedRoot> requires a session (401 on initial load →
@@ -827,7 +902,7 @@ export const router = createBrowserRouter(
         { path: "/help/:module/:page", element: helpPage() },
         { path: "/ui-kit", element: uiKitPage() },
         // W5 — Components showcase (any authenticated user, no perm gate).
-        { path: "/components/base/buttons", element: baseButtonsPage() },
+        ...showcaseRoutes,
         {
           path: "/users",
           element: (

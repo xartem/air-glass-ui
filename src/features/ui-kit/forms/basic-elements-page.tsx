@@ -56,15 +56,17 @@ export function BasicElementsPage() {
 <Input inputSize="default" placeholder="default / 38px" />
 <Input inputSize="lg" placeholder="lg / 42px" />`}
       >
-        <div className="grid w-full gap-3 sm:grid-cols-3">
-          <Input inputSize="sm" placeholder="sm / 32px" />
-          <Input inputSize="default" placeholder="default / 38px" />
-          <Input inputSize="lg" placeholder="lg / 42px" />
-        </div>
-        <div className="grid w-full gap-3 sm:grid-cols-3">
-          <Textarea inputSize="sm" rows={2} placeholder="sm" />
-          <Textarea inputSize="default" rows={2} placeholder="default" />
-          <Textarea inputSize="lg" rows={2} placeholder="lg" />
+        <div className="w-full space-y-3">
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Input inputSize="sm" placeholder="sm / 32px" />
+            <Input inputSize="default" placeholder="default / 38px" />
+            <Input inputSize="lg" placeholder="lg / 42px" />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Textarea inputSize="sm" rows={2} placeholder="sm" />
+            <Textarea inputSize="default" rows={2} placeholder="default" />
+            <Textarea inputSize="lg" rows={2} placeholder="lg" />
+          </div>
         </div>
       </ComponentDemo>
 

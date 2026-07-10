@@ -1,2 +1,3 @@
 2026-07-10  W5 foundation: ComponentDemo atom + ShowcasePage shell; COMPONENTS nav group (9 sections); /ui-kit hub searchable index; showcase.* i18n base (all 8 locales).
 2026-07-10  W5 gap primitives: NestableList (dnd-kit nested drag+nest), Tour (popover coach-marks), Highlight util, useScrollSpy hook, input-mask util + MaskedInput. devDebug at interaction boundaries.
+2026-07-10  W5 pages: Base UI (24), Advance UI (9), Widgets (1), Forms (13), Tables (4), Charts (21, incl. new boxplot+heatmap compositions), Icons (1, lucide grid), Maps (3, Leaflet), Multi Level (2). All wired: routes under /components/*, sidebar + ⌘K + /ui-kit hub, i18n ×8. Added leaflet + react-leaflet (BSD-2-Clause).
