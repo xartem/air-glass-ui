@@ -295,6 +295,31 @@ const PENDING_2FA_KEY = "mock.pending2fa";
 /** Scenario switch: JSON array of role keys that must have 2FA (security.mfa_required_roles). */
 const MFA_REQUIRED_ROLES_KEY = "mock.mfaRequiredRoles";
 
+/*
+ * Demo-data seed version. Entity stores persist to localStorage once touched,
+ * so seeds saved by an older template version would shadow the current
+ * fixtures forever (e.g. pre-translation role labels). On mismatch, persisted
+ * demo entities are dropped and reseeded; the session, the chosen demo user
+ * and the saved appearance survive the purge. Bump when fixtures change shape
+ * or wording.
+ */
+const SEED_VERSION_KEY = "mock.seedVersion";
+const SEED_VERSION = "2";
+const SEED_SURVIVORS = new Set([
+  SEED_VERSION_KEY,
+  SESSION_KEY,
+  USER_KEY,
+  "mock.appearance",
+]);
+if (localStorage.getItem(SEED_VERSION_KEY) !== SEED_VERSION) {
+  for (const key of Object.keys(localStorage)) {
+    if (key.startsWith("mock.") && !SEED_SURVIVORS.has(key)) {
+      localStorage.removeItem(key);
+    }
+  }
+  localStorage.setItem(SEED_VERSION_KEY, SEED_VERSION);
+}
+
 let activity: ActivityEntry[] | null = null;
 
 function activityRows(): ActivityEntry[] {

@@ -2,9 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeftRight,
+  Columns2,
   Droplet,
   Image as ImageIcon,
+  LayoutGrid,
   Palette,
+  PanelLeft,
+  PanelLeftClose,
+  PanelTop,
   Sparkles,
   SlidersHorizontal,
   Square,
@@ -15,6 +20,7 @@ import {
   api,
   type AppearanceBg,
   type AppearanceDir,
+  type AppearanceLayout,
   type AppearanceSettings,
   type AppearanceStyle,
 } from "@/api";
@@ -36,6 +42,15 @@ const STYLE_META: { key: AppearanceStyle; icon: typeof Droplet }[] = [
 const BG_KEYS: AppearanceBg[] = ["air", "aurora", "calm", "plain", "custom"];
 
 const DIR_KEYS: AppearanceDir[] = ["ltr", "rtl"];
+
+/** Shell chrome variants + a representative icon; labels reuse the `customizer.layout.*` keys. */
+const LAYOUT_META: { key: AppearanceLayout; icon: typeof Square }[] = [
+  { key: "vertical", icon: PanelLeft },
+  { key: "horizontal", icon: PanelTop },
+  { key: "detached", icon: Square },
+  { key: "two-column", icon: Columns2 },
+  { key: "hovered", icon: PanelLeftClose },
+];
 
 /** Simplified swatch gradients mirroring the .app-mesh presets (index.css) for the picker tiles. */
 const BG_SWATCH: Record<"light" | "dark", Record<AppearanceBg, string>> = {
@@ -181,6 +196,37 @@ export function AppearancePage() {
               </span>
               <span className="text-xs text-muted-foreground">
                 {t(`settings.appearance.style.${key}_desc`)}
+              </span>
+            </button>
+          ))}
+        </div>
+      </Panel>
+
+      {/* Layout placement — mirrors the Theme Customizer switch (reuses customizer.layout.* labels). */}
+      <Panel
+        icon={LayoutGrid}
+        title={t("settings.appearance.layout")}
+        description={t("settings.appearance.layout_desc")}
+      >
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          {LAYOUT_META.map(({ key, icon: Icon }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => patch({ layout: key })}
+              aria-pressed={draft.layout === key}
+              className={cn(
+                "flex flex-col items-center gap-2 rounded-xl border p-4 text-center transition-all",
+                draft.layout === key
+                  ? "border-primary ring-3 ring-ring/40"
+                  : "hover:border-ring/60",
+              )}
+            >
+              <span className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Icon className="size-5" />
+              </span>
+              <span className="text-sm font-medium">
+                {t(`customizer.layout.${key}`)}
               </span>
             </button>
           ))}

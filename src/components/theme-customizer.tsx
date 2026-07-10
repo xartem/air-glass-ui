@@ -18,6 +18,7 @@ import {
   type AppearanceContentWidth,
   type AppearanceDensity,
   type AppearanceDir,
+  type AppearanceLayout,
   type AppearanceSettings,
   type AppearanceStyle,
 } from "@/api";
@@ -64,6 +65,13 @@ const STYLES: AppearanceStyle[] = ["glass", "liquid", "flat"];
 const CONTENT_WIDTHS: AppearanceContentWidth[] = ["fluid", "boxed"];
 const DENSITIES: AppearanceDensity[] = ["comfortable", "compact"];
 const DIRS: AppearanceDir[] = ["ltr", "rtl"];
+const LAYOUTS: AppearanceLayout[] = [
+  "vertical",
+  "horizontal",
+  "detached",
+  "two-column",
+  "hovered",
+];
 
 /** Compact segmented control — the drawer's shared control shape (aria-pressed per option). */
 function Segmented<T extends string>({
@@ -321,6 +329,38 @@ export function ThemeCustomizer({
                 label: t(`customizer.width.${key}`),
               }))}
             />
+
+            {/* Shell layout placement — 5 options, so a wrapping 2-col grid rather than a
+                single-row Segmented (which would truncate the longer labels in the drawer). */}
+            <div className="space-y-2">
+              <span className="text-sm font-medium">
+                {t("customizer.layout")}
+              </span>
+              <div
+                role="group"
+                aria-label={t("customizer.layout")}
+                className="grid grid-cols-2 gap-1 rounded-xl bg-muted/50 p-1"
+              >
+                {LAYOUTS.map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => patch({ layout: key })}
+                    aria-pressed={draft.layout === key}
+                    className={cn(
+                      "flex items-center justify-center rounded-lg px-2 py-1.5 text-sm transition-colors",
+                      draft.layout === key
+                        ? "bg-card font-medium text-foreground shadow-sm ring-1 ring-[var(--glass-border)]"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <span className="truncate">
+                      {t(`customizer.layout.${key}`)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Reading direction (RTL) */}
             <Segmented
