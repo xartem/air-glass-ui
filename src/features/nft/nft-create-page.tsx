@@ -27,6 +27,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 import { NFT_CATEGORIES, NFT_CHAINS } from "./nft-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /nft/create — mint form (demo): art upload with live preview, metadata, price,
@@ -92,7 +93,7 @@ export function NftCreatePage() {
 
   const mintMutation = useMutation({
     mutationFn: (payload: FormValues) => {
-      console.debug("[NftCreate] mint", { name: payload.name });
+      devDebug("[NftCreate] mint", { name: payload.name });
       return api.nft.create({
         name: payload.name,
         description: payload.description,

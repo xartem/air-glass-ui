@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, Gavel, Heart, ShoppingCart } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { toast } from "sonner";
@@ -8,28 +8,19 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { api, type NftBid } from "@/api";
 import { DataTable } from "@/components/data-table";
 import { ErrorPage } from "@/components/error-page";
-import { FormField } from "@/components/form-field";
 import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { NumberField } from "@/components/ui/number-field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { devDebug } from "@/lib/debug";
 import { formatMoney } from "@/lib/money";
 import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
-import { NFT_STATUS_KIND, NftArt, formatEth } from "./nft-shared";
+import { BidDialog, NFT_STATUS_KIND, NftArt, formatEth } from "./nft-shared";
 
 /*
  * /nft/item/:id — single NFT workspace: large media, creator/collection links,
@@ -45,7 +36,7 @@ export function NftItemDetailPage() {
   const queryClient = useQueryClient();
   const [bidding, setBidding] = useState(false);
 
-  console.debug("[NftItemDetail] query", { id });
+  devDebug("[NftItemDetail] query", { id });
   const itemQuery = useQuery({
     queryKey: ["nft", "item", id],
     queryFn: () => api.nft.item(id),
@@ -262,13 +253,12 @@ export function NftItemDetailPage() {
 
       {bidding && item.auction ? (
         <BidDialog
-          itemId={item.id}
           auctionId={item.auction.id}
           name={item.name}
           currentBid={item.auction.current_bid}
           token={item.token}
           onClose={() => setBidding(false)}
-          onDone={() => {
+          onSuccess={() => {
             void queryClient.invalidateQueries({
               queryKey: ["nft", "item", id],
             });
@@ -276,86 +266,5 @@ export function NftItemDetailPage() {
         />
       ) : null}
     </div>
-  );
-}
-
-function BidDialog({
-  itemId,
-  auctionId,
-  name,
-  currentBid,
-  token,
-  onClose,
-  onDone,
-}: {
-  itemId: number;
-  auctionId: number;
-  name: string;
-  currentBid: number;
-  token: string;
-  onClose: () => void;
-  onDone: () => void;
-}) {
-  const locale = useLocale();
-  const [amount, setAmount] = useState<number>(
-    Math.round((currentBid + 0.1) * 100) / 100,
-  );
-  const [error, setError] = useState<string | null>(null);
-
-  const mutation = useMutation({
-    mutationFn: (value: number) => {
-      console.debug("[NftItemDetail] bid", { itemId, amount: value });
-      return api.nft.bid(auctionId, value);
-    },
-    onSuccess: () => {
-      toast.success(t("nft.auction.bid_placed"));
-      onDone();
-      onClose();
-    },
-    onError: () => toast.error(t("nft.auction.bid_failed")),
-  });
-
-  function submit() {
-    if (!(amount > currentBid)) {
-      setError(t("nft.auction.error.too_low"));
-      return;
-    }
-    setError(null);
-    mutation.mutate(amount);
-  }
-
-  return (
-    <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t("nft.auction.bid_title", { name })}</DialogTitle>
-          <DialogDescription>
-            {t("nft.auction.current_bid")}:{" "}
-            {formatEth(currentBid, token, locale)}
-          </DialogDescription>
-        </DialogHeader>
-        <FormField
-          name="amount"
-          label={t("nft.auction.your_bid")}
-          required
-          error={error ?? undefined}
-        >
-          <NumberField
-            value={amount}
-            min={0}
-            step={0.05}
-            onValueChange={(value) => setAmount(value ?? 0)}
-          />
-        </FormField>
-        <DialogFooter>
-          <Button type="button" variant="ghost" onClick={onClose}>
-            {t("common.cancel")}
-          </Button>
-          <Button type="button" onClick={submit} disabled={mutation.isPending}>
-            {t("nft.auction.place_bid")}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 }

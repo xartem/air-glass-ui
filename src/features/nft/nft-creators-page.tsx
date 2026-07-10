@@ -23,6 +23,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 import { NftArt } from "./nft-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /nft/creators — browse artists as cards with an optimistic follow toggle
@@ -40,7 +41,7 @@ export function NftCreatorsPage() {
 
   const filters = { q: search || undefined, sort };
   const queryKey = ["nft", "creators", filters] as const;
-  console.debug("[NftCreators] query", filters);
+  devDebug("[NftCreators] query", filters);
 
   const creatorsQuery = useQuery({
     queryKey,
@@ -50,7 +51,7 @@ export function NftCreatorsPage() {
 
   const followMutation = useMutation({
     mutationFn: (creator: NftCreator) => {
-      console.debug("[NftCreators] follow", { id: creator.id });
+      devDebug("[NftCreators] follow", { id: creator.id });
       return api.nft.follow(creator.id);
     },
     onMutate: async (creator) => {

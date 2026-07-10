@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BadgeCheck, Trophy, TrendingDown, TrendingUp } from "lucide-react";
+import { BadgeCheck, Trophy } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import { api, type NftRankingPeriod, type RankingRow } from "@/api";
+import { ChangeTag } from "@/components/change-tag";
 import { DataTable } from "@/components/data-table";
 import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
@@ -13,6 +14,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 import { NftArt, formatEth } from "./nft-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /nft/ranking — collection leaderboard across periods with floor, volume, a 24h
@@ -25,7 +27,7 @@ export function NftRankingPage() {
   const locale = useLocale();
   const [period, setPeriod] = useState<NftRankingPeriod>("24h");
 
-  console.debug("[NftRanking] query", { period });
+  devDebug("[NftRanking] query", { period });
   const rankingQuery = useQuery({
     queryKey: ["nft", "ranking", period],
     queryFn: () => api.nft.ranking(period),
@@ -85,7 +87,9 @@ export function NftRankingPage() {
       {
         id: "change",
         header: t("nft.ranking.col.change"),
-        cell: ({ row }) => <Delta value={row.original.change24h} />,
+        cell: ({ row }) => (
+          <ChangeTag variant="plain" value={row.original.change24h} />
+        ),
       },
       {
         id: "owners",
@@ -158,25 +162,5 @@ export function NftRankingPage() {
         />
       </Panel>
     </div>
-  );
-}
-
-function Delta({ value }: { value: number }) {
-  const up = value >= 0;
-  return (
-    <span
-      className="inline-flex items-center gap-1 text-sm font-medium tabular-nums"
-      style={{
-        color: up ? "var(--status-success-fg)" : "var(--status-error-fg)",
-      }}
-    >
-      {up ? (
-        <TrendingUp className="size-3.5" />
-      ) : (
-        <TrendingDown className="size-3.5" />
-      )}
-      {up ? "+" : ""}
-      {(value * 100).toFixed(1)}%
-    </span>
   );
 }

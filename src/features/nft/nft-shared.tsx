@@ -1,14 +1,35 @@
 import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-import type { NftChain, NftCategory, NftGradient, NftItemStatus } from "@/api";
+import {
+  api,
+  type NftChain,
+  type NftCategory,
+  type NftGradient,
+  type NftItemStatus,
+} from "@/api";
+import { FormField } from "@/components/form-field";
 import { type StatusKind } from "@/components/status-badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { NumberField } from "@/components/ui/number-field";
+import { devDebug } from "@/lib/debug";
 import { formatNumber } from "@/lib/money";
-import type { AdminLocale } from "@/lib/i18n";
+import { t, type AdminLocale } from "@/lib/i18n";
+import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
 /*
  * Shared NFT helpers: generated gradient art (no external hosts), token price
- * formatting, filter option lists and a live countdown hook.
+ * formatting, filter option lists, a live countdown hook and the bid dialog.
  */
 
 export const NFT_CATEGORIES: NftCategory[] = [
@@ -98,6 +119,87 @@ export interface CountdownParts {
   hours: number;
   minutes: number;
   seconds: number;
+}
+
+/** Place-bid dialog shared by the auction grid and the item detail screen. */
+export function BidDialog({
+  auctionId,
+  name,
+  currentBid,
+  token,
+  onClose,
+  onSuccess,
+}: {
+  auctionId: number;
+  name: string;
+  currentBid: number;
+  token: string;
+  onClose: () => void;
+  /** Post-bid refresh (query invalidation / refetch) differs per screen. */
+  onSuccess: () => void;
+}) {
+  const locale = useLocale();
+  const [amount, setAmount] = useState<number>(
+    Math.round((currentBid + 0.1) * 100) / 100,
+  );
+  const [error, setError] = useState<string | null>(null);
+
+  const mutation = useMutation({
+    mutationFn: (value: number) => {
+      devDebug("[NftBidDialog] bid", { auctionId, amount: value });
+      return api.nft.bid(auctionId, value);
+    },
+    onSuccess: () => {
+      toast.success(t("nft.auction.bid_placed"));
+      onSuccess();
+      onClose();
+    },
+    onError: () => toast.error(t("nft.auction.bid_failed")),
+  });
+
+  function submit() {
+    if (!(amount > currentBid)) {
+      setError(t("nft.auction.error.too_low"));
+      return;
+    }
+    setError(null);
+    mutation.mutate(amount);
+  }
+
+  return (
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("nft.auction.bid_title", { name })}</DialogTitle>
+          <DialogDescription>
+            {t("nft.auction.current_bid")}:{" "}
+            {formatEth(currentBid, token, locale)}
+          </DialogDescription>
+        </DialogHeader>
+        <FormField
+          name="amount"
+          label={t("nft.auction.your_bid")}
+          required
+          error={error ?? undefined}
+        >
+          <NumberField
+            value={amount}
+            min={0}
+            step={0.05}
+            onValueChange={(value) => setAmount(value ?? 0)}
+          />
+        </FormField>
+        <DialogFooter>
+          <Button type="button" variant="ghost" onClick={onClose}>
+            {t("common.cancel")}
+          </Button>
+          <Button type="button" onClick={submit} disabled={mutation.isPending}>
+            {t("nft.auction.place_bid")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 /** Ticking countdown to an ISO target; recomputes every second. */

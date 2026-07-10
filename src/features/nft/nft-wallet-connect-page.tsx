@@ -13,6 +13,7 @@ import { Panel } from "@/components/panel";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner";
+import { devDebug } from "@/lib/debug";
 import { formatNumber } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
@@ -26,14 +27,20 @@ import { cn } from "@/lib/utils";
 
 interface Provider {
   id: string;
+  /** Tile gradient stops — chart tokens so both themes adapt automatically. */
   gradient: [string, string];
 }
 
 const PROVIDERS: Provider[] = [
-  { id: "metamask", gradient: ["#fde68a", "#fca5a5"] },
-  { id: "walletconnect", gradient: ["#bfdbfe", "#93c5fd"] },
-  { id: "coinbase", gradient: ["#c7d2fe", "#a5b4fc"] },
+  { id: "metamask", gradient: ["var(--chart-3)", "var(--chart-4)"] },
+  { id: "walletconnect", gradient: ["var(--chart-1)", "var(--chart-2)"] },
+  { id: "coinbase", gradient: ["var(--chart-5)", "var(--chart-1)"] },
 ];
+
+/** Pastel tile fill: chart tokens softened over the card so text keeps contrast in both themes. */
+function tileGradient([from, to]: [string, string]): string {
+  return `linear-gradient(135deg, color-mix(in srgb, ${from} 45%, transparent), color-mix(in srgb, ${to} 45%, transparent))`;
+}
 
 type ConnState =
   | { phase: "idle" }
@@ -55,7 +62,7 @@ export function NftWalletConnectPage() {
   );
 
   function connect(provider: string) {
-    console.debug("[NftWalletConnect] connect", { provider, simulateReject });
+    devDebug("[NftWalletConnect] connect", { provider, simulateReject });
     setState({ phase: "connecting", provider });
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => {
@@ -103,7 +110,7 @@ export function NftWalletConnectPage() {
                 <span
                   className="flex size-12 items-center justify-center rounded-2xl text-sm font-semibold text-foreground/70"
                   style={{
-                    background: `linear-gradient(135deg, ${providerGradient(state.provider)[0]}, ${providerGradient(state.provider)[1]})`,
+                    background: tileGradient(providerGradient(state.provider)),
                   }}
                 >
                   {t(`nft.walletConnect.provider.${state.provider}`).slice(
@@ -172,7 +179,7 @@ export function NftWalletConnectPage() {
                       <span
                         className="flex size-12 items-center justify-center rounded-2xl text-sm font-semibold text-foreground/70"
                         style={{
-                          background: `linear-gradient(135deg, ${provider.gradient[0]}, ${provider.gradient[1]})`,
+                          background: tileGradient(provider.gradient),
                         }}
                       >
                         {connecting ? (
@@ -241,8 +248,8 @@ export function NftWalletConnectPage() {
 function providerGradient(id: string): [string, string] {
   return (
     PROVIDERS.find((provider) => provider.id === id)?.gradient ?? [
-      "#c7d2fe",
-      "#a5b4fc",
+      "var(--chart-1)",
+      "var(--chart-2)",
     ]
   );
 }

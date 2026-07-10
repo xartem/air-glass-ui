@@ -20,6 +20,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 import { NftArt, formatEth } from "./nft-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /nft/collections — browse collections as cover+avatar cards with floor, volume
@@ -36,7 +37,7 @@ export function NftCollectionsPage() {
   const [sort, setSort] = useState<SortOption>("volume");
 
   const filters = { q: search || undefined, sort };
-  console.debug("[NftCollections] query", filters);
+  devDebug("[NftCollections] query", filters);
 
   const collectionsQuery = useQuery({
     queryKey: ["nft", "collections", filters],

@@ -33,6 +33,7 @@ import {
   NFT_STATUSES,
   formatEth,
 } from "./nft-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /nft/explore — full catalogue with a rich filter sidebar (price range, category,
@@ -61,7 +62,7 @@ export function NftExplorePage() {
     max: range[1] < MAX_PRICE ? range[1] : undefined,
     sort,
   };
-  console.debug("[NftExplore] query", filters);
+  devDebug("[NftExplore] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["nft", "items", "explore", filters],

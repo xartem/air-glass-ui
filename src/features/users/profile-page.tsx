@@ -82,10 +82,7 @@ function ProfileHeader({ name, role }: { name: string; role: string }) {
     <section className="glass-card overflow-hidden rounded-2xl">
       <div aria-hidden className="h-28 bg-[image:var(--gradient-heading)]" />
       <div className="flex flex-col gap-4 px-5 pb-5 sm:flex-row sm:items-end">
-        <Avatar
-          size="lg"
-          className="-mt-10 size-20 ring-4 ring-background"
-        >
+        <Avatar size="lg" className="-mt-10 size-20 ring-4 ring-background">
           <AvatarFallback className="text-xl">
             {initialsOf(name)}
           </AvatarFallback>

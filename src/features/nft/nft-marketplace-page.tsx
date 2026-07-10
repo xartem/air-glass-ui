@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 
 import { NftItemCard } from "./nft-item-card";
 import { NFT_CATEGORIES, NftArt, formatEth } from "./nft-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /nft/marketplace — marketplace home: hero banner, category chips, a featured
@@ -48,7 +49,7 @@ export function NftMarketplacePage() {
     category: category === "all" ? undefined : category,
     sort,
   };
-  console.debug("[NftMarketplace] query", filters);
+  devDebug("[NftMarketplace] query", filters);
 
   const itemsQuery = useQuery({
     queryKey: ["nft", "items", "marketplace", filters],

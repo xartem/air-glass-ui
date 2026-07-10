@@ -9,7 +9,8 @@ import { formatNumber } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
 import { CategoryBars } from "@/components/charts/category-bars";
-import { ChangeTag, KpiTile, Leaderboard } from "./widgets";
+import { ChangeTag } from "@/components/change-tag";
+import { KpiTile, Leaderboard } from "./widgets";
 
 /*
  * NFT dashboard: marketplace metrics for a period. KPI row + volume bars, then
@@ -34,7 +35,8 @@ function Countdown({ endsAt }: { endsAt: string }) {
   const h = Math.floor(total / 3600);
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
-  const label = h > 0 ? `${h}h ${m}m ${s}s` : `${m}m ${s}s`;
+  const hourPart = `${h}${t("countdown.unit.hours")} `;
+  const label = `${h > 0 ? hourPart : ""}${m}${t("countdown.unit.minutes")} ${s}${t("countdown.unit.seconds")}`;
   return (
     <span className="tabular-nums">
       {remaining > 0 ? label : t("dash.nft.auctions.ended")}

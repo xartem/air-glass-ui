@@ -19,7 +19,8 @@ import { DashboardShell } from "./dashboard-shell";
 import { Candlestick } from "@/components/charts/candlestick";
 import { Sparkline } from "@/components/charts/sparkline";
 import { MarketTreemap } from "@/components/charts/treemap";
-import { ChangeTag, KpiTile } from "./widgets";
+import { ChangeTag } from "@/components/change-tag";
+import { KpiTile } from "./widgets";
 import { devDebug } from "@/lib/debug";
 
 /*

@@ -76,30 +76,6 @@ export function DeltaPill({
   );
 }
 
-/** Compact signed-percent tag (24h change on coins / collections). Green up, destructive down. */
-export function ChangeTag({ value }: { value: number }) {
-  const up = value >= 0;
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium tabular-nums",
-        !up && "bg-destructive/10 text-destructive",
-      )}
-      style={
-        up
-          ? {
-              background: "var(--status-success-bg)",
-              color: "var(--status-success-fg)",
-            }
-          : undefined
-      }
-    >
-      {up ? "+" : ""}
-      {(value * 100).toFixed(1)}%
-    </span>
-  );
-}
-
 export function KpiTile({
   label,
   kpi,
