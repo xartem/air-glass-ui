@@ -83,14 +83,20 @@ export function HelpArticleBody({
             </a>
           ),
           img: ({ src, alt }) => (
-            <img
-              src={src}
-              alt={alt ?? ""}
-              className="my-4 max-w-full cursor-pointer rounded-xl border border-border shadow-sm"
+            <button
+              type="button"
+              className="my-4 block cursor-zoom-in rounded-xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+              aria-label={alt || t("help.screenshot")}
               onClick={() =>
                 src && setLightbox({ src: String(src), alt: alt ?? "" })
               }
-            />
+            >
+              <img
+                src={src}
+                alt={alt ?? ""}
+                className="max-w-full rounded-xl border border-border shadow-sm"
+              />
+            </button>
           ),
           blockquote: ({ children }) => (
             <Alert className="my-4 border-none bg-[var(--status-info-bg)] text-[var(--status-info-fg)]">

@@ -55,7 +55,7 @@ function readStore(): AppearanceSettings {
       )
         ? (stored.contentWidth as AppearanceContentWidth)
         : APPEARANCE_DEFAULTS.contentWidth,
-      tokens: { ...APPEARANCE_DEFAULTS.tokens, ...(stored.tokens ?? {}) },
+      tokens: { ...APPEARANCE_DEFAULTS.tokens, ...stored.tokens },
     };
   } catch {
     return { ...APPEARANCE_DEFAULTS };

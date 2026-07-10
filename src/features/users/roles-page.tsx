@@ -76,7 +76,7 @@ export function RolesPage() {
   const [deleteTarget, setDeleteTarget] = useState<RoleDetail | null>(null);
   const [blockedRole, setBlockedRole] = useState<RoleDetail | null>(null);
 
-  const roleList = roles.data ?? [];
+  const roleList = useMemo(() => roles.data ?? [], [roles.data]);
   const initial = useMemo<RolePermissionMap>(
     () =>
       Object.fromEntries(roleList.map((role) => [role.id, role.permissions])),

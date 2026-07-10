@@ -85,7 +85,10 @@ export function MediaPresetsTable({
     () => presetsQuery.data?.overrides ?? {},
     [presetsQuery.data],
   );
-  const presets = presetsQuery.data?.presets ?? [];
+  const presets = useMemo(
+    () => presetsQuery.data?.presets ?? [],
+    [presetsQuery.data],
+  );
 
   // Recompute the full overrides map: saved overrides + local edits, minus
   // values that equal the code-declared default (no need to store them).
