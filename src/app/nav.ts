@@ -622,6 +622,18 @@ export function buildNavGroups(): NavGroup[] {
             { to: "/blog/grid", label: t("nav.blogGrid"), icon: LayoutGrid },
           ],
         },
+        // Landing — public marketing pages (MENU-SPEC §2.3). These leave the authed shell
+        // (they render on the public LandingLayout); no permission gate.
+        {
+          key: "pages.landing",
+          label: t("nav.landing"),
+          icon: Rocket,
+          children: [
+            { to: "/landing", label: t("nav.landingOne"), icon: FileText },
+            { to: "/landing/nft", label: t("nav.landingNft"), icon: Gem },
+            { to: "/landing/job", label: t("nav.landingJob"), icon: Briefcase },
+          ],
+        },
       ],
     },
     // COMPONENTS — the W5 UI showcase. Parents seed with empty children and are

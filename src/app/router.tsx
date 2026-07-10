@@ -8,6 +8,7 @@ import { CoverLayout } from "@/features/auth/cover-layout";
 import { GuestLayout } from "@/features/auth/guest-layout";
 import { PublicLayout } from "@/app/public-layout";
 import { StatusLayout } from "@/app/status-layout";
+import { LandingLayout } from "@/features/landing/landing-layout";
 import { LoginPage } from "@/features/auth/login-page";
 import { MfaEnrollGate } from "@/features/auth/mfa-enroll-gate";
 import { Spinner } from "@/components/ui/spinner";
@@ -702,6 +703,26 @@ const jobsCategoriesPage = () =>
     })),
   );
 
+// W6 — Public landing pages (marketing, no auth; rendered inside LandingLayout).
+const oneLandingPage = () =>
+  lazyPage(() =>
+    import("@/features/landing/one-landing-page").then((m) => ({
+      default: m.OneLandingPage,
+    })),
+  );
+const nftLandingPage = () =>
+  lazyPage(() =>
+    import("@/features/landing/nft-landing-page").then((m) => ({
+      default: m.NftLandingPage,
+    })),
+  );
+const jobLandingPage = () =>
+  lazyPage(() =>
+    import("@/features/landing/job-landing-page").then((m) => ({
+      default: m.JobLandingPage,
+    })),
+  );
+
 // W6 — Layout demos (shell chrome variants; each flips the site-wide layout on mount).
 const horizontalLayoutPage = () =>
   lazyPage(() =>
@@ -1344,6 +1365,16 @@ export const router = createBrowserRouter(
         { path: "/coming-soon", element: comingSoonPage() },
         { path: "/privacy", element: privacyPage() },
         { path: "/terms", element: termsPage() },
+      ],
+    },
+    {
+      // W6 — Public marketing landing pages: own header/footer, no auth guard.
+      element: <LandingLayout />,
+      errorElement: <RouteErrorPage />,
+      children: [
+        { path: "/landing", element: oneLandingPage() },
+        { path: "/landing/nft", element: nftLandingPage() },
+        { path: "/landing/job", element: jobLandingPage() },
       ],
     },
     {

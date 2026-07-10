@@ -81,16 +81,18 @@ function price(value: number, locale: string): string {
   }).format(value);
 }
 
-export function PricingPage() {
+/**
+ * The billing toggle + three tier cards — shared by the `/pricing` screen and the public
+ * landing pages (W6). Self-contained: owns its billing-cycle state and localized prices.
+ */
+export function PricingPlans() {
   const locale = useLocale();
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
 
-  console.debug("[PricingPage] billingCycle", cycle);
+  console.debug("[PricingPlans] billingCycle", cycle);
 
   return (
     <div className="space-y-6">
-      <PageHeader title={t("pricing.title")} icon={BadgeDollarSign} />
-
       <div className="flex flex-col items-center gap-3 text-center">
         <p className="max-w-xl text-sm text-muted-foreground">
           {t("pricing.subtitle")}
@@ -134,6 +136,16 @@ export function PricingPage() {
           />
         ))}
       </div>
+    </div>
+  );
+}
+
+export function PricingPage() {
+  return (
+    <div className="space-y-6">
+      <PageHeader title={t("pricing.title")} icon={BadgeDollarSign} />
+
+      <PricingPlans />
 
       <Panel
         icon={BadgeDollarSign}
