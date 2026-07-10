@@ -32,6 +32,12 @@ import {
   type NavItem,
   type NavParent,
 } from "@/app/nav";
+import {
+  collectLeaves,
+  filterGroups,
+  resolveActiveTo,
+  useActiveNav,
+} from "@/app/use-active-nav";
 import { Button } from "@/components/ui/button";
 import { DirectionProvider } from "@/components/ui/direction";
 import { AiPanel } from "@/components/ai-panel";
@@ -161,42 +167,11 @@ function readParentOverrides(): Record<string, GroupOverride> {
   }
 }
 
-function matchesPath(item: { to: string }, pathname: string): boolean {
-  return item.to === "/"
-    ? pathname === "/"
-    : pathname === item.to || pathname.startsWith(`${item.to}/`);
-}
-
-/** Depth-first leaf collection — parents are toggles, only leaves carry routes. */
-function collectLeaves(entry: NavEntry): NavItem[] {
-  return isNavParent(entry) ? entry.children.flatMap(collectLeaves) : [entry];
-}
-
 /** All parent keys in a subtree — used to prune stale persisted open/close overrides. */
 function collectParentKeys(entry: NavEntry): string[] {
   return isNavParent(entry)
     ? [entry.key, ...entry.children.flatMap(collectParentKeys)]
     : [];
-}
-
-/** Only the DEEPEST matching leaf is active — /c/products must not light up on /c/products/categories. */
-function resolveActiveTo(
-  groups: { items: NavEntry[] }[],
-  pathname: string,
-): string | null {
-  let best: string | null = null;
-  for (const group of groups) {
-    for (const entry of group.items) {
-      for (const item of collectLeaves(entry)) {
-        if (
-          matchesPath(item, pathname) &&
-          (best === null || item.to.length > best.length)
-        )
-          best = item.to;
-      }
-    }
-  }
-  return best;
 }
 
 /** Ancestor parent keys of the active leaf, outermost first — the whole trail auto-expands. */
@@ -212,30 +187,6 @@ function activeParentTrail(
     }
   }
   return [];
-}
-
-/** RBAC filter, recursive: leaves drop by permission; a parent disappears once it has no children. */
-function filterEntry(
-  entry: NavEntry,
-  can: (perm?: string) => boolean,
-): NavEntry | null {
-  if (!isNavParent(entry)) return can(entry.perm) ? entry : null;
-  const children = entry.children
-    .map((child) => filterEntry(child, can))
-    .filter((child): child is NavEntry => child !== null);
-  return children.length > 0 ? { ...entry, children } : null;
-}
-
-/** The permission-filtered nav groups — shared by every layout variant (sidebar, rail, top bar). */
-function filterGroups(can: (perm?: string) => boolean): NavGroup[] {
-  return buildNavGroups()
-    .map((group) => ({
-      ...group,
-      items: group.items
-        .map((entry) => filterEntry(entry, can))
-        .filter((entry): entry is NavEntry => entry !== null),
-    }))
-    .filter((group) => group.items.length > 0);
 }
 
 /** Icon standing in for a whole group in the two-column rail — the group's first entry icon. */
@@ -733,20 +684,6 @@ function useDarkMode() {
     localStorage.setItem("admin.theme", dark ? "dark" : "light");
   }, [dark]);
   return { dark, toggle: () => setDark((value) => !value) };
-}
-
-/** Filtered nav + active-route resolution, shared by the horizontal bar and the two-column rail. */
-function useActiveNav() {
-  const can = usePermissionChecker();
-  const { pathname } = useLocation();
-  const groups = filterGroups(can);
-  const activeTo = resolveActiveTo(groups, pathname);
-  const activeGroupKey = groups.find((group) =>
-    group.items.some((entry) =>
-      collectLeaves(entry).some((leaf) => leaf.to === activeTo),
-    ),
-  )?.key;
-  return { groups, activeTo, activeGroupKey };
 }
 
 /** Compact brand shown in the topbar for the header-first layouts (horizontal / detached). */
