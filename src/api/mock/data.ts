@@ -100,6 +100,13 @@ export const ALL_PERMISSIONS = [
   "todo.view",
   "apikeys.view",
   "apikeys.manage",
+  // W4 mono-niches
+  "crypto.view",
+  "crypto.manage",
+  "nft.view",
+  "nft.manage",
+  "jobs.view",
+  "jobs.manage",
 ];
 
 export const EDITOR_PERMISSIONS = [
@@ -130,6 +137,13 @@ export const EDITOR_PERMISSIONS = [
   "support.view",
   "todo.view",
   "apikeys.view",
+  // W4 mono-niches: the editor role runs the day-to-day niche screens (view + manage).
+  "crypto.view",
+  "crypto.manage",
+  "nft.view",
+  "nft.manage",
+  "jobs.view",
+  "jobs.manage",
 ];
 
 // Content locales for the content-language switcher (endonyms, as in LOCALE_NAMES).

@@ -22,10 +22,7 @@ import { DataTable } from "@/components/data-table";
 import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
 import { StatusBadge, type StatusKind } from "@/components/status-badge";
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -288,7 +285,9 @@ export function ProjectOverviewPage() {
                           <TimelineConnector />
                           <TimelineContent>
                             <TimelineTitle>{milestone.title}</TimelineTitle>
-                            <TimelineTime>{dt.format(milestone.due)}</TimelineTime>
+                            <TimelineTime>
+                              {dt.format(milestone.due)}
+                            </TimelineTime>
                           </TimelineContent>
                         </TimelineItem>
                       ))}
@@ -325,7 +324,9 @@ export function ProjectOverviewPage() {
                         >
                           <span className="flex min-w-0 items-center gap-2">
                             <FileText className="size-4 shrink-0 text-muted-foreground" />
-                            <span className="truncate text-sm">{file.name}</span>
+                            <span className="truncate text-sm">
+                              {file.name}
+                            </span>
                           </span>
                           <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                             {formatBytes(file.size)}

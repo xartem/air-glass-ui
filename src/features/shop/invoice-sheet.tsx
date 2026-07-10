@@ -132,7 +132,9 @@ export function InvoiceSheet({ invoice }: { invoice: InvoiceDetail }) {
                   </div>
                 ) : null}
               </TableCell>
-              <TableCell className="text-end tabular-nums">{item.qty}</TableCell>
+              <TableCell className="text-end tabular-nums">
+                {item.qty}
+              </TableCell>
               <TableCell className="text-end tabular-nums">
                 {formatMoney(item.price, invoice.currency, locale)}
               </TableCell>

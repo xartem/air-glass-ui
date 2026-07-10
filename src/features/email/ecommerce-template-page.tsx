@@ -37,7 +37,10 @@ const HTML = `<div style="font-family: Arial, sans-serif; color: #1f2933; paddin
 export function EcommerceTemplatePage() {
   return (
     <div className="space-y-4">
-      <PageHeader title={t("email.templates.ecommerce.title")} icon={ShoppingBag} />
+      <PageHeader
+        title={t("email.templates.ecommerce.title")}
+        icon={ShoppingBag}
+      />
       <TemplatePreview html={HTML} />
     </div>
   );

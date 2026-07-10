@@ -1,6 +1,8 @@
 import type { ComponentType } from "react";
 import {
   Activity,
+  ArrowLeftRight,
+  ArrowUpDown,
   Bitcoin,
   Briefcase,
   ChartLine,
@@ -38,6 +40,8 @@ import {
   Percent,
   ReceiptText,
   CreditCard,
+  Rocket,
+  ScrollText,
   Settings,
   ShieldCheck,
   ShoppingBag,
@@ -49,6 +53,7 @@ import {
   UserCircle,
   UserPlus,
   Users,
+  Wallet,
   Wrench,
 } from "lucide-react";
 
@@ -335,6 +340,49 @@ export function buildNavGroups(): NavGroup[] {
                   label: t("nav.crmLeads"),
                   icon: UserPlus,
                   perm: "crm.leads",
+                },
+              ],
+            },
+            {
+              key: "menu.apps.crypto",
+              label: t("nav.crypto"),
+              icon: Bitcoin,
+              children: [
+                {
+                  to: "/crypto/transactions",
+                  label: t("nav.cryptoTransactions"),
+                  icon: ArrowLeftRight,
+                  perm: "crypto.view",
+                },
+                {
+                  to: "/crypto/buy-sell",
+                  label: t("nav.cryptoBuySell"),
+                  icon: ArrowUpDown,
+                  perm: "crypto.view",
+                },
+                {
+                  to: "/crypto/orders",
+                  label: t("nav.cryptoOrders"),
+                  icon: ScrollText,
+                  perm: "crypto.view",
+                },
+                {
+                  to: "/crypto/wallet",
+                  label: t("nav.cryptoWallet"),
+                  icon: Wallet,
+                  perm: "crypto.view",
+                },
+                {
+                  to: "/crypto/ico",
+                  label: t("nav.cryptoIco"),
+                  icon: Rocket,
+                  perm: "crypto.view",
+                },
+                {
+                  to: "/crypto/kyc",
+                  label: t("nav.cryptoKyc"),
+                  icon: ShieldCheck,
+                  perm: "crypto.view",
                 },
               ],
             },

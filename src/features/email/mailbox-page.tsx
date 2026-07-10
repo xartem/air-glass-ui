@@ -14,11 +14,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import {
-  api,
-  type MailFolder,
-  type MailMessage,
-} from "@/api";
+import { api, type MailFolder, type MailMessage } from "@/api";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { ThreePaneLayout } from "@/components/three-pane-layout";
@@ -70,9 +66,10 @@ export function MailboxPage() {
   const [folder, setFolder] = useState<MailFolder>("inbox");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [compose, setCompose] = useState<{ to: string; subject: string } | null>(
-    null,
-  );
+  const [compose, setCompose] = useState<{
+    to: string;
+    subject: string;
+  } | null>(null);
 
   const listKey = ["email", "list", folder, search];
   const listQuery = useQuery({

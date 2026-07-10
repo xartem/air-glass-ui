@@ -251,7 +251,9 @@ export function CreateInvoicePage() {
                       min="1"
                       step="1"
                       aria-label={t("shop.invoices.create.line.qty")}
-                      {...register(`items.${index}.qty`, { valueAsNumber: true })}
+                      {...register(`items.${index}.qty`, {
+                        valueAsNumber: true,
+                      })}
                     />
                     <Input
                       type="number"

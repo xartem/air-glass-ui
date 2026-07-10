@@ -75,7 +75,15 @@ export function CalendarPage() {
   });
 
   const moveMutation = useMutation({
-    mutationFn: ({ id, start, end }: { id: number; start: string; end: string }) => {
+    mutationFn: ({
+      id,
+      start,
+      end,
+    }: {
+      id: number;
+      start: string;
+      end: string;
+    }) => {
       console.debug("[CalendarPage] move", { id, start, end });
       return api.calendar.move(id, start, end);
     },
@@ -92,7 +100,9 @@ export function CalendarPage() {
   const upcoming = useMemo(
     () =>
       [...events]
-        .filter((event) => new Date(event.start).getTime() >= Date.now() - 3600_000)
+        .filter(
+          (event) => new Date(event.start).getTime() >= Date.now() - 3600_000,
+        )
         .sort((a, b) => a.start.localeCompare(b.start))
         .slice(0, 5),
     [events],
@@ -154,7 +164,11 @@ export function CalendarPage() {
                 >
                   <ChevronLeft className="rtl:-scale-x-100" />
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => setCurrent(new Date())}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrent(new Date())}
+                >
                   {t("calendar.today")}
                 </Button>
                 <Button
@@ -240,7 +254,9 @@ export function CalendarPage() {
                     >
                       <span
                         className="size-2.5 shrink-0 rounded-full"
-                        style={{ backgroundColor: CATEGORY_VAR[event.category] }}
+                        style={{
+                          backgroundColor: CATEGORY_VAR[event.category],
+                        }}
                       />
                       <span className="min-w-0 flex-1 truncate">
                         {event.title}
@@ -348,7 +364,9 @@ function DayView({
   onEventClick: (event: CalendarEvent) => void;
   onSlotClick: (day: Date) => void;
 }) {
-  const dayEvents = events.filter((event) => isSameDay(new Date(event.start), current));
+  const dayEvents = events.filter((event) =>
+    isSameDay(new Date(event.start), current),
+  );
   return (
     <div className="divide-y divide-border/50">
       {HOURS.map((hour) => {

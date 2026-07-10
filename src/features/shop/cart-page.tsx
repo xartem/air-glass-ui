@@ -64,7 +64,8 @@ export function CartPage() {
       return { previous };
     },
     onError: (_error, _vars, context) => {
-      if (context?.previous) queryClient.setQueryData(CART_KEY, context.previous);
+      if (context?.previous)
+        queryClient.setQueryData(CART_KEY, context.previous);
       toast.error(t("common.request_failed"));
     },
     onSuccess: (cart) => queryClient.setQueryData(CART_KEY, cart),
@@ -87,7 +88,8 @@ export function CartPage() {
       return { previous };
     },
     onError: (_error, _vars, context) => {
-      if (context?.previous) queryClient.setQueryData(CART_KEY, context.previous);
+      if (context?.previous)
+        queryClient.setQueryData(CART_KEY, context.previous);
       toast.error(t("common.request_failed"));
     },
     onSuccess: (cart) => queryClient.setQueryData(CART_KEY, cart),
@@ -213,7 +215,11 @@ export function CartPage() {
                       />
                     </TableCell>
                     <TableCell className="text-end font-medium tabular-nums">
-                      {formatMoney(item.price * item.qty, cart.currency, locale)}
+                      {formatMoney(
+                        item.price * item.qty,
+                        cart.currency,
+                        locale,
+                      )}
                     </TableCell>
                     <TableCell>
                       <Button

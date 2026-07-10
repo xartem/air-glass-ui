@@ -59,7 +59,9 @@ function build(): MailMessage[] {
       subject: SUBJECTS[index % SUBJECTS.length]!,
       preview:
         "This is a demo email used to showcase the mailbox screen. It carries a subject, preview and body.",
-      body: "Hi there,\n\nThis is a demo email body rendered in the reading pane. It shows how a message looks with a greeting, a paragraph and a sign-off.\n\nBest,\n" + name,
+      body:
+        "Hi there,\n\nThis is a demo email body rendered in the reading pane. It shows how a message looks with a greeting, a paragraph and a sign-off.\n\nBest,\n" +
+        name,
       date: new Date(base - index * 5 * 3600 * 1000).toISOString(),
       unread: folder === "inbox" && index % 3 === 0,
       starred: index % 6 === 1,

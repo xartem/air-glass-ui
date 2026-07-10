@@ -57,7 +57,8 @@ function build(): CalendarEvent[] {
       end: allDay ? atHour(day, 23, 59) : atHour(day, hour + 1),
       category: CATEGORIES[index % CATEGORIES.length]!,
       all_day: allDay,
-      description: "A demo calendar event used to showcase the calendar screens.",
+      description:
+        "A demo calendar event used to showcase the calendar screens.",
     };
   });
 }
@@ -105,7 +106,11 @@ export function saveEvent(payload: CalendarEventPayload): CalendarEvent {
   return structuredClone(created);
 }
 
-export function moveEvent(id: number, start: string, end: string): CalendarEvent {
+export function moveEvent(
+  id: number,
+  start: string,
+  end: string,
+): CalendarEvent {
   devDebug("[mock:calendar] move", { id, start, end });
   const event = store().find((entry) => entry.id === id);
   if (!event) throw new ApiError(404, "Event not found");

@@ -1713,11 +1713,7 @@ export interface TaskFilters {
 /* ---- CRM (W3) ---- */
 
 export type DealStage =
-  | "new"
-  | "qualified"
-  | "proposal"
-  | "negotiation"
-  | "won";
+  "new" | "qualified" | "proposal" | "negotiation" | "won";
 
 export interface CrmActivity {
   id: number;
@@ -1844,11 +1840,7 @@ export interface LeadFilters {
 /* ---- calendar (W3) ---- */
 
 export type EventCategory =
-  | "work"
-  | "personal"
-  | "meeting"
-  | "reminder"
-  | "holiday";
+  "work" | "personal" | "meeting" | "reminder" | "holiday";
 
 export interface CalendarEvent {
   id: number;
@@ -2006,4 +1998,138 @@ export interface ApiKeyCreated {
   key: ApiKey;
   /** Shown exactly once; never persisted. */
   secret: string;
+}
+
+/* ---- crypto (W4 mono-niche) ---- */
+
+export type CryptoTxType = "buy" | "sell" | "transfer";
+export type CryptoTxStatus = "completed" | "pending" | "failed";
+
+export interface CryptoTx {
+  id: number;
+  date: string;
+  type: CryptoTxType;
+  coin: string;
+  amount: number;
+  value: number;
+  currency: string;
+  status: CryptoTxStatus;
+  hash: string;
+}
+
+export interface CryptoTxFilters {
+  page?: number;
+  q?: string;
+  coin?: string;
+  type?: CryptoTxType;
+  from?: string;
+  to?: string;
+  sort?: "date" | "value";
+  dir?: "asc" | "desc";
+}
+
+export interface CryptoMarket {
+  symbol: string;
+  name: string;
+  price: number;
+  change24h: number;
+  currency: string;
+  spark: number[];
+}
+
+export interface CryptoQuote {
+  pair: string;
+  amount: number;
+  price: number;
+  subtotal: number;
+  fee: number;
+  total: number;
+  currency: string;
+}
+
+export interface CryptoTradePayload {
+  pair: string;
+  side: "buy" | "sell";
+  amount: number;
+}
+
+export type CryptoOrderSide = "buy" | "sell";
+export type CryptoOrderStatus = "open" | "filled" | "cancelled";
+
+export interface CryptoOrder {
+  id: number;
+  pair: string;
+  side: CryptoOrderSide;
+  price: number;
+  amount: number;
+  filled: number;
+  status: CryptoOrderStatus;
+  created_at: string;
+  currency: string;
+}
+
+export interface Holding {
+  symbol: string;
+  name: string;
+  amount: number;
+  price: number;
+  value: number;
+  change24h: number;
+  spark: number[];
+  address: string;
+}
+
+export interface Wallet {
+  total_value: number;
+  change_24h: number;
+  currency: string;
+  holdings: Holding[];
+  allocation: Array<{ label: string; value: number }>;
+}
+
+export interface CryptoDepositPayload {
+  coin: string;
+  amount: number;
+}
+
+export interface CryptoWithdrawPayload {
+  coin: string;
+  amount: number;
+  address: string;
+}
+
+export type IcoStatus = "upcoming" | "active" | "ended";
+
+export interface Ico {
+  id: number;
+  name: string;
+  symbol: string;
+  logo_color: string;
+  description: string;
+  price: number;
+  currency: string;
+  raised: number;
+  goal: number;
+  start_at: string;
+  end_at: string;
+  status: IcoStatus;
+}
+
+export interface IcoFilters {
+  status?: IcoStatus;
+}
+
+export type KycStatus = "unverified" | "pending" | "approved" | "rejected";
+
+export interface KycPayload {
+  full_name: string;
+  dob: string;
+  country: string;
+  id_number: string;
+  documents: { front: string; back: string; selfie: string };
+}
+
+export interface KycApplication {
+  status: KycStatus;
+  submitted_at: string | null;
 }

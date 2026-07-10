@@ -189,7 +189,9 @@ export function CrmLeadsPage() {
                 <SelectValue placeholder={t("crm.leads.filter.status")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t("crm.leads.filter.all_statuses")}</SelectItem>
+                <SelectItem value="all">
+                  {t("crm.leads.filter.all_statuses")}
+                </SelectItem>
                 {STATUSES.map((status) => (
                   <SelectItem key={status} value={status}>
                     {t(`crm.leads.status.${status}`)}
@@ -207,7 +209,9 @@ export function CrmLeadsPage() {
                 <SelectValue placeholder={t("crm.leads.filter.source")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t("crm.leads.filter.all_sources")}</SelectItem>
+                <SelectItem value="all">
+                  {t("crm.leads.filter.all_sources")}
+                </SelectItem>
                 {SOURCES.map((source) => (
                   <SelectItem key={source} value={source}>
                     {source}

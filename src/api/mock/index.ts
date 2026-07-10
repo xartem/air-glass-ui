@@ -45,6 +45,13 @@ import type {
   TicketStatus,
   TodoPriority,
   ApiKeyCreatePayload,
+  CryptoTxFilters,
+  CryptoTxType,
+  CryptoTradePayload,
+  CryptoDepositPayload,
+  CryptoWithdrawPayload,
+  IcoStatus,
+  KycPayload,
 } from "../types";
 import {
   MOCK_CREDENTIALS,
@@ -188,6 +195,20 @@ import {
   toggleTodo,
 } from "./todo";
 import { createApiKey, listApiKeys, revokeApiKey } from "./apikeys";
+import {
+  cryptoCancelOrder,
+  cryptoDeposit,
+  cryptoGetIco,
+  cryptoIcos,
+  cryptoMarkets,
+  cryptoOrders,
+  cryptoQuote,
+  cryptoSubmitKyc,
+  cryptoTrade,
+  cryptoTransactions,
+  cryptoWallet,
+  cryptoWithdraw,
+} from "./crypto";
 import { helpForScreen, helpPage, helpSearch, helpTree } from "./help";
 import {
   aiSpend,
@@ -2056,6 +2077,127 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (_options, params) => {
       requireSession();
       return revokeApiKey(Number(params[0]));
+    },
+  },
+
+  /* ---- crypto (W4 mono-niche) ---- */
+  {
+    method: "GET",
+    pattern: /^\/crypto\/transactions$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: CryptoTxFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        coin: query.coin === undefined ? undefined : String(query.coin),
+        type:
+          query.type === undefined
+            ? undefined
+            : (String(query.type) as CryptoTxType),
+        from: query.from === undefined ? undefined : String(query.from),
+        to: query.to === undefined ? undefined : String(query.to),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as CryptoTxFilters["sort"]),
+        dir: query.dir === "asc" ? "asc" : "desc",
+      };
+      return cryptoTransactions(filters);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crypto\/markets$/,
+    handler: () => {
+      requireSession();
+      return cryptoMarkets();
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crypto\/quote$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      return cryptoQuote(String(query.pair ?? ""), Number(query.amount ?? 0));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crypto\/trade$/,
+    handler: (options) => {
+      requireSession();
+      return cryptoTrade(options.body as CryptoTradePayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crypto\/orders$/,
+    handler: (options) => {
+      requireSession();
+      const status = options.query?.status;
+      return cryptoOrders(status === undefined ? undefined : String(status));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crypto\/orders\/(\d+)\/cancel$/,
+    handler: (_options, params) => {
+      requireSession();
+      return cryptoCancelOrder(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crypto\/wallet$/,
+    handler: () => {
+      requireSession();
+      return cryptoWallet();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crypto\/wallet\/deposit$/,
+    handler: (options) => {
+      requireSession();
+      return cryptoDeposit(options.body as CryptoDepositPayload);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crypto\/wallet\/withdraw$/,
+    handler: (options) => {
+      requireSession();
+      return cryptoWithdraw(options.body as CryptoWithdrawPayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crypto\/icos$/,
+    handler: (options) => {
+      requireSession();
+      const status = options.query?.status;
+      return cryptoIcos({
+        status:
+          status === undefined ? undefined : (String(status) as IcoStatus),
+      });
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crypto\/icos\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return cryptoGetIco(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crypto\/kyc$/,
+    handler: (options) => {
+      requireSession();
+      return cryptoSubmitKyc(options.body as KycPayload);
     },
   },
 ];

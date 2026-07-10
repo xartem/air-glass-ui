@@ -147,7 +147,9 @@ export function EventDialog({
             </label>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="event-desc">{t("calendar.field.description")}</Label>
+            <Label htmlFor="event-desc">
+              {t("calendar.field.description")}
+            </Label>
             <Textarea
               id="event-desc"
               rows={2}

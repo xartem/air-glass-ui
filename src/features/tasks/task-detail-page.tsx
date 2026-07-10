@@ -61,7 +61,10 @@ export function TaskDetailPage() {
   const [draft, setDraft] = useState("");
 
   const key = ["tasks", "detail", taskId];
-  const taskQuery = useQuery({ queryKey: key, queryFn: () => api.tasks.get(taskId) });
+  const taskQuery = useQuery({
+    queryKey: key,
+    queryFn: () => api.tasks.get(taskId),
+  });
 
   console.debug("[TaskDetailPage] load", { id: taskId });
 
@@ -78,7 +81,10 @@ export function TaskDetailPage() {
 
   const subtaskMutation = useMutation({
     mutationFn: (subtaskId: number) => {
-      console.debug("[TaskDetailPage] toggleSubtask", { id: taskId, subtaskId });
+      console.debug("[TaskDetailPage] toggleSubtask", {
+        id: taskId,
+        subtaskId,
+      });
       return api.tasks.toggleSubtask(taskId, subtaskId);
     },
     onSuccess: (task) => queryClient.setQueryData(key, task),
@@ -118,7 +124,8 @@ export function TaskDetailPage() {
   }
 
   const task = taskQuery.data;
-  const doneCount = task?.subtasks.filter((subtask) => subtask.done).length ?? 0;
+  const doneCount =
+    task?.subtasks.filter((subtask) => subtask.done).length ?? 0;
 
   return (
     <div className="space-y-4">
@@ -277,10 +284,7 @@ export function TaskDetailPage() {
                 {dt.format(task.created_at)}
               </Row>
               <Row label={t("tasks.col.project")}>
-                <Link
-                  to="/projects"
-                  className="text-primary hover:underline"
-                >
+                <Link to="/projects" className="text-primary hover:underline">
                   {task.project}
                 </Link>
               </Row>

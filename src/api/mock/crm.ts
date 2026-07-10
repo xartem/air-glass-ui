@@ -23,7 +23,12 @@ import type {
 const CURRENCY = "USD";
 const PER_PAGE = 12;
 
-const OWNERS = ["Anna Adminson", "Evan Editor", "Olivia Parker", "David Fisher"];
+const OWNERS = [
+  "Anna Adminson",
+  "Evan Editor",
+  "Olivia Parker",
+  "David Fisher",
+];
 const COMPANIES = [
   "Acme Inc.",
   "Globex",
@@ -36,7 +41,14 @@ const COMPANIES = [
   "Wayne Enterprises",
   "Cyberdyne",
 ];
-const INDUSTRIES = ["Software", "Retail", "Finance", "Healthcare", "Manufacturing", "Media"];
+const INDUSTRIES = [
+  "Software",
+  "Retail",
+  "Finance",
+  "Healthcare",
+  "Manufacturing",
+  "Media",
+];
 const SIZES = ["1–10", "11–50", "51–200", "201–500", "500+"];
 const TAGS = ["vip", "prospect", "partner", "churned", "newsletter"];
 const CONTACT_NAMES = [
@@ -57,9 +69,28 @@ const CONTACT_NAMES = [
   "Stella Turner",
   "Aaron White",
 ];
-const DEAL_STAGES: DealStage[] = ["new", "qualified", "proposal", "negotiation", "won"];
-const LEAD_SOURCES = ["Website", "Referral", "Ad campaign", "Event", "Cold call"];
-const SWATCHES = ["#bfdbfe", "#bbf7d0", "#fde68a", "#fecaca", "#ddd6fe", "#a5f3fc"];
+const DEAL_STAGES: DealStage[] = [
+  "new",
+  "qualified",
+  "proposal",
+  "negotiation",
+  "won",
+];
+const LEAD_SOURCES = [
+  "Website",
+  "Referral",
+  "Ad campaign",
+  "Event",
+  "Cold call",
+];
+const SWATCHES = [
+  "#bfdbfe",
+  "#bbf7d0",
+  "#fde68a",
+  "#fecaca",
+  "#ddd6fe",
+  "#a5f3fc",
+];
 
 function money(base: number): number {
   return Math.round(base * 100) / 100;
@@ -82,12 +113,16 @@ function buildContacts(): CrmContactDetail[] {
       phone: `+1 555 0${(100 + index).toString().slice(-3)}`,
       tags: TAGS.slice(index % 3, (index % 3) + 2),
       owner: OWNERS[index % OWNERS.length]!,
-      last_activity: new Date(base - (index + 1) * 8 * 3600 * 1000).toISOString(),
+      last_activity: new Date(
+        base - (index + 1) * 8 * 3600 * 1000,
+      ).toISOString(),
       activity: Array.from({ length: 4 }, (_, a) => ({
         id: a + 1,
         at: new Date(base - (a + 1) * 20 * 3600 * 1000).toISOString(),
         text:
-          a % 2 === 0 ? "Sent a follow-up email." : "Logged a call — left a voicemail.",
+          a % 2 === 0
+            ? "Sent a follow-up email."
+            : "Logged a call — left a voicemail.",
       })),
       deals: Array.from({ length: 1 + (index % 2) }, (_, d) => ({
         id: index * 10 + d,
@@ -102,13 +137,16 @@ function buildContacts(): CrmContactDetail[] {
 function contactsStore(): CrmContactDetail[] {
   if (contactsCache) return contactsCache;
   const raw = localStorage.getItem(CONTACTS_KEY);
-  contactsCache = raw ? (JSON.parse(raw) as CrmContactDetail[]) : buildContacts();
+  contactsCache = raw
+    ? (JSON.parse(raw) as CrmContactDetail[])
+    : buildContacts();
   persistContacts();
   return contactsCache;
 }
 
 function persistContacts(): void {
-  if (contactsCache) localStorage.setItem(CONTACTS_KEY, JSON.stringify(contactsCache));
+  if (contactsCache)
+    localStorage.setItem(CONTACTS_KEY, JSON.stringify(contactsCache));
 }
 
 export function listCrmContacts(
@@ -124,8 +162,10 @@ export function listCrmContacts(
         contact.email.toLowerCase().includes(q) ||
         contact.company.toLowerCase().includes(q),
     );
-  if (filters.tag) rows = rows.filter((contact) => contact.tags.includes(filters.tag!));
-  if (filters.owner) rows = rows.filter((contact) => contact.owner === filters.owner);
+  if (filters.tag)
+    rows = rows.filter((contact) => contact.tags.includes(filters.tag!));
+  if (filters.owner)
+    rows = rows.filter((contact) => contact.owner === filters.owner);
   const sort = filters.sort ?? "name";
   const dir = filters.dir === "desc" ? -1 : 1;
   rows.sort((a, b) => {
@@ -165,7 +205,9 @@ export function createCrmContact(payload: CrmContactPayload): CrmContactDetail {
     tags: payload.tags,
     owner: payload.owner || OWNERS[0]!,
     last_activity: new Date().toISOString(),
-    activity: [{ id: 1, at: new Date().toISOString(), text: "Contact created." }],
+    activity: [
+      { id: 1, at: new Date().toISOString(), text: "Contact created." },
+    ],
     deals: [],
   };
   store.unshift(created);
@@ -189,11 +231,14 @@ function buildCompanies(): CompanyDetail[] {
     deals_value: money(20000 + ((index * 53) % 60) * 3500),
     currency: CURRENCY,
     owner: OWNERS[index % OWNERS.length]!,
-    notes: "A demo account used to showcase the companies directory and profile drawer.",
-    contacts: CONTACT_NAMES.slice(index % 6, (index % 6) + 3).map((name, c) => ({
-      id: index * 10 + c,
-      name,
-    })),
+    notes:
+      "A demo account used to showcase the companies directory and profile drawer.",
+    contacts: CONTACT_NAMES.slice(index % 6, (index % 6) + 3).map(
+      (name, c) => ({
+        id: index * 10 + c,
+        name,
+      }),
+    ),
     deals: Array.from({ length: 2 }, (_, d) => ({
       id: index * 20 + d,
       title: `${name} deal ${d + 1}`,
@@ -205,13 +250,16 @@ function buildCompanies(): CompanyDetail[] {
 function companiesStore(): CompanyDetail[] {
   if (companiesCache) return companiesCache;
   const raw = localStorage.getItem(COMPANIES_KEY);
-  companiesCache = raw ? (JSON.parse(raw) as CompanyDetail[]) : buildCompanies();
+  companiesCache = raw
+    ? (JSON.parse(raw) as CompanyDetail[])
+    : buildCompanies();
   persistCompanies();
   return companiesCache;
 }
 
 function persistCompanies(): void {
-  if (companiesCache) localStorage.setItem(COMPANIES_KEY, JSON.stringify(companiesCache));
+  if (companiesCache)
+    localStorage.setItem(COMPANIES_KEY, JSON.stringify(companiesCache));
 }
 
 function toCompanyListItem(company: CompanyDetail): CompanyListItem {
@@ -228,21 +276,27 @@ function toCompanyListItem(company: CompanyDetail): CompanyListItem {
   };
 }
 
-export function listCompanies(filters: CompanyFilters): Paginated<CompanyListItem> {
+export function listCompanies(
+  filters: CompanyFilters,
+): Paginated<CompanyListItem> {
   devDebug("[mock:crm] companies.list", filters);
   let rows = companiesStore().slice();
   const q = filters.q?.toLowerCase().trim();
-  if (q) rows = rows.filter((company) => company.name.toLowerCase().includes(q));
+  if (q)
+    rows = rows.filter((company) => company.name.toLowerCase().includes(q));
   const sort = filters.sort ?? "name";
   const dir = filters.dir === "desc" ? -1 : 1;
   rows.sort((a, b) => {
     if (sort === "deals_value") return (a.deals_value - b.deals_value) * dir;
-    if (sort === "contacts_count") return (a.contacts_count - b.contacts_count) * dir;
+    if (sort === "contacts_count")
+      return (a.contacts_count - b.contacts_count) * dir;
     return a.name.localeCompare(b.name) * dir;
   });
   const page = Math.max(1, filters.page ?? 1);
   return {
-    rows: rows.slice((page - 1) * PER_PAGE, page * PER_PAGE).map(toCompanyListItem),
+    rows: rows
+      .slice((page - 1) * PER_PAGE, page * PER_PAGE)
+      .map(toCompanyListItem),
     total: rows.length,
     page,
     per_page: PER_PAGE,
@@ -337,7 +391,12 @@ const LEADS_KEY = "mock.crm.leads";
 
 function buildLeads(): Lead[] {
   const base = Date.now();
-  const statuses: Lead["status"][] = ["new", "contacted", "qualified", "unqualified"];
+  const statuses: Lead["status"][] = [
+    "new",
+    "contacted",
+    "qualified",
+    "unqualified",
+  ];
   return CONTACT_NAMES.map((name, index) => ({
     id: 800 + index,
     name,
@@ -366,8 +425,10 @@ export function listLeads(filters: LeadFilters): Paginated<Lead> {
   let rows = leadsStore().slice();
   const q = filters.q?.toLowerCase().trim();
   if (q) rows = rows.filter((lead) => lead.name.toLowerCase().includes(q));
-  if (filters.status) rows = rows.filter((lead) => lead.status === filters.status);
-  if (filters.source) rows = rows.filter((lead) => lead.source === filters.source);
+  if (filters.status)
+    rows = rows.filter((lead) => lead.status === filters.status);
+  if (filters.source)
+    rows = rows.filter((lead) => lead.source === filters.source);
   const sort = filters.sort ?? "created_at";
   const dir = filters.dir === "desc" ? -1 : 1;
   rows.sort((a, b) => {

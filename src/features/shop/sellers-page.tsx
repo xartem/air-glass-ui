@@ -122,7 +122,9 @@ export function SellersPage() {
         id: "rating",
         header: t("shop.sellers.col.rating"),
         meta: { sortable: true, className: "max-md:hidden" },
-        cell: ({ row }) => <Rating value={row.original.rating} readOnly size="sm" />,
+        cell: ({ row }) => (
+          <Rating value={row.original.rating} readOnly size="sm" />
+        ),
       },
       {
         id: "status",

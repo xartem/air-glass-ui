@@ -551,6 +551,42 @@ const blogOverviewPage = () =>
       default: m.BlogOverviewPage,
     })),
   );
+const cryptoTransactionsPage = () =>
+  lazyPage(() =>
+    import("@/features/crypto/crypto-transactions-page").then((m) => ({
+      default: m.CryptoTransactionsPage,
+    })),
+  );
+const cryptoBuySellPage = () =>
+  lazyPage(() =>
+    import("@/features/crypto/crypto-buy-sell-page").then((m) => ({
+      default: m.CryptoBuySellPage,
+    })),
+  );
+const cryptoOrdersPage = () =>
+  lazyPage(() =>
+    import("@/features/crypto/crypto-orders-page").then((m) => ({
+      default: m.CryptoOrdersPage,
+    })),
+  );
+const cryptoWalletPage = () =>
+  lazyPage(() =>
+    import("@/features/crypto/crypto-wallet-page").then((m) => ({
+      default: m.CryptoWalletPage,
+    })),
+  );
+const cryptoIcoPage = () =>
+  lazyPage(() =>
+    import("@/features/crypto/crypto-ico-page").then((m) => ({
+      default: m.CryptoIcoPage,
+    })),
+  );
+const cryptoKycPage = () =>
+  lazyPage(() =>
+    import("@/features/crypto/crypto-kyc-page").then((m) => ({
+      default: m.CryptoKycPage,
+    })),
+  );
 
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
@@ -1066,6 +1102,54 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="apikeys.view">
               {apiKeysPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crypto/transactions",
+          element: (
+            <RequirePermission perm="crypto.view">
+              {cryptoTransactionsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crypto/buy-sell",
+          element: (
+            <RequirePermission perm="crypto.view">
+              {cryptoBuySellPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crypto/orders",
+          element: (
+            <RequirePermission perm="crypto.view">
+              {cryptoOrdersPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crypto/wallet",
+          element: (
+            <RequirePermission perm="crypto.view">
+              {cryptoWalletPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crypto/ico",
+          element: (
+            <RequirePermission perm="crypto.view">
+              {cryptoIcoPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crypto/kyc",
+          element: (
+            <RequirePermission perm="crypto.view">
+              {cryptoKycPage()}
             </RequirePermission>
           ),
         },

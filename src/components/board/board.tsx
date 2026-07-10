@@ -145,10 +145,7 @@ export function Board<T>({
       accessibility={createDndA11y(itemLabel)}
     >
       <div
-        className={cn(
-          "grid gap-4 md:grid-cols-2 xl:grid-cols-4",
-          className,
-        )}
+        className={cn("grid gap-4 md:grid-cols-2 xl:grid-cols-4", className)}
       >
         {columns.map((column) => (
           <BoardColumnView

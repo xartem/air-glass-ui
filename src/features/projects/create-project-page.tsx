@@ -38,7 +38,12 @@ const TEAM_OPTIONS = [
   { value: "5", label: "Mary Cooper" },
   { value: "6", label: "Ian Walker" },
 ];
-const STATUSES: ProjectStatus[] = ["planning", "active", "on_hold", "completed"];
+const STATUSES: ProjectStatus[] = [
+  "planning",
+  "active",
+  "on_hold",
+  "completed",
+];
 
 const schema = z.object({
   name: z.string().min(1, "required"),
@@ -142,18 +147,12 @@ export function CreateProjectPage() {
               control={control}
               name="description"
               render={({ field }) => (
-                <RichTextEditor
-                  value={field.value}
-                  onChange={field.onChange}
-                />
+                <RichTextEditor value={field.value} onChange={field.onChange} />
               )}
             />
           </FormField>
 
-          <FormField
-            name="start_date"
-            label={t("projects.create.field.start")}
-          >
+          <FormField name="start_date" label={t("projects.create.field.start")}>
             <Controller
               control={control}
               name="start_date"

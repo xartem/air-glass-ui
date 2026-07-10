@@ -66,7 +66,10 @@ export function CheckoutPage() {
   const [payment, setPayment] =
     useState<(typeof PAYMENT_METHODS)[number]>("card");
 
-  const cartQuery = useQuery({ queryKey: ["shop", "cart"], queryFn: api.cart.get });
+  const cartQuery = useQuery({
+    queryKey: ["shop", "cart"],
+    queryFn: api.cart.get,
+  });
   const shippingQuery = useQuery({
     queryKey: ["shop", "shipping"],
     queryFn: api.shipping.methods,
@@ -94,7 +97,9 @@ export function CheckoutPage() {
   const placeMutation = useMutation({
     mutationFn: () => {
       const address = form.getValues();
-      const selected = shippingQuery.data?.find((entry) => entry.id === shippingId);
+      const selected = shippingQuery.data?.find(
+        (entry) => entry.id === shippingId,
+      );
       const method = selected?.name ?? shippingId;
       console.debug("[CheckoutPage] placeOrder", { method, payment });
       return api.orders.place({
@@ -167,7 +172,10 @@ export function CheckoutPage() {
                   name="name"
                   label={t("shop.checkout.field.name")}
                   required
-                  error={form.formState.errors.name && t("shop.checkout.error.required")}
+                  error={
+                    form.formState.errors.name &&
+                    t("shop.checkout.error.required")
+                  }
                 >
                   <Input id="name" {...form.register("name")} />
                 </FormField>
@@ -175,7 +183,10 @@ export function CheckoutPage() {
                   name="phone"
                   label={t("shop.checkout.field.phone")}
                   required
-                  error={form.formState.errors.phone && t("shop.checkout.error.required")}
+                  error={
+                    form.formState.errors.phone &&
+                    t("shop.checkout.error.required")
+                  }
                 >
                   <Input id="phone" {...form.register("phone")} />
                 </FormField>
@@ -205,7 +216,10 @@ export function CheckoutPage() {
                   name="zip"
                   label={t("shop.checkout.field.zip")}
                   required
-                  error={form.formState.errors.zip && t("shop.checkout.error.required")}
+                  error={
+                    form.formState.errors.zip &&
+                    t("shop.checkout.error.required")
+                  }
                 >
                   <Input id="zip" {...form.register("zip")} />
                 </FormField>
@@ -214,7 +228,10 @@ export function CheckoutPage() {
                   label={t("shop.checkout.field.address")}
                   required
                   className="sm:col-span-2"
-                  error={form.formState.errors.address && t("shop.checkout.error.required")}
+                  error={
+                    form.formState.errors.address &&
+                    t("shop.checkout.error.required")
+                  }
                 >
                   <Input id="address" {...form.register("address")} />
                 </FormField>
@@ -222,7 +239,10 @@ export function CheckoutPage() {
                   name="city"
                   label={t("shop.checkout.field.city")}
                   required
-                  error={form.formState.errors.city && t("shop.checkout.error.required")}
+                  error={
+                    form.formState.errors.city &&
+                    t("shop.checkout.error.required")
+                  }
                 >
                   <Input id="city" {...form.register("city")} />
                 </FormField>
@@ -260,17 +280,32 @@ export function CheckoutPage() {
                     </TabsTrigger>
                   ))}
                 </TabsList>
-                <TabsContent value="card" className="grid gap-4 pt-4 sm:grid-cols-2">
-                  <FormField name="card_number" label={t("shop.checkout.card.number")}>
+                <TabsContent
+                  value="card"
+                  className="grid gap-4 pt-4 sm:grid-cols-2"
+                >
+                  <FormField
+                    name="card_number"
+                    label={t("shop.checkout.card.number")}
+                  >
                     <Input id="card_number" placeholder="•••• •••• •••• 4242" />
                   </FormField>
-                  <FormField name="card_name" label={t("shop.checkout.card.name")}>
+                  <FormField
+                    name="card_name"
+                    label={t("shop.checkout.card.name")}
+                  >
                     <Input id="card_name" />
                   </FormField>
-                  <FormField name="card_expiry" label={t("shop.checkout.card.expiry")}>
+                  <FormField
+                    name="card_expiry"
+                    label={t("shop.checkout.card.expiry")}
+                  >
                     <Input id="card_expiry" placeholder="MM/YY" />
                   </FormField>
-                  <FormField name="card_cvc" label={t("shop.checkout.card.cvc")}>
+                  <FormField
+                    name="card_cvc"
+                    label={t("shop.checkout.card.cvc")}
+                  >
                     <Input id="card_cvc" placeholder="•••" />
                   </FormField>
                 </TabsContent>
@@ -324,7 +359,10 @@ export function CheckoutPage() {
           </Panel>
         </div>
 
-        <Panel title={t("shop.checkout.summary")} className="lg:sticky lg:top-4">
+        <Panel
+          title={t("shop.checkout.summary")}
+          className="lg:sticky lg:top-4"
+        >
           {cart ? (
             <div className="space-y-3 text-sm">
               {cart.items.map((item) => (
@@ -396,7 +434,9 @@ function ShippingCard({
     <label
       className={cn(
         "flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors",
-        selected ? "border-primary bg-primary/5" : "border-border/60 hover:bg-accent/40",
+        selected
+          ? "border-primary bg-primary/5"
+          : "border-border/60 hover:bg-accent/40",
       )}
     >
       <RadioGroupItem value={method.id} />

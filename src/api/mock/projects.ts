@@ -55,7 +55,13 @@ const TEAM: ProjectTeamMember[] = [
   { id: 5, name: "Mary Cooper" },
   { id: 6, name: "Ian Walker" },
 ];
-const STATUSES: ProjectStatus[] = ["planning", "active", "active", "on_hold", "completed"];
+const STATUSES: ProjectStatus[] = [
+  "planning",
+  "active",
+  "active",
+  "on_hold",
+  "completed",
+];
 const TASK_STATUSES: TaskStatus[] = ["todo", "in_progress", "review", "done"];
 
 export const PROJECT_TEAM_OPTIONS = TEAM;
@@ -68,7 +74,11 @@ function build(): ProjectDetail[] {
   return PROJECT_NAMES.map((name, index) => {
     const status = STATUSES[index % STATUSES.length]!;
     const progress =
-      status === "completed" ? 100 : status === "planning" ? 5 + (index % 3) * 8 : 20 + ((index * 13) % 70);
+      status === "completed"
+        ? 100
+        : status === "planning"
+          ? 5 + (index % 3) * 8
+          : 20 + ((index * 13) % 70);
     const teamSize = 2 + (index % 4);
     const team = TEAM.slice(0, teamSize);
     const start = new Date(base - (index + 4) * 14 * 24 * 3600 * 1000);
@@ -96,7 +106,9 @@ function build(): ProjectDetail[] {
       milestones: Array.from({ length: 4 }, (_, m) => ({
         id: m + 1,
         title: `Milestone ${m + 1}`,
-        due: new Date(start.getTime() + (m + 1) * 14 * 24 * 3600 * 1000).toISOString(),
+        due: new Date(
+          start.getTime() + (m + 1) * 14 * 24 * 3600 * 1000,
+        ).toISOString(),
         done: m < Math.round((4 * progress) / 100),
       })),
       activity: Array.from({ length: 5 }, (_, a) => ({
@@ -132,7 +144,9 @@ function toListItem(project: ProjectDetail): ProjectListItem {
   };
 }
 
-export function listProjects(filters: ProjectFilters): Paginated<ProjectListItem> {
+export function listProjects(
+  filters: ProjectFilters,
+): Paginated<ProjectListItem> {
   devDebug("[mock:projects] list", filters);
   let rows = store().slice();
   const q = filters.q?.toLowerCase().trim();
@@ -142,7 +156,8 @@ export function listProjects(filters: ProjectFilters): Paginated<ProjectListItem
         project.name.toLowerCase().includes(q) ||
         project.client.toLowerCase().includes(q),
     );
-  if (filters.status) rows = rows.filter((project) => project.status === filters.status);
+  if (filters.status)
+    rows = rows.filter((project) => project.status === filters.status);
   const sort = filters.sort ?? "name";
   const dir = filters.dir === "desc" ? -1 : 1;
   rows.sort((a, b) => {
@@ -175,13 +190,21 @@ export function projectTasks(id: number): ProjectTaskRow[] {
     title: `Task ${index + 1} for ${project.name}`,
     assignee: project.team[index % project.team.length]!.name,
     status: TASK_STATUSES[index % TASK_STATUSES.length]!,
-    due: new Date(Date.parse(project.start_date) + (index + 3) * 3 * 24 * 3600 * 1000).toISOString(),
+    due: new Date(
+      Date.parse(project.start_date) + (index + 3) * 3 * 24 * 3600 * 1000,
+    ).toISOString(),
   }));
 }
 
 export function projectFiles(id: number): ProjectFile[] {
   devDebug("[mock:projects] files", id);
-  const names = ["brief.pdf", "wireframes.fig", "budget.xlsx", "notes.md", "logo.svg"];
+  const names = [
+    "brief.pdf",
+    "wireframes.fig",
+    "budget.xlsx",
+    "notes.md",
+    "logo.svg",
+  ];
   const base = Date.now();
   return names.map((name, index) => ({
     id: id * 10 + index,
@@ -207,7 +230,8 @@ export function createProject(payload: ProjectPayload): ProjectDetail {
     client: payload.client,
     status: payload.status,
     progress: 0,
-    deadline: payload.end_date || new Date(now + 30 * 24 * 3600 * 1000).toISOString(),
+    deadline:
+      payload.end_date || new Date(now + 30 * 24 * 3600 * 1000).toISOString(),
     team: team.length > 0 ? team : [TEAM[0]!],
     description: payload.description,
     start_date: payload.start_date || new Date(now).toISOString(),

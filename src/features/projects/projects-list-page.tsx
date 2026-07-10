@@ -69,7 +69,9 @@ function TeamStack({ team }: { team: ProjectListItem["team"] }) {
           </AvatarFallback>
         </Avatar>
       ))}
-      {team.length > 4 ? <AvatarGroupCount>+{team.length - 4}</AvatarGroupCount> : null}
+      {team.length > 4 ? (
+        <AvatarGroupCount>+{team.length - 4}</AvatarGroupCount>
+      ) : null}
     </AvatarGroup>
   );
 }
@@ -291,41 +293,41 @@ export function ProjectsListPage() {
         ) : (
           <div className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {data?.rows.map((project) => (
-              <button
-                key={project.id}
-                type="button"
-                onClick={() => navigate(`/projects/${project.id}`)}
-                className="glass-card flex flex-col gap-3 rounded-2xl p-4 text-start transition-shadow hover:shadow-md"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <div className="truncate font-medium">{project.name}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {project.client}
+              {data?.rows.map((project) => (
+                <button
+                  key={project.id}
+                  type="button"
+                  onClick={() => navigate(`/projects/${project.id}`)}
+                  className="glass-card flex flex-col gap-3 rounded-2xl p-4 text-start transition-shadow hover:shadow-md"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="truncate font-medium">{project.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {project.client}
+                      </div>
                     </div>
+                    <StatusBadge
+                      status={STATUS_KIND[project.status]}
+                      label={t(`projects.status.${project.status}`)}
+                    />
                   </div>
-                  <StatusBadge
-                    status={STATUS_KIND[project.status]}
-                    label={t(`projects.status.${project.status}`)}
-                  />
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>{t("projects.col.progress")}</span>
-                    <span className="tabular-nums">{project.progress}%</span>
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{t("projects.col.progress")}</span>
+                      <span className="tabular-nums">{project.progress}%</span>
+                    </div>
+                    <Progress value={project.progress} />
                   </div>
-                  <Progress value={project.progress} />
-                </div>
-                <div className="mt-auto flex items-center justify-between">
-                  <TeamStack team={project.team} />
-                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <CalendarDays className="size-3.5" />
-                    {dt.format(project.deadline)}
-                  </span>
-                </div>
-              </button>
-            ))}
+                  <div className="mt-auto flex items-center justify-between">
+                    <TeamStack team={project.team} />
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <CalendarDays className="size-3.5" />
+                      {dt.format(project.deadline)}
+                    </span>
+                  </div>
+                </button>
+              ))}
             </div>
             {data ? (
               <PaginationBar

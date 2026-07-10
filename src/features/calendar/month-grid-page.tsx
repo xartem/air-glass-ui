@@ -46,8 +46,15 @@ export function MonthGridPage() {
     onError: () => toast.error(t("common.request_failed")),
   });
   const moveMutation = useMutation({
-    mutationFn: ({ id, start, end }: { id: number; start: string; end: string }) =>
-      api.calendar.move(id, start, end),
+    mutationFn: ({
+      id,
+      start,
+      end,
+    }: {
+      id: number;
+      start: string;
+      end: string;
+    }) => api.calendar.move(id, start, end),
     onSuccess: () =>
       void queryClient.invalidateQueries({ queryKey: ["calendar", "events"] }),
     onError: () => {
@@ -84,7 +91,11 @@ export function MonthGridPage() {
             >
               <ChevronLeft className="rtl:-scale-x-100" />
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setCurrent(new Date())}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrent(new Date())}
+            >
               {t("calendar.today")}
             </Button>
             <Button

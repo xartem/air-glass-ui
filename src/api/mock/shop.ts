@@ -961,7 +961,9 @@ export function listReviews(productId: number): ProductReview[] {
     rating: 3 + ((productId + index) % 3),
     title: REVIEW_TITLES[(productId + index) % REVIEW_TITLES.length]!,
     body: "A demo review used to showcase the product reviews tab. The item met expectations and arrived on time.",
-    created_at: new Date(base - (index + 1) * 4 * 24 * 3600 * 1000).toISOString(),
+    created_at: new Date(
+      base - (index + 1) * 4 * 24 * 3600 * 1000,
+    ).toISOString(),
   }));
 }
 
@@ -977,7 +979,9 @@ const PROMO_CODES: Record<string, number> = {
 let cartCache: CartItem[] | null = null;
 
 function seedCartItems(): CartItem[] {
-  const products = productsStore().filter((p) => p.status === "active").slice(0, 3);
+  const products = productsStore()
+    .filter((p) => p.status === "active")
+    .slice(0, 3);
   const variants = ["Default", "Large", null];
   return products.map((product, index) => ({
     id: index + 1,
@@ -1006,7 +1010,9 @@ let cartPromo: string | null = null;
 
 function buildCart(): Cart {
   const items = cartItemsStore();
-  const subtotal = money(items.reduce((sum, item) => sum + item.price * item.qty, 0));
+  const subtotal = money(
+    items.reduce((sum, item) => sum + item.price * item.qty, 0),
+  );
   const shipping = items.length > 0 ? money(6.5) : 0;
   const discountRate = cartPromo ? (PROMO_CODES[cartPromo] ?? 0) : 0;
   const discount = money(subtotal * discountRate);
@@ -1058,10 +1064,34 @@ export function applyPromo(code: string): Cart {
 export function shippingMethods(): ShippingMethod[] {
   devDebug("[mock:shop] shippingMethods");
   return [
-    { id: "standard", name: "Standard", eta: "5–7 days", price: money(6.5), currency: CURRENCY },
-    { id: "express", name: "Express", eta: "2–3 days", price: money(14.9), currency: CURRENCY },
-    { id: "nextday", name: "Next day", eta: "1 day", price: money(24), currency: CURRENCY },
-    { id: "pickup", name: "Pickup", eta: "Today", price: 0, currency: CURRENCY },
+    {
+      id: "standard",
+      name: "Standard",
+      eta: "5–7 days",
+      price: money(6.5),
+      currency: CURRENCY,
+    },
+    {
+      id: "express",
+      name: "Express",
+      eta: "2–3 days",
+      price: money(14.9),
+      currency: CURRENCY,
+    },
+    {
+      id: "nextday",
+      name: "Next day",
+      eta: "1 day",
+      price: money(24),
+      currency: CURRENCY,
+    },
+    {
+      id: "pickup",
+      name: "Pickup",
+      eta: "Today",
+      price: 0,
+      currency: CURRENCY,
+    },
   ];
 }
 
@@ -1089,7 +1119,10 @@ export function placeOrder(payload: PlaceOrderPayload): OrderDetail {
     ...cart.totals,
     shipping: shippingCost,
     total: money(
-      cart.totals.subtotal + shippingCost - cart.totals.discount + cart.totals.tax,
+      cart.totals.subtotal +
+        shippingCost -
+        cart.totals.discount +
+        cart.totals.tax,
     ),
   };
   const order: OrderDetail = {
@@ -1147,8 +1180,21 @@ const SELLER_NAMES = [
   "Slate Stationery",
   "Ivory Textiles",
 ];
-const SELLER_STATUSES: SellerStatus[] = ["active", "active", "pending", "active", "suspended"];
-const SELLER_SWATCHES = ["#bfdbfe", "#bbf7d0", "#fde68a", "#fecaca", "#ddd6fe", "#a5f3fc"];
+const SELLER_STATUSES: SellerStatus[] = [
+  "active",
+  "active",
+  "pending",
+  "active",
+  "suspended",
+];
+const SELLER_SWATCHES = [
+  "#bfdbfe",
+  "#bbf7d0",
+  "#fde68a",
+  "#fecaca",
+  "#ddd6fe",
+  "#a5f3fc",
+];
 const SELLERS_PER_PAGE = 12;
 
 let sellersCache: SellerDetail[] | null = null;
@@ -1168,7 +1214,9 @@ function buildSellers(): SellerDetail[] {
       currency: CURRENCY,
       rating: Math.round((3.6 + (index % 14) * 0.1) * 10) / 10,
       status: SELLER_STATUSES[index % SELLER_STATUSES.length]!,
-      joined_at: new Date(base - (index + 1) * 21 * 24 * 3600 * 1000).toISOString(),
+      joined_at: new Date(
+        base - (index + 1) * 21 * 24 * 3600 * 1000,
+      ).toISOString(),
       email: `hello@${first}.example`,
       phone: `+1 555 07${(10 + index).toString().slice(-2)}`,
       location: "Portland, OR",
@@ -1203,19 +1251,24 @@ export function listSellers(filters: SellerFilters): Paginated<SellerListItem> {
   let rows = sellersStore().slice();
   const q = filters.q?.toLowerCase().trim();
   if (q) rows = rows.filter((seller) => seller.name.toLowerCase().includes(q));
-  if (filters.status) rows = rows.filter((seller) => seller.status === filters.status);
+  if (filters.status)
+    rows = rows.filter((seller) => seller.status === filters.status);
   const sort = filters.sort ?? "name";
   const dir = filters.dir === "desc" ? -1 : 1;
   rows.sort((a, b) => {
-    if (sort === "products_count") return (a.products_count - b.products_count) * dir;
+    if (sort === "products_count")
+      return (a.products_count - b.products_count) * dir;
     if (sort === "revenue") return (a.revenue - b.revenue) * dir;
     if (sort === "rating") return (a.rating - b.rating) * dir;
-    if (sort === "joined_at") return a.joined_at.localeCompare(b.joined_at) * dir;
+    if (sort === "joined_at")
+      return a.joined_at.localeCompare(b.joined_at) * dir;
     return a.name.localeCompare(b.name) * dir;
   });
   const page = Math.max(1, filters.page ?? 1);
   return {
-    rows: rows.slice((page - 1) * SELLERS_PER_PAGE, page * SELLERS_PER_PAGE).map(toSellerListItem),
+    rows: rows
+      .slice((page - 1) * SELLERS_PER_PAGE, page * SELLERS_PER_PAGE)
+      .map(toSellerListItem),
     total: rows.length,
     page,
     per_page: SELLERS_PER_PAGE,
@@ -1253,9 +1306,13 @@ export function createInvoice(payload: InvoiceDraft): InvoiceDetail {
     qty: Math.max(1, line.qty),
     price: money(Math.max(0, line.price)),
   }));
-  const subtotal = money(items.reduce((sum, item) => sum + item.price * item.qty, 0));
+  const subtotal = money(
+    items.reduce((sum, item) => sum + item.price * item.qty, 0),
+  );
   const discount = money(Math.max(0, payload.discount ?? 0));
-  const tax = money((subtotal - discount) * (Math.max(0, payload.tax_rate ?? 0) / 100));
+  const tax = money(
+    (subtotal - discount) * (Math.max(0, payload.tax_rate ?? 0) / 100),
+  );
   const total = money(Math.max(0, subtotal - discount + tax));
   const store = invoicesStore();
   const id = Math.max(0, ...store.map((invoice) => invoice.id)) + 1;

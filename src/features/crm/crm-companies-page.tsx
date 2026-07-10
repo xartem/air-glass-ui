@@ -75,10 +75,7 @@ export function CrmCompaniesPage() {
     q: params.query || undefined,
     sort:
       (params.sort?.column as
-        | "name"
-        | "deals_value"
-        | "contacts_count"
-        | undefined) ?? "name",
+        "name" | "deals_value" | "contacts_count" | undefined) ?? "name",
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
@@ -123,7 +120,10 @@ export function CrmCompaniesPage() {
         meta: { sortable: true },
         cell: ({ row }) => (
           <div className="flex min-w-0 items-center gap-3">
-            <CompanyLogo color={row.original.logo_color} name={row.original.name} />
+            <CompanyLogo
+              color={row.original.logo_color}
+              name={row.original.name}
+            />
             <span className="truncate font-medium">{row.original.name}</span>
           </div>
         ),
@@ -158,7 +158,11 @@ export function CrmCompaniesPage() {
         meta: { sortable: true },
         cell: ({ row }) => (
           <span className="tabular-nums">
-            {formatMoney(row.original.deals_value, row.original.currency, locale)}
+            {formatMoney(
+              row.original.deals_value,
+              row.original.currency,
+              locale,
+            )}
           </span>
         ),
       },
@@ -249,7 +253,10 @@ export function CrmCompaniesPage() {
         open={selectedId !== null}
         onOpenChange={(open) => !open && setSelectedId(null)}
       >
-        <SheetContent side="right" className="w-full gap-0 overflow-y-auto sm:max-w-md">
+        <SheetContent
+          side="right"
+          className="w-full gap-0 overflow-y-auto sm:max-w-md"
+        >
           {detailQuery.data ? (
             <CompanyDetailBody company={detailQuery.data} />
           ) : (
@@ -276,7 +283,10 @@ export function CrmCompaniesPage() {
             >
               <Input id="name" {...form.register("name")} />
             </FormField>
-            <FormField name="industry" label={t("crm.companies.field.industry")}>
+            <FormField
+              name="industry"
+              label={t("crm.companies.field.industry")}
+            >
               <Input id="industry" {...form.register("industry")} />
             </FormField>
             <FormField name="size" label={t("crm.companies.field.size")}>

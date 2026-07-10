@@ -625,9 +625,7 @@ export async function streamAiMessage(
   }
 }
 
-function findPlan(
-  planId: number,
-): {
+function findPlan(planId: number): {
   conversation: StoredConversation;
   message: AiMessage;
   plan: AiPlan;

@@ -17,10 +17,7 @@ import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
 import { StatusBadge, type StatusKind } from "@/components/status-badge";
 import { BulkBar, SearchInput } from "@/components/toolbar";
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Select,
   SelectContent,
@@ -73,9 +70,12 @@ export function TaskListPage() {
     page: params.page,
     q: params.query || undefined,
     project: params.filter("project"),
-    priority: (params.filter("priority") as TaskPriority | undefined) ?? undefined,
+    priority:
+      (params.filter("priority") as TaskPriority | undefined) ?? undefined,
     status: (params.filter("status") as TaskStatus | undefined) ?? undefined,
-    sort: (params.sort?.column as "title" | "due" | "priority" | undefined) ?? "due",
+    sort:
+      (params.sort?.column as "title" | "due" | "priority" | undefined) ??
+      "due",
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
@@ -258,7 +258,9 @@ export function TaskListPage() {
                 <SelectValue placeholder={t("tasks.filter.project")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t("tasks.filter.all_projects")}</SelectItem>
+                <SelectItem value="all">
+                  {t("tasks.filter.all_projects")}
+                </SelectItem>
                 {PROJECTS.map((project) => (
                   <SelectItem key={project} value={project}>
                     {project}
@@ -269,14 +271,19 @@ export function TaskListPage() {
             <Select
               value={params.filter("priority") ?? "all"}
               onValueChange={(value) =>
-                params.setFilter("priority", value === "all" ? undefined : value)
+                params.setFilter(
+                  "priority",
+                  value === "all" ? undefined : value,
+                )
               }
             >
               <SelectTrigger className="w-36">
                 <SelectValue placeholder={t("tasks.filter.priority")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t("tasks.filter.all_priorities")}</SelectItem>
+                <SelectItem value="all">
+                  {t("tasks.filter.all_priorities")}
+                </SelectItem>
                 {PRIORITIES.map((priority) => (
                   <SelectItem key={priority} value={priority}>
                     {t(`tasks.priority.${priority}`)}
@@ -294,7 +301,9 @@ export function TaskListPage() {
                 <SelectValue placeholder={t("tasks.filter.status")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t("tasks.filter.all_statuses")}</SelectItem>
+                <SelectItem value="all">
+                  {t("tasks.filter.all_statuses")}
+                </SelectItem>
                 {STATUSES.map((status) => (
                   <SelectItem key={status} value={status}>
                     {t(`tasks.status.${status}`)}

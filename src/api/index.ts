@@ -64,6 +64,19 @@ import type {
   ApiKey,
   ApiKeyCreatePayload,
   ApiKeyCreated,
+  CryptoTx,
+  CryptoTxFilters,
+  CryptoMarket,
+  CryptoQuote,
+  CryptoTradePayload,
+  CryptoOrder,
+  Wallet,
+  CryptoDepositPayload,
+  CryptoWithdrawPayload,
+  Ico,
+  IcoFilters,
+  KycApplication,
+  KycPayload,
   ActivityFilters,
   AdminSearchGroup,
   CreatePasswordPayload,
@@ -880,6 +893,51 @@ export const api = {
       apiFetch<ApiKeyCreated>("/api-keys", { method: "POST", body: payload }),
     revoke: (id: number) =>
       apiFetch<ApiKey>(`/api-keys/${id}/revoke`, { method: "POST" }),
+  },
+
+  /* Crypto (W4 mono-niche): transactions, trading, orders, wallet, ICOs, KYC. */
+  crypto: {
+    transactions: (filters: CryptoTxFilters = {}) =>
+      apiFetch<Paginated<CryptoTx>>("/crypto/transactions", {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          coin: filters.coin,
+          type: filters.type,
+          from: filters.from,
+          to: filters.to,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    markets: () => apiFetch<CryptoMarket[]>("/crypto/markets"),
+    quote: (pair: string, amount: number) =>
+      apiFetch<CryptoQuote>("/crypto/quote", { query: { pair, amount } }),
+    trade: (payload: CryptoTradePayload) =>
+      apiFetch<CryptoOrder>("/crypto/trade", { method: "POST", body: payload }),
+    orders: (status?: "open" | "history") =>
+      apiFetch<CryptoOrder[]>("/crypto/orders", { query: { status } }),
+    cancelOrder: (id: number) =>
+      apiFetch<CryptoOrder>(`/crypto/orders/${id}/cancel`, { method: "POST" }),
+    wallet: () => apiFetch<Wallet>("/crypto/wallet"),
+    deposit: (payload: CryptoDepositPayload) =>
+      apiFetch<Wallet>("/crypto/wallet/deposit", {
+        method: "POST",
+        body: payload,
+      }),
+    withdraw: (payload: CryptoWithdrawPayload) =>
+      apiFetch<Wallet>("/crypto/wallet/withdraw", {
+        method: "POST",
+        body: payload,
+      }),
+    icos: (filters: IcoFilters = {}) =>
+      apiFetch<Ico[]>("/crypto/icos", { query: { status: filters.status } }),
+    getIco: (id: number) => apiFetch<Ico>(`/crypto/icos/${id}`),
+    submitKyc: (payload: KycPayload) =>
+      apiFetch<KycApplication>("/crypto/kyc", {
+        method: "POST",
+        body: payload,
+      }),
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */

@@ -1,0 +1,1 @@
+2026-07-10 — Crypto niche: transactions, buy & sell, orders, wallet, ICO list, and KYC screens with full mock module, routes, nav and i18n.

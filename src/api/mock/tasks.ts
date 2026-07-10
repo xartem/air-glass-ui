@@ -117,10 +117,14 @@ export function listTasks(filters: TaskFilters): Paginated<TaskListItem> {
   let rows = store().slice();
   const q = filters.q?.toLowerCase().trim();
   if (q) rows = rows.filter((task) => task.title.toLowerCase().includes(q));
-  if (filters.project) rows = rows.filter((task) => task.project === filters.project);
-  if (filters.assignee) rows = rows.filter((task) => task.assignee === filters.assignee);
-  if (filters.priority) rows = rows.filter((task) => task.priority === filters.priority);
-  if (filters.status) rows = rows.filter((task) => task.status === filters.status);
+  if (filters.project)
+    rows = rows.filter((task) => task.project === filters.project);
+  if (filters.assignee)
+    rows = rows.filter((task) => task.assignee === filters.assignee);
+  if (filters.priority)
+    rows = rows.filter((task) => task.priority === filters.priority);
+  if (filters.status)
+    rows = rows.filter((task) => task.status === filters.status);
   const sort = filters.sort ?? "due";
   const dir = filters.dir === "desc" ? -1 : 1;
   const priorityRank: Record<TaskPriority, number> = {

@@ -6,11 +6,7 @@ import { z } from "zod";
 import { Contact, Mail, Phone } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 
-import {
-  api,
-  type CrmContactDetail,
-  type CrmContactPayload,
-} from "@/api";
+import { api, type CrmContactDetail, type CrmContactPayload } from "@/api";
 import { DataTable, type RowAction } from "@/components/data-table";
 import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
@@ -85,8 +81,8 @@ export function CrmContactsPage() {
     page: params.page,
     q: params.query || undefined,
     sort:
-      (params.sort?.column as "name" | "company" | "last_activity" | undefined) ??
-      "name",
+      (params.sort?.column as
+        "name" | "company" | "last_activity" | undefined) ?? "name",
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
@@ -268,7 +264,10 @@ export function CrmContactsPage() {
         open={selectedId !== null}
         onOpenChange={(open) => !open && setSelectedId(null)}
       >
-        <SheetContent side="right" className="w-full gap-0 overflow-y-auto sm:max-w-md">
+        <SheetContent
+          side="right"
+          className="w-full gap-0 overflow-y-auto sm:max-w-md"
+        >
           {detailQuery.data ? (
             <ContactDetailBody contact={detailQuery.data} />
           ) : (
@@ -289,7 +288,9 @@ export function CrmContactsPage() {
               name="name"
               label={t("crm.contacts.field.name")}
               required
-              error={form.formState.errors.name && t("crm.contacts.error.required")}
+              error={
+                form.formState.errors.name && t("crm.contacts.error.required")
+              }
             >
               <Input id="name" {...form.register("name")} />
             </FormField>

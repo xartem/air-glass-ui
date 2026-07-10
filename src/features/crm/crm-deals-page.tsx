@@ -23,7 +23,13 @@ import { useLocale } from "@/lib/use-locale";
  * optimistically. Reachable with crm.deals.
  */
 
-const STAGES: DealStage[] = ["new", "qualified", "proposal", "negotiation", "won"];
+const STAGES: DealStage[] = [
+  "new",
+  "qualified",
+  "proposal",
+  "negotiation",
+  "won",
+];
 
 function initials(name: string): string {
   return name
@@ -49,7 +55,10 @@ export function CrmDealsPage() {
   const [view, setView] = useState<"board" | "table">("board");
   const [deals, setDeals] = useState<Deal[]>([]);
 
-  const query = useQuery({ queryKey: ["crm", "deals"], queryFn: api.crm.deals.list });
+  const query = useQuery({
+    queryKey: ["crm", "deals"],
+    queryFn: api.crm.deals.list,
+  });
 
   useEffect(() => {
     if (query.data) setDeals(query.data);
@@ -83,7 +92,9 @@ export function CrmDealsPage() {
   const columns: BoardColumn[] = STAGES.map((stage) => ({
     id: stage,
     title: t(`crm.deals.stage.${stage}`),
-    cardIds: deals.filter((deal) => deal.stage === stage).map((deal) => String(deal.id)),
+    cardIds: deals
+      .filter((deal) => deal.stage === stage)
+      .map((deal) => String(deal.id)),
   }));
 
   const setColumns = (next: BoardColumn[]) => {
@@ -140,7 +151,10 @@ export function CrmDealsPage() {
         icon={Target}
         secondaryActions={[
           {
-            label: view === "board" ? t("crm.deals.table_view") : t("crm.deals.board_view"),
+            label:
+              view === "board"
+                ? t("crm.deals.table_view")
+                : t("crm.deals.board_view"),
             onClick: () => setView(view === "board" ? "table" : "board"),
             icon: view === "board" ? <Rows3 /> : <LayoutGrid />,
           },
