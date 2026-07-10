@@ -1,0 +1,1 @@
+2026-07-10  Add CRM suite: contacts, companies, deals board, and leads.

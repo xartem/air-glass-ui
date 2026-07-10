@@ -341,6 +341,30 @@ const createProjectPage = () =>
       default: m.CreateProjectPage,
     })),
   );
+const crmContactsPage = () =>
+  lazyPage(() =>
+    import("@/features/crm/crm-contacts-page").then((m) => ({
+      default: m.CrmContactsPage,
+    })),
+  );
+const crmCompaniesPage = () =>
+  lazyPage(() =>
+    import("@/features/crm/crm-companies-page").then((m) => ({
+      default: m.CrmCompaniesPage,
+    })),
+  );
+const crmDealsPage = () =>
+  lazyPage(() =>
+    import("@/features/crm/crm-deals-page").then((m) => ({
+      default: m.CrmDealsPage,
+    })),
+  );
+const crmLeadsPage = () =>
+  lazyPage(() =>
+    import("@/features/crm/crm-leads-page").then((m) => ({
+      default: m.CrmLeadsPage,
+    })),
+  );
 const taskListPage = () =>
   lazyPage(() =>
     import("@/features/tasks/task-list-page").then((m) => ({
@@ -886,6 +910,38 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="tasks.view">
               {taskDetailPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crm/contacts",
+          element: (
+            <RequirePermission perm="contacts.view">
+              {crmContactsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crm/companies",
+          element: (
+            <RequirePermission perm="crm.companies">
+              {crmCompaniesPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crm/deals",
+          element: (
+            <RequirePermission perm="crm.deals">
+              {crmDealsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/crm/leads",
+          element: (
+            <RequirePermission perm="crm.leads">
+              {crmLeadsPage()}
             </RequirePermission>
           ),
         },

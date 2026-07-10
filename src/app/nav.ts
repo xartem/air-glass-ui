@@ -7,6 +7,7 @@ import {
   CircleHelp,
   BadgeDollarSign,
   Bot,
+  Building2,
   CircleDollarSign,
   Columns3,
   Contact,
@@ -37,8 +38,10 @@ import {
   ShoppingCart,
   Sparkles,
   Store,
+  Target,
   Truck,
   UserCircle,
+  UserPlus,
   Users,
   Wrench,
 } from "lucide-react";
@@ -246,6 +249,37 @@ export function buildNavGroups(): NavGroup[] {
               label: t("nav.tasks"),
               icon: ListTodo,
               perm: "tasks.view",
+            },
+            {
+              key: "menu.apps.crm",
+              label: t("nav.crm"),
+              icon: Contact,
+              children: [
+                {
+                  to: "/crm/contacts",
+                  label: t("nav.crmContacts"),
+                  icon: Contact,
+                  perm: "contacts.view",
+                },
+                {
+                  to: "/crm/companies",
+                  label: t("nav.crmCompanies"),
+                  icon: Building2,
+                  perm: "crm.companies",
+                },
+                {
+                  to: "/crm/deals",
+                  label: t("nav.crmDeals"),
+                  icon: Target,
+                  perm: "crm.deals",
+                },
+                {
+                  to: "/crm/leads",
+                  label: t("nav.crmLeads"),
+                  icon: UserPlus,
+                  perm: "crm.leads",
+                },
+              ],
             },
             {
               to: "/kanban",

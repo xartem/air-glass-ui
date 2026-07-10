@@ -36,6 +36,17 @@ import type {
   TaskFilters,
   TaskListItem,
   TaskStatus,
+  CompanyDetail,
+  CompanyFilters,
+  CompanyListItem,
+  CompanyPayload,
+  CrmContactDetail,
+  CrmContactFilters,
+  CrmContactPayload,
+  Deal,
+  DealStage,
+  Lead,
+  LeadFilters,
   ActivityFilters,
   AdminSearchGroup,
   CreatePasswordPayload,
@@ -692,6 +703,69 @@ export const api = {
       apiFetch<TaskDetail>(`/tasks/${id}/subtasks/${subtaskId}`, {
         method: "POST",
       }),
+  },
+
+  /* CRM (W3): contacts, companies, deals pipeline and leads. */
+  crm: {
+    contacts: {
+      list: (filters: CrmContactFilters = {}) =>
+        apiFetch<Paginated<CrmContactDetail>>("/crm/contacts", {
+          query: {
+            page: filters.page,
+            q: filters.q,
+            tag: filters.tag,
+            owner: filters.owner,
+            sort: filters.sort,
+            dir: filters.dir,
+          },
+        }),
+      get: (id: number) => apiFetch<CrmContactDetail>(`/crm/contacts/${id}`),
+      create: (payload: CrmContactPayload) =>
+        apiFetch<CrmContactDetail>("/crm/contacts", {
+          method: "POST",
+          body: payload,
+        }),
+    },
+    companies: {
+      list: (filters: CompanyFilters = {}) =>
+        apiFetch<Paginated<CompanyListItem>>("/crm/companies", {
+          query: {
+            page: filters.page,
+            q: filters.q,
+            sort: filters.sort,
+            dir: filters.dir,
+          },
+        }),
+      get: (id: number) => apiFetch<CompanyDetail>(`/crm/companies/${id}`),
+      create: (payload: CompanyPayload) =>
+        apiFetch<CompanyDetail>("/crm/companies", {
+          method: "POST",
+          body: payload,
+        }),
+    },
+    deals: {
+      list: () => apiFetch<Deal[]>("/crm/deals"),
+      move: (id: number, stage: DealStage) =>
+        apiFetch<Deal>(`/crm/deals/${id}/move`, {
+          method: "POST",
+          body: { stage },
+        }),
+    },
+    leads: {
+      list: (filters: LeadFilters = {}) =>
+        apiFetch<Paginated<Lead>>("/crm/leads", {
+          query: {
+            page: filters.page,
+            q: filters.q,
+            status: filters.status,
+            source: filters.source,
+            sort: filters.sort,
+            dir: filters.dir,
+          },
+        }),
+      convert: (id: number) =>
+        apiFetch<Deal>(`/crm/leads/${id}/convert`, { method: "POST" }),
+    },
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */

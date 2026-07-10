@@ -1707,3 +1707,134 @@ export interface TaskFilters {
   sort?: "title" | "due" | "priority";
   dir?: "asc" | "desc";
 }
+
+/* ---- CRM (W3) ---- */
+
+export type DealStage =
+  | "new"
+  | "qualified"
+  | "proposal"
+  | "negotiation"
+  | "won";
+
+export interface CrmActivity {
+  id: number;
+  at: string;
+  text: string;
+}
+
+export interface CrmContact {
+  id: number;
+  name: string;
+  company: string;
+  email: string;
+  phone: string;
+  tags: string[];
+  owner: string;
+  last_activity: string;
+}
+
+export interface CrmContactDeal {
+  id: number;
+  title: string;
+  value: number;
+  stage: DealStage;
+}
+
+export interface CrmContactDetail extends CrmContact {
+  activity: CrmActivity[];
+  deals: CrmContactDeal[];
+}
+
+export interface CrmContactPayload {
+  name: string;
+  company: string;
+  email: string;
+  phone: string;
+  owner: string;
+  tags: string[];
+}
+
+export interface CrmContactFilters {
+  page?: number;
+  q?: string;
+  tag?: string;
+  owner?: string;
+  sort?: "name" | "company" | "last_activity";
+  dir?: "asc" | "desc";
+}
+
+export interface CompanyListItem {
+  id: number;
+  name: string;
+  industry: string;
+  size: string;
+  logo_color: string;
+  contacts_count: number;
+  deals_value: number;
+  currency: string;
+  owner: string;
+}
+
+export interface CompanyContact {
+  id: number;
+  name: string;
+}
+
+export interface CompanyDeal {
+  id: number;
+  title: string;
+  value: number;
+}
+
+export interface CompanyDetail extends CompanyListItem {
+  notes: string;
+  contacts: CompanyContact[];
+  deals: CompanyDeal[];
+}
+
+export interface CompanyPayload {
+  name: string;
+  industry: string;
+  size: string;
+  owner: string;
+}
+
+export interface CompanyFilters {
+  page?: number;
+  q?: string;
+  sort?: "name" | "deals_value" | "contacts_count";
+  dir?: "asc" | "desc";
+}
+
+export interface Deal {
+  id: number;
+  title: string;
+  value: number;
+  currency: string;
+  company: string;
+  owner: string;
+  probability: number;
+  stage: DealStage;
+}
+
+export type LeadStatus = "new" | "contacted" | "qualified" | "unqualified";
+
+export interface Lead {
+  id: number;
+  name: string;
+  source: string;
+  score: number;
+  status: LeadStatus;
+  owner: string;
+  created_at: string;
+}
+
+export interface LeadFilters {
+  page?: number;
+  q?: string;
+  status?: LeadStatus;
+  source?: string;
+  sort?: "name" | "score" | "created_at";
+  dir?: "asc" | "desc";
+}

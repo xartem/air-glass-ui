@@ -26,6 +26,13 @@ import type {
   TaskFilters,
   TaskPriority,
   TaskStatus,
+  CompanyFilters,
+  CompanyPayload,
+  CrmContactFilters,
+  CrmContactPayload,
+  DealStage,
+  LeadFilters,
+  LeadStatus,
   SellerFilters,
   SellerStatus,
   SettingValue,
@@ -134,6 +141,18 @@ import {
   setTaskStatus,
   toggleSubtask,
 } from "./tasks";
+import {
+  convertLead,
+  createCompany,
+  createCrmContact,
+  getCompany,
+  getCrmContact,
+  listCompanies,
+  listCrmContacts,
+  listDeals,
+  listLeads,
+  moveDeal,
+} from "./crm";
 import { helpForScreen, helpPage, helpSearch, helpTree } from "./help";
 import {
   aiSpend,
@@ -1631,6 +1650,128 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (_options, params) => {
       requireSession();
       return toggleSubtask(Number(params[0]), Number(params[1]));
+    },
+  },
+
+  /* ---- CRM (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/crm\/contacts$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: CrmContactFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        tag: query.tag === undefined ? undefined : String(query.tag),
+        owner: query.owner === undefined ? undefined : String(query.owner),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as CrmContactFilters["sort"]),
+        dir: query.dir === "desc" ? "desc" : "asc",
+      };
+      return listCrmContacts(filters);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crm\/contacts$/,
+    handler: (options) => {
+      requireSession();
+      return createCrmContact(options.body as CrmContactPayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crm\/contacts\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return getCrmContact(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crm\/companies$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: CompanyFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as CompanyFilters["sort"]),
+        dir: query.dir === "desc" ? "desc" : "asc",
+      };
+      return listCompanies(filters);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crm\/companies$/,
+    handler: (options) => {
+      requireSession();
+      return createCompany(options.body as CompanyPayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crm\/companies\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return getCompany(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crm\/deals$/,
+    handler: () => {
+      requireSession();
+      return listDeals();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crm\/deals\/(\d+)\/move$/,
+    handler: (options, params) => {
+      requireSession();
+      return moveDeal(
+        Number(params[0]),
+        (options.body as { stage: DealStage }).stage,
+      );
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/crm\/leads$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: LeadFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status:
+          query.status === undefined
+            ? undefined
+            : (String(query.status) as LeadStatus),
+        source: query.source === undefined ? undefined : String(query.source),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as LeadFilters["sort"]),
+        dir: query.dir === "desc" ? "desc" : "asc",
+      };
+      return listLeads(filters);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/crm\/leads\/(\d+)\/convert$/,
+    handler: (_options, params) => {
+      requireSession();
+      return convertLead(Number(params[0]));
     },
   },
 ];
