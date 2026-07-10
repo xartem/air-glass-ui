@@ -197,7 +197,7 @@ export function PaymentsPage() {
     {
       key: "refund",
       label: t("shop.payments.refund"),
-      icon: <Undo2 />,
+      icon: <Undo2 className="rtl:-scale-x-100" />,
       destructive: true,
       permission: "payments.refund",
       hidden: (payment) => payment.status !== "captured",

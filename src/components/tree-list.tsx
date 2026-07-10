@@ -129,7 +129,11 @@ function TreeRow({
           onClick={onToggle}
           aria-expanded={!collapsed}
         >
-          {collapsed ? <ChevronRight /> : <ChevronDown />}
+          {collapsed ? (
+            <ChevronRight className="rtl:rotate-180" />
+          ) : (
+            <ChevronDown />
+          )}
         </Button>
       ) : (
         <span className="size-6" />

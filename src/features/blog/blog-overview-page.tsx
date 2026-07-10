@@ -102,7 +102,7 @@ function CommentForm({ postId }: { postId: number }) {
       />
       <div className="flex justify-end">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : <Send className="size-4" />}
+          {isSubmitting ? <Spinner /> : <Send className="size-4 rtl:-scale-x-100" />}
           {t("blog.post.commentSubmit")}
         </Button>
       </div>
@@ -145,7 +145,7 @@ export function BlogOverviewPage() {
           {
             label: t("common.back"),
             href: "/blog/list",
-            icon: <ArrowLeft className="size-4" />,
+            icon: <ArrowLeft className="size-4 rtl:-scale-x-100" />,
           },
         ]}
       />

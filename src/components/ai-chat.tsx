@@ -867,7 +867,7 @@ export function AiChatView({
               disabled={!draft.trim() && attachments.length === 0}
               aria-label={t("ai.send")}
             >
-              <Send />
+              <Send className="rtl:-scale-x-100" />
             </Button>
           )}
         </div>

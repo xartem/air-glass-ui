@@ -59,7 +59,7 @@ export function NftLandingPage() {
             <Button size="lg" asChild>
               <Link to="/signup">
                 {t("landing.nft.hero.primary")}
-                <ArrowRight />
+                <ArrowRight className="rtl:-scale-x-100" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
@@ -197,7 +197,7 @@ export function NftLandingPage() {
         <Button size="lg" asChild>
           <Link to="/signup">
             {t("landing.nft.cta.button")}
-            <ArrowRight />
+            <ArrowRight className="rtl:-scale-x-100" />
           </Link>
         </Button>
       </section>

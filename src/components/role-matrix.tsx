@@ -198,7 +198,7 @@ function GroupRows({
           >
             <ChevronRight
               className={cn(
-                "size-4 shrink-0 transition-transform",
+                "size-4 shrink-0 transition-transform rtl:-scale-x-100",
                 !collapsed && "rotate-90",
               )}
             />

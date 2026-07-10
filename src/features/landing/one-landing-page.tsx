@@ -113,7 +113,7 @@ export function OneLandingPage() {
             <Button size="lg" asChild>
               <Link to="/signup">
                 {t("landing.one.hero.primary")}
-                <ArrowRight />
+                <ArrowRight className="rtl:-scale-x-100" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>

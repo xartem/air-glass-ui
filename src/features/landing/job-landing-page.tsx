@@ -274,7 +274,7 @@ export function JobLandingPage() {
         <Button size="lg" asChild>
           <Link to="/signup">
             {t("landing.job.cta.button")}
-            <ArrowRight />
+            <ArrowRight className="rtl:-scale-x-100" />
           </Link>
         </Button>
       </section>

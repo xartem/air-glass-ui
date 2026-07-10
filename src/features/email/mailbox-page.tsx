@@ -455,7 +455,7 @@ function ReadingPane({
 
       <div className="flex gap-2 border-t border-border/50 p-3">
         <Button variant="outline" size="sm" onClick={() => onReply(message)}>
-          <Reply /> {t("email.reply")}
+          <Reply className="rtl:-scale-x-100" /> {t("email.reply")}
         </Button>
         <Button variant="outline" size="sm" onClick={() => onReply(message)}>
           {t("email.forward")}
@@ -531,7 +531,7 @@ function ComposeDialog({
             onClick={() => onSend({ to, subject, body })}
             disabled={!to.trim() || sending}
           >
-            <Send /> {t("email.send")}
+            <Send className="rtl:-scale-x-100" /> {t("email.send")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -107,7 +107,7 @@ export function WizardDialog({
             disabled={index === 0}
             onClick={() => setIndex(index - 1)}
           >
-            <ChevronLeft />
+            <ChevronLeft className="rtl:rotate-180" />
             {t("common.back")}
           </Button>
           <div className="flex items-center gap-2">
@@ -126,7 +126,7 @@ export function WizardDialog({
             >
               {isLast ? <Check /> : null}
               {isLast ? (finishLabel ?? t("wizard.finish")) : t("wizard.next")}
-              {isLast ? null : <ChevronRight />}
+              {isLast ? null : <ChevronRight className="rtl:rotate-180" />}
             </Button>
           </div>
         </DialogFooter>

@@ -277,7 +277,9 @@ function StatCompare({
   return (
     <p className="mt-1 text-xs text-muted-foreground tabular-nums">
       {compare.from}
-      {unit} <ArrowRight className="inline size-3 align-[-1px]" /> {compare.to}
+      {unit}{" "}
+      <ArrowRight className="inline size-3 align-[-1px] rtl:-scale-x-100" />{" "}
+      {compare.to}
       {unit}
     </p>
   );
@@ -915,7 +917,7 @@ export function ListCard({
       className="mt-3 inline-flex items-center gap-1 text-sm text-primary hover:underline"
     >
       {t("dashboard.widget.view_all")}
-      <ArrowRight className="size-3.5" />
+      <ArrowRight className="size-3.5 rtl:-scale-x-100" />
     </Link>
   ) : null;
   return (

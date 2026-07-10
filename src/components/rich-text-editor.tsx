@@ -260,7 +260,7 @@ export function RichTextEditor({
           disabled={!editor.can().undo()}
           aria-label={t("richtext.undo")}
         >
-          <Undo2 className="size-4" />
+          <Undo2 className="size-4 rtl:-scale-x-100" />
         </Button>
         <Button
           variant="ghost"
@@ -269,7 +269,7 @@ export function RichTextEditor({
           disabled={!editor.can().redo()}
           aria-label={t("richtext.redo")}
         >
-          <Redo2 className="size-4" />
+          <Redo2 className="size-4 rtl:-scale-x-100" />
         </Button>
       </div>
       <EditorContent editor={editor} />

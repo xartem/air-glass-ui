@@ -50,7 +50,7 @@ export function ForgotPage() {
             <p className="text-sm text-muted-foreground">{t("forgot.sent")}</p>
             <Button variant="link" size="sm" asChild>
               <Link to="/login">
-                <ArrowLeft className="size-4" />
+                <ArrowLeft className="size-4 rtl:-scale-x-100" />
                 {t("forgot.back_to_login")}
               </Link>
             </Button>

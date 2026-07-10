@@ -65,7 +65,7 @@ export function ComponentsIndex() {
                       className="group flex items-center justify-between rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
                     >
                       <span className="truncate">{t(link.labelKey)}</span>
-                      <ChevronRight className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                      <ChevronRight className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 rtl:rotate-180" />
                     </Link>
                   ))}
                 </CardContent>

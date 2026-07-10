@@ -472,7 +472,7 @@ export function ActivityPage() {
                           <span className="rounded bg-destructive/10 px-1.5 py-0.5 break-all text-destructive">
                             {change.old ?? "—"}
                           </span>
-                          <ArrowRight className="size-3.5 shrink-0 text-muted-foreground" />
+                          <ArrowRight className="size-3.5 shrink-0 text-muted-foreground rtl:-scale-x-100" />
                           <span className="rounded bg-[var(--status-success-bg)] px-1.5 py-0.5 break-all text-[var(--status-success-fg)]">
                             {change.new ?? "—"}
                           </span>

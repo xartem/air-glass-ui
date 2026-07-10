@@ -90,7 +90,7 @@ export function EditorLayout({
             aria-label={t("common.back")}
           >
             <Link to={back.href}>
-              <ChevronLeft />
+              <ChevronLeft className="rtl:rotate-180" />
             </Link>
           </Button>
           <h1 className="truncate text-2xl font-semibold tracking-tight">

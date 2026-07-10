@@ -70,7 +70,7 @@ export function ButtonsPage() {
         </Button>
         <Button variant="outline">
           Continue
-          <ArrowRight />
+          <ArrowRight className="rtl:-scale-x-100" />
         </Button>
         <Button variant="destructive-filled">
           <Trash2 />

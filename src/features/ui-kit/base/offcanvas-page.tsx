@@ -102,7 +102,7 @@ export function OffcanvasPage() {
         <Sheet>
           <SheetTrigger asChild>
             <Button>
-              <PanelRight />
+              <PanelRight className="rtl:-scale-x-100" />
               {t("showcase.base.offcanvas.openSheet")}
             </Button>
           </SheetTrigger>
