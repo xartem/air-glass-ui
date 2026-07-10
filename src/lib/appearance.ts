@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   api,
+  type AppearanceLayout,
   type AppearanceSettings,
   type AppearanceStyle,
   type AppearanceTokens,
@@ -16,6 +17,15 @@ import {
  */
 
 export const APPEARANCE_STYLES: AppearanceStyle[] = ["glass", "liquid", "flat"];
+
+/** Shell chrome arrangements. `vertical` is the default sidebar shell; the rest re-chrome app-shell. */
+export const APPEARANCE_LAYOUTS: AppearanceLayout[] = [
+  "vertical",
+  "horizontal",
+  "detached",
+  "two-column",
+  "hovered",
+];
 
 /** Sensible token starting point per style — used on style switch and by the quick toggle. */
 export const STYLE_BASELINES: Record<
@@ -45,6 +55,9 @@ export function applyAppearance(a: AppearanceSettings): void {
   // Layout dimensions (density / content width) — CSS in index.css keys off these attrs.
   root.dataset.density = a.density;
   root.dataset.contentWidth = a.contentWidth;
+  // Shell chrome arrangement — app-shell.tsx branches on this; kept on <html> so the
+  // choice survives across the SPA and demo routes can flip it via the appearance store.
+  root.dataset.layout = a.layout;
 
   const s = root.style;
   s.setProperty("--glass-blur-sidebar", `${a.tokens.blur}px`);
@@ -112,6 +125,9 @@ export function useAppearance() {
     // style override only previews the skin, never the direction. Consumed by the
     // global Radix DirectionProvider so overlays mirror in RTL, not just CSS logicals.
     dir: site?.dir ?? "ltr",
+    // Effective shell chrome, defaulting to the vertical sidebar until the query resolves.
+    // Consumed by app-shell.tsx to branch the layout; a style override never touches it.
+    layout: site?.layout ?? "vertical",
     cycleStyle,
     clearOverride,
   };

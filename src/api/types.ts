@@ -256,6 +256,17 @@ export type AppearanceDir = "ltr" | "rtl";
 export type AppearanceDensity = "comfortable" | "compact";
 /** Main content sizing: fluid (full width, default) or boxed (centered, max-width). */
 export type AppearanceContentWidth = "fluid" | "boxed";
+/**
+ * Shell chrome arrangement, reflected onto `<html data-layout>`. The single `nav.ts`
+ * stays the source — only `app-shell.tsx` rendering changes. `vertical` (default) is the
+ * current sidebar shell; below `lg` every variant collapses to the burger drawer.
+ */
+export type AppearanceLayout =
+  | "vertical"
+  | "horizontal"
+  | "detached"
+  | "two-column"
+  | "hovered";
 
 /** Theme-agnostic fine-tune knobs injected as CSS-var overrides on :root. */
 export interface AppearanceTokens {
@@ -282,6 +293,8 @@ export interface AppearanceSettings {
   density: AppearanceDensity;
   /** Main content sizing; reflected onto `<html data-content-width>` (boxed = centered). */
   contentWidth: AppearanceContentWidth;
+  /** Shell chrome arrangement; reflected onto `<html data-layout>` and branched in app-shell. */
+  layout: AppearanceLayout;
   tokens: AppearanceTokens;
 }
 

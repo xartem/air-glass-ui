@@ -4,6 +4,7 @@ import type {
   AppearanceContentWidth,
   AppearanceDensity,
   AppearanceDir,
+  AppearanceLayout,
   AppearanceSettings,
   AppearanceStyle,
 } from "../types";
@@ -20,6 +21,13 @@ const BGS: AppearanceBg[] = ["air", "aurora", "calm", "plain", "custom"];
 const DIRS: AppearanceDir[] = ["ltr", "rtl"];
 const DENSITIES: AppearanceDensity[] = ["comfortable", "compact"];
 const CONTENT_WIDTHS: AppearanceContentWidth[] = ["fluid", "boxed"];
+const LAYOUTS: AppearanceLayout[] = [
+  "vertical",
+  "horizontal",
+  "detached",
+  "two-column",
+  "hovered",
+];
 
 export const APPEARANCE_DEFAULTS: AppearanceSettings = {
   style: "glass",
@@ -30,6 +38,7 @@ export const APPEARANCE_DEFAULTS: AppearanceSettings = {
   customDark: null,
   density: "comfortable",
   contentWidth: "fluid",
+  layout: "vertical",
   // glass baseline (matches the locked "Light Air Glass" recipe)
   // accent deepened from #1d8df2 → #176dbd for WCAG AA: it drives --primary at
   // runtime (see lib/appearance.ts), so white button text, links and the accent
@@ -55,6 +64,9 @@ function readStore(): AppearanceSettings {
       )
         ? (stored.contentWidth as AppearanceContentWidth)
         : APPEARANCE_DEFAULTS.contentWidth,
+      layout: LAYOUTS.includes(stored.layout as AppearanceLayout)
+        ? (stored.layout as AppearanceLayout)
+        : APPEARANCE_DEFAULTS.layout,
       tokens: { ...APPEARANCE_DEFAULTS.tokens, ...stored.tokens },
     };
   } catch {
@@ -89,6 +101,8 @@ export function saveAppearance(body: unknown): { ok: true } {
     !CONTENT_WIDTHS.includes(input.contentWidth)
   )
     fields.contentWidth = "Unknown content width";
+  if (input.layout !== undefined && !LAYOUTS.includes(input.layout))
+    fields.layout = "Unknown layout";
   if (input.tokens?.accent !== undefined && !HEX.test(input.tokens.accent))
     fields.accent = "Expected #rrggbb";
   if (input.bgLight === "custom" && !input.customLight)
@@ -110,6 +124,7 @@ export function saveAppearance(body: unknown): { ok: true } {
     customDark: input.customDark ?? current.customDark,
     density: input.density ?? current.density,
     contentWidth: input.contentWidth ?? current.contentWidth,
+    layout: input.layout ?? current.layout,
     tokens: {
       blur: clamp(Math.round(t.blur ?? current.tokens.blur), 0, 48),
       radius: clamp(Math.round(t.radius ?? current.tokens.radius), 6, 24),

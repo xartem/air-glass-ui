@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   ChevronDown,
   Droplet,
   ExternalLink,
   Globe,
+  LayoutGrid,
   LogOut,
   Menu,
   Moon,
@@ -21,11 +22,13 @@ import {
 } from "lucide-react";
 import { NavLink, Outlet, useLocation } from "react-router";
 
-import { api } from "@/api";
+import { api, type AppearanceStyle } from "@/api";
 import {
   buildNavGroups,
   isNavParent,
   type NavEntry,
+  type NavGroup,
+  type NavIcon,
   type NavItem,
   type NavParent,
 } from "@/app/nav";
@@ -223,6 +226,24 @@ function filterEntry(
   return children.length > 0 ? { ...entry, children } : null;
 }
 
+/** The permission-filtered nav groups — shared by every layout variant (sidebar, rail, top bar). */
+function filterGroups(can: (perm?: string) => boolean): NavGroup[] {
+  return buildNavGroups()
+    .map((group) => ({
+      ...group,
+      items: group.items
+        .map((entry) => filterEntry(entry, can))
+        .filter((entry): entry is NavEntry => entry !== null),
+    }))
+    .filter((group) => group.items.length > 0);
+}
+
+/** Icon standing in for a whole group in the two-column rail — the group's first entry icon. */
+function groupIcon(group: NavGroup): NavIcon {
+  const [first] = group.items;
+  return first?.icon ?? LayoutGrid;
+}
+
 function SidebarLeaf({
   item,
   collapsed,
@@ -404,9 +425,12 @@ function SidebarParent({
 function SidebarNav({
   collapsed = false,
   onNavigate,
+  groups: groupsProp,
 }: {
   collapsed?: boolean;
   onNavigate?: () => void;
+  /** Restrict the tree to a pre-filtered subset (two-column secondary panel); defaults to all groups. */
+  groups?: NavGroup[];
 }) {
   const can = usePermissionChecker();
   const { pathname } = useLocation();
@@ -416,14 +440,7 @@ function SidebarNav({
     useState<Record<string, GroupOverride>>(readParentOverrides);
 
   // RBAC filter (recursive): leaves drop by permission; a parent with no permitted descendants disappears.
-  const groups = buildNavGroups()
-    .map((group) => ({
-      ...group,
-      items: group.items
-        .map((entry) => filterEntry(entry, can))
-        .filter((entry): entry is NavEntry => entry !== null),
-    }))
-    .filter((group) => group.items.length > 0);
+  const groups = groupsProp ?? filterGroups(can);
 
   const activeTo = resolveActiveTo(groups, pathname);
 
@@ -496,10 +513,14 @@ function SidebarNav({
   }
 
   // Accordion default: only the active route's group (and the tiny "main") is open.
+  // A lone group (the two-column secondary panel) always defaults open — there is
+  // nothing to accordion against.
   const isGroupOpen = (key: string): boolean =>
-    (overrides[key] ??
-      (key === activeGroupKey || key === "main" ? "open" : "closed")) ===
-    "open";
+    groups.length === 1
+      ? (overrides[key] ?? "open") === "open"
+      : (overrides[key] ??
+          (key === activeGroupKey || key === "main" ? "open" : "closed")) ===
+        "open";
 
   // Navigating into a manually-closed group re-opens it (drop the override, keep others).
   useEffect(() => {
@@ -714,31 +735,464 @@ function useDarkMode() {
   return { dark, toggle: () => setDark((value) => !value) };
 }
 
-export function AppShell() {
+/** Filtered nav + active-route resolution, shared by the horizontal bar and the two-column rail. */
+function useActiveNav() {
+  const can = usePermissionChecker();
+  const { pathname } = useLocation();
+  const groups = filterGroups(can);
+  const activeTo = resolveActiveTo(groups, pathname);
+  const activeGroupKey = groups.find((group) =>
+    group.items.some((entry) =>
+      collectLeaves(entry).some((leaf) => leaf.to === activeTo),
+    ),
+  )?.key;
+  return { groups, activeTo, activeGroupKey };
+}
+
+/** Compact brand shown in the topbar for the header-first layouts (horizontal / detached). */
+function HeaderBrand() {
+  return (
+    <div className="hidden items-center gap-2 pe-1 lg:flex">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground">
+        U
+      </span>
+      <span className="text-sm font-semibold">{t("shell.brand")}</span>
+    </div>
+  );
+}
+
+/** The burger + slide-in nav drawer — the shared below-`lg` navigation for every layout. */
+function MobileNavSheet() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="lg:hidden"
+          aria-label={t("shell.brand")}
+        >
+          <Menu />
+        </Button>
+      </SheetTrigger>
+      {/* Full width on phones; capped from sm up */}
+      <SheetContent
+        side="left"
+        className="flex flex-col p-3 data-[side=left]:w-full data-[side=left]:sm:max-w-sm"
+      >
+        <SheetTitle className="sr-only">{t("shell.brand")}</SheetTitle>
+        <Brand />
+        <SidebarNav onNavigate={() => setOpen(false)} />
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+/** Right-aligned topbar cluster (E5): notifications, AI, locale, skin, theme, open-site, user. */
+function TopbarControls({
+  dark,
+  onToggleDark,
+  effectiveStyle,
+  onCycleStyle,
+}: {
+  dark: boolean;
+  onToggleDark: () => void;
+  effectiveStyle: AppearanceStyle;
+  onCycleStyle: () => void;
+}) {
   const locale = useLocale();
   const { me, logout } = useAuth();
-  const { dark, toggle } = useDarkMode();
-  // Site-wide appearance (E1 §2.2.1) applied to <html>; topbar button quick-cycles the style.
-  // clearOverride lets the Theme Customizer drop the transient style preview on commit.
-  // dir feeds the Radix DirectionProvider so overlays (menus, selects, sliders) mirror in RTL.
-  const { effectiveStyle, dir, cycleStyle, clearOverride } = useAppearance();
-  const meshRef = useMeshParallax();
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(
-    () => localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "1",
-  );
-
   const unreadQuery = useQuery({
     queryKey: ["notifications", "unread-count"],
     queryFn: api.notifications.unreadCount,
   });
   const unread = unreadQuery.data?.count ?? 0;
 
+  return (
+    <div className="ms-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
+      <NotificationsMenu
+        initialItems={Array.from({ length: unread }, (_, index) => ({
+          id: `unread-${index}`,
+          title: t("bell.placeholder"),
+          time: "",
+          read: false,
+        }))}
+      />
+      <AiPanel />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="sm:w-auto sm:gap-2 sm:px-3"
+            aria-label={LOCALE_NAMES[locale]}
+          >
+            <Globe />
+            <span className="hidden sm:inline">{LOCALE_NAMES[locale]}</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuRadioGroup
+            value={locale}
+            onValueChange={(value) => setLocale(value as AdminLocale)}
+          >
+            {ADMIN_LOCALES.map((code) => (
+              <DropdownMenuRadioItem key={code} value={code}>
+                {LOCALE_NAMES[code]}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onCycleStyle}
+        aria-label={t("shell.skin")}
+        title={t("shell.skin")}
+      >
+        {effectiveStyle === "liquid" ? (
+          <Sparkles />
+        ) : effectiveStyle === "flat" ? (
+          <Square />
+        ) : (
+          <Droplet />
+        )}
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onToggleDark}
+        aria-label={t("shell.theme")}
+      >
+        {dark ? <Sun /> : <Moon />}
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        className="max-sm:size-[32px] max-sm:px-0"
+        aria-label={t("shell.openSite")}
+        asChild
+      >
+        <a href="/" target="_blank" rel="noopener">
+          <ExternalLink />
+          <span className="hidden md:inline">{t("shell.openSite")}</span>
+        </a>
+      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" aria-label={t("shell.profile")}>
+            <User />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>
+            <span className="block">{me.user.name}</span>
+            <span className="block text-xs font-normal text-muted-foreground">
+              {me.user.role.label}
+            </span>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <NavLink to="/profile">
+              <UserCircle />
+              {t("shell.profile")}
+            </NavLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => void logout()}>
+            <LogOut />
+            {t("shell.logout")}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
+
+/** The glass topbar (E5). `leading` injects the brand for the sidebar-less layouts. */
+function ShellHeader({
+  dark,
+  onToggleDark,
+  effectiveStyle,
+  onCycleStyle,
+  leading,
+}: {
+  dark: boolean;
+  onToggleDark: () => void;
+  effectiveStyle: AppearanceStyle;
+  onCycleStyle: () => void;
+  leading?: ReactNode;
+}) {
+  return (
+    <header className="glass-header sticky top-2 z-10 m-2 mb-0 flex items-center gap-1.5 rounded-2xl border p-2 sm:top-4 sm:m-4 sm:mb-0 sm:gap-2">
+      <MobileNavSheet />
+      {leading}
+      {/* Search field-styled trigger ≥md; an icon below md — both open the ⌘K palette */}
+      <CommandPaletteTrigger className="hidden flex-1 md:flex md:max-w-md" />
+      <MobilePaletteButton />
+      <TopbarControls
+        dark={dark}
+        onToggleDark={onToggleDark}
+        effectiveStyle={effectiveStyle}
+        onCycleStyle={onCycleStyle}
+      />
+    </header>
+  );
+}
+
+/** `.app-main` is the stable hook for the boxed content-width rule (index.css). */
+function MainOutlet({
+  className,
+  padded = true,
+}: {
+  className?: string;
+  padded?: boolean;
+}) {
+  return (
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className={cn(
+        "app-main min-w-0 flex-1 outline-none",
+        padded && "p-3 sm:p-4 md:p-6",
+        className,
+      )}
+    >
+      <Outlet />
+    </main>
+  );
+}
+
+/** Default vertical shell: full-height glass sidebar, collapsible to an icon rail. */
+function VerticalSidebar() {
+  const [collapsed, setCollapsed] = useState(
+    () => localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "1",
+  );
   function toggleCollapsed() {
     setCollapsed((value) => {
       localStorage.setItem(SIDEBAR_COLLAPSED_KEY, value ? "" : "1");
       return !value;
     });
+  }
+  return (
+    <aside
+      data-collapsed={collapsed}
+      className={cn(
+        "glass-panel group/sidebar sticky top-4 m-4 me-0 hidden h-[calc(100vh-2rem)] shrink-0 flex-col rounded-2xl p-3 transition-[width] lg:flex",
+        collapsed ? "w-16 items-stretch" : "w-60",
+      )}
+    >
+      <Brand />
+      <SidebarNav collapsed={collapsed} />
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleCollapsed}
+        aria-label={t(
+          collapsed ? "shell.sidebar_expand" : "shell.sidebar_collapse",
+        )}
+        className={cn("mt-2", collapsed ? "self-center" : "self-end")}
+      >
+        {/* Sidebar-collapse icons imply a start-docked panel; mirror under RTL. */}
+        {collapsed ? (
+          <PanelLeftOpen className="rtl:-scale-x-100" />
+        ) : (
+          <PanelLeftClose className="rtl:-scale-x-100" />
+        )}
+      </Button>
+    </aside>
+  );
+}
+
+/**
+ * Hovered variant: collapsed to icons, expands on pointer hover AND keyboard focus-within
+ * (a11y — never hover-only). `onFocus`/`onBlur` bubble, so tabbing into any link expands it.
+ */
+function HoverSidebar() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- hover only reveals labels; the nav stays fully keyboard-operable via focus-within (onFocus/onBlur), so the pointer handlers are pure progressive enhancement
+    <aside
+      data-collapsed={!expanded}
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+      onFocus={() => setExpanded(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null))
+          setExpanded(false);
+      }}
+      className={cn(
+        "glass-panel group/sidebar sticky top-4 m-4 me-0 hidden h-[calc(100vh-2rem)] shrink-0 flex-col rounded-2xl p-3 transition-[width] lg:flex",
+        expanded ? "w-60" : "w-16 items-stretch",
+      )}
+    >
+      <Brand />
+      <SidebarNav collapsed={!expanded} />
+    </aside>
+  );
+}
+
+/** Detached variant: a floating sidebar card that sits inside the boxed content row. */
+function DetachedSidebar() {
+  return (
+    <aside className="glass-panel sticky top-24 hidden h-[calc(100vh-8rem)] w-60 shrink-0 flex-col rounded-2xl p-3 lg:flex">
+      <SidebarNav />
+    </aside>
+  );
+}
+
+/**
+ * Two-column variant: a narrow icon rail of top-level groups + a secondary panel showing the
+ * selected group's tree. The rail follows the active route until the user picks a group.
+ */
+function TwoColumnNav() {
+  const { groups, activeGroupKey } = useActiveNav();
+  const [selected, setSelected] = useState<string | undefined>(activeGroupKey);
+  const userPicked = useRef(false);
+  // Follow the active route's group unless the user has manually selected another rail entry.
+  useEffect(() => {
+    if (!userPicked.current) setSelected(activeGroupKey);
+  }, [activeGroupKey]);
+  const current =
+    groups.find((group) => group.key === (selected ?? activeGroupKey)) ??
+    groups[0];
+  return (
+    <>
+      <aside className="glass-panel sticky top-4 m-4 me-0 hidden h-[calc(100vh-2rem)] w-16 shrink-0 flex-col items-center gap-1 rounded-2xl p-2 lg:flex">
+        <span className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground">
+          U
+        </span>
+        {groups.map((group) => {
+          const Icon = groupIcon(group);
+          const active = group.key === current?.key;
+          return (
+            <Tooltip key={group.key}>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label={group.label}
+                  aria-pressed={active}
+                  onClick={() => {
+                    userPicked.current = true;
+                    setSelected(group.key);
+                  }}
+                  className={cn(
+                    "flex size-10 items-center justify-center rounded-lg transition-colors",
+                    active
+                      ? "nav-item-active"
+                      : "text-sidebar-foreground hover:bg-muted hover:text-foreground",
+                  )}
+                >
+                  <Icon className="size-5" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right">{group.label}</TooltipContent>
+            </Tooltip>
+          );
+        })}
+      </aside>
+      <aside className="glass-panel sticky top-4 m-4 me-0 hidden h-[calc(100vh-2rem)] w-56 shrink-0 flex-col rounded-2xl p-3 lg:flex">
+        {current ? <SidebarNav groups={[current]} /> : null}
+      </aside>
+    </>
+  );
+}
+
+/** Horizontal variant: a top menu bar of groups (dropdowns for their trees). Desktop only. */
+function HorizontalNav() {
+  const { groups, activeGroupKey } = useActiveNav();
+  return (
+    <nav
+      aria-label={t("shell.nav_label")}
+      className="glass-panel mx-2 mt-2 hidden flex-wrap items-center gap-0.5 rounded-2xl border px-2 py-1.5 sm:mx-4 lg:flex"
+    >
+      {groups.map((group) => (
+        <DropdownMenu key={group.key}>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className={cn(
+                "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors",
+                group.key === activeGroupKey
+                  ? "nav-item-active font-medium"
+                  : "text-sidebar-foreground hover:bg-muted hover:text-foreground",
+              )}
+            >
+              {group.label}
+              <ChevronDown className="size-3" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            className="max-h-[70vh] overflow-y-auto"
+          >
+            <RailMenuItems entries={group.items} />
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ))}
+    </nav>
+  );
+}
+
+export function AppShell() {
+  const { dark, toggle } = useDarkMode();
+  // Site-wide appearance (E1 §2.2.1) applied to <html>; topbar button quick-cycles the style.
+  // clearOverride lets the Theme Customizer drop the transient style preview on commit.
+  // dir feeds the Radix DirectionProvider so overlays (menus, selects, sliders) mirror in RTL.
+  // layout selects the shell chrome; below `lg` every variant is the burger drawer.
+  const { effectiveStyle, dir, cycleStyle, clearOverride, layout } =
+    useAppearance();
+  const meshRef = useMeshParallax();
+
+  const headerProps = {
+    dark,
+    onToggleDark: toggle,
+    effectiveStyle,
+    onCycleStyle: cycleStyle,
+  };
+
+  let chrome: ReactNode;
+  if (layout === "horizontal") {
+    chrome = (
+      <div className="flex min-w-0 flex-1 flex-col">
+        <ShellHeader {...headerProps} leading={<HeaderBrand />} />
+        <HorizontalNav />
+        <ShellBanners />
+        <MainOutlet />
+      </div>
+    );
+  } else if (layout === "detached") {
+    chrome = (
+      <div className="flex min-w-0 flex-1 flex-col">
+        <ShellHeader {...headerProps} leading={<HeaderBrand />} />
+        <ShellBanners />
+        <div className="mx-auto flex w-full max-w-[88rem] gap-4 px-2 pb-2 sm:px-4">
+          <DetachedSidebar />
+          <MainOutlet padded={false} className="py-3 sm:py-4 md:py-6" />
+        </div>
+      </div>
+    );
+  } else {
+    // vertical | hovered | two-column: an outer sidebar/rail beside the standard content column.
+    const sidebar =
+      layout === "hovered" ? (
+        <HoverSidebar />
+      ) : layout === "two-column" ? (
+        <TwoColumnNav />
+      ) : (
+        <VerticalSidebar />
+      );
+    chrome = (
+      <>
+        {sidebar}
+        <div className="flex min-w-0 flex-1 flex-col">
+          <ShellHeader {...headerProps} />
+          <ShellBanners />
+          <MainOutlet />
+        </div>
+      </>
+    );
   }
 
   return (
@@ -766,181 +1220,7 @@ export function AppShell() {
         />
         <GlobalProgress />
 
-        {/* Sidebar (glass, blur 28) — desktop only; below lg it lives in the burger Sheet */}
-        <aside
-          data-collapsed={collapsed}
-          className={cn(
-            "glass-panel group/sidebar sticky top-4 m-4 me-0 hidden h-[calc(100vh-2rem)] shrink-0 flex-col rounded-2xl p-3 transition-[width] lg:flex",
-            collapsed ? "w-16 items-stretch" : "w-60",
-          )}
-        >
-          <Brand />
-          <SidebarNav collapsed={collapsed} />
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleCollapsed}
-            aria-label={t(
-              collapsed ? "shell.sidebar_expand" : "shell.sidebar_collapse",
-            )}
-            className={cn("mt-2", collapsed ? "self-center" : "self-end")}
-          >
-            {/* Sidebar-collapse icons imply a start-docked panel; mirror under RTL. */}
-            {collapsed ? (
-              <PanelLeftOpen className="rtl:-scale-x-100" />
-            ) : (
-              <PanelLeftClose className="rtl:-scale-x-100" />
-            )}
-          </Button>
-        </aside>
-
-        <div className="flex min-w-0 flex-1 flex-col">
-          {/* Topbar (glass, blur 26): burger (mobile), search, bell, AI, UI locale, theme,
-            open site, user (E5). p-2 keeps the search inset equal on top/bottom/left. */}
-          <header className="glass-header sticky top-2 z-10 m-2 mb-0 flex items-center gap-1.5 rounded-2xl border p-2 sm:top-4 sm:m-4 sm:mb-0 sm:gap-2">
-            <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="lg:hidden"
-                  aria-label={t("shell.brand")}
-                >
-                  <Menu />
-                </Button>
-              </SheetTrigger>
-              {/* Full width on phones; capped from sm up */}
-              <SheetContent
-                side="left"
-                className="flex flex-col p-3 data-[side=left]:w-full data-[side=left]:sm:max-w-sm"
-              >
-                <SheetTitle className="sr-only">{t("shell.brand")}</SheetTitle>
-                <Brand />
-                <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
-              </SheetContent>
-            </Sheet>
-
-            {/* Search field-styled trigger ≥md; an icon below md — both open the ⌘K palette */}
-            <CommandPaletteTrigger className="hidden flex-1 md:flex md:max-w-md" />
-            <MobilePaletteButton />
-            <div className="ms-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
-              <NotificationsMenu
-                initialItems={Array.from({ length: unread }, (_, index) => ({
-                  id: `unread-${index}`,
-                  title: t("bell.placeholder"),
-                  time: "",
-                  read: false,
-                }))}
-              />
-              <AiPanel />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="sm:w-auto sm:gap-2 sm:px-3"
-                    aria-label={LOCALE_NAMES[locale]}
-                  >
-                    <Globe />
-                    <span className="hidden sm:inline">
-                      {LOCALE_NAMES[locale]}
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuRadioGroup
-                    value={locale}
-                    onValueChange={(value) => setLocale(value as AdminLocale)}
-                  >
-                    {ADMIN_LOCALES.map((code) => (
-                      <DropdownMenuRadioItem key={code} value={code}>
-                        {LOCALE_NAMES[code]}
-                      </DropdownMenuRadioItem>
-                    ))}
-                  </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={cycleStyle}
-                aria-label={t("shell.skin")}
-                title={t("shell.skin")}
-              >
-                {effectiveStyle === "liquid" ? (
-                  <Sparkles />
-                ) : effectiveStyle === "flat" ? (
-                  <Square />
-                ) : (
-                  <Droplet />
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggle}
-                aria-label={t("shell.theme")}
-              >
-                {dark ? <Sun /> : <Moon />}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="max-sm:size-[32px] max-sm:px-0"
-                aria-label={t("shell.openSite")}
-                asChild
-              >
-                <a href="/" target="_blank" rel="noopener">
-                  <ExternalLink />
-                  <span className="hidden md:inline">
-                    {t("shell.openSite")}
-                  </span>
-                </a>
-              </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={t("shell.profile")}
-                  >
-                    <User />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>
-                    <span className="block">{me.user.name}</span>
-                    <span className="block text-xs font-normal text-muted-foreground">
-                      {me.user.role.label}
-                    </span>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <NavLink to="/profile">
-                      <UserCircle />
-                      {t("shell.profile")}
-                    </NavLink>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => void logout()}>
-                    <LogOut />
-                    {t("shell.logout")}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </header>
-
-          <ShellBanners />
-
-          {/* .app-main is the stable hook for the boxed content-width rule (index.css). */}
-          <main
-            id="main-content"
-            tabIndex={-1}
-            className="app-main min-w-0 flex-1 p-3 outline-none sm:p-4 md:p-6"
-          >
-            <Outlet />
-          </main>
-        </div>
+        {chrome}
 
         {/* Theme Customizer (W0.5): global drawer reachable from every screen via a floating
           trigger. Dark mode is shared (not forked) so the topbar sun/moon stays in sync;
