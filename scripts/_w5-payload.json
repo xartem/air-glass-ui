@@ -1,0 +1,42 @@
+{
+  "en": {
+    "showcase.base.buttons.title": "Buttons",
+    "showcase.base.buttons.desc": "Button variants, sizes, icon layouts and interactive states.",
+    "showcase.base.buttons.states_note": "Disabled buttons are non-interactive and skipped by the keyboard; pair a spinner with disabled to signal an in-flight action."
+  },
+  "de": {
+    "showcase.base.buttons.title": "Schaltflächen",
+    "showcase.base.buttons.desc": "Schaltflächen-Varianten, -Größen, Symbol-Layouts und interaktive Zustände.",
+    "showcase.base.buttons.states_note": "Deaktivierte Schaltflächen sind nicht interaktiv und werden von der Tastatur übersprungen; kombinieren Sie einen Spinner mit „deaktiviert“, um eine laufende Aktion zu signalisieren."
+  },
+  "es": {
+    "showcase.base.buttons.title": "Botones",
+    "showcase.base.buttons.desc": "Variantes, tamaños, diseños con icono y estados interactivos de los botones.",
+    "showcase.base.buttons.states_note": "Los botones deshabilitados no son interactivos y el teclado los omite; combina un spinner con «deshabilitado» para indicar una acción en curso."
+  },
+  "fr": {
+    "showcase.base.buttons.title": "Boutons",
+    "showcase.base.buttons.desc": "Variantes, tailles, dispositions avec icône et états interactifs des boutons.",
+    "showcase.base.buttons.states_note": "Les boutons désactivés ne sont pas interactifs et sont ignorés au clavier ; associez un spinner à l'état désactivé pour signaler une action en cours."
+  },
+  "it": {
+    "showcase.base.buttons.title": "Pulsanti",
+    "showcase.base.buttons.desc": "Varianti, dimensioni, layout con icona e stati interattivi dei pulsanti.",
+    "showcase.base.buttons.states_note": "I pulsanti disabilitati non sono interattivi e vengono saltati dalla tastiera; abbina uno spinner allo stato disabilitato per segnalare un'azione in corso."
+  },
+  "pl": {
+    "showcase.base.buttons.title": "Przyciski",
+    "showcase.base.buttons.desc": "Warianty, rozmiary, układy z ikoną i stany interaktywne przycisków.",
+    "showcase.base.buttons.states_note": "Wyłączone przyciski są nieinteraktywne i pomijane przez klawiaturę; połącz spinner ze stanem wyłączonym, aby zasygnalizować trwającą akcję."
+  },
+  "ru": {
+    "showcase.base.buttons.title": "Кнопки",
+    "showcase.base.buttons.desc": "Варианты, размеры, макеты с иконкой и интерактивные состояния кнопок.",
+    "showcase.base.buttons.states_note": "Отключённые кнопки неинтерактивны и пропускаются при навигации с клавиатуры; сочетайте спиннер с состоянием «отключено», чтобы обозначить выполняемое действие."
+  },
+  "uk": {
+    "showcase.base.buttons.title": "Кнопки",
+    "showcase.base.buttons.desc": "Варіанти, розміри, макети з іконкою та інтерактивні стани кнопок.",
+    "showcase.base.buttons.states_note": "Вимкнені кнопки неінтерактивні й пропускаються під час навігації з клавіатури; поєднуйте спінер зі станом «вимкнено», щоб позначити дію, що виконується."
+  }
+}

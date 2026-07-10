@@ -2652,5 +2652,8 @@
   "showcase.tour.prev": "Wstecz",
   "showcase.tour.next": "Dalej",
   "showcase.tour.finish": "Zakończ",
-  "showcase.tour.step": "Krok {current} z {total}"
+  "showcase.tour.step": "Krok {current} z {total}",
+  "showcase.base.buttons.title": "Przyciski",
+  "showcase.base.buttons.desc": "Warianty, rozmiary, układy z ikoną i stany interaktywne przycisków.",
+  "showcase.base.buttons.states_note": "Wyłączone przyciski są nieinteraktywne i pomijane przez klawiaturę; połącz spinner ze stanem wyłączonym, aby zasygnalizować trwającą akcję."
 }

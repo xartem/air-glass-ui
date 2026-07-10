@@ -2652,5 +2652,8 @@
   "showcase.tour.prev": "Zurück",
   "showcase.tour.next": "Weiter",
   "showcase.tour.finish": "Fertig",
-  "showcase.tour.step": "Schritt {current} von {total}"
+  "showcase.tour.step": "Schritt {current} von {total}",
+  "showcase.base.buttons.title": "Schaltflächen",
+  "showcase.base.buttons.desc": "Schaltflächen-Varianten, -Größen, Symbol-Layouts und interaktive Zustände.",
+  "showcase.base.buttons.states_note": "Deaktivierte Schaltflächen sind nicht interaktiv und werden von der Tastatur übersprungen; kombinieren Sie einen Spinner mit „deaktiviert“, um eine laufende Aktion zu signalisieren."
 }

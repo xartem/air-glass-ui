@@ -167,6 +167,13 @@ const uiKitPage = () =>
       default: m.UiKitPage,
     })),
   );
+// W5 component showcase pages (static, authenticated-only, no perm gate).
+const baseButtonsPage = () =>
+  lazyPage(() =>
+    import("@/features/ui-kit/base/buttons-page").then((m) => ({
+      default: m.ButtonsPage,
+    })),
+  );
 const userEditorPage = () =>
   lazyPage(() =>
     import("@/features/users/user-editor-page").then((m) => ({
@@ -819,6 +826,8 @@ export const router = createBrowserRouter(
         { path: "/help", element: helpPage() },
         { path: "/help/:module/:page", element: helpPage() },
         { path: "/ui-kit", element: uiKitPage() },
+        // W5 — Components showcase (any authenticated user, no perm gate).
+        { path: "/components/base/buttons", element: baseButtonsPage() },
         {
           path: "/users",
           element: (

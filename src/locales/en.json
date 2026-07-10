@@ -2652,5 +2652,8 @@
   "showcase.tour.prev": "Back",
   "showcase.tour.next": "Next",
   "showcase.tour.finish": "Finish",
-  "showcase.tour.step": "Step {current} of {total}"
+  "showcase.tour.step": "Step {current} of {total}",
+  "showcase.base.buttons.title": "Buttons",
+  "showcase.base.buttons.desc": "Button variants, sizes, icon layouts and interactive states.",
+  "showcase.base.buttons.states_note": "Disabled buttons are non-interactive and skipped by the keyboard; pair a spinner with disabled to signal an in-flight action."
 }

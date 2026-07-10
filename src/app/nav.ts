@@ -604,7 +604,13 @@ export function buildNavGroups(): NavGroup[] {
           key: "components.base",
           label: t("nav.components.base"),
           icon: Shapes,
-          children: [],
+          children: [
+            {
+              to: "/components/base/buttons",
+              label: t("showcase.base.buttons.title"),
+              icon: Shapes,
+            },
+          ],
         },
         {
           key: "components.advance",

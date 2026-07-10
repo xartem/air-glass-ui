@@ -2652,5 +2652,8 @@
   "showcase.tour.prev": "Indietro",
   "showcase.tour.next": "Avanti",
   "showcase.tour.finish": "Fine",
-  "showcase.tour.step": "Passaggio {current} di {total}"
+  "showcase.tour.step": "Passaggio {current} di {total}",
+  "showcase.base.buttons.title": "Pulsanti",
+  "showcase.base.buttons.desc": "Varianti, dimensioni, layout con icona e stati interattivi dei pulsanti.",
+  "showcase.base.buttons.states_note": "I pulsanti disabilitati non sono interattivi e vengono saltati dalla tastiera; abbina uno spinner allo stato disabilitato per segnalare un'azione in corso."
 }

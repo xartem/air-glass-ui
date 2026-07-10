@@ -2652,5 +2652,8 @@
   "showcase.tour.prev": "Назад",
   "showcase.tour.next": "Далі",
   "showcase.tour.finish": "Готово",
-  "showcase.tour.step": "Крок {current} з {total}"
+  "showcase.tour.step": "Крок {current} з {total}",
+  "showcase.base.buttons.title": "Кнопки",
+  "showcase.base.buttons.desc": "Варіанти, розміри, макети з іконкою та інтерактивні стани кнопок.",
+  "showcase.base.buttons.states_note": "Вимкнені кнопки неінтерактивні й пропускаються під час навігації з клавіатури; поєднуйте спінер зі станом «вимкнено», щоб позначити дію, що виконується."
 }

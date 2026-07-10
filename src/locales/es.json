@@ -2652,5 +2652,8 @@
   "showcase.tour.prev": "Atrás",
   "showcase.tour.next": "Siguiente",
   "showcase.tour.finish": "Finalizar",
-  "showcase.tour.step": "Paso {current} de {total}"
+  "showcase.tour.step": "Paso {current} de {total}",
+  "showcase.base.buttons.title": "Botones",
+  "showcase.base.buttons.desc": "Variantes, tamaños, diseños con icono y estados interactivos de los botones.",
+  "showcase.base.buttons.states_note": "Los botones deshabilitados no son interactivos y el teclado los omite; combina un spinner con «deshabilitado» para indicar una acción en curso."
 }

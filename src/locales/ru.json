@@ -2652,5 +2652,8 @@
   "showcase.tour.prev": "Назад",
   "showcase.tour.next": "Далее",
   "showcase.tour.finish": "Готово",
-  "showcase.tour.step": "Шаг {current} из {total}"
+  "showcase.tour.step": "Шаг {current} из {total}",
+  "showcase.base.buttons.title": "Кнопки",
+  "showcase.base.buttons.desc": "Варианты, размеры, макеты с иконкой и интерактивные состояния кнопок.",
+  "showcase.base.buttons.states_note": "Отключённые кнопки неинтерактивны и пропускаются при навигации с клавиатуры; сочетайте спиннер с состоянием «отключено», чтобы обозначить выполняемое действие."
 }

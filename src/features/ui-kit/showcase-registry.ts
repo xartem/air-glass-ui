@@ -37,7 +37,12 @@ export const SHOWCASE_GROUPS: ShowcaseGroup[] = [
     key: "base",
     labelKey: "nav.components.base",
     icon: Shapes,
-    links: [],
+    links: [
+      {
+        to: "/components/base/buttons",
+        labelKey: "showcase.base.buttons.title",
+      },
+    ],
   },
   {
     key: "advance",

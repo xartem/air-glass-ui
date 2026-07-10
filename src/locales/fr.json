@@ -2652,5 +2652,8 @@
   "showcase.tour.prev": "Retour",
   "showcase.tour.next": "Suivant",
   "showcase.tour.finish": "Terminer",
-  "showcase.tour.step": "Étape {current} sur {total}"
+  "showcase.tour.step": "Étape {current} sur {total}",
+  "showcase.base.buttons.title": "Boutons",
+  "showcase.base.buttons.desc": "Variantes, tailles, dispositions avec icône et états interactifs des boutons.",
+  "showcase.base.buttons.states_note": "Les boutons désactivés ne sont pas interactifs et sont ignorés au clavier ; associez un spinner à l'état désactivé pour signaler une action en cours."
 }
