@@ -1,0 +1,1 @@
+2026-07-10  Add personal to-do list: grouped tasks, inline add, optimistic toggle and drag-reorder.

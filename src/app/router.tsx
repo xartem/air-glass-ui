@@ -413,6 +413,30 @@ const ecommerceTemplatePage = () =>
       default: m.EcommerceTemplatePage,
     })),
   );
+const ticketListPage = () =>
+  lazyPage(() =>
+    import("@/features/support/ticket-list-page").then((m) => ({
+      default: m.TicketListPage,
+    })),
+  );
+const ticketDetailPage = () =>
+  lazyPage(() =>
+    import("@/features/support/ticket-detail-page").then((m) => ({
+      default: m.TicketDetailPage,
+    })),
+  );
+const todoPage = () =>
+  lazyPage(() =>
+    import("@/features/todo/todo-page").then((m) => ({
+      default: m.TodoPage,
+    })),
+  );
+const apiKeysPage = () =>
+  lazyPage(() =>
+    import("@/features/api-keys/api-keys-page").then((m) => ({
+      default: m.ApiKeysPage,
+    })),
+  );
 const kanbanPage = () =>
   lazyPage(() =>
     import("@/features/kanban/kanban-page").then((m) => ({
@@ -1012,6 +1036,36 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="email.view">
               {ecommerceTemplatePage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/support/tickets",
+          element: (
+            <RequirePermission perm="support.view">
+              {ticketListPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/support/tickets/:id",
+          element: (
+            <RequirePermission perm="support.view">
+              {ticketDetailPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/todo",
+          element: (
+            <RequirePermission perm="todo.view">{todoPage()}</RequirePermission>
+          ),
+        },
+        {
+          path: "/api-keys",
+          element: (
+            <RequirePermission perm="apikeys.view">
+              {apiKeysPage()}
             </RequirePermission>
           ),
         },

@@ -26,6 +26,8 @@ import {
   Layers,
   LayoutDashboard,
   LayoutGrid,
+  LifeBuoy,
+  ListChecks,
   ListTodo,
   Mail,
   MessageSquareText,
@@ -337,6 +339,19 @@ export function buildNavGroups(): NavGroup[] {
               ],
             },
             {
+              key: "menu.apps.support",
+              label: t("nav.support"),
+              icon: LifeBuoy,
+              children: [
+                {
+                  to: "/support/tickets",
+                  label: t("nav.supportList"),
+                  icon: LifeBuoy,
+                  perm: "support.view",
+                },
+              ],
+            },
+            {
               to: "/kanban",
               label: t("nav.kanban"),
               icon: Columns3,
@@ -347,6 +362,18 @@ export function buildNavGroups(): NavGroup[] {
               label: t("nav.fileManager"),
               icon: Image,
               perm: "media.view",
+            },
+            {
+              to: "/todo",
+              label: t("nav.todo"),
+              icon: ListChecks,
+              perm: "todo.view",
+            },
+            {
+              to: "/api-keys",
+              label: t("nav.apiKeys"),
+              icon: KeyRound,
+              perm: "apikeys.view",
             },
           ],
         },

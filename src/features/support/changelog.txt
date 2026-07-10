@@ -1,0 +1,1 @@
+2026-07-10  Add support tickets suite: helpdesk queue with KPIs and ticket conversation workspace.

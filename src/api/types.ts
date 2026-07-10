@@ -1901,3 +1901,107 @@ export interface MailSendPayload {
   subject: string;
   body: string;
 }
+
+/* ---- support tickets (W3) ---- */
+
+export type TicketStatus = "open" | "pending" | "solved" | "closed";
+export type TicketPriority = "low" | "normal" | "high" | "urgent";
+
+export interface TicketListItem {
+  id: number;
+  subject: string;
+  requester: string;
+  priority: TicketPriority;
+  status: TicketStatus;
+  agent: string;
+  updated_at: string;
+}
+
+export interface TicketMessage {
+  id: number;
+  author: string;
+  role: "agent" | "customer";
+  at: string;
+  body: string;
+}
+
+export interface TicketActivity {
+  id: number;
+  at: string;
+  text: string;
+}
+
+export interface TicketDetail extends TicketListItem {
+  requester_email: string;
+  created_at: string;
+  tags: string[];
+  messages: TicketMessage[];
+  activity: TicketActivity[];
+}
+
+export interface TicketPayload {
+  subject: string;
+  requester: string;
+  priority: TicketPriority;
+  message: string;
+}
+
+export interface TicketFilters {
+  page?: number;
+  q?: string;
+  status?: TicketStatus;
+  priority?: TicketPriority;
+  agent?: string;
+  sort?: "subject" | "updated_at";
+  dir?: "asc" | "desc";
+}
+
+export interface TicketStats {
+  open: number;
+  pending: number;
+  avg_response: string;
+}
+
+/* ---- to-do (W3) ---- */
+
+export type TodoPriority = "low" | "medium" | "high";
+
+export interface TodoItem {
+  id: number;
+  title: string;
+  done: boolean;
+  priority: TodoPriority;
+  due: string | null;
+}
+
+export interface TodoStats {
+  total: number;
+  done: number;
+  overdue: number;
+}
+
+/* ---- api keys (W3) ---- */
+
+export type ApiKeyStatus = "active" | "revoked";
+export type ApiKeyScope = "read" | "write" | "admin" | "billing";
+
+export interface ApiKey {
+  id: number;
+  name: string;
+  masked_key: string;
+  scopes: ApiKeyScope[];
+  created_at: string;
+  last_used_at: string | null;
+  status: ApiKeyStatus;
+}
+
+export interface ApiKeyCreatePayload {
+  name: string;
+  scopes: ApiKeyScope[];
+}
+
+export interface ApiKeyCreated {
+  key: ApiKey;
+  /** Shown exactly once; never persisted. */
+  secret: string;
+}

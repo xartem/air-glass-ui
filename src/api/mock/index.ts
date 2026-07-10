@@ -39,6 +39,12 @@ import type {
   SellerFilters,
   SellerStatus,
   SettingValue,
+  TicketFilters,
+  TicketPayload,
+  TicketPriority,
+  TicketStatus,
+  TodoPriority,
+  ApiKeyCreatePayload,
 } from "../types";
 import {
   MOCK_CREDENTIALS,
@@ -156,12 +162,7 @@ import {
   listLeads,
   moveDeal,
 } from "./crm";
-import {
-  deleteEvent,
-  listEvents,
-  moveEvent,
-  saveEvent,
-} from "./calendar";
+import { deleteEvent, listEvents, moveEvent, saveEvent } from "./calendar";
 import {
   getMail,
   listMail,
@@ -170,6 +171,23 @@ import {
   sendMail,
   starMail,
 } from "./email";
+import {
+  assignTicket,
+  createTicket,
+  getTicket,
+  listTickets,
+  replyTicket,
+  setTicketStatus,
+  ticketStats,
+} from "./support";
+import {
+  addTodo,
+  listTodos,
+  removeTodo,
+  reorderTodos,
+  toggleTodo,
+} from "./todo";
+import { createApiKey, listApiKeys, revokeApiKey } from "./apikeys";
 import { helpForScreen, helpPage, helpSearch, helpTree } from "./help";
 import {
   aiSpend,
@@ -1611,7 +1629,8 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
       const filters: TaskFilters = {
         page: query.page === undefined ? undefined : Number(query.page),
         q: query.q === undefined ? undefined : String(query.q),
-        project: query.project === undefined ? undefined : String(query.project),
+        project:
+          query.project === undefined ? undefined : String(query.project),
         assignee:
           query.assignee === undefined ? undefined : String(query.assignee),
         priority:
@@ -1882,6 +1901,161 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
         Number(params[0]),
         (options.body as { folder: MailFolder }).folder,
       );
+    },
+  },
+
+  /* ---- support tickets (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/support\/tickets$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: TicketFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status:
+          query.status === undefined
+            ? undefined
+            : (String(query.status) as TicketStatus),
+        priority:
+          query.priority === undefined
+            ? undefined
+            : (String(query.priority) as TicketPriority),
+        agent: query.agent === undefined ? undefined : String(query.agent),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as TicketFilters["sort"]),
+        dir: query.dir === "asc" ? "asc" : "desc",
+      };
+      return listTickets(filters);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/support\/tickets\/stats$/,
+    handler: () => {
+      requireSession();
+      return ticketStats();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/support\/tickets$/,
+    handler: (options) => {
+      requireSession();
+      return createTicket(options.body as TicketPayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/support\/tickets\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return getTicket(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/support\/tickets\/(\d+)\/reply$/,
+    handler: (options, params) => {
+      requireSession();
+      return replyTicket(
+        Number(params[0]),
+        (options.body as { body: string }).body,
+      );
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/support\/tickets\/(\d+)\/status$/,
+    handler: (options, params) => {
+      requireSession();
+      return setTicketStatus(
+        Number(params[0]),
+        (options.body as { status: TicketStatus }).status,
+      );
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/support\/tickets\/(\d+)\/assign$/,
+    handler: (options, params) => {
+      requireSession();
+      return assignTicket(
+        Number(params[0]),
+        (options.body as { agent: string }).agent,
+      );
+    },
+  },
+
+  /* ---- to-do (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/todo$/,
+    handler: () => {
+      requireSession();
+      return listTodos();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/todo$/,
+    handler: (options) => {
+      requireSession();
+      const body = options.body as { title: string; priority: TodoPriority };
+      return addTodo(body.title, body.priority);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/todo\/reorder$/,
+    handler: (options) => {
+      requireSession();
+      return reorderTodos((options.body as { ids: number[] }).ids);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/todo\/(\d+)\/toggle$/,
+    handler: (_options, params) => {
+      requireSession();
+      return toggleTodo(Number(params[0]));
+    },
+  },
+  {
+    method: "DELETE",
+    pattern: /^\/todo\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return removeTodo(Number(params[0]));
+    },
+  },
+
+  /* ---- api keys (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/api-keys$/,
+    handler: () => {
+      requireSession();
+      return listApiKeys();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/api-keys$/,
+    handler: (options) => {
+      requireSession();
+      return createApiKey(options.body as ApiKeyCreatePayload);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/api-keys\/(\d+)\/revoke$/,
+    handler: (_options, params) => {
+      requireSession();
+      return revokeApiKey(Number(params[0]));
     },
   },
 ];

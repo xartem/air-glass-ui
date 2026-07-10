@@ -53,6 +53,17 @@ import type {
   MailListPayload,
   MailMessage,
   MailSendPayload,
+  TicketDetail,
+  TicketFilters,
+  TicketListItem,
+  TicketPayload,
+  TicketStats,
+  TicketStatus,
+  TodoItem,
+  TodoPriority,
+  ApiKey,
+  ApiKeyCreatePayload,
+  ApiKeyCreated,
   ActivityFilters,
   AdminSearchGroup,
   CreatePasswordPayload,
@@ -672,8 +683,7 @@ export const api = {
         },
       }),
     get: (id: number) => apiFetch<ProjectDetail>(`/projects/${id}`),
-    tasks: (id: number) =>
-      apiFetch<ProjectTaskRow[]>(`/projects/${id}/tasks`),
+    tasks: (id: number) => apiFetch<ProjectTaskRow[]>(`/projects/${id}/tasks`),
     files: (id: number) => apiFetch<ProjectFile[]>(`/projects/${id}/files`),
     create: (payload: ProjectPayload) =>
       apiFetch<ProjectDetail>("/projects", { method: "POST", body: payload }),
@@ -807,6 +817,69 @@ export const api = {
         method: "POST",
         body: { folder },
       }),
+  },
+
+  /* Support tickets (W3): helpdesk queue, conversation, status and assignment. */
+  support: {
+    list: (filters: TicketFilters = {}) =>
+      apiFetch<Paginated<TicketListItem>>("/support/tickets", {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          status: filters.status,
+          priority: filters.priority,
+          agent: filters.agent,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    stats: () => apiFetch<TicketStats>("/support/tickets/stats"),
+    create: (payload: TicketPayload) =>
+      apiFetch<TicketDetail>("/support/tickets", {
+        method: "POST",
+        body: payload,
+      }),
+    get: (id: number) => apiFetch<TicketDetail>(`/support/tickets/${id}`),
+    reply: (id: number, body: string) =>
+      apiFetch<TicketDetail>(`/support/tickets/${id}/reply`, {
+        method: "POST",
+        body: { body },
+      }),
+    setStatus: (id: number, status: TicketStatus) =>
+      apiFetch<TicketDetail>(`/support/tickets/${id}/status`, {
+        method: "POST",
+        body: { status },
+      }),
+    assign: (id: number, agent: string) =>
+      apiFetch<TicketDetail>(`/support/tickets/${id}/assign`, {
+        method: "POST",
+        body: { agent },
+      }),
+  },
+
+  /* To-do (W3): personal list; every mutation is optimistic in the UI. */
+  todo: {
+    list: () => apiFetch<TodoItem[]>("/todo"),
+    add: (title: string, priority: TodoPriority) =>
+      apiFetch<TodoItem>("/todo", {
+        method: "POST",
+        body: { title, priority },
+      }),
+    toggle: (id: number) =>
+      apiFetch<TodoItem>(`/todo/${id}/toggle`, { method: "POST" }),
+    reorder: (ids: number[]) =>
+      apiFetch<TodoItem[]>("/todo/reorder", { method: "POST", body: { ids } }),
+    remove: (id: number) =>
+      apiFetch<{ ok: true }>(`/todo/${id}`, { method: "DELETE" }),
+  },
+
+  /* API keys (W3): masked list; the secret is returned once on create. */
+  apikeys: {
+    list: () => apiFetch<ApiKey[]>("/api-keys"),
+    create: (payload: ApiKeyCreatePayload) =>
+      apiFetch<ApiKeyCreated>("/api-keys", { method: "POST", body: payload }),
+    revoke: (id: number) =>
+      apiFetch<ApiKey>(`/api-keys/${id}/revoke`, { method: "POST" }),
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */
