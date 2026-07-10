@@ -377,10 +377,40 @@ const taskDetailPage = () =>
       default: m.TaskDetailPage,
     })),
   );
+const calendarPage = () =>
+  lazyPage(() =>
+    import("@/features/calendar/calendar-page").then((m) => ({
+      default: m.CalendarPage,
+    })),
+  );
+const monthGridPage = () =>
+  lazyPage(() =>
+    import("@/features/calendar/month-grid-page").then((m) => ({
+      default: m.MonthGridPage,
+    })),
+  );
 const inboxPage = () =>
   lazyPage(() =>
     import("@/features/inbox/inbox-page").then((m) => ({
       default: m.InboxPage,
+    })),
+  );
+const mailboxPage = () =>
+  lazyPage(() =>
+    import("@/features/email/mailbox-page").then((m) => ({
+      default: m.MailboxPage,
+    })),
+  );
+const basicTemplatePage = () =>
+  lazyPage(() =>
+    import("@/features/email/basic-template-page").then((m) => ({
+      default: m.BasicTemplatePage,
+    })),
+  );
+const ecommerceTemplatePage = () =>
+  lazyPage(() =>
+    import("@/features/email/ecommerce-template-page").then((m) => ({
+      default: m.EcommerceTemplatePage,
     })),
   );
 const kanbanPage = () =>
@@ -942,6 +972,46 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="crm.leads">
               {crmLeadsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/calendar",
+          element: (
+            <RequirePermission perm="calendar.view">
+              {calendarPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/calendar/month",
+          element: (
+            <RequirePermission perm="calendar.view">
+              {monthGridPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/email",
+          element: (
+            <RequirePermission perm="email.view">
+              {mailboxPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/email/templates/basic",
+          element: (
+            <RequirePermission perm="email.view">
+              {basicTemplatePage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/email/templates/ecommerce",
+          element: (
+            <RequirePermission perm="email.view">
+              {ecommerceTemplatePage()}
             </RequirePermission>
           ),
         },

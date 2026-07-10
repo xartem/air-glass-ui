@@ -8,6 +8,8 @@ import {
   BadgeDollarSign,
   Bot,
   Building2,
+  CalendarDays,
+  CalendarRange,
   CircleDollarSign,
   Columns3,
   Contact,
@@ -21,9 +23,11 @@ import {
   Images,
   ImagePlus,
   KeyRound,
+  Layers,
   LayoutDashboard,
   LayoutGrid,
   ListTodo,
+  Mail,
   MessageSquareText,
   Network,
   Newspaper,
@@ -170,6 +174,57 @@ export function buildNavGroups(): NavGroup[] {
               label: t("nav.chat"),
               icon: MessageSquareText,
               perm: "inbox.view",
+            },
+            {
+              key: "menu.apps.calendar",
+              label: t("nav.calendar"),
+              icon: CalendarDays,
+              children: [
+                {
+                  to: "/calendar",
+                  label: t("nav.calendarMain"),
+                  icon: CalendarDays,
+                  perm: "calendar.view",
+                },
+                {
+                  to: "/calendar/month",
+                  label: t("nav.calendarMonth"),
+                  icon: CalendarRange,
+                  perm: "calendar.view",
+                },
+              ],
+            },
+            {
+              key: "menu.apps.email",
+              label: t("nav.email"),
+              icon: Mail,
+              children: [
+                {
+                  to: "/email",
+                  label: t("nav.emailMailbox"),
+                  icon: Mail,
+                  perm: "email.view",
+                },
+                {
+                  key: "menu.apps.email.templates",
+                  label: t("nav.emailTemplates"),
+                  icon: Layers,
+                  children: [
+                    {
+                      to: "/email/templates/basic",
+                      label: t("nav.emailBasic"),
+                      icon: Mail,
+                      perm: "email.view",
+                    },
+                    {
+                      to: "/email/templates/ecommerce",
+                      label: t("nav.emailEcommerce"),
+                      icon: Mail,
+                      perm: "email.view",
+                    },
+                  ],
+                },
+              ],
             },
             {
               key: "menu.apps.ecommerce",

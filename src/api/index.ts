@@ -47,6 +47,12 @@ import type {
   DealStage,
   Lead,
   LeadFilters,
+  CalendarEvent,
+  CalendarEventPayload,
+  MailFolder,
+  MailListPayload,
+  MailMessage,
+  MailSendPayload,
   ActivityFilters,
   AdminSearchGroup,
   CreatePasswordPayload,
@@ -766,6 +772,41 @@ export const api = {
       convert: (id: number) =>
         apiFetch<Deal>(`/crm/leads/${id}/convert`, { method: "POST" }),
     },
+  },
+
+  /* Calendar (W3): events CRUD + optimistic move. */
+  calendar: {
+    events: () => apiFetch<CalendarEvent[]>("/calendar/events"),
+    save: (payload: CalendarEventPayload) =>
+      apiFetch<CalendarEvent>("/calendar/events", {
+        method: "POST",
+        body: payload,
+      }),
+    move: (id: number, start: string, end: string) =>
+      apiFetch<CalendarEvent>(`/calendar/events/${id}/move`, {
+        method: "POST",
+        body: { start, end },
+      }),
+    delete: (id: number) =>
+      apiFetch<{ ok: true }>(`/calendar/events/${id}`, { method: "DELETE" }),
+  },
+
+  /* Email / mailbox (W3): folders, message read, send, star, mark-read, move. */
+  email: {
+    list: (folder: MailFolder, q?: string) =>
+      apiFetch<MailListPayload>("/email", { query: { folder, q } }),
+    get: (id: number) => apiFetch<MailMessage>(`/email/${id}`),
+    send: (payload: MailSendPayload) =>
+      apiFetch<MailMessage>("/email/send", { method: "POST", body: payload }),
+    star: (id: number) =>
+      apiFetch<MailMessage>(`/email/${id}/star`, { method: "POST" }),
+    markRead: (id: number) =>
+      apiFetch<MailMessage>(`/email/${id}/read`, { method: "POST" }),
+    move: (id: number, folder: MailFolder) =>
+      apiFetch<MailMessage>(`/email/${id}/move`, {
+        method: "POST",
+        body: { folder },
+      }),
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */

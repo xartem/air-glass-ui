@@ -1838,3 +1838,66 @@ export interface LeadFilters {
   sort?: "name" | "score" | "created_at";
   dir?: "asc" | "desc";
 }
+
+/* ---- calendar (W3) ---- */
+
+export type EventCategory =
+  | "work"
+  | "personal"
+  | "meeting"
+  | "reminder"
+  | "holiday";
+
+export interface CalendarEvent {
+  id: number;
+  title: string;
+  /** ISO datetime. */
+  start: string;
+  end: string;
+  category: EventCategory;
+  all_day: boolean;
+  description: string;
+}
+
+export interface CalendarEventPayload {
+  id?: number;
+  title: string;
+  start: string;
+  end: string;
+  category: EventCategory;
+  all_day: boolean;
+  description: string;
+}
+
+/* ---- email / mailbox (W3) ---- */
+
+export type MailFolder = "inbox" | "sent" | "drafts" | "spam" | "trash";
+
+export interface MailMessage {
+  id: number;
+  folder: MailFolder;
+  from_name: string;
+  from_email: string;
+  to: string;
+  subject: string;
+  preview: string;
+  body: string;
+  date: string;
+  unread: boolean;
+  starred: boolean;
+  labels: string[];
+  attachments: string[];
+}
+
+export interface MailListPayload {
+  messages: MailMessage[];
+  counts: Record<MailFolder, number>;
+}
+
+export interface MailSendPayload {
+  to: string;
+  cc?: string;
+  bcc?: string;
+  subject: string;
+  body: string;
+}

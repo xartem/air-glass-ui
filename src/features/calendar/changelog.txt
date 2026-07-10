@@ -1,0 +1,1 @@
+2026-07-10  Add calendar suite: main calendar (month/week/day) and dense month grid.

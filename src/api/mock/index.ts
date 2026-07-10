@@ -33,6 +33,9 @@ import type {
   DealStage,
   LeadFilters,
   LeadStatus,
+  CalendarEventPayload,
+  MailFolder,
+  MailSendPayload,
   SellerFilters,
   SellerStatus,
   SettingValue,
@@ -153,6 +156,20 @@ import {
   listLeads,
   moveDeal,
 } from "./crm";
+import {
+  deleteEvent,
+  listEvents,
+  moveEvent,
+  saveEvent,
+} from "./calendar";
+import {
+  getMail,
+  listMail,
+  markMailRead,
+  moveMail,
+  sendMail,
+  starMail,
+} from "./email";
 import { helpForScreen, helpPage, helpSearch, helpTree } from "./help";
 import {
   aiSpend,
@@ -1772,6 +1789,99 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (_options, params) => {
       requireSession();
       return convertLead(Number(params[0]));
+    },
+  },
+
+  /* ---- calendar (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/calendar\/events$/,
+    handler: () => {
+      requireSession();
+      return listEvents();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/calendar\/events$/,
+    handler: (options) => {
+      requireSession();
+      return saveEvent(options.body as CalendarEventPayload);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/calendar\/events\/(\d+)\/move$/,
+    handler: (options, params) => {
+      requireSession();
+      const body = options.body as { start: string; end: string };
+      return moveEvent(Number(params[0]), body.start, body.end);
+    },
+  },
+  {
+    method: "DELETE",
+    pattern: /^\/calendar\/events\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return deleteEvent(Number(params[0]));
+    },
+  },
+
+  /* ---- email / mailbox (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/email$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const folder = (
+        query.folder === undefined ? "inbox" : String(query.folder)
+      ) as MailFolder;
+      const q = query.q === undefined ? undefined : String(query.q);
+      return listMail(folder, q);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/email\/send$/,
+    handler: (options) => {
+      requireSession();
+      return sendMail(options.body as MailSendPayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/email\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return getMail(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/email\/(\d+)\/star$/,
+    handler: (_options, params) => {
+      requireSession();
+      return starMail(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/email\/(\d+)\/read$/,
+    handler: (_options, params) => {
+      requireSession();
+      return markMailRead(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/email\/(\d+)\/move$/,
+    handler: (options, params) => {
+      requireSession();
+      return moveMail(
+        Number(params[0]),
+        (options.body as { folder: MailFolder }).folder,
+      );
     },
   },
 ];
