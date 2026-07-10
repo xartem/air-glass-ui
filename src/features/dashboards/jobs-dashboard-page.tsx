@@ -9,9 +9,9 @@ import { t } from "@/lib/i18n";
 import { formatNumber } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
-import { CategoryBars } from "./charts/category-bars";
-import { Funnel } from "./charts/funnel";
-import { TrendChart } from "./charts/trend-chart";
+import { CategoryBars } from "@/components/charts/category-bars";
+import { Funnel } from "@/components/charts/funnel";
+import { TrendChart } from "@/components/charts/trend-chart";
 import { KpiTile } from "./widgets";
 
 /*

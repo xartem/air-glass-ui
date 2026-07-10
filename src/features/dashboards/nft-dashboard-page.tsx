@@ -8,7 +8,7 @@ import { t } from "@/lib/i18n";
 import { formatNumber } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
-import { CategoryBars } from "./charts/category-bars";
+import { CategoryBars } from "@/components/charts/category-bars";
 import { ChangeTag, KpiTile, Leaderboard } from "./widgets";
 
 /*

@@ -262,15 +262,31 @@ export function jobsList(filters: JobFilters): Paginated<Job> {
   };
 }
 
+/**
+ * Escape HTML-special characters so user-controlled values (job title, company)
+ * cannot inject markup/script when the demo description is rendered via
+ * `dangerouslySetInnerHTML` on the overview screen.
+ */
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export function jobsGet(id: number): JobDetail {
   devDebug("[mock:jobs] get", id);
   const job = jobsStore().find((entry) => entry.id === id);
   if (!job) throw new ApiError(404, "Job not found");
+  const safeTitle = escapeHtml(job.title);
+  const safeCompany = escapeHtml(job.company);
   return {
     ...job,
     description:
-      `<p>We are looking for a <strong>${job.title}</strong> to join the ` +
-      `${job.company} team. This is a demo posting that showcases the job ` +
+      `<p>We are looking for a <strong>${safeTitle}</strong> to join the ` +
+      `${safeCompany} team. This is a demo posting that showcases the job ` +
       `overview workspace — description, requirements and applicants.</p>` +
       `<p>You will collaborate across product, design and engineering to ship ` +
       `work that reaches millions of people.</p>`,

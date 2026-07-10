@@ -27,8 +27,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Donut } from "@/features/dashboards/charts/donut";
-import { Sparkline } from "@/features/dashboards/charts/sparkline";
+import { Donut } from "@/components/charts/donut";
+import { Sparkline } from "@/components/charts/sparkline";
 import { formatMoney, formatNumber } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";

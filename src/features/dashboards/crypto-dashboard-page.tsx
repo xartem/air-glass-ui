@@ -16,9 +16,9 @@ import { t } from "@/lib/i18n";
 import { formatMoney } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
-import { Candlestick } from "./charts/candlestick";
-import { Sparkline } from "./charts/sparkline";
-import { MarketTreemap } from "./charts/treemap";
+import { Candlestick } from "@/components/charts/candlestick";
+import { Sparkline } from "@/components/charts/sparkline";
+import { MarketTreemap } from "@/components/charts/treemap";
 import { ChangeTag, KpiTile } from "./widgets";
 import { devDebug } from "@/lib/debug";
 

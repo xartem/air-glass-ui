@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TrendChart } from "@/features/dashboards/charts/trend-chart";
+import { TrendChart } from "@/components/charts/trend-chart";
 import { formatMoney, formatNumber } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";

@@ -15,8 +15,8 @@ import { t } from "@/lib/i18n";
 import { formatNumber } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
-import { Donut } from "./charts/donut";
-import { TrendChart } from "./charts/trend-chart";
+import { Donut } from "@/components/charts/donut";
+import { TrendChart } from "@/components/charts/trend-chart";
 import { KpiTile, Leaderboard } from "./widgets";
 
 /*
