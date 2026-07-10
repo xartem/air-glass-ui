@@ -7,6 +7,7 @@ import {
   FileText,
   Globe,
   Image,
+  Boxes,
   Inbox,
   Languages,
   LayoutTemplate,
@@ -120,6 +121,7 @@ import {
 } from "@/components/widget-cards";
 import { WidgetSkeleton } from "@/features/dashboard/dashboard-widget-card";
 import { WizardDialog } from "@/components/wizard-dialog";
+import { ComponentsIndex } from "@/features/ui-kit/components-index";
 import { t } from "@/lib/i18n";
 import { progressDone, progressStart } from "@/lib/progress";
 import { useLocale } from "@/lib/use-locale";
@@ -2073,8 +2075,12 @@ export function UiKitPage() {
         {t("uikit.subtitle")}
       </p>
 
-      <Tabs defaultValue="components">
+      <Tabs defaultValue="index">
         <TabsList>
+          <TabsTrigger value="index">
+            <Boxes className="size-4" />
+            {t("uikit.tab.index")}
+          </TabsTrigger>
           <TabsTrigger value="components">
             <Shapes className="size-4" />
             {t("uikit.tab.components")}
@@ -2084,6 +2090,9 @@ export function UiKitPage() {
             {t("uikit.tab.archetypes")}
           </TabsTrigger>
         </TabsList>
+        <TabsContent value="index">
+          <ComponentsIndex />
+        </TabsContent>
         <TabsContent value="components" className="space-y-8 pt-4">
           <PaletteSection />
           <ButtonsSection />

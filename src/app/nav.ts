@@ -35,7 +35,9 @@ import {
   Link2,
   ListChecks,
   ListTodo,
+  ListTree,
   Mail,
+  Map,
   MessageSquareText,
   Network,
   Newspaper,
@@ -47,18 +49,23 @@ import {
   Rocket,
   ScrollText,
   Settings,
+  Shapes,
   ShieldCheck,
   ShoppingBag,
   ShoppingCart,
+  Smile,
   Sparkles,
   Store,
+  Table,
   Target,
+  TextCursorInput,
   Trophy,
   Truck,
   UserCircle,
   UserPlus,
   Users,
   Wallet,
+  Wand2,
   Wrench,
 } from "lucide-react";
 
@@ -585,11 +592,69 @@ export function buildNavGroups(): NavGroup[] {
         },
       ],
     },
-    // COMPONENTS — placeholder for the W5 UI showcase; app-shell hides empty groups.
+    // COMPONENTS — the W5 UI showcase. Parents seed with empty children and are
+    // populated by each group task; the app-shell hides parents/groups that have
+    // no children yet, so partial waves render cleanly. Widgets and Icons are
+    // single-route leaves and are added directly by their group tasks.
     {
       key: "components",
       label: t("nav.group.components"),
-      items: [],
+      items: [
+        {
+          key: "components.base",
+          label: t("nav.components.base"),
+          icon: Shapes,
+          children: [],
+        },
+        {
+          key: "components.advance",
+          label: t("nav.components.advance"),
+          icon: Wand2,
+          children: [],
+        },
+        {
+          key: "components.widgets",
+          label: t("nav.components.widgets"),
+          icon: LayoutGrid,
+          children: [],
+        },
+        {
+          key: "components.forms",
+          label: t("nav.components.forms"),
+          icon: TextCursorInput,
+          children: [],
+        },
+        {
+          key: "components.tables",
+          label: t("nav.components.tables"),
+          icon: Table,
+          children: [],
+        },
+        {
+          key: "components.charts",
+          label: t("nav.components.charts"),
+          icon: ChartLine,
+          children: [],
+        },
+        {
+          key: "components.icons",
+          label: t("nav.components.icons"),
+          icon: Smile,
+          children: [],
+        },
+        {
+          key: "components.maps",
+          label: t("nav.components.maps"),
+          icon: Map,
+          children: [],
+        },
+        {
+          key: "components.multiLevel",
+          label: t("nav.components.multiLevel"),
+          icon: ListTree,
+          children: [],
+        },
+      ],
     },
     {
       key: "admin",

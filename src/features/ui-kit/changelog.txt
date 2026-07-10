@@ -1,0 +1,2 @@
+2026-07-10  W5 foundation: ComponentDemo atom + ShowcasePage shell; COMPONENTS nav group (9 sections); /ui-kit hub searchable index; showcase.* i18n base (all 8 locales).
+2026-07-10  W5 gap primitives: NestableList (dnd-kit nested drag+nest), Tour (popover coach-marks), Highlight util, useScrollSpy hook, input-mask util + MaskedInput. devDebug at interaction boundaries.

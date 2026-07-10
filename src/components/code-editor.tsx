@@ -18,12 +18,15 @@ export function CodeEditor({
   minHeight = 180,
   className,
   ariaLabel,
+  readOnly = false,
 }: {
   value: string;
   onChange: (value: string) => void;
   minHeight?: number;
   className?: string;
   ariaLabel?: string;
+  /** Read-only viewer mode — used by the showcase "Show code" toggle (W5). */
+  readOnly?: boolean;
 }) {
   const parentRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
@@ -41,6 +44,9 @@ export function CodeEditor({
           basicSetup,
           html(),
           EditorView.lineWrapping,
+          ...(readOnly
+            ? [EditorState.readOnly.of(true), EditorView.editable.of(false)]
+            : []),
           // Inherit the admin surface; only size + monospace are pinned here.
           EditorView.theme({
             "&": {
