@@ -73,12 +73,19 @@ For any scenario not covered here, the purchased Envato license text is authorit
 ## Third-party components
 
 This template bundles open-source dependencies, a font, and static assets that are the
-property of their respective authors and are licensed separately (MIT, ISC, Apache-2.0,
-BSD, and the SIL Open Font License 1.1). Those licenses are **not** superseded by this
-license and their attribution/copyright notices must be preserved.
+property of their respective authors and are licensed separately (predominantly MIT, ISC,
+Apache-2.0, BSD, and the SIL Open Font License 1.1). Those licenses are **not** superseded
+by this license and their attribution/copyright notices must be preserved.
+
+> **Compliance note:** the current dependency audit is **PASS WITH FLAGS**. Two shipped
+> map packages (`react-leaflet`, `@react-leaflet/core`) carry the non-permissive
+> ethical-source **Hippocratic License 2.1**, which permits bundled resale with attribution
+> but attaches ethical-use conditions. Resolve or accept this flag before Envato submission
+> — see the "Flagged runtime dependencies" section of
+> [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md).
 
 See **[THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md)** for the complete inventory,
-per-package copyright notices, and full license texts.
+per-package copyright notices, full license texts, and the current audit verdict.
 
 ---
 
