@@ -1,0 +1,16 @@
+2026-07-10 — NFT niche (W4)
+- Added the complete NFT slice: 9 screens under /nft/*.
+  - Marketplace (/nft/marketplace): hero, category chips, featured-collections carousel, item grid + sort.
+  - Explore (/nft/explore): price-range slider + category/status/chain checkbox filters, paged grid, "no items match".
+  - Live Auction (/nft/auction): auction cards with accessible countdown, validated place-bid dialog + toast.
+  - Item Details (/nft/item/:id): 2-col media/details, buy-now + place-bid, traits grid, tabbed description, bid-history table, 404 on not-found.
+  - Collections (/nft/collections): cover+avatar cards, search + sort.
+  - Creators (/nft/creators): creator cards with optimistic follow (rollback), search + sort.
+  - Ranking (/nft/ranking): period tabs + leaderboard table with 24h delta indicator.
+  - Wallet Connect (/nft/wallet-connect): provider grid, connecting/connected/error mock flow, copy address.
+  - Create NFT (/nft/create, nft.manage): art upload + live preview, RHF+Zod form, properties repeater, mint.
+- Mock module src/api/mock/nft.ts: items/collections/creators/auctions/ranking + item/bid/follow/create.
+  Deterministic seeded fixtures; follows and live bids persist in localStorage. Generated gradient art (no external hosts).
+- DTOs added to src/api/types.ts; api.nft.* exposed in src/api/index.ts; routes registered in src/api/mock/index.ts.
+- Nav: NFT parent under Apps with 8 children; routes wired in router (nft.view; Create NFT nft.manage).
+- i18n: nft.* + nav.nft* keys added to all 8 locales.

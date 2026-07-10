@@ -587,6 +587,60 @@ const cryptoKycPage = () =>
       default: m.CryptoKycPage,
     })),
   );
+const nftMarketplacePage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-marketplace-page").then((m) => ({
+      default: m.NftMarketplacePage,
+    })),
+  );
+const nftExplorePage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-explore-page").then((m) => ({
+      default: m.NftExplorePage,
+    })),
+  );
+const nftAuctionPage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-auction-page").then((m) => ({
+      default: m.NftAuctionPage,
+    })),
+  );
+const nftItemDetailPage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-item-detail-page").then((m) => ({
+      default: m.NftItemDetailPage,
+    })),
+  );
+const nftCollectionsPage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-collections-page").then((m) => ({
+      default: m.NftCollectionsPage,
+    })),
+  );
+const nftCreatorsPage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-creators-page").then((m) => ({
+      default: m.NftCreatorsPage,
+    })),
+  );
+const nftRankingPage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-ranking-page").then((m) => ({
+      default: m.NftRankingPage,
+    })),
+  );
+const nftWalletConnectPage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-wallet-connect-page").then((m) => ({
+      default: m.NftWalletConnectPage,
+    })),
+  );
+const nftCreatePage = () =>
+  lazyPage(() =>
+    import("@/features/nft/nft-create-page").then((m) => ({
+      default: m.NftCreatePage,
+    })),
+  );
 
 /*
  * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
@@ -1150,6 +1204,78 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="crypto.view">
               {cryptoKycPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/marketplace",
+          element: (
+            <RequirePermission perm="nft.view">
+              {nftMarketplacePage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/explore",
+          element: (
+            <RequirePermission perm="nft.view">
+              {nftExplorePage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/auction",
+          element: (
+            <RequirePermission perm="nft.view">
+              {nftAuctionPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/item/:id",
+          element: (
+            <RequirePermission perm="nft.view">
+              {nftItemDetailPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/collections",
+          element: (
+            <RequirePermission perm="nft.view">
+              {nftCollectionsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/creators",
+          element: (
+            <RequirePermission perm="nft.view">
+              {nftCreatorsPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/ranking",
+          element: (
+            <RequirePermission perm="nft.view">
+              {nftRankingPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/wallet-connect",
+          element: (
+            <RequirePermission perm="nft.view">
+              {nftWalletConnectPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/nft/create",
+          element: (
+            <RequirePermission perm="nft.manage">
+              {nftCreatePage()}
             </RequirePermission>
           ),
         },

@@ -52,6 +52,14 @@ import type {
   CryptoWithdrawPayload,
   IcoStatus,
   KycPayload,
+  NftCategory,
+  NftChain,
+  NftCollectionFilters,
+  NftCreatePayload,
+  NftCreatorFilters,
+  NftItemFilters,
+  NftItemStatus,
+  NftRankingPeriod,
 } from "../types";
 import {
   MOCK_CREDENTIALS,
@@ -209,6 +217,17 @@ import {
   cryptoWallet,
   cryptoWithdraw,
 } from "./crypto";
+import {
+  nftAuctions,
+  nftBid,
+  nftCollections,
+  nftCreate,
+  nftCreators,
+  nftFollow,
+  nftItem,
+  nftItems,
+  nftRanking,
+} from "./nft";
 import { helpForScreen, helpPage, helpSearch, helpTree } from "./help";
 import {
   aiSpend,
@@ -2198,6 +2217,127 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (options) => {
       requireSession();
       return cryptoSubmitKyc(options.body as KycPayload);
+    },
+  },
+
+  /* ---- nft (W4 niche) ---- */
+  {
+    method: "GET",
+    pattern: /^\/nft\/items$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: NftItemFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        category:
+          query.category === undefined
+            ? undefined
+            : (String(query.category) as NftCategory),
+        chain:
+          query.chain === undefined
+            ? undefined
+            : (String(query.chain) as NftChain),
+        status:
+          query.status === undefined
+            ? undefined
+            : (String(query.status) as NftItemStatus),
+        collection:
+          query.collection === undefined ? undefined : Number(query.collection),
+        min: query.min === undefined ? undefined : Number(query.min),
+        max: query.max === undefined ? undefined : Number(query.max),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as NftItemFilters["sort"]),
+      };
+      return nftItems(filters);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/nft\/collections$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: NftCollectionFilters = {
+        q: query.q === undefined ? undefined : String(query.q),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as NftCollectionFilters["sort"]),
+      };
+      return nftCollections(filters);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/nft\/creators$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: NftCreatorFilters = {
+        q: query.q === undefined ? undefined : String(query.q),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as NftCreatorFilters["sort"]),
+      };
+      return nftCreators(filters);
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/nft\/creators\/(\d+)\/follow$/,
+    handler: (_options, params) => {
+      requireSession();
+      return nftFollow(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/nft\/auctions$/,
+    handler: () => {
+      requireSession();
+      return nftAuctions();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/nft\/auctions\/(\d+)\/bid$/,
+    handler: (options, params) => {
+      requireSession();
+      return nftBid(
+        Number(params[0]),
+        Number((options.body as { amount: number }).amount),
+      );
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/nft\/ranking$/,
+    handler: (options) => {
+      requireSession();
+      const period = options.query?.period;
+      return nftRanking(
+        (period === undefined ? "24h" : String(period)) as NftRankingPeriod,
+      );
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/nft\/items$/,
+    handler: (options) => {
+      requireSession();
+      return nftCreate(options.body as NftCreatePayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/nft\/items\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return nftItem(Number(params[0]));
     },
   },
 ];

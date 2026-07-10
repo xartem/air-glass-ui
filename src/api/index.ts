@@ -77,6 +77,18 @@ import type {
   IcoFilters,
   KycApplication,
   KycPayload,
+  NftAuction,
+  NftCollection,
+  NftCollectionFilters,
+  NftCreatePayload,
+  NftCreator,
+  NftCreatorFilters,
+  NftItem,
+  NftItemDetail,
+  NftItemFilters,
+  NftMintResult,
+  NftRankingPeriod,
+  RankingRow,
   ActivityFilters,
   AdminSearchGroup,
   CreatePasswordPayload,
@@ -938,6 +950,46 @@ export const api = {
         method: "POST",
         body: payload,
       }),
+  },
+
+  /* NFT (W4 niche): marketplace, explore, auctions, item detail, collections,
+   * creators, ranking and mint. Reachable with nft.view (nft.manage to mint). */
+  nft: {
+    items: (filters: NftItemFilters = {}) =>
+      apiFetch<Paginated<NftItem>>("/nft/items", {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          category: filters.category,
+          chain: filters.chain,
+          status: filters.status,
+          collection: filters.collection,
+          min: filters.min,
+          max: filters.max,
+          sort: filters.sort,
+        },
+      }),
+    item: (id: number) => apiFetch<NftItemDetail>(`/nft/items/${id}`),
+    collections: (filters: NftCollectionFilters = {}) =>
+      apiFetch<NftCollection[]>("/nft/collections", {
+        query: { q: filters.q, sort: filters.sort },
+      }),
+    creators: (filters: NftCreatorFilters = {}) =>
+      apiFetch<NftCreator[]>("/nft/creators", {
+        query: { q: filters.q, sort: filters.sort },
+      }),
+    follow: (id: number) =>
+      apiFetch<NftCreator>(`/nft/creators/${id}/follow`, { method: "POST" }),
+    auctions: () => apiFetch<NftAuction[]>("/nft/auctions"),
+    bid: (id: number, amount: number) =>
+      apiFetch<NftAuction>(`/nft/auctions/${id}/bid`, {
+        method: "POST",
+        body: { amount },
+      }),
+    ranking: (period: NftRankingPeriod) =>
+      apiFetch<RankingRow[]>("/nft/ranking", { query: { period } }),
+    create: (payload: NftCreatePayload) =>
+      apiFetch<NftMintResult>("/nft/items", { method: "POST", body: payload }),
   },
 
   /* Help (D:help §6): read-only, any authenticated user — no permission gates. */

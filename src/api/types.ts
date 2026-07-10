@@ -2133,3 +2133,169 @@ export interface KycApplication {
   status: KycStatus;
   submitted_at: string | null;
 }
+
+/* ---- nft (W4 niche) — own image-heavy data model; art is generated gradient
+ * SVG (no external hosts). Token amounts (ETH) carry a fiat estimate in `currency`. */
+
+export type NftCategory =
+  "art" | "collectibles" | "music" | "photography" | "gaming" | "sports";
+export type NftChain = "ethereum" | "polygon" | "solana" | "binance";
+export type NftItemStatus = "buy_now" | "on_auction" | "new" | "has_offers";
+
+/** Deterministic two-stop gradient (placeholder art), generated per item id. */
+export type NftGradient = [string, string];
+
+export interface NftItem {
+  id: number;
+  name: string;
+  collection: string;
+  collection_id: number;
+  creator: string;
+  creator_id: number;
+  /** Price in the native token (ETH). */
+  price: number;
+  token: string;
+  /** Fiat estimate of `price` in `currency`. */
+  fiat: number;
+  currency: string;
+  likes: number;
+  category: NftCategory;
+  chain: NftChain;
+  status: NftItemStatus;
+  gradient: NftGradient;
+}
+
+export interface NftItemFilters {
+  page?: number;
+  q?: string;
+  category?: NftCategory;
+  chain?: NftChain;
+  status?: NftItemStatus;
+  collection?: number;
+  /** Price range in token units. */
+  min?: number;
+  max?: number;
+  sort?: "recent" | "price_asc" | "price_desc" | "likes";
+}
+
+export interface NftTrait {
+  type: string;
+  value: string;
+  /** Share of items with this trait, 0–100. */
+  rarity: number;
+}
+
+export interface NftBid {
+  id: number;
+  bidder: string;
+  amount: number;
+  token: string;
+  at: string;
+}
+
+export interface NftAuction {
+  id: number;
+  item_id: number;
+  name: string;
+  collection: string;
+  creator: string;
+  current_bid: number;
+  token: string;
+  fiat: number;
+  currency: string;
+  ends_at: string;
+  bids_count: number;
+  gradient: NftGradient;
+}
+
+export interface NftItemDetail extends NftItem {
+  description: string;
+  owner: string;
+  token_id: string;
+  traits: NftTrait[];
+  bids: NftBid[];
+  auction: NftAuction | null;
+}
+
+export interface NftCollection {
+  id: number;
+  name: string;
+  creator: string;
+  floor: number;
+  volume: number;
+  items_count: number;
+  owners_count: number;
+  token: string;
+  currency: string;
+  verified: boolean;
+  category: NftCategory;
+  gradient: NftGradient;
+  avatar_gradient: NftGradient;
+}
+
+export interface NftCollectionFilters {
+  q?: string;
+  sort?: "volume" | "floor" | "name" | "items";
+}
+
+export interface NftCreator {
+  id: number;
+  name: string;
+  handle: string;
+  followers: number;
+  items_count: number;
+  volume: number;
+  token: string;
+  verified: boolean;
+  following: boolean;
+  gradient: NftGradient;
+}
+
+export interface NftCreatorFilters {
+  q?: string;
+  sort?: "followers" | "volume" | "items" | "name";
+}
+
+export type NftRankingPeriod = "24h" | "7d" | "30d" | "all";
+
+export interface RankingRow {
+  rank: number;
+  collection_id: number;
+  collection: string;
+  floor: number;
+  volume: number;
+  /** 24h change as a fraction (0.12 = +12%). */
+  change24h: number;
+  owners: number;
+  items: number;
+  token: string;
+  currency: string;
+  verified: boolean;
+  gradient: NftGradient;
+}
+
+export interface NftProperty {
+  type: string;
+  value: string;
+}
+
+export interface NftCreatePayload {
+  name: string;
+  description: string;
+  collection_id: number;
+  price: number;
+  /** Royalty percentage 0–20. */
+  royalties: number;
+  chain: NftChain;
+  category: NftCategory;
+  properties: NftProperty[];
+  /** File name of the uploaded art (mock — no real upload). */
+  art: string;
+}
+
+export interface NftMintResult {
+  id: number;
+  name: string;
+  status: "minted";
+  token_id: string;
+}
