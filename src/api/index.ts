@@ -60,6 +60,14 @@ import type {
   ProductFilters,
   ProductListItem,
   ProductPayload,
+  ProductReview,
+  Cart,
+  ShippingMethod,
+  PlaceOrderPayload,
+  SellerDetail,
+  SellerFilters,
+  SellerListItem,
+  InvoiceDraft,
   MediaListItem,
   MediaPresetsPayload,
   MediaRegenStatus,
@@ -415,6 +423,8 @@ export const api = {
         method: "POST",
         body: { status },
       }),
+    place: (payload: PlaceOrderPayload) =>
+      apiFetch<OrderDetail>("/shop/orders", { method: "POST", body: payload }),
   },
 
   products: {
@@ -436,6 +446,43 @@ export const api = {
         method: "PUT",
         body: payload,
       }),
+    reviews: (id: number) =>
+      apiFetch<ProductReview[]>(`/shop/products/${id}/reviews`),
+  },
+
+  /* Shop cart / checkout (W3): mock session-persisted cart + order placement. */
+  cart: {
+    get: () => apiFetch<Cart>("/shop/cart"),
+    update: (itemId: number, qty: number) =>
+      apiFetch<Cart>(`/shop/cart/items/${itemId}`, {
+        method: "PUT",
+        body: { qty },
+      }),
+    remove: (itemId: number) =>
+      apiFetch<Cart>(`/shop/cart/items/${itemId}`, { method: "DELETE" }),
+    applyPromo: (code: string) =>
+      apiFetch<Cart>("/shop/cart/promo", { method: "POST", body: { code } }),
+  },
+
+  shipping: {
+    methods: () => apiFetch<ShippingMethod[]>("/shop/shipping"),
+  },
+
+  /* Marketplace vendors (W3). */
+  sellers: {
+    list: (filters: SellerFilters = {}) =>
+      apiFetch<Paginated<SellerListItem>>("/shop/sellers", {
+        query: {
+          page: filters.page,
+          q: filters.q,
+          status: filters.status,
+          sort: filters.sort,
+          dir: filters.dir,
+        },
+      }),
+    get: (id: number) => apiFetch<SellerDetail>(`/shop/sellers/${id}`),
+    products: (id: number) =>
+      apiFetch<ProductListItem[]>(`/shop/sellers/${id}/products`),
   },
 
   customers: {
@@ -483,6 +530,11 @@ export const api = {
         },
       }),
     get: (id: number) => apiFetch<InvoiceDetail>(`/shop/invoices/${id}`),
+    create: (payload: InvoiceDraft) =>
+      apiFetch<InvoiceDetail>("/shop/invoices", {
+        method: "POST",
+        body: payload,
+      }),
   },
 
   /* Analytics dashboard (build-demo-screen-catalog): a single period-scoped payload. */

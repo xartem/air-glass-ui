@@ -136,11 +136,16 @@ export function ProductsPage() {
 
   const rowActions: RowAction<ProductListItem>[] = [
     {
+      key: "view",
+      label: t("common.view"),
+      onSelect: (product) => navigate(`/shop/products/${product.id}`),
+    },
+    {
       key: "edit",
       label: t("common.edit"),
       icon: <Pencil />,
       permission: "products.manage",
-      onSelect: (product) => navigate(`/shop/products/${product.id}`),
+      onSelect: (product) => navigate(`/shop/products/${product.id}/edit`),
     },
   ];
 

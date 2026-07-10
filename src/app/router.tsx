@@ -203,6 +203,36 @@ const productEditorPage = () =>
       default: m.ProductEditorPage,
     })),
   );
+const productDetailPage = () =>
+  lazyPage(() =>
+    import("@/features/shop/product-detail-page").then((m) => ({
+      default: m.ProductDetailPage,
+    })),
+  );
+const cartPage = () =>
+  lazyPage(() =>
+    import("@/features/shop/cart-page").then((m) => ({
+      default: m.CartPage,
+    })),
+  );
+const checkoutPage = () =>
+  lazyPage(() =>
+    import("@/features/shop/checkout-page").then((m) => ({
+      default: m.CheckoutPage,
+    })),
+  );
+const sellersPage = () =>
+  lazyPage(() =>
+    import("@/features/shop/sellers-page").then((m) => ({
+      default: m.SellersPage,
+    })),
+  );
+const sellerDetailPage = () =>
+  lazyPage(() =>
+    import("@/features/shop/seller-detail-page").then((m) => ({
+      default: m.SellerDetailPage,
+    })),
+  );
 const customersPage = () =>
   lazyPage(() =>
     import("@/features/shop/customers-page").then((m) => ({
@@ -231,6 +261,12 @@ const invoiceDetailPage = () =>
   lazyPage(() =>
     import("@/features/shop/invoice-detail-page").then((m) => ({
       default: m.InvoiceDetailPage,
+    })),
+  );
+const createInvoicePage = () =>
+  lazyPage(() =>
+    import("@/features/shop/create-invoice-page").then((m) => ({
+      default: m.CreateInvoicePage,
     })),
   );
 const analyticsPage = () =>
@@ -624,10 +660,50 @@ export const router = createBrowserRouter(
           ),
         },
         {
-          path: "/shop/products/:id",
+          path: "/shop/products/:id/edit",
           element: (
             <RequirePermission perm="products.manage">
               {productEditorPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/shop/products/:id",
+          element: (
+            <RequirePermission perm="products.view">
+              {productDetailPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/shop/cart",
+          element: (
+            <RequirePermission perm="orders.view">
+              {cartPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/shop/checkout",
+          element: (
+            <RequirePermission perm="orders.view">
+              {checkoutPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/shop/sellers",
+          element: (
+            <RequirePermission perm="sellers.view">
+              {sellersPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/shop/sellers/:id",
+          element: (
+            <RequirePermission perm="sellers.view">
+              {sellerDetailPage()}
             </RequirePermission>
           ),
         },
@@ -660,6 +736,14 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="invoices.view">
               {invoicesPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/shop/invoices/new",
+          element: (
+            <RequirePermission perm="invoices.manage">
+              {createInvoicePage()}
             </RequirePermission>
           ),
         },

@@ -7,6 +7,7 @@ import type {
   DeliveryPayload,
   DiscountPayload,
   InboxFolder,
+  InvoiceDraft,
   InvoiceFilters,
   InvoiceStatus,
   LayoutOverrides,
@@ -16,8 +17,11 @@ import type {
   PaymentFilters,
   PaymentMethod,
   PaymentTxnStatus,
+  PlaceOrderPayload,
   ProductFilters,
   ProductPayload,
+  SellerFilters,
+  SellerStatus,
   SettingValue,
 } from "../types";
 import {
@@ -79,12 +83,16 @@ import { createPassword, registerAccount, reauth, verifyOtp } from "./auth";
 import { listFaq, listTeam, listTimeline } from "./pages";
 import { addBlogComment, getBlogPost, listBlog } from "./blog";
 import {
+  applyPromo,
+  createInvoice,
   deleteDelivery,
   deleteDiscount,
+  getCart,
   getCustomer,
   getInvoice,
   getOrder,
   getProduct,
+  getSeller,
   listCustomers,
   listDelivery,
   listDiscounts,
@@ -92,12 +100,19 @@ import {
   listOrders,
   listPayments,
   listProducts,
+  listReviews,
+  listSellerProducts,
+  listSellers,
   paymentStats,
+  placeOrder,
   refundPayment,
+  removeCartItem,
   saveDelivery,
   saveDiscount,
   saveProduct,
   setOrderStatus,
+  shippingMethods,
+  updateCartItem,
 } from "./shop";
 import { helpForScreen, helpPage, helpSearch, helpTree } from "./help";
 import {
@@ -1129,6 +1144,113 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (_options, params) => {
       requireSession();
       return getInvoice(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/shop\/invoices$/,
+    handler: (options) => {
+      requireSession();
+      return createInvoice(options.body as InvoiceDraft);
+    },
+  },
+
+  /* ---- shop: ecommerce extension (W3) ---- */
+  {
+    method: "GET",
+    pattern: /^\/shop\/products\/(\d+)\/reviews$/,
+    handler: (_options, params) => {
+      requireSession();
+      return listReviews(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/shop\/cart$/,
+    handler: () => {
+      requireSession();
+      return getCart();
+    },
+  },
+  {
+    method: "PUT",
+    pattern: /^\/shop\/cart\/items\/(\d+)$/,
+    handler: (options, params) => {
+      requireSession();
+      return updateCartItem(
+        Number(params[0]),
+        Number((options.body as { qty: number }).qty),
+      );
+    },
+  },
+  {
+    method: "DELETE",
+    pattern: /^\/shop\/cart\/items\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return removeCartItem(Number(params[0]));
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/shop\/cart\/promo$/,
+    handler: (options) => {
+      requireSession();
+      return applyPromo(String((options.body as { code: string }).code ?? ""));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/shop\/shipping$/,
+    handler: () => {
+      requireSession();
+      return shippingMethods();
+    },
+  },
+  {
+    method: "POST",
+    pattern: /^\/shop\/orders$/,
+    handler: (options) => {
+      requireSession();
+      return placeOrder(options.body as PlaceOrderPayload);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/shop\/sellers$/,
+    handler: (options) => {
+      requireSession();
+      const query = options.query ?? {};
+      const filters: SellerFilters = {
+        page: query.page === undefined ? undefined : Number(query.page),
+        q: query.q === undefined ? undefined : String(query.q),
+        status:
+          query.status === undefined
+            ? undefined
+            : (String(query.status) as SellerStatus),
+        sort:
+          query.sort === undefined
+            ? undefined
+            : (String(query.sort) as SellerFilters["sort"]),
+        dir: query.dir === "desc" ? "desc" : "asc",
+      };
+      return listSellers(filters);
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/shop\/sellers\/(\d+)$/,
+    handler: (_options, params) => {
+      requireSession();
+      return getSeller(Number(params[0]));
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/shop\/sellers\/(\d+)\/products$/,
+    handler: (_options, params) => {
+      requireSession();
+      return listSellerProducts(Number(params[0]));
     },
   },
 

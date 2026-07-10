@@ -1,5 +1,9 @@
 import { ApiError, ValidationError } from "../client";
+import { devDebug } from "../../lib/debug";
 import type {
+  Cart,
+  CartItem,
+  CheckoutAddress,
   CustomerDetail,
   CustomerFilters,
   CustomerListItem,
@@ -11,6 +15,7 @@ import type {
   DiscountStatus,
   DiscountType,
   InvoiceDetail,
+  InvoiceDraft,
   InvoiceFilters,
   InvoiceListItem,
   InvoiceStatus,
@@ -26,11 +31,18 @@ import type {
   PaymentMethod,
   PaymentStats,
   PaymentTxnStatus,
+  PlaceOrderPayload,
   Product,
   ProductFilters,
   ProductListItem,
   ProductPayload,
+  ProductReview,
   ProductStatus,
+  SellerDetail,
+  SellerFilters,
+  SellerListItem,
+  SellerStatus,
+  ShippingMethod,
 } from "../types";
 
 /*
@@ -918,4 +930,343 @@ export function deleteDelivery(id: number): { ok: true } {
   if (at < 0) throw new ApiError(404, "Delivery method not found");
   store.splice(at, 1);
   return { ok: true };
+}
+
+/* ---- product reviews (W3) ---- */
+
+const REVIEW_AUTHORS = [
+  "Olivia P.",
+  "Marco B.",
+  "Sophie M.",
+  "James W.",
+  "Anna N.",
+  "Liam B.",
+];
+const REVIEW_TITLES = [
+  "Exactly as described",
+  "Great value",
+  "Would buy again",
+  "Solid quality",
+  "A bit pricey",
+  "Fast shipping",
+];
+
+export function listReviews(productId: number): ProductReview[] {
+  devDebug("[mock:shop] listReviews", productId);
+  const count = 3 + (productId % 4);
+  const base = Date.now();
+  return Array.from({ length: count }, (_, index) => ({
+    id: productId * 100 + index,
+    author: REVIEW_AUTHORS[(productId + index) % REVIEW_AUTHORS.length]!,
+    rating: 3 + ((productId + index) % 3),
+    title: REVIEW_TITLES[(productId + index) % REVIEW_TITLES.length]!,
+    body: "A demo review used to showcase the product reviews tab. The item met expectations and arrived on time.",
+    created_at: new Date(base - (index + 1) * 4 * 24 * 3600 * 1000).toISOString(),
+  }));
+}
+
+/* ---- cart (W3) — persisted in the mock session ---- */
+
+const CART_KEY = "mock.shop.cart";
+const PROMO_CODES: Record<string, number> = {
+  WELCOME10: 0.1,
+  SUMMER25: 0.25,
+  VIP15: 0.15,
+};
+
+let cartCache: CartItem[] | null = null;
+
+function seedCartItems(): CartItem[] {
+  const products = productsStore().filter((p) => p.status === "active").slice(0, 3);
+  const variants = ["Default", "Large", null];
+  return products.map((product, index) => ({
+    id: index + 1,
+    product_id: product.id,
+    name: product.name,
+    variant: variants[index % variants.length] ?? null,
+    image: product.image,
+    price: product.price,
+    qty: 1 + (index % 2),
+  }));
+}
+
+function cartItemsStore(): CartItem[] {
+  if (cartCache) return cartCache;
+  const raw = localStorage.getItem(CART_KEY);
+  cartCache = raw ? (JSON.parse(raw) as CartItem[]) : seedCartItems();
+  persistCart();
+  return cartCache;
+}
+
+function persistCart(): void {
+  if (cartCache) localStorage.setItem(CART_KEY, JSON.stringify(cartCache));
+}
+
+let cartPromo: string | null = null;
+
+function buildCart(): Cart {
+  const items = cartItemsStore();
+  const subtotal = money(items.reduce((sum, item) => sum + item.price * item.qty, 0));
+  const shipping = items.length > 0 ? money(6.5) : 0;
+  const discountRate = cartPromo ? (PROMO_CODES[cartPromo] ?? 0) : 0;
+  const discount = money(subtotal * discountRate);
+  const tax = money((subtotal - discount) * 0.08);
+  const total = money(Math.max(0, subtotal + shipping - discount + tax));
+  return {
+    items: structuredClone(items),
+    currency: CURRENCY,
+    promo: cartPromo,
+    totals: { subtotal, shipping, discount, tax, total },
+  };
+}
+
+export function getCart(): Cart {
+  devDebug("[mock:shop] getCart");
+  return buildCart();
+}
+
+export function updateCartItem(itemId: number, qty: number): Cart {
+  devDebug("[mock:shop] updateCartItem", { itemId, qty });
+  const items = cartItemsStore();
+  const item = items.find((entry) => entry.id === itemId);
+  if (!item) throw new ApiError(404, "Cart item not found");
+  item.qty = Math.max(1, Math.round(qty));
+  persistCart();
+  return buildCart();
+}
+
+export function removeCartItem(itemId: number): Cart {
+  devDebug("[mock:shop] removeCartItem", itemId);
+  const items = cartItemsStore();
+  const at = items.findIndex((entry) => entry.id === itemId);
+  if (at >= 0) items.splice(at, 1);
+  persistCart();
+  return buildCart();
+}
+
+export function applyPromo(code: string): Cart {
+  devDebug("[mock:shop] applyPromo", code);
+  const normalized = code.trim().toUpperCase();
+  if (!(normalized in PROMO_CODES))
+    throw new ValidationError("Validation failed", { code: "invalid_promo" });
+  cartPromo = normalized;
+  return buildCart();
+}
+
+/* ---- shipping methods (W3) ---- */
+
+export function shippingMethods(): ShippingMethod[] {
+  devDebug("[mock:shop] shippingMethods");
+  return [
+    { id: "standard", name: "Standard", eta: "5–7 days", price: money(6.5), currency: CURRENCY },
+    { id: "express", name: "Express", eta: "2–3 days", price: money(14.9), currency: CURRENCY },
+    { id: "nextday", name: "Next day", eta: "1 day", price: money(24), currency: CURRENCY },
+    { id: "pickup", name: "Pickup", eta: "Today", price: 0, currency: CURRENCY },
+  ];
+}
+
+/** Place an order from the current cart (W3); clears the cart, returns the new order. */
+export function placeOrder(payload: PlaceOrderPayload): OrderDetail {
+  devDebug("[mock:shop] placeOrder", payload);
+  const items = cartItemsStore();
+  if (items.length === 0)
+    throw new ValidationError("Validation failed", { _error: "empty_cart" });
+  const cart = buildCart();
+  const address: CheckoutAddress = payload.address;
+  const store = ordersStore();
+  const id = Math.max(0, ...store.map((order) => order.id)) + 1;
+  const now = new Date().toISOString();
+  const lines: OrderLineItem[] = items.map((item, index) => ({
+    id: index + 1,
+    name: item.name,
+    sku: `SKU-${item.product_id}`,
+    qty: item.qty,
+    price: item.price,
+  }));
+  const addressText = `${address.address}\n${address.city}, ${address.zip}\n${address.country}`;
+  const order: OrderDetail = {
+    id,
+    number: `#${10500 + id - 1000}`,
+    customer_name: address.name,
+    created_at: now,
+    status: "processing",
+    payment_status: "paid",
+    total: cart.totals.total,
+    currency: CURRENCY,
+    items_count: lines.length,
+    customer: {
+      name: address.name,
+      email: `${address.name.split(" ")[0]?.toLowerCase() ?? "guest"}@example.com`,
+      phone: address.phone,
+      address: addressText,
+    },
+    shipping: { name: address.name, address: addressText },
+    billing: { name: address.name, address: addressText },
+    items: lines,
+    totals: cart.totals,
+    timeline: [
+      { id: 1, at: now, kind: "created", label: "Order placed" },
+      { id: 2, at: now, kind: "processing", label: "Payment captured" },
+    ],
+    shipping_method: payload.shipping_method,
+    payment_method: payload.payment_method,
+  };
+  store.unshift(order);
+  persistOrders();
+  // Fresh cart after checkout.
+  cartCache = [];
+  cartPromo = null;
+  persistCart();
+  return structuredClone(order);
+}
+
+/* ---- sellers / marketplace vendors (W3) ---- */
+
+const SELLER_NAMES = [
+  "Northwind Goods",
+  "Aurora Supply Co.",
+  "Cedar & Pine",
+  "Vega Electronics",
+  "Coral Living",
+  "Basalt Hardware",
+  "Willow Home",
+  "Meridian Optics",
+  "Ember Candles",
+  "Onyx Outdoors",
+  "Fern Botanicals",
+  "Halo Studio",
+  "Drift Audio",
+  "Slate Stationery",
+  "Ivory Textiles",
+];
+const SELLER_STATUSES: SellerStatus[] = ["active", "active", "pending", "active", "suspended"];
+const SELLER_SWATCHES = ["#bfdbfe", "#bbf7d0", "#fde68a", "#fecaca", "#ddd6fe", "#a5f3fc"];
+const SELLERS_PER_PAGE = 12;
+
+let sellersCache: SellerDetail[] | null = null;
+
+function buildSellers(): SellerDetail[] {
+  const base = Date.now();
+  return SELLER_NAMES.map((name, index) => {
+    const products = 6 + ((index * 7) % 40);
+    const revenue = money(4200 + ((index * 53) % 90) * 380);
+    const first = name.split(" ")[0]!.toLowerCase();
+    return {
+      id: 600 + index,
+      name,
+      logo_color: SELLER_SWATCHES[index % SELLER_SWATCHES.length]!,
+      products_count: products,
+      revenue,
+      currency: CURRENCY,
+      rating: Math.round((3.6 + (index % 14) * 0.1) * 10) / 10,
+      status: SELLER_STATUSES[index % SELLER_STATUSES.length]!,
+      joined_at: new Date(base - (index + 1) * 21 * 24 * 3600 * 1000).toISOString(),
+      email: `hello@${first}.example`,
+      phone: `+1 555 07${(10 + index).toString().slice(-2)}`,
+      location: "Portland, OR",
+      about:
+        "A demo marketplace vendor used to showcase the sellers directory and vendor profile screens.",
+      sales_count: 40 + ((index * 29) % 900),
+    };
+  });
+}
+
+function sellersStore(): SellerDetail[] {
+  sellersCache ??= buildSellers();
+  return sellersCache;
+}
+
+function toSellerListItem(seller: SellerDetail): SellerListItem {
+  return {
+    id: seller.id,
+    name: seller.name,
+    logo_color: seller.logo_color,
+    products_count: seller.products_count,
+    revenue: seller.revenue,
+    currency: seller.currency,
+    rating: seller.rating,
+    status: seller.status,
+    joined_at: seller.joined_at,
+  };
+}
+
+export function listSellers(filters: SellerFilters): Paginated<SellerListItem> {
+  devDebug("[mock:shop] listSellers", filters);
+  let rows = sellersStore().slice();
+  const q = filters.q?.toLowerCase().trim();
+  if (q) rows = rows.filter((seller) => seller.name.toLowerCase().includes(q));
+  if (filters.status) rows = rows.filter((seller) => seller.status === filters.status);
+  const sort = filters.sort ?? "name";
+  const dir = filters.dir === "desc" ? -1 : 1;
+  rows.sort((a, b) => {
+    if (sort === "products_count") return (a.products_count - b.products_count) * dir;
+    if (sort === "revenue") return (a.revenue - b.revenue) * dir;
+    if (sort === "rating") return (a.rating - b.rating) * dir;
+    if (sort === "joined_at") return a.joined_at.localeCompare(b.joined_at) * dir;
+    return a.name.localeCompare(b.name) * dir;
+  });
+  const page = Math.max(1, filters.page ?? 1);
+  return {
+    rows: rows.slice((page - 1) * SELLERS_PER_PAGE, page * SELLERS_PER_PAGE).map(toSellerListItem),
+    total: rows.length,
+    page,
+    per_page: SELLERS_PER_PAGE,
+  };
+}
+
+export function getSeller(id: number): SellerDetail {
+  devDebug("[mock:shop] getSeller", id);
+  const seller = sellersStore().find((entry) => entry.id === id);
+  if (!seller) throw new ApiError(404, "Seller not found");
+  return structuredClone(seller);
+}
+
+/** Products attributed to a seller — a deterministic slice of the catalog. */
+export function listSellerProducts(id: number): ProductListItem[] {
+  devDebug("[mock:shop] listSellerProducts", id);
+  const all = productsStore();
+  const offset = id % Math.max(1, all.length - 6);
+  return all.slice(offset, offset + 6).map(toProductListItem);
+}
+
+/* ---- create invoice (W3) ---- */
+
+export function createInvoice(payload: InvoiceDraft): InvoiceDetail {
+  devDebug("[mock:shop] invoices.create", payload);
+  const lines = payload.items?.filter((line) => line.description?.trim()) ?? [];
+  if (lines.length === 0)
+    throw new ValidationError("Validation failed", { items: "required" });
+  if (!payload.recipient?.name?.trim())
+    throw new ValidationError("Validation failed", { recipient: "required" });
+  const items: OrderLineItem[] = lines.map((line, index) => ({
+    id: index + 1,
+    name: line.description,
+    sku: "—",
+    qty: Math.max(1, line.qty),
+    price: money(Math.max(0, line.price)),
+  }));
+  const subtotal = money(items.reduce((sum, item) => sum + item.price * item.qty, 0));
+  const discount = money(Math.max(0, payload.discount ?? 0));
+  const tax = money((subtotal - discount) * (Math.max(0, payload.tax_rate ?? 0) / 100));
+  const total = money(Math.max(0, subtotal - discount + tax));
+  const store = invoicesStore();
+  const id = Math.max(0, ...store.map((invoice) => invoice.id)) + 1;
+  const now = new Date();
+  const created: InvoiceDetail = {
+    id,
+    number: `INV-2026-${1000 + id}`,
+    customer_name: payload.recipient.name,
+    issued_at: now.toISOString(),
+    due_at: new Date(now.getTime() + 14 * 24 * 3600 * 1000).toISOString(),
+    amount: total,
+    currency: CURRENCY,
+    status: "draft",
+    issuer: payload.issuer,
+    recipient: payload.recipient,
+    items,
+    totals: { subtotal, shipping: 0, discount, tax, total },
+    notes: payload.notes ?? "",
+  };
+  store.unshift(created);
+  return structuredClone(created);
 }

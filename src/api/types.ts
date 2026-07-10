@@ -1005,6 +1005,112 @@ export interface DeliveryPayload {
   active: boolean;
 }
 
+/* ---- ecommerce extension (W3): cart, checkout, sellers, reviews ---- */
+
+export interface ProductReview {
+  id: number;
+  author: string;
+  rating: number;
+  title: string;
+  body: string;
+  created_at: string;
+}
+
+export interface CartItem {
+  id: number;
+  product_id: number;
+  name: string;
+  variant: string | null;
+  image?: string;
+  price: number;
+  qty: number;
+}
+
+export interface CartTotals {
+  subtotal: number;
+  shipping: number;
+  discount: number;
+  tax: number;
+  total: number;
+}
+
+export interface Cart {
+  items: CartItem[];
+  currency: string;
+  promo: string | null;
+  totals: CartTotals;
+}
+
+export interface ShippingMethod {
+  id: string;
+  name: string;
+  eta: string;
+  price: number;
+  currency: string;
+}
+
+/** Address block collected in checkout / used as the order recipient. */
+export interface CheckoutAddress {
+  name: string;
+  phone: string;
+  country: string;
+  address: string;
+  city: string;
+  zip: string;
+}
+
+export interface PlaceOrderPayload {
+  address: CheckoutAddress;
+  shipping_method: string;
+  payment_method: string;
+}
+
+export type SellerStatus = "active" | "pending" | "suspended";
+
+export interface SellerListItem {
+  id: number;
+  name: string;
+  logo_color: string;
+  products_count: number;
+  revenue: number;
+  currency: string;
+  rating: number;
+  status: SellerStatus;
+  joined_at: string;
+}
+
+export interface SellerDetail extends SellerListItem {
+  email: string;
+  phone: string;
+  location: string;
+  about: string;
+  sales_count: number;
+}
+
+export interface SellerFilters {
+  page?: number;
+  q?: string;
+  status?: SellerStatus;
+  sort?: "name" | "products_count" | "revenue" | "rating" | "joined_at";
+  dir?: "asc" | "desc";
+}
+
+/** Create Invoice draft payload (W3). */
+export interface InvoiceDraftLine {
+  description: string;
+  qty: number;
+  price: number;
+}
+
+export interface InvoiceDraft {
+  issuer: OrderParty;
+  recipient: OrderParty;
+  items: InvoiceDraftLine[];
+  tax_rate: number;
+  discount: number;
+  notes: string;
+}
+
 /* ---- analytics dashboard (build-demo-screen-catalog) ---- */
 
 export interface AnalyticsKpi {

@@ -1,0 +1,2 @@
+2026-07-10  Add ecommerce-ext screens: product details, cart, checkout, sellers, seller details.
+2026-07-10  Add Create Invoice (RHF field-array + live preview) and shared InvoiceSheet.

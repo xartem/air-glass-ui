@@ -156,7 +156,15 @@ export function InvoicesPage() {
 
   return (
     <div className="space-y-4">
-      <PageHeader title={t("nav.invoices")} icon={ReceiptText} />
+      <PageHeader
+        title={t("nav.invoices")}
+        icon={ReceiptText}
+        primaryAction={{
+          label: t("shop.invoices.create.new"),
+          href: "/shop/invoices/new",
+          permission: "invoices.manage",
+        }}
+      />
 
       <Panel
         icon={ReceiptText}
