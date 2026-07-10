@@ -38,6 +38,7 @@ import {
   type LayoutOverrides,
 } from "@/api";
 import { ConfirmDialog } from "@/components/confirm-dialog";
+import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -293,31 +294,27 @@ export function DashboardCustomize({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">
-            {t("dashboard.customize")}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {t("dashboard.customize.editing_role", { role: roleLabel })}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            onClick={onExit}
-            disabled={saveMutation.isPending}
-          >
-            {t("common.cancel")}
-          </Button>
-          <Button
-            onClick={() => saveMutation.mutate()}
-            disabled={saveMutation.isPending || !dirty}
-          >
-            {t("common.save")}
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title={t("dashboard.customize")}
+        subtitle={t("dashboard.customize.editing_role", { role: roleLabel })}
+        actions={
+          <>
+            <Button
+              variant="ghost"
+              onClick={onExit}
+              disabled={saveMutation.isPending}
+            >
+              {t("common.cancel")}
+            </Button>
+            <Button
+              onClick={() => saveMutation.mutate()}
+              disabled={saveMutation.isPending || !dirty}
+            >
+              {t("common.save")}
+            </Button>
+          </>
+        }
+      />
 
       <div className="flex flex-wrap items-center gap-2">
         <Select

@@ -7,6 +7,7 @@ import type {
   BlogPost,
   FaqEntry,
   GalleryPhoto,
+  SearchResultItem,
   TeamMember,
   TimelineEvent,
   InboxFolder,
@@ -693,6 +694,7 @@ export const api = {
     timeline: () => apiFetch<TimelineEvent[]>("/pages/timeline"),
     faq: () => apiFetch<FaqEntry[]>("/pages/faq"),
     gallery: () => apiFetch<GalleryPhoto[]>("/pages/gallery"),
+    search: () => apiFetch<SearchResultItem[]>("/pages/search"),
   },
 
   /* W1 blog (any authenticated): list/grid share the query; article + comments. */

@@ -118,8 +118,10 @@
   --gradient-heading: linear-gradient(135deg, var(--primary) 0%, #34d399 100%);
   --gradient-destructive: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   /* Overlay scrim behind modal surfaces (dialog/sheet/drawer/alert). Light keeps
-       the previous bg-black/10 weight; dark goes deliberately darker (10% is too weak). */
+       the previous bg-black/10 weight; dark goes deliberately darker (10% is too weak).
+       The micro-blur is a token so skin-flat can collapse it to 0 (flat = no blur). */
   --overlay-scrim: rgba(15, 23, 42, 0.1);
+  --overlay-blur: 4px;
 
   /* Glass recipe — consumed ONLY by framework components below.
        Cards are MORE translucent than panel/topbar so the mesh shines through. */
@@ -270,6 +272,7 @@
   --glass-blur-header: 0px;
   --glass-blur-card: 0px;
   --glass-blur-small: 0px;
+  --overlay-blur: 0px;
   --glass-saturate: 100%;
   --glass-border: rgba(148, 163, 184, 0.3);
   --glass-highlight: 0 0 0 0 rgba(0, 0, 0, 0);

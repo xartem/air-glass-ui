@@ -2,6 +2,7 @@ import type {
   FaqEntry,
   GalleryCategory,
   GalleryPhoto,
+  SearchResultItem,
   TeamMember,
   TimelineEvent,
 } from "../types";
@@ -329,4 +330,98 @@ const GALLERY: GalleryPhoto[] = Array.from({ length: 16 }, (_, index) => {
 
 export function listGallery(): GalleryPhoto[] {
   return GALLERY;
+}
+
+const SEARCH_RESULTS: SearchResultItem[] = [
+  { id: 1, type: "page", title: "Dashboard overview", hint: "/", url: "/" },
+  { id: 2, type: "page", title: "Team directory", hint: "/team", url: "/team" },
+  {
+    id: 3,
+    type: "page",
+    title: "Pricing plans",
+    hint: "/pricing",
+    url: "/pricing",
+  },
+  {
+    id: 4,
+    type: "page",
+    title: "Blog list",
+    hint: "/blog/list",
+    url: "/blog/list",
+  },
+  { id: 5, type: "page", title: "FAQ & help", hint: "/faq", url: "/faq" },
+  {
+    id: 6,
+    type: "user",
+    title: "Anna Adminson",
+    hint: "anna@example.com",
+    url: "/team",
+  },
+  {
+    id: 7,
+    type: "user",
+    title: "Mia Chen",
+    hint: "mia@example.com",
+    url: "/team",
+  },
+  {
+    id: 8,
+    type: "user",
+    title: "Liam Novak",
+    hint: "liam@example.com",
+    url: "/team",
+  },
+  {
+    id: 9,
+    type: "user",
+    title: "Emma Wright",
+    hint: "emma@example.com",
+    url: "/team",
+  },
+  {
+    id: 10,
+    type: "media",
+    title: "hero.jpg",
+    hint: "2026/07 · 1.2 MB",
+    url: "/media",
+  },
+  {
+    id: 11,
+    type: "media",
+    title: "og-cover.jpg",
+    hint: "2026/07 · 840 KB",
+    url: "/media",
+  },
+  {
+    id: 12,
+    type: "media",
+    title: "team-photo.jpg",
+    hint: "2026/07 · 2.1 MB",
+    url: "/media",
+  },
+  {
+    id: 13,
+    type: "page",
+    title: "Appearance settings",
+    hint: "/appearance",
+    url: "/appearance",
+  },
+  {
+    id: 14,
+    type: "user",
+    title: "Noah Kim",
+    hint: "noah@example.com",
+    url: "/team",
+  },
+  {
+    id: 15,
+    type: "media",
+    title: "banner-summer.jpg",
+    hint: "2026/07 · 1.6 MB",
+    url: "/media",
+  },
+];
+
+export function listSearchResults(): SearchResultItem[] {
+  return SEARCH_RESULTS;
 }

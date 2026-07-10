@@ -61,8 +61,7 @@ export function MediaTile({
           <ImageIcon className="size-6" />
         </span>
       )}
-      {/* Rounded on its own: backdrop-filter children escape the parent's overflow clipping in Chrome */}
-      <span className="absolute inset-x-0 bottom-0 truncate rounded-b-[calc(var(--radius-lg)-1px)] bg-background/80 px-1.5 py-0.5 text-[11px] backdrop-blur-sm">
+      <span className="absolute inset-x-0 bottom-0 truncate rounded-b-[calc(var(--radius-lg)-1px)] bg-background/80 px-1.5 py-0.5 text-[11px]">
         {item.name}
       </span>
     </button>
@@ -149,7 +148,7 @@ export function MediaPicker({
                 type="button"
                 aria-label={t("media.remove")}
                 onClick={() => onChange(value.filter((p) => p !== path))}
-                className="absolute top-1 end-1 flex size-5 items-center justify-center rounded-full bg-background/85 opacity-0 backdrop-blur-sm transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-background"
+                className="absolute top-1 end-1 flex size-5 items-center justify-center rounded-full bg-background/85 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-background"
               >
                 <X className="size-3" />
               </button>

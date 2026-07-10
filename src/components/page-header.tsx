@@ -63,7 +63,9 @@ function ActionButton({
 
 export function PageHeader({
   title,
+  subtitle,
   icon: Icon,
+  actions,
   primaryAction,
   secondaryActions = [],
   breadcrumbs,
@@ -71,7 +73,11 @@ export function PageHeader({
   className,
 }: {
   title: string;
+  /** Secondary line under the title (e.g. role, context hint). */
+  subtitle?: ReactNode;
   icon?: ComponentType<{ className?: string }>;
+  /** Free-form action nodes (toggles, pickers) rendered before the structured actions. */
+  actions?: ReactNode;
   primaryAction?: HeaderAction;
   secondaryActions?: HeaderAction[];
   breadcrumbs?: { label: string; href?: string }[];
@@ -102,13 +108,24 @@ export function PageHeader({
           </BreadcrumbList>
         </Breadcrumb>
       ) : null}
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <h1 className="flex min-w-0 items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl">
-          {Icon ? <Icon className="size-6 shrink-0 text-primary" /> : null}
-          <span className="truncate">{title}</span>
-        </h1>
+      <div
+        className={cn(
+          "flex flex-wrap justify-between gap-x-4 gap-y-2",
+          subtitle ? "items-start" : "items-center",
+        )}
+      >
+        <div className="min-w-0">
+          <h1 className="flex min-w-0 items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl">
+            {Icon ? <Icon className="size-6 shrink-0 text-primary" /> : null}
+            <span className="truncate">{title}</span>
+          </h1>
+          {subtitle ? (
+            <p className="text-sm text-muted-foreground">{subtitle}</p>
+          ) : null}
+        </div>
         <div className="flex flex-wrap items-center gap-2">
           {helpKey ? <HelpSheetButton screenKey={helpKey} /> : null}
+          {actions}
           {secondaryActions.map((action) => (
             <ActionButton
               key={action.label}

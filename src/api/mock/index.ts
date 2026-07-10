@@ -127,7 +127,13 @@ import {
 import { regenerateStatus, startRegenerate } from "./media";
 import { getAppearance, saveAppearance } from "./appearance";
 import { createPassword, registerAccount, reauth, verifyOtp } from "./auth";
-import { listFaq, listGallery, listTeam, listTimeline } from "./pages";
+import {
+  listFaq,
+  listGallery,
+  listSearchResults,
+  listTeam,
+  listTimeline,
+} from "./pages";
 import { addBlogComment, getBlogPost, listBlog } from "./blog";
 import {
   applyPromo,
@@ -1595,6 +1601,15 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
       requireSession();
       devDebug("[mock:pages] listGallery");
       return listGallery();
+    },
+  },
+  {
+    method: "GET",
+    pattern: /^\/pages\/search$/,
+    handler: () => {
+      requireSession();
+      devDebug("[mock:pages] listSearchResults");
+      return listSearchResults();
     },
   },
 

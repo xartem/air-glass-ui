@@ -3,18 +3,19 @@ import {
   type LegalSection,
 } from "@/features/pages-extra/legal-page";
 import { t } from "@/lib/i18n";
+import { useLocale } from "@/lib/use-locale";
 
 /*
  * /terms (public): long-form terms & conditions. Body paragraphs are placeholder
  * copy — the buyer replaces them with their own legal text.
  */
 
-const PLACEHOLDER = [
-  "This is placeholder copy for a template. Replace it with your own terms before going live.",
-  "By using the service you agree to the conditions described in this section.",
-];
-
 export function TermsPage() {
+  useLocale();
+  const placeholder = [
+    t("legal.terms.placeholder1"),
+    t("legal.terms.placeholder2"),
+  ];
   const sections: LegalSection[] = [
     "acceptance",
     "useOfService",
@@ -25,7 +26,7 @@ export function TermsPage() {
   ].map((id) => ({
     id,
     heading: t(`legal.terms.section.${id}`),
-    body: PLACEHOLDER,
+    body: placeholder,
   }));
 
   return (

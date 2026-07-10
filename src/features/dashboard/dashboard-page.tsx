@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { api, type DashboardAction, type Period } from "@/api";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { EmptyState } from "@/components/empty-state";
+import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
 import { Button } from "@/components/ui/button";
 import {
@@ -127,25 +128,23 @@ function DashboardHome({ onCustomize }: { onCustomize: () => void }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">
-            {t("dashboard.greeting", { name: me.user.name.split(" ")[0] })}
-          </h1>
-          <p className="text-sm text-muted-foreground">{me.user.role.label}</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {hasPeriodWidgets ? (
-            <PeriodTabs period={period} onChange={setPeriod} />
-          ) : null}
-          {canManage ? (
-            <Button variant="outline" onClick={onCustomize}>
-              <SlidersHorizontal />
-              {t("dashboard.customize")}
-            </Button>
-          ) : null}
-        </div>
-      </div>
+      <PageHeader
+        title={t("dashboard.greeting", { name: me.user.name.split(" ")[0] })}
+        subtitle={me.user.role.label}
+        actions={
+          <>
+            {hasPeriodWidgets ? (
+              <PeriodTabs period={period} onChange={setPeriod} />
+            ) : null}
+            {canManage ? (
+              <Button variant="outline" onClick={onCustomize}>
+                <SlidersHorizontal />
+                {t("dashboard.customize")}
+              </Button>
+            ) : null}
+          </>
+        }
+      />
 
       {actions.length > 0 ? <QuickActions actions={actions} /> : null}
 

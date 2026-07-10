@@ -3,18 +3,19 @@ import {
   type LegalSection,
 } from "@/features/pages-extra/legal-page";
 import { t } from "@/lib/i18n";
+import { useLocale } from "@/lib/use-locale";
 
 /*
  * /privacy (public): long-form privacy policy. Body paragraphs are placeholder
  * copy — the buyer replaces them with their own legal text.
  */
 
-const PLACEHOLDER = [
-  "This is placeholder copy for a template. Replace it with your own policy before going live.",
-  "We describe here what information is collected, how it is used, and the choices available to you.",
-];
-
 export function PrivacyPage() {
+  useLocale();
+  const placeholder = [
+    t("legal.privacy.placeholder1"),
+    t("legal.privacy.placeholder2"),
+  ];
   const sections: LegalSection[] = [
     "introduction",
     "dataWeCollect",
@@ -25,7 +26,7 @@ export function PrivacyPage() {
   ].map((id) => ({
     id,
     heading: t(`legal.privacy.section.${id}`),
-    body: PLACEHOLDER,
+    body: placeholder,
   }));
 
   return (

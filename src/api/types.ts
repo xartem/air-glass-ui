@@ -1541,6 +1541,16 @@ export interface FaqEntry {
   answer: string;
 }
 
+export type SearchResultType = "page" | "user" | "media";
+
+export interface SearchResultItem {
+  id: number;
+  type: SearchResultType;
+  title: string;
+  hint: string;
+  url: string;
+}
+
 export type GalleryCategory = "nature" | "city" | "abstract" | "people";
 
 export interface GalleryPhoto {

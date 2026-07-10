@@ -1,32 +1,26 @@
 import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { devDebug } from "@/lib/debug";
 import { FileText, Image as ImageIcon, Search, UserCircle } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
 
+import { api } from "@/api";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { PaginationBar } from "@/components/pagination-bar";
 import { Panel } from "@/components/panel";
 import { SearchInput } from "@/components/toolbar";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
  * /search-results: global search results with type tabs (all/pages/users/media)
- * and pagination. Flow-entered (no sidebar row). Presentational demo fixture.
+ * and pagination. Flow-entered (no sidebar row). Demo data comes from the
+ * mock-API layer; filtering stays client-side.
  */
-
-type ResultType = "page" | "user" | "media";
-
-interface Result {
-  id: number;
-  type: ResultType;
-  title: string;
-  hint: string;
-  url: string;
-}
 
 const TYPE_ICON = {
   page: FileText,
@@ -35,96 +29,6 @@ const TYPE_ICON = {
 } as const;
 const TABS = ["all", "page", "user", "media"] as const;
 const PER_PAGE = 6;
-
-const RESULTS: Result[] = [
-  { id: 1, type: "page", title: "Dashboard overview", hint: "/", url: "/" },
-  { id: 2, type: "page", title: "Team directory", hint: "/team", url: "/team" },
-  {
-    id: 3,
-    type: "page",
-    title: "Pricing plans",
-    hint: "/pricing",
-    url: "/pricing",
-  },
-  {
-    id: 4,
-    type: "page",
-    title: "Blog list",
-    hint: "/blog/list",
-    url: "/blog/list",
-  },
-  { id: 5, type: "page", title: "FAQ & help", hint: "/faq", url: "/faq" },
-  {
-    id: 6,
-    type: "user",
-    title: "Anna Adminson",
-    hint: "anna@example.com",
-    url: "/team",
-  },
-  {
-    id: 7,
-    type: "user",
-    title: "Mia Chen",
-    hint: "mia@example.com",
-    url: "/team",
-  },
-  {
-    id: 8,
-    type: "user",
-    title: "Liam Novak",
-    hint: "liam@example.com",
-    url: "/team",
-  },
-  {
-    id: 9,
-    type: "user",
-    title: "Emma Wright",
-    hint: "emma@example.com",
-    url: "/team",
-  },
-  {
-    id: 10,
-    type: "media",
-    title: "hero.jpg",
-    hint: "2026/07 · 1.2 MB",
-    url: "/media",
-  },
-  {
-    id: 11,
-    type: "media",
-    title: "og-cover.jpg",
-    hint: "2026/07 · 840 KB",
-    url: "/media",
-  },
-  {
-    id: 12,
-    type: "media",
-    title: "team-photo.jpg",
-    hint: "2026/07 · 2.1 MB",
-    url: "/media",
-  },
-  {
-    id: 13,
-    type: "page",
-    title: "Appearance settings",
-    hint: "/appearance",
-    url: "/appearance",
-  },
-  {
-    id: 14,
-    type: "user",
-    title: "Noah Kim",
-    hint: "noah@example.com",
-    url: "/team",
-  },
-  {
-    id: 15,
-    type: "media",
-    title: "banner-summer.jpg",
-    hint: "2026/07 · 1.6 MB",
-    url: "/media",
-  },
-];
 
 export function SearchResultsPage() {
   useLocale();
@@ -135,15 +39,20 @@ export function SearchResultsPage() {
 
   devDebug("[SearchResultsPage] render", { query, type, page });
 
+  const searchQuery = useQuery({
+    queryKey: ["pages", "search"],
+    queryFn: api.pages.search,
+  });
+
   const matches = useMemo(() => {
     const q = query.toLowerCase().trim();
-    return RESULTS.filter((result) => {
+    return (searchQuery.data ?? []).filter((result) => {
       if (type !== "all" && result.type !== type) return false;
       if (q && !`${result.title} ${result.hint}`.toLowerCase().includes(q))
         return false;
       return true;
     });
-  }, [query, type]);
+  }, [searchQuery.data, query, type]);
 
   const patch = (next: Record<string, string | undefined>) => {
     const updated = new URLSearchParams(params);
@@ -198,7 +107,13 @@ export function SearchResultsPage() {
           </TabsList>
         </Tabs>
 
-        {shown.length === 0 ? (
+        {searchQuery.isPending ? (
+          <div className="space-y-2">
+            {Array.from({ length: PER_PAGE }, (_, index) => (
+              <Skeleton key={index} className="h-16 rounded-xl" />
+            ))}
+          </div>
+        ) : shown.length === 0 ? (
           <EmptyState
             icon={Search}
             title={t("searchResults.empty.title")}
