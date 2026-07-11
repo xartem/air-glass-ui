@@ -112,7 +112,7 @@
   "layouts.note.body": "Cette page a basculé l'interface d'administration sur la disposition {name}. C'est un réglage d'apparence global — modifiable à tout moment depuis le personnalisateur de thème ou les réglages d'apparence.",
   "layouts.note.reset": "Réinitialiser par défaut",
   "layouts.note.settings": "Réglages d'apparence",
-  "layouts.horizontal.desc": "La navigation principale se trouve dans une barre de menu supérieure ; la barre latérale disparaît et le contenu occupe toute la largeur.",
+  "layouts.horizontal.desc": "La navigation principale se trouve dans une barre de menu supérieure dont les boutons ouvrent des panneaux mégamenu — de larges grilles de liens multi-colonnes ; la barre latérale disparaît et le contenu occupe toute la largeur.",
   "layouts.detached.desc": "La barre latérale flotte comme une carte dans une rangée de contenu centrée et de largeur maximale, sous un en-tête pleine largeur.",
   "layouts.two-column.desc": "Un rail d'icônes fin des sections principales et une seconde colonne listant les pages de la section active.",
   "layouts.hovered.desc": "La barre latérale se réduit à des icônes et s'étend au survol ou au focus clavier.",

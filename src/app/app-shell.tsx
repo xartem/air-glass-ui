@@ -32,6 +32,7 @@ import {
   type NavItem,
   type NavParent,
 } from "@/app/nav";
+import { HorizontalNav } from "@/app/horizontal-nav";
 import {
   collectLeaves,
   filterGroups,
@@ -1033,42 +1034,6 @@ function TwoColumnNav() {
         {current ? <SidebarNav groups={[current]} /> : null}
       </aside>
     </>
-  );
-}
-
-/** Horizontal variant: a top menu bar of groups (dropdowns for their trees). Desktop only. */
-function HorizontalNav() {
-  const { groups, activeGroupKey } = useActiveNav();
-  return (
-    <nav
-      aria-label={t("shell.nav_label")}
-      className="glass-panel mx-2 mt-2 hidden flex-wrap items-center gap-0.5 rounded-2xl border px-2 py-1.5 sm:mx-4 lg:flex"
-    >
-      {groups.map((group) => (
-        <DropdownMenu key={group.key}>
-          <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              className={cn(
-                "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors",
-                group.key === activeGroupKey
-                  ? "nav-item-active font-medium"
-                  : "text-sidebar-foreground hover:bg-muted hover:text-foreground",
-              )}
-            >
-              {group.label}
-              <ChevronDown className="size-3" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="start"
-            className="max-h-[70vh] overflow-y-auto"
-          >
-            <RailMenuItems entries={group.items} />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ))}
-    </nav>
   );
 }
 

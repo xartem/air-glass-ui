@@ -112,7 +112,7 @@
   "layouts.note.body": "Esta página cambió el panel al diseño {name}. Es un ajuste de apariencia global — cámbialo cuando quieras desde el Personalizador de tema o los ajustes de Apariencia.",
   "layouts.note.reset": "Restablecer al valor predeterminado",
   "layouts.note.settings": "Ajustes de apariencia",
-  "layouts.horizontal.desc": "La navegación principal va en una barra de menú superior; la barra lateral desaparece y el contenido ocupa todo el ancho.",
+  "layouts.horizontal.desc": "La navegación principal va en una barra de menú superior cuyos botones abren paneles de megamenú — amplias cuadrículas de enlaces en varias columnas; la barra lateral desaparece y el contenido ocupa todo el ancho.",
   "layouts.detached.desc": "La barra lateral flota como una tarjeta dentro de una fila de contenido centrada y de ancho máximo, bajo un encabezado de ancho completo.",
   "layouts.two-column.desc": "Un riel de iconos estrecho con las secciones principales y una segunda columna con las páginas de la sección activa.",
   "layouts.hovered.desc": "La barra lateral se contrae a iconos y se expande al pasar el ratón o con el foco del teclado.",

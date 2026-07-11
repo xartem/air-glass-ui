@@ -112,7 +112,7 @@
   "layouts.note.body": "Questa pagina ha impostato la shell di amministrazione sul layout {name}. È un'impostazione di aspetto globale — modificabile in qualsiasi momento dal Personalizzatore del tema o dalle impostazioni Aspetto.",
   "layouts.note.reset": "Ripristina predefinito",
   "layouts.note.settings": "Impostazioni aspetto",
-  "layouts.horizontal.desc": "La navigazione principale scorre in una barra dei menu superiore; la barra laterale scompare e il contenuto occupa tutta la larghezza.",
+  "layouts.horizontal.desc": "La navigazione principale scorre in una barra dei menu superiore i cui pulsanti aprono pannelli megamenu — ampie griglie di link su più colonne; la barra laterale scompare e il contenuto occupa tutta la larghezza.",
   "layouts.detached.desc": "La barra laterale galleggia come una scheda in una riga di contenuto centrata e a larghezza massima, sotto un'intestazione a tutta larghezza.",
   "layouts.two-column.desc": "Una sottile barra di icone delle sezioni principali più una seconda colonna con le pagine della sezione attiva.",
   "layouts.hovered.desc": "La barra laterale si riduce a icone e si espande al passaggio del mouse o con il focus da tastiera.",

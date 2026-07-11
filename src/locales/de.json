@@ -112,7 +112,7 @@
   "layouts.note.body": "Diese Seite hat das Admin-Shell auf das Layout {name} umgestellt. Es ist eine seitenweite Darstellungseinstellung — jederzeit im Theme-Customizer oder in den Darstellungseinstellungen änderbar.",
   "layouts.note.reset": "Auf Standard zurücksetzen",
   "layouts.note.settings": "Darstellungseinstellungen",
-  "layouts.horizontal.desc": "Die Hauptnavigation verläuft in einer oberen Menüleiste; die Seitenleiste entfällt und der Inhalt nutzt die volle Breite.",
+  "layouts.horizontal.desc": "Die Hauptnavigation verläuft in einer oberen Menüleiste, deren Schaltflächen Megamenü-Panels öffnen — breite, mehrspaltige Linkraster; die Seitenleiste entfällt und der Inhalt nutzt die volle Breite.",
   "layouts.detached.desc": "Die Seitenleiste schwebt als Karte in einer zentrierten Inhaltszeile mit maximaler Breite unter einer Kopfzeile über die volle Breite.",
   "layouts.two-column.desc": "Eine schmale Symbolleiste der Hauptbereiche plus eine zweite Spalte mit den Seiten des aktiven Bereichs.",
   "layouts.hovered.desc": "Die Seitenleiste wird auf Symbole reduziert und erweitert sich beim Überfahren oder bei Tastaturfokus.",
