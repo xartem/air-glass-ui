@@ -78,6 +78,7 @@ export function CommandPalette({
       open={open}
       onOpenChange={onOpenChange}
       title={t("palette.title")}
+      description={t("palette.placeholder")}
       showCloseButton={false}
     >
       <Command>
