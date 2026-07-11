@@ -886,7 +886,7 @@ function ShellHeader({
   leading?: ReactNode;
 }) {
   return (
-    <header className="glass-header sticky top-2 z-10 m-2 mb-0 flex items-center gap-1.5 rounded-2xl border p-2 sm:top-4 sm:m-4 sm:mb-0 sm:gap-2">
+    <header className="glass-header sticky top-2 z-20 m-2 mb-0 flex items-center gap-1.5 rounded-2xl border p-2 sm:top-4 sm:m-4 sm:mb-0 sm:gap-2">
       <MobileNavSheet />
       {leading}
       {/* Search field-styled trigger ≥md; an icon below md — both open the ⌘K palette */}
