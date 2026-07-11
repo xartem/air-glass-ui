@@ -411,6 +411,9 @@ function ThreadPane({ id, onBack }: { id: number; onBack: () => void }) {
           onClick={submit}
           disabled={!draft.trim() || sendMutation.isPending}
           aria-label={t("inbox.send")}
+          // Match the textarea's collapsed min-h-[2.5rem] (40px) so the pair is
+          // bottom-aligned; the default button is 38px, a 2px shortfall.
+          className="h-10"
         >
           <SendHorizontal className="rtl:-scale-x-100" />
           <span className="max-sm:sr-only">{t("inbox.send")}</span>

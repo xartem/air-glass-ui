@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useQuery } from "@tanstack/react-query";
 import {
   ChevronDown,
   Droplet,
@@ -48,7 +47,10 @@ import {
   CommandPaletteTrigger,
 } from "@/components/command-palette";
 import { GlobalProgress } from "@/components/global-progress";
-import { NotificationsMenu } from "@/components/notifications-menu";
+import {
+  NotificationsMenu,
+  type AdminNotification,
+} from "@/components/notifications-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -741,22 +743,43 @@ function TopbarControls({
 }) {
   const locale = useLocale();
   const { me, logout } = useAuth();
-  const unreadQuery = useQuery({
-    queryKey: ["notifications", "unread-count"],
-    queryFn: api.notifications.unreadCount,
-  });
-  const unread = unreadQuery.data?.count ?? 0;
+  // Typed demo seed so the type tabs are demonstrable; the bell badge is derived
+  // from the unread items inside NotificationsMenu, so it stays consistent.
+  // Real data will replace this via a GET /api/notifications hook.
+  const notifications: AdminNotification[] = [
+    {
+      id: "n1",
+      type: "mention",
+      title: t("notifications.seed.mentionComment"),
+      time: "2m",
+      read: false,
+    },
+    {
+      id: "n2",
+      type: "mention",
+      title: t("notifications.seed.taskAssigned"),
+      time: "18m",
+      read: true,
+    },
+    {
+      id: "n3",
+      type: "system",
+      title: t("notifications.seed.systemMaintenance"),
+      time: "1h",
+      read: false,
+    },
+    {
+      id: "n4",
+      type: "system",
+      title: t("notifications.seed.newVersion"),
+      time: "3h",
+      read: true,
+    },
+  ];
 
   return (
     <div className="ms-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
-      <NotificationsMenu
-        initialItems={Array.from({ length: unread }, (_, index) => ({
-          id: `unread-${index}`,
-          title: t("bell.placeholder"),
-          time: "",
-          read: false,
-        }))}
-      />
+      <NotificationsMenu initialItems={notifications} />
       <AiPanel />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

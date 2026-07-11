@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Package, Pencil } from "lucide-react";
+import { Eye, Package, Pencil } from "lucide-react";
 import { useNavigate } from "react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -138,6 +138,7 @@ export function ProductsPage() {
     {
       key: "view",
       label: t("common.view"),
+      icon: <Eye />,
       onSelect: (product) => navigate(`/shop/products/${product.id}`),
     },
     {

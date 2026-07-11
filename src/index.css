@@ -983,6 +983,42 @@
   }
 
   /*
+   * Notifications panel — opt the topbar bell popover out of the flat overlay recipe
+   * and into the stronger CARD look (denser fill, bigger blur + shadow). These rules
+   * come AFTER the [data-slot="popover-content"] overlay blocks above and match their
+   * specificity per skin, so they win by source order (adding the .glass-card class
+   * alone would lose to the later popover-content rule). Mirrors the .glass-card /
+   * .skin-liquid .glass-card / .skin-liquid.dark .glass-card gradients.
+   */
+  .notifications-panel {
+    background: var(--glass-bg-card);
+    backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    box-shadow: var(--glass-highlight), var(--glass-shadow);
+  }
+  .skin-liquid .notifications-panel {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.06) 22%,
+        rgba(255, 255, 255, 0) 55%
+      ),
+      var(--glass-bg-card);
+  }
+  .skin-liquid.dark .notifications-panel {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 55%
+      ),
+      var(--glass-bg-card);
+  }
+
+  /*
    * iOS skin buttons — frosted-glass tile recipe (fill + top sheen + hairline + soft
    * shadow + backdrop frost) for the "real" tiers: secondary / outline / destructive.
    * Keyed on data-variant (not data-slot) so DropdownMenuTrigger `asChild` buttons
@@ -1049,9 +1085,11 @@
    * button tiles — they share the unified --field-bg fill (see input/select/textarea
    * components) in every skin, so they must NOT get the glass-tile treatment here.
    */
-  /* Topbar "Open site" is the lone outline button in the header — keep it flat/quiet
-     among the ghost icon buttons instead of a glass chip (hover fill still applies). */
-  .skin-liquid header [data-variant="outline"] {
+  /* Topbar "Open site" is the lone outline button in the topbar — keep it flat/quiet
+     among the ghost icon buttons instead of a glass chip (hover fill still applies).
+     Scoped to .glass-header (the topbar) so it never leaks into PageHeader's nested
+     <header data-slot="page-header">, where outline toggles/buttons must stay glass. */
+  .skin-liquid .glass-header [data-variant="outline"] {
     /* !important: outranks both the .skin-liquid.dark glass rule (more specific) and the
        border-input utility, so the button stays fully flat in light and dark. */
     background: none !important;
@@ -1067,7 +1105,20 @@
    * its items (data-slot="…-group-item") still get the glass treatment.
    */
   .skin-liquid [data-slot="toggle-group"],
-  .skin-liquid [data-slot="button-group"] {
+  .skin-liquid [data-slot="button-group"],
+  .skin-liquid [data-slot="toggle-group"]:hover,
+  .skin-liquid [data-slot="button-group"]:hover,
+  .skin-liquid [data-slot="toggle-group"][aria-expanded="true"],
+  .skin-liquid [data-slot="button-group"][aria-expanded="true"],
+  .skin-liquid.dark [data-slot="toggle-group"]:hover,
+  .skin-liquid.dark [data-slot="button-group"]:hover,
+  .skin-liquid.dark [data-slot="toggle-group"][aria-expanded="true"],
+  .skin-liquid.dark [data-slot="button-group"][aria-expanded="true"] {
+    /* Also neutralize :hover — the wrapper carries data-variant="outline", so the
+       generic outline-hover rule above would otherwise repaint a strip behind the
+       whole group. The .dark variants match the specificity of the dark hover rule
+       (.skin-liquid.dark [data-variant="outline"]:hover) so they win by source order.
+       The individual *-group-item buttons keep their own hover fill. */
     background: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;

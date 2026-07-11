@@ -265,7 +265,7 @@ function ButtonsSection() {
         </Button>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <Button size="lg">lg / 38px</Button>
+        <Button size="lg">lg / 42px</Button>
         <Button size="sm" variant="outline">
           sm
         </Button>
