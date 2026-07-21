@@ -90,6 +90,13 @@
   --chart-4: #ec4899;
   --chart-5: #64748b;
   --radius: 12px;
+  /* Control height standard — the single source of truth for the height of every
+     interactive control on the field row (input, textarea min, select trigger,
+     button, icon button). Buttons consume the SAME token as fields so a button
+     placed next to a field is always exactly as tall. Theme-independent. */
+  --control-h: 38px;
+  --control-h-sm: 32px;
+  --control-h-lg: 42px;
   --sidebar: var(--glass-bg-panel);
   --sidebar-foreground: #385069;
   --sidebar-primary: var(--primary);
@@ -1124,6 +1131,19 @@
     -webkit-backdrop-filter: none;
     border-color: transparent;
     box-shadow: none;
+  }
+  /*
+   * Segmented toggle items (dashboard Week/Month/Quarter) already read as frosted
+   * glass tiles under the iOS skin. The base Toggle adds hover:bg-muted — a flat grey
+   * --muted background-color that, behind the frost, shows as an ugly "container" wash
+   * on hover (most visible in dark). Drop that grey on hover: the skin's own :hover
+   * sheen is the feedback. Scoped to non-selected items so the active tile keeps its
+   * indicator. !important: hover:bg-muted lives in Tailwind's utilities layer, which
+   * outranks this components layer otherwise.
+   */
+  .skin-liquid
+    [data-slot="toggle-group-item"]:not([data-state="on"]):hover {
+    background-color: transparent !important;
   }
 }
 

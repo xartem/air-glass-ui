@@ -13,9 +13,9 @@ const inputVariants = cva(
   {
     variants: {
       inputSize: {
-        sm: "h-[32px] rounded-[var(--radius-sm)] px-2.5 text-sm",
-        default: "h-[38px] px-3 text-base md:text-[15px]",
-        lg: "h-[42px] px-3.5 text-base md:text-[15px]",
+        sm: "h-[var(--control-h-sm)] rounded-[var(--radius-sm)] px-2.5 text-sm",
+        default: "h-[var(--control-h)] px-3 text-base md:text-[15px]",
+        lg: "h-[var(--control-h-lg)] px-3.5 text-base md:text-[15px]",
       },
     },
     defaultVariants: {
