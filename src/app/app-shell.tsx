@@ -85,6 +85,7 @@ import {
   type AdminLocale,
 } from "@/lib/i18n";
 import { useCan, usePermissionChecker } from "@/lib/permissions";
+import { roleDisplayName } from "@/lib/role-label";
 import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
@@ -635,7 +636,7 @@ function ShellBanners() {
           <span>
             {t("banner.impersonation", {
               name: me.user.name,
-              role: me.user.role.label,
+              role: roleDisplayName(me.user.role),
             })}
           </span>
           <Button
@@ -851,7 +852,7 @@ function TopbarControls({
           <DropdownMenuLabel>
             <span className="block">{me.user.name}</span>
             <span className="block text-xs font-normal text-muted-foreground">
-              {me.user.role.label}
+              {roleDisplayName(me.user.role)}
             </span>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

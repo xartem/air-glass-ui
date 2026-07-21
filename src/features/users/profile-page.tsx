@@ -42,6 +42,7 @@ import {
   t,
   type AdminLocale,
 } from "@/lib/i18n";
+import { roleDisplayName } from "@/lib/role-label";
 
 /*
  * /profile (UI:users-roles §2): the operator's own profile. A profile header
@@ -189,7 +190,7 @@ export function ProfilePage() {
     <div className="space-y-4">
       <PageHeader title={t("shell.profile")} icon={UserCircle} />
 
-      <ProfileHeader name={me.user.name} role={me.user.role.label} />
+      <ProfileHeader name={me.user.name} role={roleDisplayName(me.user.role)} />
 
       <Tabs
         value={tab}

@@ -60,6 +60,7 @@ import { WidgetGrid, WIDGET_SPAN } from "@/components/widget-grid";
 import { dashboardIcon } from "@/lib/dashboard-icons";
 import { createDndA11y } from "@/lib/dnd-a11y";
 import { t } from "@/lib/i18n";
+import { roleDisplayName } from "@/lib/role-label";
 import { cn } from "@/lib/utils";
 
 /*
@@ -108,8 +109,8 @@ export function DashboardCustomize({
   onExit: () => void;
 }) {
   const queryClient = useQueryClient();
-  const roleLabel =
-    roles.find((role) => role.key === roleKey)?.label ?? roleKey;
+  const roleMatch = roles.find((role) => role.key === roleKey);
+  const roleLabel = roleMatch ? roleDisplayName(roleMatch) : roleKey;
 
   // Edit surface: no focus-refetch so local reordering never gets clobbered mid-edit.
   const query = useQuery({
@@ -332,7 +333,7 @@ export function DashboardCustomize({
           <SelectContent>
             {roles.map((role) => (
               <SelectItem key={role.key} value={role.key}>
-                {role.label}
+                {roleDisplayName(role)}
               </SelectItem>
             ))}
           </SelectContent>

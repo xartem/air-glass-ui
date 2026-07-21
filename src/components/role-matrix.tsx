@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import type { Permission, RoleDetail } from "@/api";
 import { Checkbox } from "@/components/ui/checkbox";
 import { t } from "@/lib/i18n";
+import { roleDisplayName } from "@/lib/role-label";
 import { cn } from "@/lib/utils";
 
 /*
@@ -118,7 +119,7 @@ export function RoleMatrix({
                     content (system roles may still get "customize dashboard"). */}
                 <div className="flex min-h-8 items-center justify-between gap-1">
                   <div className="min-w-0 truncate font-semibold">
-                    {role.label}
+                    {roleDisplayName(role)}
                   </div>
                   {renderRoleMenu ? (
                     <div className="shrink-0">{renderRoleMenu(role)}</div>
@@ -216,7 +217,7 @@ function GroupRows({
             <Checkbox
               checked={groupCheckState(role, keys)}
               disabled={role.is_system}
-              aria-label={`${groupLabel} · ${role.label}`}
+              aria-label={`${groupLabel} · ${roleDisplayName(role)}`}
               onCheckedChange={(checked) =>
                 toggleGroup(role, keys, checked === true)
               }
@@ -243,7 +244,7 @@ function GroupRows({
                   <Checkbox
                     checked={has(role, key)}
                     disabled={role.is_system}
-                    aria-label={`${key} · ${role.label}`}
+                    aria-label={`${key} · ${roleDisplayName(role)}`}
                     onCheckedChange={(checked) =>
                       toggle(role, key, checked === true)
                     }

@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/tooltip";
 import { ADMIN_LOCALES, LOCALE_NAMES, t } from "@/lib/i18n";
 import { generatePassword } from "@/lib/password";
+import { roleDisplayName } from "@/lib/role-label";
 
 /*
  * /users/new · /users/{id} (UI:users-roles §2): the user editor. Fields are
@@ -208,7 +209,7 @@ export function UserEditorPage() {
               <SelectContent>
                 {(rolesQuery.data ?? []).map((role) => (
                   <SelectItem key={role.id} value={String(role.id)}>
-                    {role.label}
+                    {roleDisplayName(role)}
                   </SelectItem>
                 ))}
               </SelectContent>

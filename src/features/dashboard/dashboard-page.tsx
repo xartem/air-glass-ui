@@ -27,6 +27,7 @@ import { useAuth } from "@/lib/auth";
 import { dashboardIcon } from "@/lib/dashboard-icons";
 import { t } from "@/lib/i18n";
 import { useCan } from "@/lib/permissions";
+import { roleDisplayName } from "@/lib/role-label";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardCustomize } from "./dashboard-customize";
 import { DashboardWidgetCard } from "./dashboard-widget-card";
@@ -130,7 +131,7 @@ function DashboardHome({ onCustomize }: { onCustomize: () => void }) {
     <div className="space-y-6">
       <PageHeader
         title={t("dashboard.greeting", { name: me.user.name.split(" ")[0] })}
-        subtitle={me.user.role.label}
+        subtitle={roleDisplayName(me.user.role)}
         actions={
           <>
             {hasPeriodWidgets ? (

@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { t, type AdminLocale } from "@/lib/i18n";
+import { roleDisplayName } from "@/lib/role-label";
 import { useLocale } from "@/lib/use-locale";
 
 /*
@@ -191,7 +192,9 @@ export function UsersListPage() {
         header: t("users.col.role"),
         meta: { sortable: true },
         cell: ({ row }) => (
-          <span className="whitespace-nowrap">{row.original.role.label}</span>
+          <span className="whitespace-nowrap">
+            {roleDisplayName(row.original.role)}
+          </span>
         ),
       },
       {
@@ -328,7 +331,7 @@ export function UsersListPage() {
                 </SelectItem>
                 {(rolesQuery.data ?? []).map((role: RoleDetail) => (
                   <SelectItem key={role.id} value={role.key}>
-                    {role.label}
+                    {roleDisplayName(role)}
                   </SelectItem>
                 ))}
               </SelectContent>

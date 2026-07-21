@@ -43,6 +43,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { t } from "@/lib/i18n";
 import { useCan } from "@/lib/permissions";
+import { roleDisplayName } from "@/lib/role-label";
 
 /*
  * /roles (UI:users-roles §2): the role × permission matrix. Checkbox edits
@@ -237,7 +238,9 @@ export function RolesPage() {
       <ConfirmDialog
         open={deleteTarget !== null}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
-        title={t("roles.delete_title", { label: deleteTarget?.label ?? "" })}
+        title={t("roles.delete_title", {
+          label: deleteTarget ? roleDisplayName(deleteTarget) : "",
+        })}
         description={t("roles.delete_description")}
         confirmLabel={t("common.delete")}
         destructive
@@ -368,7 +371,7 @@ function CreateRoleDialog({
                 <SelectItem value="none">{t("roles.copy_none")}</SelectItem>
                 {roles.map((role) => (
                   <SelectItem key={role.id} value={String(role.id)}>
-                    {role.label}
+                    {roleDisplayName(role)}
                   </SelectItem>
                 ))}
               </SelectContent>
