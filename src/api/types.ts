@@ -470,11 +470,22 @@ export interface ListItem {
   metric?: { value: number | string; delta?: number };
   /** Star rating (0–5) rendered as a site-style amber star + number (reviews). */
   rating?: number;
+  /**
+   * Magnitude bar share (0–1), used only by the `ranked` list variant (e.g.
+   * "Top pages"). Typically value ÷ max, so the leader fills the track. Ignored
+   * by the default list layout.
+   */
+  share?: number;
 }
 
 /** ≤ 10 items (D:dashboard §4). */
 export interface ListData {
   items: ListItem[];
+  /**
+   * `ranked` renders a structured leaderboard — position number + magnitude bar
+   * per row (analytics "top X" lists). Absent = the default single-line list.
+   */
+  variant?: "ranked";
 }
 
 export interface StatusRow {

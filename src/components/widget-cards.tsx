@@ -891,6 +891,54 @@ function WidgetEmpty() {
   );
 }
 
+/**
+ * Ranked leaderboard row (ListData.variant === "ranked", e.g. "Top pages"):
+ * position number + title/path + metric on one line, a magnitude bar (share of
+ * the leader) beneath. Turns a flat name list into a structured, at-a-glance chart.
+ */
+function RankedListRow({ item, rank }: { item: ListItem; rank: number }) {
+  const share = Math.max(0, Math.min(1, item.share ?? 0));
+  const inner = (
+    <>
+      <span className="w-5 shrink-0 pt-0.5 text-end text-xs font-semibold tabular-nums text-muted-foreground">
+        {rank}
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <span className="min-w-0 flex-1 truncate text-sm font-medium">
+            {item.title}
+          </span>
+          {item.hint ? (
+            <span className="min-w-0 shrink truncate text-xs text-muted-foreground">
+              {item.hint}
+            </span>
+          ) : null}
+          {item.metric ? <RowMetric metric={item.metric} /> : null}
+        </div>
+        <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-muted">
+          <span
+            className="block h-full rounded-full bg-primary transition-[width] duration-500 ease-out"
+            style={{ width: `${share * 100}%` }}
+          />
+        </span>
+      </div>
+    </>
+  );
+  if (item.url) {
+    return (
+      <li>
+        <Link
+          to={item.url}
+          className="-mx-2 flex items-start gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-accent/40"
+        >
+          {inner}
+        </Link>
+      </li>
+    );
+  }
+  return <li className="flex items-start gap-2.5 py-1">{inner}</li>;
+}
+
 export function ListCard({
   title,
   href,
@@ -908,6 +956,9 @@ export function ListCard({
 }) {
   const items = data.items.slice(0, LIST_ROWS[size]);
   const expanded = size === "lg" || size === "xl";
+  // Ranked leaderboard (Top pages): magnitude bars per row. Skip at the sm
+  // "glance" tier, where the big-count layout stays clearer than stacked bars.
+  const ranked = data.variant === "ranked" && size !== "sm";
   // xl "alternate form" (D:dashboard §4): a two-column grid uses the full width; too
   // few items would look sparse in two columns → inherit the lg single column.
   const twoCol = size === "xl" && data.items.length > 4;
@@ -929,6 +980,15 @@ export function ListCard({
     >
       {data.items.length === 0 ? (
         <WidgetEmpty />
+      ) : ranked ? (
+        <>
+          <ul className="space-y-1">
+            {items.map((item, index) => (
+              <RankedListRow key={index} item={item} rank={index + 1} />
+            ))}
+          </ul>
+          {viewAll}
+        </>
       ) : size === "sm" ? (
         // Glance tier: BIG total count, top rows pinned below.
         <div className="flex flex-col">

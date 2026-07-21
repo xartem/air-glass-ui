@@ -395,37 +395,35 @@ const WIDGETS: MockWidget[] = [
     period_aware: true,
     // Period widens the window (views scale), but the list stays <=10 rows — window != budget.
     data: (_ctx, period) => {
-      const n = (v: number) =>
-        Math.round(v * PERIOD_FACTOR[period]).toLocaleString("en-US");
+      // Ranked leaderboard: each row carries a magnitude bar (share = views ÷
+      // leader) so the list reads as a structured chart, not a flat name column.
+      const pages: Array<{ title: string; path: string; views: number; delta?: number }> = [
+        { title: "Home", path: "/", views: 2431, delta: 8 },
+        { title: "Products", path: "/products", views: 1204, delta: 14 },
+        { title: "Pricing", path: "/pricing", views: 862, delta: -3 },
+        { title: "About", path: "/about", views: 514 },
+        { title: "Contact", path: "/contact", views: 447, delta: 2 },
+        { title: "Blog", path: "/blog", views: 391 },
+        { title: "Getting Started", path: "/blog/getting-started", views: 356, delta: 22 },
+        { title: "Documentation", path: "/docs", views: 298 },
+        { title: "Shipping", path: "/shipping", views: 245 },
+        { title: "Changelog", path: "/changelog", views: 203 },
+      ];
+      const max = Math.max(...pages.map((p) => p.views));
       return {
-        items: [
-          { title: "Home", hint: "/", metric: { value: n(2431), delta: 8 } },
-          {
-            title: "Products",
-            hint: "/products",
-            metric: { value: n(1204), delta: 14 },
-          },
-          {
-            title: "Pricing",
-            hint: "/pricing",
-            metric: { value: n(862), delta: -3 },
-          },
-          { title: "About", hint: "/about", metric: { value: n(514) } },
-          {
-            title: "Contact",
-            hint: "/contact",
-            metric: { value: n(447), delta: 2 },
-          },
-          { title: "Blog", hint: "/blog", metric: { value: n(391) } },
-          {
-            title: "Getting Started",
-            hint: "/blog/getting-started",
-            metric: { value: n(356), delta: 22 },
-          },
-          { title: "Documentation", hint: "/docs", metric: { value: n(298) } },
-          { title: "Shipping", hint: "/shipping", metric: { value: n(245) } },
-          { title: "Changelog", hint: "/changelog", metric: { value: n(203) } },
-        ],
+        variant: "ranked",
+        items: pages.map((p) => {
+          const views = Math.round(p.views * PERIOD_FACTOR[period]);
+          return {
+            title: p.title,
+            hint: p.path,
+            share: p.views / max,
+            metric: {
+              value: views.toLocaleString("en-US"),
+              ...(p.delta !== undefined ? { delta: p.delta } : {}),
+            },
+          };
+        }),
       };
     },
   },
