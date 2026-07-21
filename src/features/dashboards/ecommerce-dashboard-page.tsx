@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Store, ShoppingCart } from "lucide-react";
+import { Grid3x3, Store, ShoppingCart } from "lucide-react";
 
 import type { EcommerceDashboardPayload, OrderStatus } from "@/api";
 import { EmptyState } from "@/components/empty-state";
@@ -12,8 +12,12 @@ import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
 import { CategoryBars } from "@/components/charts/category-bars";
 import { Donut } from "@/components/charts/donut";
+import { Heatmap } from "@/components/charts/heatmap";
 import { TrendChart } from "@/components/charts/trend-chart";
 import { KpiTile, RankedList } from "./widgets";
+
+/** Weekday row labels for the sales heatmap, Mon → Sun (reuses calendar keys). */
+const WEEKDAY_KEYS = [1, 2, 3, 4, 5, 6, 0];
 
 /*
  * Ecommerce dashboard: store performance for a period. KPI row + revenue area +
@@ -169,6 +173,7 @@ export function EcommerceDashboardPage() {
                   rows={data.topProducts}
                   format="compactMoney"
                   currency={data.currency}
+                  withThumb
                 />
               )}
             </Panel>
@@ -190,6 +195,19 @@ export function EcommerceDashboardPage() {
               )}
             </Panel>
           </div>
+
+          <Panel
+            icon={Grid3x3}
+            title={t("dash.ecommerce.salesHeatmap.title")}
+            description={t("dash.ecommerce.salesHeatmap.hint")}
+          >
+            <Heatmap
+              xLabels={data.salesHeatmap.hours}
+              yLabels={WEEKDAY_KEYS.map((day) => t(`calendar.weekday.${day}`))}
+              values={data.salesHeatmap.values}
+              ariaLabel={t("dash.ecommerce.salesHeatmap.title")}
+            />
+          </Panel>
         </>
       )}
     </DashboardShell>

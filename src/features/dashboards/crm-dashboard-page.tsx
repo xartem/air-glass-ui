@@ -1,4 +1,4 @@
-import { Contact, Filter, GitBranch } from "lucide-react";
+import { ChartLine, Contact, Filter, GitBranch, Grid3x3 } from "lucide-react";
 
 import type { CrmDashboardPayload } from "@/api";
 import { EmptyState } from "@/components/empty-state";
@@ -9,7 +9,12 @@ import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
 import { CategoryBars } from "@/components/charts/category-bars";
 import { Funnel } from "@/components/charts/funnel";
+import { Heatmap } from "@/components/charts/heatmap";
+import { TrendChart } from "@/components/charts/trend-chart";
 import { KpiTile, Leaderboard } from "./widgets";
+
+/** Weekday column labels for the touch heatmap, Mon → Sun (reuses calendar keys). */
+const WEEKDAY_KEYS = [1, 2, 3, 4, 5, 6, 0];
 
 /*
  * CRM dashboard: sales/relationship overview for a period. KPI row + deals
@@ -52,6 +57,31 @@ export function CrmDashboardPage() {
             />
           </div>
 
+          <Panel
+            icon={ChartLine}
+            title={t("dash.crm.trend.title")}
+            description={t("dash.crm.trend.hint")}
+          >
+            {data.trend.length === 0 ? (
+              <EmptyState title={t("table.empty.title")} />
+            ) : (
+              <TrendChart
+                data={data.trend}
+                seriesList={[
+                  {
+                    key: "value",
+                    label: t("dash.crm.trend.title"),
+                    color: "var(--chart-1)",
+                  },
+                ]}
+                ariaLabel={t("dash.crm.trend.title")}
+                formatValue={(value) =>
+                  formatCompactMoney(value, data.currency, locale)
+                }
+              />
+            )}
+          </Panel>
+
           <div className="grid gap-4 lg:grid-cols-2">
             <Panel
               icon={Filter}
@@ -87,6 +117,19 @@ export function CrmDashboardPage() {
               )}
             </Panel>
           </div>
+
+          <Panel
+            icon={Grid3x3}
+            title={t("dash.crm.touches.title")}
+            description={t("dash.crm.touches.hint")}
+          >
+            <Heatmap
+              xLabels={WEEKDAY_KEYS.map((day) => t(`calendar.weekday.${day}`))}
+              yLabels={data.touches.channels.map((channel) => t(channel))}
+              values={data.touches.values}
+              ariaLabel={t("dash.crm.touches.title")}
+            />
+          </Panel>
 
           <div className="grid gap-4 lg:grid-cols-2">
             <Panel

@@ -47,6 +47,12 @@ function series(
   return out;
 }
 
+/** Short axis-less KPI sparkline; trends up for a non-negative delta, down otherwise. */
+function kpiSpark(delta: number, seed: number): number[] {
+  const points = series(10, 100, 44, seed);
+  return delta >= 0 ? points : points.slice().reverse();
+}
+
 /** Bucket shape per preset: how many points and how many days each point spans. */
 function periodShape(period: Period): { count: number; stepDays: number } {
   switch (period) {
@@ -136,10 +142,21 @@ function getCrm(period: Period): CrmDashboardPayload {
     period,
     currency: CURRENCY,
     kpis: {
-      leads: { value: leads, delta: 0.112 },
-      dealsWon: { value: won, delta: 0.064 },
-      revenue: { value: revenue, delta: 0.093 },
-      conversion: { value: won / Math.max(1, leads), delta: 0.018 },
+      leads: { value: leads, delta: 0.112, spark: kpiSpark(0.112, 101) },
+      dealsWon: { value: won, delta: 0.064, spark: kpiSpark(0.064, 102) },
+      revenue: { value: revenue, delta: 0.093, spark: kpiSpark(0.093, 103) },
+      conversion: {
+        value: won / Math.max(1, leads),
+        delta: 0.018,
+        spark: kpiSpark(0.018, 104),
+      },
+    },
+    trend: moneyTrend(period, 9_000, 4_000, 53),
+    touches: {
+      channels: ["email", "call", "meeting", "demo"].map(
+        (channel) => `dash.crm.touches.${channel}`,
+      ),
+      values: [0, 1, 2, 3].map((row) => series(7, 22 + row * 6, 26, 60 + row)),
     },
     funnel: [
       { label: "lead", value: leads },
@@ -221,12 +238,30 @@ function getEcommerce(period: Period): EcommerceDashboardPayload {
     period,
     currency: CURRENCY,
     kpis: {
-      revenue: { value: totalRevenue, delta: 0.124 },
-      orders: { value: orders, delta: 0.081 },
-      aov: { value: money(totalRevenue / Math.max(1, orders)), delta: 0.032 },
-      refunds: { value: Math.round(orders * 0.04), delta: -0.015 },
+      revenue: {
+        value: totalRevenue,
+        delta: 0.124,
+        spark: kpiSpark(0.124, 111),
+      },
+      orders: { value: orders, delta: 0.081, spark: kpiSpark(0.081, 112) },
+      aov: {
+        value: money(totalRevenue / Math.max(1, orders)),
+        delta: 0.032,
+        spark: kpiSpark(0.032, 113),
+      },
+      refunds: {
+        value: Math.round(orders * 0.04),
+        delta: -0.015,
+        spark: kpiSpark(-0.015, 114),
+      },
     },
     revenue: revenueSeries,
+    salesHeatmap: {
+      hours: ["00", "03", "06", "09", "12", "15", "18", "21"],
+      values: [0, 1, 2, 3, 4, 5, 6].map((day) =>
+        series(8, 40 + (day % 6) * 8, 60, 70 + day),
+      ),
+    },
     categories: [
       { label: "electronics", value: money(9_200 * factor) },
       { label: "apparel", value: money(6_400 * factor) },
@@ -318,13 +353,19 @@ function getCrypto(period: Period): CryptoDashboardPayload {
     };
   });
   const ohlcValues = series(count, 64_000, 4_800, 61);
-  const ohlc: OhlcPoint[] = bucketLabels(period).map((label, i) => {
+  const labels = bucketLabels(period);
+  const ohlc: OhlcPoint[] = labels.map((label, i) => {
     const open = ohlcValues[i]!;
     const close = ohlcValues[i + 1] ?? open * 1.01;
     const high = Math.max(open, close) + open * 0.012;
     const low = Math.min(open, close) - open * 0.011;
     return { label, open, high: money(high), low: money(low), close };
   });
+  const volumeValues = series(count, 1_400, 900, 67);
+  const volumes: SeriesPoint[] = labels.map((label, i) => ({
+    label,
+    value: volumeValues[i]!,
+  }));
   return {
     period,
     currency: CURRENCY,
@@ -340,6 +381,7 @@ function getCrypto(period: Period): CryptoDashboardPayload {
     ],
     pair: "BTC/USD",
     ohlc,
+    volumes,
     activity: [
       {
         id: 1,
@@ -400,10 +442,10 @@ function getProjects(period: Period): ProjectsDashboardPayload {
     period,
     currency: CURRENCY,
     kpis: {
-      active: { value: 24, delta: 0.09 },
-      completed: { value: 138, delta: 0.14 },
-      overdue: { value: 6, delta: -0.2 },
-      teamLoad: { value: 0.78, delta: 0.05 },
+      active: { value: 24, delta: 0.09, spark: kpiSpark(0.09, 121) },
+      completed: { value: 138, delta: 0.14, spark: kpiSpark(0.14, 122) },
+      overdue: { value: 6, delta: -0.2, spark: kpiSpark(-0.2, 123) },
+      teamLoad: { value: 0.78, delta: 0.05, spark: kpiSpark(0.05, 124) },
     },
     burndown,
     statusSplit: [
@@ -411,6 +453,12 @@ function getProjects(period: Period): ProjectsDashboardPayload {
       { label: "in_progress", value: 28 },
       { label: "review", value: 14 },
       { label: "done", value: 138 },
+    ],
+    durations: [
+      { label: "design", min: 1, q1: 2, median: 3, q3: 5, max: 9 },
+      { label: "build", min: 2, q1: 4, median: 6, q3: 10, max: 18 },
+      { label: "review", min: 1, q1: 1, median: 2, q3: 3, max: 6 },
+      { label: "qa", min: 1, q1: 2, median: 3, q3: 4, max: 8 },
     ],
     projects: [
       { id: 1, name: "Apollo Redesign", progress: 0.82, deadline: inDays(6) },
@@ -476,15 +524,35 @@ function getNft(period: Period): NftDashboardPayload {
     token: "ETH",
     currency: CURRENCY,
     kpis: {
-      floor: { value: money(2.4), delta: 0.062 },
-      volume: { value: money(1_280 * factor), delta: 0.145 },
-      sales: { value: Math.round(940 * factor), delta: 0.088 },
-      wallets: { value: Math.round(3_200 * factor), delta: 0.041 },
+      floor: { value: money(2.4), delta: 0.062, spark: kpiSpark(0.062, 131) },
+      volume: {
+        value: money(1_280 * factor),
+        delta: 0.145,
+        spark: kpiSpark(0.145, 132),
+      },
+      sales: {
+        value: Math.round(940 * factor),
+        delta: 0.088,
+        spark: kpiSpark(0.088, 133),
+      },
+      wallets: {
+        value: Math.round(3_200 * factor),
+        delta: 0.041,
+        spark: kpiSpark(0.041, 134),
+      },
     },
     volume: trend(period, 180, 90, 37).map((point) => ({
       ...point,
       value: money(point.value / 10),
     })),
+    marketShare: [
+      { label: "Nebula Apes", value: 3_200 },
+      { label: "Glass Golems", value: 2_600 },
+      { label: "Pixel Voyagers", value: 1_800 },
+      { label: "Aether Runes", value: 1_100 },
+      { label: "Chromatic Cats", value: 900 },
+      { label: "Others", value: 1_400 },
+    ],
     collections: [
       { id: 1, name: "Nebula Apes", floor: money(3.2), change24h: 0.084 },
       { id: 2, name: "Pixel Voyagers", floor: money(1.8), change24h: -0.031 },
@@ -549,10 +617,18 @@ function getJobs(period: Period): JobsDashboardPayload {
   return {
     period,
     kpis: {
-      openRoles: { value: 32, delta: 0.06 },
-      applicants: { value: applicants, delta: 0.118 },
-      hires: { value: Math.round(28 * factor), delta: 0.07 },
-      timeToFill: { value: 24, delta: -0.09 },
+      openRoles: { value: 32, delta: 0.06, spark: kpiSpark(0.06, 141) },
+      applicants: {
+        value: applicants,
+        delta: 0.118,
+        spark: kpiSpark(0.118, 142),
+      },
+      hires: {
+        value: Math.round(28 * factor),
+        delta: 0.07,
+        spark: kpiSpark(0.07, 143),
+      },
+      timeToFill: { value: 24, delta: -0.09, spark: kpiSpark(-0.09, 144) },
     },
     applications: trend(period, 90, 50, 23),
     departments: [
@@ -561,6 +637,48 @@ function getJobs(period: Period): JobsDashboardPayload {
       { label: "marketing", value: Math.round(120 * factor) },
       { label: "design", value: Math.round(80 * factor) },
       { label: "support", value: Math.round(60 * factor) },
+    ],
+    salaries: [
+      {
+        label: "engineering",
+        min: 90_000,
+        q1: 120_000,
+        median: 145_000,
+        q3: 175_000,
+        max: 220_000,
+      },
+      {
+        label: "sales",
+        min: 60_000,
+        q1: 80_000,
+        median: 100_000,
+        q3: 130_000,
+        max: 180_000,
+      },
+      {
+        label: "marketing",
+        min: 55_000,
+        q1: 70_000,
+        median: 85_000,
+        q3: 105_000,
+        max: 140_000,
+      },
+      {
+        label: "design",
+        min: 65_000,
+        q1: 82_000,
+        median: 98_000,
+        q3: 118_000,
+        max: 150_000,
+      },
+      {
+        label: "support",
+        min: 45_000,
+        q1: 55_000,
+        median: 65_000,
+        q3: 78_000,
+        max: 95_000,
+      },
     ],
     pipeline: [
       { label: "applied", value: applicants },
@@ -595,15 +713,34 @@ function getBlog(period: Period): BlogDashboardPayload {
   return {
     period,
     kpis: {
-      posts: { value: Math.round(18 * factor), delta: 0.05 },
+      posts: {
+        value: Math.round(18 * factor),
+        delta: 0.05,
+        spark: kpiSpark(0.05, 151),
+      },
       views: {
         value: sum(viewsSeries.map((point) => point.value)),
         delta: 0.132,
+        spark: kpiSpark(0.132, 152),
       },
-      subscribers: { value: Math.round(1_240 + 120 * factor), delta: 0.061 },
-      comments: { value: Math.round(320 * factor), delta: 0.028 },
+      subscribers: {
+        value: Math.round(1_240 + 120 * factor),
+        delta: 0.061,
+        spark: kpiSpark(0.061, 153),
+      },
+      comments: {
+        value: Math.round(320 * factor),
+        delta: 0.028,
+        spark: kpiSpark(0.028, 154),
+      },
     },
     views: viewsSeries,
+    engagement: {
+      weeks: ["1", "2", "3", "4", "5", "6"],
+      values: [0, 1, 2, 3, 4, 5].map((week) =>
+        series(7, 30 + week * 5, 44, 90 + week),
+      ),
+    },
     categories: [
       { label: "tutorials", value: Math.round(3_800 * factor) },
       { label: "product", value: Math.round(2_600 * factor) },

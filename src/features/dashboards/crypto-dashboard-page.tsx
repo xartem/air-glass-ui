@@ -13,10 +13,11 @@ import { EmptyState } from "@/components/empty-state";
 import { Panel } from "@/components/panel";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
-import { formatMoney } from "@/lib/money";
+import { formatCompactMoney, formatMoney } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
 import { Candlestick } from "@/components/charts/candlestick";
+import { CategoryBars } from "@/components/charts/category-bars";
 import { Sparkline } from "@/components/charts/sparkline";
 import { MarketTreemap } from "@/components/charts/treemap";
 import { ChangeTag } from "@/components/change-tag";
@@ -65,6 +66,21 @@ function CryptoBody({
     low: point.low * factor,
     close: point.close * factor,
   }));
+  const scaledVolumes = data.volumes.map((point) => ({
+    label: point.label,
+    value: Math.round(point.value * factor),
+  }));
+  const bestCoin = data.coins[0]
+    ? data.coins.reduce(
+        (best, coin) => (coin.change24h > best.change24h ? coin : best),
+        data.coins[0],
+      )
+    : undefined;
+  const marketSpark = data.coins[0]
+    ? data.coins[0].spark.map((_, index) =>
+        data.coins.reduce((total, coin) => total + (coin.spark[index] ?? 0), 0),
+      )
+    : undefined;
   const money = (value: number) => formatMoney(value, data.currency, locale);
 
   return (
@@ -91,6 +107,7 @@ function CryptoBody({
           kpi={{
             value: Math.max(...data.coins.map((c) => c.change24h)),
             delta: 0,
+            spark: bestCoin?.spark,
           }}
           format="percent"
         />
@@ -101,6 +118,7 @@ function CryptoBody({
               data.marketCap.reduce((sum, row) => sum + row.value, 0) *
               1_000_000,
             delta: 0,
+            spark: marketSpark,
           }}
           format="compactMoney"
           currency={data.currency}
@@ -186,11 +204,23 @@ function CryptoBody({
           {scaledOhlc.length === 0 ? (
             <EmptyState title={t("table.empty.title")} />
           ) : (
-            <Candlestick
-              data={scaledOhlc}
-              ariaLabel={t("dash.crypto.candles.title")}
-              formatValue={money}
-            />
+            <div className="space-y-2">
+              <Candlestick
+                data={scaledOhlc}
+                ariaLabel={t("dash.crypto.candles.title")}
+                formatValue={money}
+              />
+              <CategoryBars
+                data={scaledVolumes}
+                ariaLabel={t("dash.crypto.volume.title")}
+                orientation="vertical"
+                multiColor={false}
+                height={80}
+                formatValue={(value) =>
+                  formatCompactMoney(value, data.currency, locale)
+                }
+              />
+            </div>
           )}
         </Panel>
       </div>

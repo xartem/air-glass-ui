@@ -1,4 +1,10 @@
-import { FolderKanban, ListChecks, TrendingDown, Users } from "lucide-react";
+import {
+  FolderKanban,
+  ListChecks,
+  Timer,
+  TrendingDown,
+  Users,
+} from "lucide-react";
 
 import type { ProjectsDashboardPayload } from "@/api";
 import { EmptyState } from "@/components/empty-state";
@@ -16,6 +22,7 @@ import { t } from "@/lib/i18n";
 import { formatNumber } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
+import { BoxPlot } from "@/components/charts/boxplot";
 import { CategoryBars } from "@/components/charts/category-bars";
 import { Donut } from "@/components/charts/donut";
 import { TrendChart } from "@/components/charts/trend-chart";
@@ -171,6 +178,27 @@ export function ProjectsDashboardPage() {
               )}
             </Panel>
           </div>
+
+          <Panel
+            icon={Timer}
+            title={t("dash.projects.durations.title")}
+            description={t("dash.projects.durations.hint")}
+          >
+            {data.durations.length === 0 ? (
+              <EmptyState title={t("table.empty.title")} />
+            ) : (
+              <BoxPlot
+                data={data.durations.map((row) => ({
+                  ...row,
+                  label: t(`dash.projects.durations.stage.${row.label}`),
+                }))}
+                ariaLabel={t("dash.projects.durations.title")}
+                formatValue={(value) =>
+                  `${formatNumber(value, locale)} ${t("dash.projects.durations.unit")}`
+                }
+              />
+            )}
+          </Panel>
 
           <Panel
             title={t("dash.projects.activity.title")}

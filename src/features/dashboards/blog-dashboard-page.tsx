@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import {
   FileText,
+  Grid3x3,
   MessageSquare,
   Newspaper,
   TrendingUp,
@@ -16,8 +17,12 @@ import { formatNumber } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
 import { Donut } from "@/components/charts/donut";
+import { Heatmap } from "@/components/charts/heatmap";
 import { TrendChart } from "@/components/charts/trend-chart";
-import { KpiTile, Leaderboard } from "./widgets";
+import { KpiTile, Leaderboard, MonogramThumb } from "./widgets";
+
+/** Weekday column labels for the engagement heatmap, Mon → Sun (reuses calendar keys). */
+const WEEKDAY_KEYS = [1, 2, 3, 4, 5, 6, 0];
 
 /*
  * Blog dashboard: content performance for a period. KPI row + views trend +
@@ -120,28 +125,31 @@ export function BlogDashboardPage() {
                 ) : (
                   <ul className="space-y-3">
                     {data.topPosts.map((post) => (
-                      <li key={post.id}>
-                        <div className="flex items-baseline justify-between gap-2 text-sm">
-                          <Link
-                            to={`/blog/${post.id}`}
-                            onClick={() =>
-                              devDebug("[blogDashboard] open post", post.id)
-                            }
-                            className="min-w-0 truncate font-medium hover:underline"
-                          >
-                            {post.title}
-                          </Link>
-                          <span className="shrink-0 tabular-nums">
-                            {formatNumber(post.views, locale)}
-                          </span>
-                        </div>
-                        <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                          <div
-                            className="h-full rounded-full bg-primary transition-[width] duration-500"
-                            style={{
-                              width: `${Math.round((post.views / maxViews) * 100)}%`,
-                            }}
-                          />
+                      <li key={post.id} className="flex items-center gap-3">
+                        <MonogramThumb seed={post.title} size="sm" />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-baseline justify-between gap-2 text-sm">
+                            <Link
+                              to={`/blog/${post.id}`}
+                              onClick={() =>
+                                devDebug("[blogDashboard] open post", post.id)
+                              }
+                              className="min-w-0 truncate font-medium hover:underline"
+                            >
+                              {post.title}
+                            </Link>
+                            <span className="shrink-0 tabular-nums">
+                              {formatNumber(post.views, locale)}
+                            </span>
+                          </div>
+                          <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                            <div
+                              className="h-full rounded-full bg-primary transition-[width] duration-500"
+                              style={{
+                                width: `${Math.round((post.views / maxViews) * 100)}%`,
+                              }}
+                            />
+                          </div>
                         </div>
                       </li>
                     ))}
@@ -194,6 +202,21 @@ export function BlogDashboardPage() {
                 )}
               </Panel>
             </div>
+
+            <Panel
+              icon={Grid3x3}
+              title={t("dash.blog.engagement.title")}
+              description={t("dash.blog.engagement.hint")}
+            >
+              <Heatmap
+                xLabels={WEEKDAY_KEYS.map((day) =>
+                  t(`calendar.weekday.${day}`),
+                )}
+                yLabels={data.engagement.weeks}
+                values={data.engagement.values}
+                ariaLabel={t("dash.blog.engagement.title")}
+              />
+            </Panel>
           </>
         );
       }}

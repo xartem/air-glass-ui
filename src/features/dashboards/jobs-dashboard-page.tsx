@@ -1,4 +1,4 @@
-import { Briefcase, Building2, Filter, TrendingUp } from "lucide-react";
+import { Briefcase, Building2, Filter, TrendingUp, Wallet } from "lucide-react";
 
 import type { JobApplicantStage, JobsDashboardPayload } from "@/api";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -6,13 +6,17 @@ import { EmptyState } from "@/components/empty-state";
 import { Panel } from "@/components/panel";
 import { StatusBadge, type StatusKind } from "@/components/status-badge";
 import { t } from "@/lib/i18n";
-import { formatNumber } from "@/lib/money";
+import { formatCompactMoney, formatNumber } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
+import { BoxPlot } from "@/components/charts/boxplot";
 import { CategoryBars } from "@/components/charts/category-bars";
 import { Funnel } from "@/components/charts/funnel";
 import { TrendChart } from "@/components/charts/trend-chart";
 import { KpiTile } from "./widgets";
+
+/** Salaries are shown as annual USD ranges (jobs payload has no per-row currency). */
+const SALARY_CURRENCY = "USD";
 
 /*
  * Jobs dashboard: recruitment funnel health for a period. KPI row + applications
@@ -174,6 +178,27 @@ export function JobsDashboardPage() {
               )}
             </Panel>
           </div>
+
+          <Panel
+            icon={Wallet}
+            title={t("dash.jobs.salaries.title")}
+            description={t("dash.jobs.salaries.hint")}
+          >
+            {data.salaries.length === 0 ? (
+              <EmptyState title={t("table.empty.title")} />
+            ) : (
+              <BoxPlot
+                data={data.salaries.map((row) => ({
+                  ...row,
+                  label: t(`dash.jobs.dept.${row.label}`),
+                }))}
+                ariaLabel={t("dash.jobs.salaries.title")}
+                formatValue={(value) =>
+                  formatCompactMoney(value, SALARY_CURRENCY, locale)
+                }
+              />
+            )}
+          </Panel>
         </>
       )}
     </DashboardShell>

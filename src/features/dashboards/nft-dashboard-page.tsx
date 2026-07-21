@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { BarChart3, Gavel, Gem, Images, Trophy } from "lucide-react";
+import {
+  ChartLine,
+  Gavel,
+  Gem,
+  Images,
+  LayoutGrid,
+  Trophy,
+} from "lucide-react";
 
 import type { NftDashboardPayload } from "@/api";
 import { EmptyState } from "@/components/empty-state";
@@ -8,14 +15,15 @@ import { t } from "@/lib/i18n";
 import { formatNumber } from "@/lib/money";
 import { useLocale } from "@/lib/use-locale";
 import { DashboardShell } from "./dashboard-shell";
-import { CategoryBars } from "@/components/charts/category-bars";
+import { TrendChart } from "@/components/charts/trend-chart";
+import { MarketTreemap } from "@/components/charts/treemap";
 import { ChangeTag } from "@/components/change-tag";
-import { KpiTile, Leaderboard } from "./widgets";
+import { KpiTile, Leaderboard, MonogramThumb } from "./widgets";
 
 /*
- * NFT dashboard: marketplace metrics for a period. KPI row + volume bars, then
- * trending collections, live auction countdowns and a top-creators board.
- * Floor/volume amounts are in the collection's native token (ETH).
+ * NFT dashboard: marketplace metrics for a period. KPI row + volume trend +
+ * market-share treemap, then trending collections, live auction countdowns and
+ * a top-creators board. Floor/volume amounts are in the native token (ETH).
  */
 
 /** Live mm:ss countdown to an ISO end time; the interval is cleared on unmount. */
@@ -81,25 +89,47 @@ export function NftDashboardPage() {
             />
           </div>
 
-          <Panel
-            icon={BarChart3}
-            title={t("dash.nft.volume.title")}
-            description={t("dash.nft.volume.hint")}
-          >
-            {data.volume.length === 0 ? (
-              <EmptyState title={t("table.empty.title")} />
-            ) : (
-              <CategoryBars
-                data={data.volume}
-                ariaLabel={t("dash.nft.volume.title")}
-                orientation="vertical"
-                multiColor={false}
-                formatValue={(value) =>
-                  `${formatNumber(value, locale)} ${data.token}`
-                }
-              />
-            )}
-          </Panel>
+          <div className="grid gap-4 xl:grid-cols-3">
+            <Panel
+              className="xl:col-span-2"
+              icon={ChartLine}
+              title={t("dash.nft.volume.title")}
+              description={t("dash.nft.volume.hint")}
+            >
+              {data.volume.length === 0 ? (
+                <EmptyState title={t("table.empty.title")} />
+              ) : (
+                <TrendChart
+                  data={data.volume}
+                  seriesList={[
+                    {
+                      key: "value",
+                      label: t("dash.nft.volume.title"),
+                      color: "var(--chart-1)",
+                    },
+                  ]}
+                  ariaLabel={t("dash.nft.volume.title")}
+                  formatValue={(value) =>
+                    `${formatNumber(value, locale)} ${data.token}`
+                  }
+                />
+              )}
+            </Panel>
+            <Panel
+              icon={LayoutGrid}
+              title={t("dash.nft.share.title")}
+              description={t("dash.nft.share.hint")}
+            >
+              {data.marketShare.length === 0 ? (
+                <EmptyState title={t("table.empty.title")} />
+              ) : (
+                <MarketTreemap
+                  data={data.marketShare}
+                  ariaLabel={t("dash.nft.share.title")}
+                />
+              )}
+            </Panel>
+          </div>
 
           <div className="grid gap-4 xl:grid-cols-3">
             <Panel
@@ -116,13 +146,7 @@ export function NftDashboardPage() {
                       key={collection.id}
                       className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0"
                     >
-                      <span
-                        aria-hidden
-                        className="size-9 shrink-0 rounded-lg"
-                        style={{
-                          background: `var(--chart-${(collection.id % 5) + 1})`,
-                        }}
-                      />
+                      <MonogramThumb seed={collection.name} />
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-sm font-medium">
                           {collection.name}
@@ -148,18 +172,24 @@ export function NftDashboardPage() {
               ) : (
                 <ul className="space-y-2.5">
                   {data.auctions.map((auction) => (
-                    <li key={auction.id} className="glass-card rounded-xl p-3">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="min-w-0 truncate text-sm font-medium">
-                          {auction.name}
-                        </span>
-                        <span className="shrink-0 text-sm tabular-nums">
-                          {formatNumber(auction.bid, locale)} {data.token}
-                        </span>
-                      </div>
-                      <div className="mt-1 flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                        <span>{t("dash.nft.auctions.endsIn")}</span>
-                        <Countdown endsAt={auction.endsAt} />
+                    <li
+                      key={auction.id}
+                      className="glass-card flex items-center gap-3 rounded-xl p-3"
+                    >
+                      <MonogramThumb seed={auction.name} size="sm" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="min-w-0 truncate text-sm font-medium">
+                            {auction.name}
+                          </span>
+                          <span className="shrink-0 text-sm tabular-nums">
+                            {formatNumber(auction.bid, locale)} {data.token}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                          <span>{t("dash.nft.auctions.endsIn")}</span>
+                          <Countdown endsAt={auction.endsAt} />
+                        </div>
                       </div>
                     </li>
                   ))}

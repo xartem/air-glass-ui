@@ -1,6 +1,7 @@
 import { TrendingDown, TrendingUp } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Sparkline } from "@/components/charts/sparkline";
 import type { DashKpi, LeaderRow, RankedRow } from "@/api";
 import type { AdminLocale } from "@/lib/i18n";
 import { t } from "@/lib/i18n";
@@ -92,54 +93,77 @@ export function KpiTile({
   invertDelta?: boolean;
 }) {
   const locale = useLocale();
+  const favourable = invertDelta ? kpi.delta <= 0 : kpi.delta >= 0;
+  const sparkColor = favourable
+    ? "var(--status-success-fg)"
+    : "var(--status-error-fg)";
   return (
-    <div className="glass-card rounded-2xl p-4">
+    <div className="glass-card flex flex-col rounded-2xl p-4">
       <div className="text-xs text-muted-foreground">{label}</div>
       <div className="mt-1 text-2xl font-semibold tabular-nums">
         {formatMetric(kpi.value, format, locale, currency, unit)}
       </div>
       <DeltaPill delta={kpi.delta} invert={invertDelta} />
+      {kpi.spark && kpi.spark.length > 1 ? (
+        <Sparkline
+          data={kpi.spark}
+          color={sparkColor}
+          ariaLabel={label}
+          className="mt-3 h-8 w-full"
+        />
+      ) : null}
     </div>
   );
 }
 
-/** Ranked rows: label + magnitude bar + formatted value. */
+/** Ranked rows: label + magnitude bar + formatted value; optional leading monogram thumb. */
 export function RankedList({
   rows,
   format,
   currency,
   unit,
   className,
+  withThumb = false,
 }: {
   rows: RankedRow[];
   format: MetricFormat;
   currency?: string;
   unit?: string;
   className?: string;
+  /** Prefix each row with a token monogram derived from its label (product/asset lists). */
+  withThumb?: boolean;
 }) {
   const locale = useLocale();
   const max = Math.max(1, ...rows.map((row) => row.value));
   return (
     <ul className={cn("space-y-3", className)}>
-      {rows.map((row) => (
-        <li key={row.label}>
-          <div className="flex items-baseline justify-between gap-2 text-sm">
-            <span className="min-w-0 truncate font-medium">{row.label}</span>
-            <span className="shrink-0 tabular-nums">
-              {formatMetric(row.value, format, locale, currency, unit)}
-            </span>
+      {rows.map((row) => {
+        const body = (
+          <div className="min-w-0 flex-1">
+            <div className="flex items-baseline justify-between gap-2 text-sm">
+              <span className="min-w-0 truncate font-medium">{row.label}</span>
+              <span className="shrink-0 tabular-nums">
+                {formatMetric(row.value, format, locale, currency, unit)}
+              </span>
+            </div>
+            {row.hint ? (
+              <div className="text-xs text-muted-foreground">{row.hint}</div>
+            ) : null}
+            <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-primary transition-[width] duration-500"
+                style={{ width: `${Math.round((row.value / max) * 100)}%` }}
+              />
+            </div>
           </div>
-          {row.hint ? (
-            <div className="text-xs text-muted-foreground">{row.hint}</div>
-          ) : null}
-          <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-            <div
-              className="h-full rounded-full bg-primary transition-[width] duration-500"
-              style={{ width: `${Math.round((row.value / max) * 100)}%` }}
-            />
-          </div>
-        </li>
-      ))}
+        );
+        return (
+          <li key={row.label} className="flex items-center gap-3">
+            {withThumb ? <MonogramThumb seed={row.label} size="sm" /> : null}
+            {body}
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -153,6 +177,50 @@ function initials(name: string): string {
     .slice(0, 2)
     .join("")
     .toUpperCase();
+}
+
+/** Stable 32-bit hash of a seed string, so a given name always maps to the same tint. */
+function hashSeed(seed: string): number {
+  let hash = 0;
+  for (let index = 0; index < seed.length; index += 1) {
+    hash = (hash << 5) - hash + seed.charCodeAt(index);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+/**
+ * Token-only thumbnail placeholder for asset-less list rows (products, posts,
+ * collections). A deterministic diagonal tint mixed from two --chart-* tokens
+ * with the initials on top — no external images (Envato-safe), contrast-safe in
+ * light/dark/flat because the tint stays light over --card.
+ */
+export function MonogramThumb({
+  seed,
+  label,
+  size = "md",
+}: {
+  seed: string;
+  label?: string;
+  size?: "sm" | "md";
+}) {
+  const hash = hashSeed(seed);
+  const first = (hash % 5) + 1;
+  const second = (((Math.floor(hash / 5) % 5) + first) % 5) + 1;
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "inline-flex shrink-0 items-center justify-center rounded-lg font-semibold text-foreground ring-1 ring-[var(--glass-border)]",
+        size === "sm" ? "size-8 text-[10px]" : "size-10 text-xs",
+      )}
+      style={{
+        backgroundImage: `linear-gradient(135deg, color-mix(in oklab, var(--chart-${first}) 32%, var(--card)), color-mix(in oklab, var(--chart-${second}) 32%, var(--card)))`,
+      }}
+    >
+      {initials(label ?? seed)}
+    </span>
+  );
 }
 
 /** People leaderboard: avatar + name + headline metric + optional quota bar. */

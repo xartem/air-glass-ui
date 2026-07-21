@@ -262,11 +262,7 @@ export type AppearanceContentWidth = "fluid" | "boxed";
  * current sidebar shell; below `lg` every variant collapses to the burger drawer.
  */
 export type AppearanceLayout =
-  | "vertical"
-  | "horizontal"
-  | "detached"
-  | "two-column"
-  | "hovered";
+  "vertical" | "horizontal" | "detached" | "two-column" | "hovered";
 
 /** Theme-agnostic fine-tune knobs injected as CSS-var overrides on :root. */
 export interface AppearanceTokens {
@@ -1178,6 +1174,8 @@ export type DashboardVertical =
 export interface DashKpi {
   value: number;
   delta: number;
+  /** Optional axis-less trend series rendered as a mini sparkline in the tile. */
+  spark?: number[];
 }
 
 /** Ranked-list / category-bar / funnel-step row: a label and a magnitude. */
@@ -1203,6 +1201,16 @@ export interface SeriesPoint {
   value: number;
 }
 
+/** Five-number summary for a box-and-whisker distribution (structurally matches the BoxPlot chart). */
+export interface BoxPlotDatum {
+  label: string;
+  min: number;
+  q1: number;
+  median: number;
+  q3: number;
+  max: number;
+}
+
 /** Open/high/low/close candle for the crypto candlestick. */
 export interface OhlcPoint {
   label: string;
@@ -1220,6 +1228,14 @@ export interface CrmActivityRow {
   due: string;
 }
 
+/** Touch-activity heatmap: interaction counts per channel × weekday. */
+export interface CrmTouchHeatmap {
+  /** i18n leaf keys for the touch channels (heatmap rows, top → bottom). */
+  channels: string[];
+  /** Counts: values[channel][weekday], weekday 0=Mon … 6=Sun. */
+  values: number[][];
+}
+
 export interface CrmDashboardPayload {
   period: Period;
   currency: string;
@@ -1229,6 +1245,10 @@ export interface CrmDashboardPayload {
     revenue: DashKpi;
     conversion: DashKpi;
   };
+  /** Closed revenue over the period (hero trend). */
+  trend: SeriesPoint[];
+  /** Interaction intensity by channel and weekday. */
+  touches: CrmTouchHeatmap;
   /** Deal stages by count. */
   funnel: RankedRow[];
   /** Open pipeline value by stage/owner (money). */
@@ -1246,6 +1266,14 @@ export interface DashOrderRow {
   status: OrderStatus;
 }
 
+/** Sales-intensity heatmap: order counts per weekday × hour-of-day bucket. */
+export interface SalesHeatmap {
+  /** Hour-of-day bucket labels (x axis), e.g. "00", "03". */
+  hours: string[];
+  /** Order counts: values[weekday 0=Mon … 6=Sun][hour bucket]. */
+  values: number[][];
+}
+
 export interface EcommerceDashboardPayload {
   period: Period;
   currency: string;
@@ -1256,6 +1284,8 @@ export interface EcommerceDashboardPayload {
     refunds: DashKpi;
   };
   revenue: SeriesPoint[];
+  /** Order intensity by weekday and hour. */
+  salesHeatmap: SalesHeatmap;
   categories: RankedRow[];
   recentOrders: DashOrderRow[];
   topProducts: RankedRow[];
@@ -1303,6 +1333,8 @@ export interface CryptoDashboardPayload {
   /** Selected pair label, e.g. "BTC/USD". */
   pair: string;
   ohlc: OhlcPoint[];
+  /** Trade volume per candle, aligned to `ohlc` labels. */
+  volumes: SeriesPoint[];
   activity: CryptoActivityRow[];
   watchlist: CryptoWatchRow[];
 }
@@ -1342,6 +1374,8 @@ export interface ProjectsDashboardPayload {
   burndown: BurndownPoint[];
   /** Tasks by status (donut). */
   statusSplit: RankedRow[];
+  /** Task-duration distribution per workflow stage (box-and-whisker, in days). */
+  durations: BoxPlotDatum[];
   projects: ProjectProgressRow[];
   /** Assigned tasks per team member. */
   workload: RankedRow[];
@@ -1375,6 +1409,8 @@ export interface NftDashboardPayload {
     wallets: DashKpi;
   };
   volume: SeriesPoint[];
+  /** Market-share treemap slices (value = share of trading volume). */
+  marketShare: RankedRow[];
   collections: NftCollectionRow[];
   auctions: NftAuctionRow[];
   /** Top creators: metric = trading volume (token). */
@@ -1401,6 +1437,8 @@ export interface JobsDashboardPayload {
   };
   applications: SeriesPoint[];
   departments: RankedRow[];
+  /** Salary-range distribution per department (box-and-whisker, annual money). */
+  salaries: BoxPlotDatum[];
   /** Candidate pipeline stages by count (funnel). */
   pipeline: RankedRow[];
   applicants: JobApplicantRow[];
@@ -1419,6 +1457,14 @@ export interface BlogCommentRow {
   at: string;
 }
 
+/** Publishing/engagement heatmap: intensity per week × weekday. */
+export interface BlogEngagement {
+  /** Week bucket labels (y axis, rows), e.g. "1" … "6". */
+  weeks: string[];
+  /** Engagement intensity: values[week][weekday 0=Mon … 6=Sun]. */
+  values: number[][];
+}
+
 export interface BlogDashboardPayload {
   period: Period;
   kpis: {
@@ -1428,6 +1474,8 @@ export interface BlogDashboardPayload {
     comments: DashKpi;
   };
   views: SeriesPoint[];
+  /** Engagement intensity by week and weekday. */
+  engagement: BlogEngagement;
   categories: RankedRow[];
   topPosts: BlogTopPostRow[];
   comments: BlogCommentRow[];
