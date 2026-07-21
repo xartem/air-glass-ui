@@ -526,7 +526,10 @@ function SortableTile({
       ref={setNodeRef}
       data-slot="widget-placeholder"
       size="sm"
-      style={{ transform: CSS.Transform.toString(transform), transition }}
+      // CSS.Translate (not CSS.Transform) — tiles have different column spans
+      // (WIDGET_SPAN), so Transform's scaleX/scaleY would stretch the dragged
+      // tile to the target's size mid-drag. Translate keeps the tile its own size.
+      style={{ transform: CSS.Translate.toString(transform), transition }}
       className={cn(
         WIDGET_SPAN[tile.size],
         isDragging && "z-10 opacity-80 shadow-lg",
@@ -594,7 +597,8 @@ function SortableActionRow({
       ref={setNodeRef}
       data-slot="widget-placeholder"
       size="sm"
-      style={{ transform: CSS.Transform.toString(transform), transition }}
+      // Translate-only (see SortableTile): reorder should move, never scale.
+      style={{ transform: CSS.Translate.toString(transform), transition }}
       className={cn(isDragging && "z-10 opacity-80 shadow-lg")}
     >
       <CardContent className="flex items-center gap-2">
