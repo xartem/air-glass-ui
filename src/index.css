@@ -864,6 +864,20 @@
     background: var(--gradient-nav-active);
   }
 
+  /* Horizontal header nav: the active top-level item is marked by a bottom
+     underline instead of the left vertical bar. Scoped to the menu triggers so
+     links inside the dropdown panel keep the standard vertical marker. */
+  .nav-underline [data-slot="navigation-menu-trigger"].nav-item-active {
+    background: transparent;
+    color: var(--foreground);
+  }
+  .nav-underline [data-slot="navigation-menu-trigger"].nav-item-active::before {
+    inset-inline: 8px;
+    inset-block: auto 2px;
+    width: auto;
+    height: 2px;
+  }
+
   /*
    * iOS skin specular sheen (experimental variant).
    * A top-down light streak layered over the translucent fill — the "liquid glass" highlight.

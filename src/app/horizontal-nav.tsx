@@ -14,9 +14,11 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * Horizontal shell navigation: a top menu bar whose buttons open megamenu panels —
- * wide multi-column link grids built by mega-nav from the single nav map. Desktop
- * only; below `lg` the shared burger drawer takes over.
+ * Horizontal shell navigation: the menu lives inline in the single topbar (no
+ * second bar), its buttons opening megamenu panels — wide multi-column link grids
+ * built by mega-nav from the single nav map. Desktop only; below `lg` the shared
+ * burger drawer takes over. `nav-underline` swaps the active marker to a bottom
+ * underline; the viewport is nudged down so the panel clears the topbar.
  */
 
 function containsActive(item: MegaBarItem, activeTo: string | null): boolean {
@@ -34,10 +36,12 @@ export function HorizontalNav() {
   return (
     <nav
       aria-label={t("shell.nav_label")}
-      className="glass-panel relative z-40 mx-2 mt-2 hidden items-center rounded-2xl border px-2 py-1.5 sm:mx-4 lg:flex"
+      className="nav-underline hidden min-w-0 flex-1 items-center lg:flex"
     >
-      <NavigationMenu className="max-w-full justify-start">
-        <NavigationMenuList className="flex-wrap justify-start gap-0.5">
+      {/* viewport={false}: each panel anchors under its own trigger (not a shared,
+          fixed-position viewport). !mt-3 drops it clear of the topbar. */}
+      <NavigationMenu viewport={false} className="max-w-full flex-1 justify-start">
+        <NavigationMenuList className="flex-nowrap justify-start gap-0.5">
           {bar.map((item) => (
             <NavigationMenuItem key={item.key}>
               <NavigationMenuTrigger
@@ -50,7 +54,7 @@ export function HorizontalNav() {
               >
                 {item.label}
               </NavigationMenuTrigger>
-              <NavigationMenuContent>
+              <NavigationMenuContent className="!mt-3">
                 <div className="flex max-h-[70vh] max-w-[calc(100vw-6rem)] gap-x-6 overflow-auto rounded-lg p-3 backdrop-blur-[var(--glass-blur-card)] backdrop-saturate-[var(--glass-saturate)]">
                   {item.columns.map((column) => (
                     <div key={column.key} className="w-48 space-y-4">

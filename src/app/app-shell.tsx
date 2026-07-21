@@ -576,14 +576,18 @@ function SidebarNav({
 }
 
 /** Below md the palette opens from a plain icon button (no inline field). */
-function MobilePaletteButton() {
+function MobilePaletteButton({
+  className = "md:hidden",
+}: {
+  className?: string;
+}) {
   const [open, setOpen] = useState(false);
   return (
     <>
       <Button
         variant="ghost"
         size="icon"
-        className="md:hidden"
+        className={className}
         aria-label={t("shell.searchPlaceholder")}
         onClick={() => setOpen(true)}
       >
@@ -872,27 +876,40 @@ function TopbarControls({
   );
 }
 
-/** The glass topbar (E5). `leading` injects the brand for the sidebar-less layouts. */
+/**
+ * The glass topbar (E5). `leading` injects the brand for the sidebar-less layouts.
+ * `nav` embeds the horizontal menu inline (single-topbar layout). `searchAsIcon`
+ * collapses the search field to an always-visible icon (for the horizontal layout,
+ * where the inline menu owns the middle space).
+ */
 function ShellHeader({
   dark,
   onToggleDark,
   effectiveStyle,
   onCycleStyle,
   leading,
+  nav,
+  searchAsIcon = false,
 }: {
   dark: boolean;
   onToggleDark: () => void;
   effectiveStyle: AppearanceStyle;
   onCycleStyle: () => void;
   leading?: ReactNode;
+  nav?: ReactNode;
+  searchAsIcon?: boolean;
 }) {
   return (
     <header className="glass-header sticky top-2 z-20 m-2 mb-0 flex items-center gap-1.5 rounded-2xl border p-2 sm:top-4 sm:m-4 sm:mb-0 sm:gap-2">
       <MobileNavSheet />
       {leading}
-      {/* Search field-styled trigger ≥md; an icon below md — both open the ⌘K palette */}
-      <CommandPaletteTrigger className="hidden flex-1 md:flex md:max-w-md" />
-      <MobilePaletteButton />
+      {nav}
+      {/* Search field-styled trigger ≥md; an icon below md — both open the ⌘K palette.
+          searchAsIcon forces the icon-only form at every width. */}
+      {searchAsIcon ? null : (
+        <CommandPaletteTrigger className="hidden flex-1 md:flex md:max-w-md" />
+      )}
+      <MobilePaletteButton className={searchAsIcon ? "" : "md:hidden"} />
       <TopbarControls
         dark={dark}
         onToggleDark={onToggleDark}
@@ -1082,8 +1099,12 @@ export function AppShell() {
   if (layout === "horizontal") {
     chrome = (
       <div className="flex min-w-0 flex-1 flex-col">
-        <ShellHeader {...headerProps} leading={<HeaderBrand />} />
-        <HorizontalNav />
+        <ShellHeader
+          {...headerProps}
+          leading={<HeaderBrand />}
+          nav={<HorizontalNav />}
+          searchAsIcon
+        />
         <ShellBanners />
         <MainOutlet />
       </div>
