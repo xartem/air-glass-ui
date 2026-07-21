@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+import { DateRangePicker } from "@/components/date-range-picker";
 import { formatMoney } from "@/lib/money";
 import { t, type AdminLocale } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
@@ -293,23 +293,12 @@ export function PaymentsPage() {
                 ))}
               </SelectContent>
             </Select>
-            <Input
-              type="date"
-              aria-label={t("shop.payments.filter.from")}
-              value={filters.from ?? ""}
-              onChange={(event) =>
-                params.setFilter("from", event.target.value || undefined)
+            <DateRangePicker
+              value={{ from: filters.from, to: filters.to }}
+              onChange={(next) =>
+                params.setFilters({ from: next.from, to: next.to })
               }
-              className="w-40"
-            />
-            <Input
-              type="date"
-              aria-label={t("shop.payments.filter.to")}
-              value={filters.to ?? ""}
-              onChange={(event) =>
-                params.setFilter("to", event.target.value || undefined)
-              }
-              className="w-40"
+              className="w-56"
             />
           </div>
         }

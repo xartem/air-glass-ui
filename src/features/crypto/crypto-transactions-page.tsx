@@ -10,7 +10,7 @@ import { PageHeader } from "@/components/page-header";
 import { Panel } from "@/components/panel";
 import { StatusBadge, type StatusKind } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { DateRangePicker } from "@/components/date-range-picker";
 import {
   Select,
   SelectContent,
@@ -253,23 +253,12 @@ export function CryptoTransactionsPage() {
                 ))}
               </SelectContent>
             </Select>
-            <Input
-              type="date"
-              value={filters.from ?? ""}
-              aria-label={t("crypto.transactions.filter.from")}
-              className="w-40"
-              onChange={(event) =>
-                params.setFilter("from", event.target.value || undefined)
+            <DateRangePicker
+              value={{ from: filters.from, to: filters.to }}
+              onChange={(next) =>
+                params.setFilters({ from: next.from, to: next.to })
               }
-            />
-            <Input
-              type="date"
-              value={filters.to ?? ""}
-              aria-label={t("crypto.transactions.filter.to")}
-              className="w-40"
-              onChange={(event) =>
-                params.setFilter("to", event.target.value || undefined)
-              }
+              className="w-56"
             />
           </div>
         }

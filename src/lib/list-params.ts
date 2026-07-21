@@ -21,6 +21,8 @@ export type ListParams = {
   setSort: (column: string, dir: "asc" | "desc") => void;
   filter: (key: string) => string | undefined;
   setFilter: (key: string, value: string | undefined) => void;
+  /** Patch several filters in one URL update; use when one control owns multiple keys (e.g. a date range). */
+  setFilters: (values: Record<string, string | undefined>) => void;
 };
 
 const SEARCH_DEBOUNCE_MS = 250;
@@ -81,5 +83,6 @@ export function useListParams(): ListParams {
     setSort: (column, dir) => patch({ sort: column, dir }),
     filter: (key) => searchParams.get(key) ?? undefined,
     setFilter: (key, value) => patch({ [key]: value }),
+    setFilters: (values) => patch(values),
   };
 }
