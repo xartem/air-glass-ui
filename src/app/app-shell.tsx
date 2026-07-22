@@ -508,7 +508,10 @@ function SidebarNav({
     <nav
       aria-label={t("shell.nav_label")}
       className={cn(
-        "scrollbar-hover mt-2 flex-1 space-y-2 overflow-y-auto overflow-x-hidden",
+        // min-h-0 lets this flex child actually scroll instead of growing past its
+        // fixed-height card (flex items default to min-height:auto). Without it the
+        // nav overflows the sidebar/topbar when several groups are expanded.
+        "scrollbar-hover mt-2 min-h-0 flex-1 space-y-2 overflow-y-auto overflow-x-hidden",
         // Icons-only mode: hide the bar (wheel still scrolls) and add breathing room
         // so hover pills / focus rings are not flush against the clipped rail edges
         collapsed && "scrollbar-none px-1 py-1",
