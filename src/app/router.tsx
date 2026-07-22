@@ -318,6 +318,12 @@ const blogDashboardPage = () =>
       default: m.BlogDashboardPage,
     })),
   );
+const aiDashboardPage = () =>
+  lazyPage(() =>
+    import("@/features/dashboards/ai-dashboard-page").then((m) => ({
+      default: m.AiDashboardPage,
+    })),
+  );
 const pricingPage = () =>
   lazyPage(() =>
     import("@/features/pricing/pricing-page").then((m) => ({
@@ -1689,6 +1695,14 @@ export const router = createBrowserRouter(
           element: (
             <RequirePermission perm="analytics.view">
               {blogDashboardPage()}
+            </RequirePermission>
+          ),
+        },
+        {
+          path: "/dashboards/ai",
+          element: (
+            <RequirePermission perm="analytics.view">
+              {aiDashboardPage()}
             </RequirePermission>
           ),
         },

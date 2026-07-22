@@ -184,6 +184,12 @@ export function buildNavGroups(): NavGroup[] {
               icon: Newspaper,
               perm: "analytics.view",
             },
+            {
+              to: "/dashboards/ai",
+              label: t("nav.dashAi"),
+              icon: Bot,
+              perm: "analytics.view",
+            },
           ],
         },
         {
