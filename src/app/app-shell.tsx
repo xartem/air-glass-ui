@@ -883,7 +883,8 @@ function TopbarControls({
  * The glass topbar (E5). `leading` injects the brand for the sidebar-less layouts.
  * `nav` embeds the horizontal menu inline (single-topbar layout). `searchAsIcon`
  * collapses the search field to an always-visible icon (for the horizontal layout,
- * where the inline menu owns the middle space).
+ * where the inline menu owns the middle space). `className` tunes width/margins per
+ * layout (e.g. detached constrains the header to the boxed content width).
  */
 function ShellHeader({
   dark,
@@ -893,6 +894,7 @@ function ShellHeader({
   leading,
   nav,
   searchAsIcon = false,
+  className,
 }: {
   dark: boolean;
   onToggleDark: () => void;
@@ -901,9 +903,15 @@ function ShellHeader({
   leading?: ReactNode;
   nav?: ReactNode;
   searchAsIcon?: boolean;
+  className?: string;
 }) {
   return (
-    <header className="glass-header sticky top-2 z-20 m-2 mb-0 flex items-center gap-1.5 rounded-2xl border p-2 sm:top-4 sm:m-4 sm:mb-0 sm:gap-2">
+    <header
+      className={cn(
+        "glass-header sticky top-2 z-20 m-2 mb-0 flex items-center gap-1.5 rounded-2xl border p-2 sm:top-4 sm:m-4 sm:mb-0 sm:gap-2",
+        className,
+      )}
+    >
       <MobileNavSheet />
       {leading}
       {nav}
@@ -1018,7 +1026,7 @@ function HoverSidebar() {
 /** Detached variant: a floating sidebar card that sits inside the boxed content row. */
 function DetachedSidebar() {
   return (
-    <aside className="glass-panel sticky top-24 hidden h-[calc(100vh-8rem)] w-60 shrink-0 flex-col rounded-2xl p-3 lg:flex">
+    <aside className="glass-panel sticky top-20 hidden h-[calc(100vh-6rem)] w-60 shrink-0 flex-col rounded-2xl p-3 lg:flex">
       <SidebarNav />
     </aside>
   );
@@ -1115,7 +1123,15 @@ export function AppShell() {
   } else if (layout === "detached") {
     chrome = (
       <div className="flex min-w-0 flex-1 flex-col">
-        <ShellHeader {...headerProps} leading={<HeaderBrand />} />
+        {/* Constrain the header to the boxed content width via mx-auto/max-w on the
+            element itself (not a wrapper) so it stays a direct flex child and keeps
+            sticking on scroll. 86rem = the 88rem row minus its 2rem side padding, so
+            the topbar lines up with the floating sidebar and content. */}
+        <ShellHeader
+          {...headerProps}
+          leading={<HeaderBrand />}
+          className="mx-auto w-[calc(100%-1rem)] max-w-[86rem] sm:mx-auto sm:w-[calc(100%-2rem)]"
+        />
         <ShellBanners />
         <div className="mx-auto flex w-full max-w-[88rem] gap-4 px-2 pb-2 sm:px-4">
           <DetachedSidebar />
