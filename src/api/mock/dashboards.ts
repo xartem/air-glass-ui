@@ -1,4 +1,5 @@
 import type {
+  AiDashboardPayload,
   BlogDashboardPayload,
   CrmDashboardPayload,
   CryptoDashboardPayload,
@@ -12,6 +13,12 @@ import type {
   ProjectsDashboardPayload,
   SeriesPoint,
 } from "../types";
+import {
+  aiDashboardExtras,
+  aiSpend,
+  listAiConversations,
+  listAiFindings,
+} from "./ai";
 
 /*
  * In-memory mock of the dashboard verticals (build-w2-screens-dashboard-verticals).
@@ -810,6 +817,67 @@ function getBlog(period: Period): BlogDashboardPayload {
   };
 }
 
+/*
+ * AI (LLM-ops) dashboard: composed from the real ai module rather than a
+ * self-contained fixture — spend/conversations/findings come straight from
+ * src/api/mock/ai.ts, model/tool/performance aggregates from aiDashboardExtras().
+ * `period` windows the spend hero to the preset bucket count.
+ */
+function getAi(period: Period): AiDashboardPayload {
+  const spend = aiSpend();
+  const conversations = listAiConversations();
+  const findings = listAiFindings();
+  const extras = aiDashboardExtras();
+
+  const { count } = periodShape(period);
+  const spendSeries: SeriesPoint[] = spend.series
+    .slice(-Math.min(count, spend.series.length))
+    .map((point) => ({ label: point.date, value: point.cost }));
+
+  const totalTokens = sum(
+    conversations.map((conversation) => conversation.tokens),
+  );
+  const totalCost = spend.month;
+  const conversationCount = conversations.length;
+  const avgCost = conversationCount ? totalCost / conversationCount : 0;
+
+  return {
+    period,
+    currency: CURRENCY,
+    kpis: {
+      tokens: { value: totalTokens, delta: 0.14, spark: kpiSpark(0.14, 201) },
+      cost: {
+        value: money(totalCost),
+        delta: 0.09,
+        spark: kpiSpark(0.09, 202),
+      },
+      conversations: {
+        value: conversationCount,
+        delta: 0.21,
+        spark: kpiSpark(0.21, 203),
+      },
+      avgCost: {
+        value: money(avgCost),
+        delta: -0.04,
+        spark: kpiSpark(-0.04, 204),
+      },
+    },
+    spend: spendSeries,
+    modelSplit: extras.modelSplit,
+    topConversations: conversations
+      .filter((conversation) => conversation.title)
+      .sort((a, b) => b.cost - a.cost)
+      .slice(0, 5)
+      .map((conversation) => ({
+        label: conversation.title!,
+        value: conversation.cost,
+      })),
+    toolUsage: extras.toolUsage,
+    findings,
+    performance: extras.performance,
+  };
+}
+
 const BUILDERS: {
   [V in DashboardVertical]: (period: Period) => DashboardPayloadMap[V];
 } = {
@@ -820,6 +888,7 @@ const BUILDERS: {
   nft: getNft,
   jobs: getJobs,
   blog: getBlog,
+  ai: getAi,
 };
 
 /** Build the payload for one vertical + period (single endpoint, one query). */

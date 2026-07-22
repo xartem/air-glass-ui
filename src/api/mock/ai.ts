@@ -8,6 +8,7 @@ import type {
   AiFinding,
   AiFindingStatus,
   AiMessage,
+  AiPerformance,
   AiPlan,
   AiScreenContext,
   AiSpend,
@@ -15,6 +16,8 @@ import type {
   AiToolCall,
   AiTurnUsage,
   AiUsageSummary,
+  RankedRow,
+  SeriesPoint,
 } from "../types";
 import { sensitiveSettingIsSet, storedSettingValue } from "./settings";
 
@@ -866,6 +869,70 @@ export function aiSpend(): AiSpend {
     week: sum(series.slice(-7)),
     month: sum(series),
     series,
+  };
+}
+
+/**
+ * Extra aggregates the AI dashboard needs that the conversation store does not
+ * carry first-class (the mock talks to a single model and does not log tool
+ * calls): a cost-by-model split, tool-usage counts, and LLM performance
+ * (latency / request volume / a weekday×hour request heatmap). Deterministic
+ * (LCG-seeded) so demo screenshots stay stable.
+ */
+export function aiDashboardExtras(): {
+  modelSplit: RankedRow[];
+  toolUsage: RankedRow[];
+  performance: AiPerformance;
+} {
+  const modelSplit: RankedRow[] = [
+    { label: "claude-sonnet-4-5", value: 214.5 },
+    { label: "claude-opus-4-6", value: 132.2 },
+    { label: "gpt-4o", value: 78.9 },
+    { label: "claude-haiku-4-5", value: 41.3 },
+    { label: "gemini-2.5-pro", value: 22.7 },
+  ];
+  const toolUsage: RankedRow[] = [
+    { label: "web_search", value: 1240 },
+    { label: "read_file", value: 980 },
+    { label: "run_query", value: 620 },
+    { label: "create_page", value: 410 },
+    { label: "send_email", value: 180 },
+  ];
+
+  let state = 91;
+  const next = () => {
+    state = (state * 1103515245 + 12345) % 2147483648;
+    return state / 2147483648;
+  };
+  const dayLabel = (index: number) => {
+    const date = new Date(Date.now() - index * DAY);
+    return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}`;
+  };
+
+  const latency: SeriesPoint[] = [];
+  const requests: SeriesPoint[] = [];
+  for (let index = 29; index >= 0; index--) {
+    const label = dayLabel(index);
+    latency.push({ label, value: Math.round(700 + next() * 900) });
+    requests.push({ label, value: Math.round(200 + next() * 420) });
+  }
+
+  const hours = ["00", "03", "06", "09", "12", "15", "18", "21"];
+  const values: number[][] = [];
+  for (let day = 0; day < 7; day++) {
+    const row: number[] = [];
+    for (let hour = 0; hour < hours.length; hour++) {
+      // Fewer requests overnight (hours 0–1), a working-hours bump around 09–18.
+      const daypart = hour >= 3 && hour <= 6 ? 1 : 0.5;
+      row.push(Math.round((20 + next() * 60) * daypart));
+    }
+    values.push(row);
+  }
+
+  return {
+    modelSplit,
+    toolUsage,
+    performance: { latency, requests, heatmap: { hours, values } },
   };
 }
 

@@ -1179,7 +1179,7 @@ export interface AnalyticsPayload {
 
 /** The seven period-scoped vertical dashboards under /dashboards/*. */
 export type DashboardVertical =
-  "crm" | "ecommerce" | "crypto" | "projects" | "nft" | "jobs" | "blog";
+  "crm" | "ecommerce" | "crypto" | "projects" | "nft" | "jobs" | "blog" | "ai";
 
 /** KPI tile value + period-over-period change as a fraction (0.12 = +12%). */
 export interface DashKpi {
@@ -1494,6 +1494,39 @@ export interface BlogDashboardPayload {
   authors: LeaderRow[];
 }
 
+/** LLM latency / request-volume trends + a requests-by-weekday×hour heatmap. */
+export interface AiPerformance {
+  /** Average response latency per day, in milliseconds. */
+  latency: SeriesPoint[];
+  /** Request volume per day. */
+  requests: SeriesPoint[];
+  /** Request intensity: hour-bucket labels + values[weekday 0=Mon … 6=Sun][hour bucket]. */
+  heatmap: { hours: string[]; values: number[][] };
+}
+
+export interface AiDashboardPayload {
+  period: Period;
+  currency: string;
+  kpis: {
+    tokens: DashKpi;
+    cost: DashKpi;
+    conversations: DashKpi;
+    /** Average cost per conversation. */
+    avgCost: DashKpi;
+  };
+  /** Daily spend over the period (hero trend), from ai spend. */
+  spend: SeriesPoint[];
+  /** Cost share by model (donut). */
+  modelSplit: RankedRow[];
+  /** Top conversations by cost. */
+  topConversations: RankedRow[];
+  /** Tool-call counts by tool. */
+  toolUsage: RankedRow[];
+  /** Open AI findings (error/critical) surfaced from the assistant. */
+  findings: AiFinding[];
+  performance: AiPerformance;
+}
+
 /** Per-vertical payload lookup so api.dashboards.get is typed by vertical. */
 export interface DashboardPayloadMap {
   crm: CrmDashboardPayload;
@@ -1503,6 +1536,7 @@ export interface DashboardPayloadMap {
   nft: NftDashboardPayload;
   jobs: JobsDashboardPayload;
   blog: BlogDashboardPayload;
+  ai: AiDashboardPayload;
 }
 
 /* ---- inbox / chat (build-demo-screen-catalog) ---- */
