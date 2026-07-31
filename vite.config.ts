@@ -6,7 +6,8 @@ import { defineConfig } from 'vite'
 // Admin SPA is built by the publisher and shipped as static assets (A2 T8, E2 §3).
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/admin-assets/',
+  // Overridable for standalone hosting (demo build: VITE_BASE=/).
+  base: process.env.VITE_BASE ?? '/admin-assets/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

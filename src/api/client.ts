@@ -40,7 +40,11 @@ export class ConflictError extends ApiError {
 const API_BASE =
   (import.meta.env.VITE_API_BASE as string | undefined) ?? "/console/api";
 
-const useMock = import.meta.env.DEV && !import.meta.env.VITE_API_REAL;
+// VITE_DEMO=1 keeps the mock layer alive in a production build — the zero-backend
+// demo deploy. Everything else behaves exactly like the real client.
+const useMock =
+  import.meta.env.VITE_DEMO === "1" ||
+  (import.meta.env.DEV && !import.meta.env.VITE_API_REAL);
 
 function readCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
