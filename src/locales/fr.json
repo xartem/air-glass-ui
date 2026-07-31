@@ -3395,5 +3395,7 @@
   "dash.ai.requests.hint": "Volume quotidien de requêtes",
   "dash.ai.heatmap.title": "Carte thermique des requêtes",
   "dash.ai.heatmap.hint": "Par jour et heure",
-  "dash.ai.unit.ms": "ms"
+  "dash.ai.unit.ms": "ms",
+  "nav.layoutDefault": "Par défaut",
+  "layouts.vertical.desc": "La coque standard : une barre latérale fixe avec navigation groupée à gauche, barre supérieure et contenu à sa droite."
 }

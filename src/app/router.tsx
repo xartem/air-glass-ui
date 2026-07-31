@@ -730,6 +730,12 @@ const jobLandingPage = () =>
   );
 
 // W6 — Layout demos (shell chrome variants; each flips the site-wide layout on mount).
+const verticalLayoutPage = () =>
+  lazyPage(() =>
+    import("@/features/layouts/layout-demo-page").then((m) => ({
+      default: m.VerticalLayoutPage,
+    })),
+  );
 const horizontalLayoutPage = () =>
   lazyPage(() =>
     import("@/features/layouts/layout-demo-page").then((m) => ({
@@ -1434,6 +1440,7 @@ export const router = createBrowserRouter(
         { path: "/ui-kit", element: uiKitPage() },
         // W6 — Layout demos (any authenticated user, no perm gate). Each route flips the
         // shell layout; they live under AuthedRoot so the app-shell wraps them.
+        { path: "/layouts/vertical", element: verticalLayoutPage() },
         { path: "/layouts/horizontal", element: horizontalLayoutPage() },
         { path: "/layouts/detached", element: detachedLayoutPage() },
         { path: "/layouts/two-column", element: twoColumnLayoutPage() },

@@ -3395,5 +3395,7 @@
   "dash.ai.requests.hint": "حجم الطلبات اليومي",
   "dash.ai.heatmap.title": "خريطة حرارية للطلبات",
   "dash.ai.heatmap.hint": "حسب اليوم والساعة",
-  "dash.ai.unit.ms": "ملّي ث"
+  "dash.ai.unit.ms": "ملّي ث",
+  "nav.layoutDefault": "الافتراضي",
+  "layouts.vertical.desc": "الهيكل الافتراضي: شريط جانبي ثابت يضم تنقلاً مجمّعاً، مع الشريط العلوي والمحتوى إلى جانبه."
 }

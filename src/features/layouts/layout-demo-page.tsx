@@ -76,14 +76,17 @@ function LayoutDemoPage({ variant }: { variant: AppearanceLayout }) {
           </p>
           <p className="text-sm">{t(`layouts.${variant}.desc`)}</p>
           <div className="flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              onClick={() => apply.mutate("vertical")}
-              disabled={apply.isPending}
-            >
-              <RotateCcw />
-              {t("layouts.note.reset")}
-            </Button>
+            {/* The default variant IS the reset target — offering it there is a no-op. */}
+            {variant === "vertical" ? null : (
+              <Button
+                variant="outline"
+                onClick={() => apply.mutate("vertical")}
+                disabled={apply.isPending}
+              >
+                <RotateCcw />
+                {t("layouts.note.reset")}
+              </Button>
+            )}
             <Button variant="outline" asChild>
               <Link to="/appearance">
                 <SlidersHorizontal />
@@ -95,6 +98,11 @@ function LayoutDemoPage({ variant }: { variant: AppearanceLayout }) {
       </Panel>
     </div>
   );
+}
+
+/** The default sidebar shell — the way back after trying any other variant. */
+export function VerticalLayoutPage() {
+  return <LayoutDemoPage variant="vertical" />;
 }
 
 export function HorizontalLayoutPage() {

@@ -3395,5 +3395,7 @@
   "dash.ai.requests.hint": "Dzienna liczba żądań",
   "dash.ai.heatmap.title": "Mapa ciepła żądań",
   "dash.ai.heatmap.hint": "Wg dnia tygodnia i godziny",
-  "dash.ai.unit.ms": "ms"
+  "dash.ai.unit.ms": "ms",
+  "nav.layoutDefault": "Domyślny",
+  "layouts.vertical.desc": "Standardowa powłoka: stały pasek boczny ze zgrupowaną nawigacją po lewej, górny pasek i treść po jego prawej stronie."
 }

@@ -3395,5 +3395,7 @@
   "dash.ai.requests.hint": "Volume giornaliero di richieste",
   "dash.ai.heatmap.title": "Mappa di calore delle richieste",
   "dash.ai.heatmap.hint": "Per giorno e ora",
-  "dash.ai.unit.ms": "ms"
+  "dash.ai.unit.ms": "ms",
+  "nav.layoutDefault": "Predefinito",
+  "layouts.vertical.desc": "La struttura standard: una barra laterale fissa con navigazione raggruppata a sinistra, barra superiore e contenuto alla sua destra."
 }

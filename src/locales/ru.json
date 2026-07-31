@@ -3395,5 +3395,7 @@
   "dash.ai.requests.hint": "Объём запросов в день",
   "dash.ai.heatmap.title": "Тепловая карта запросов",
   "dash.ai.heatmap.hint": "По дню недели и часу",
-  "dash.ai.unit.ms": "мс"
+  "dash.ai.unit.ms": "мс",
+  "nav.layoutDefault": "По умолчанию",
+  "layouts.vertical.desc": "Базовая оболочка: закреплённая боковая панель со сгруппированной навигацией слева, верхняя панель и контент справа от неё."
 }

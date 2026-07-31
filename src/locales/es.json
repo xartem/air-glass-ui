@@ -3395,5 +3395,7 @@
   "dash.ai.requests.hint": "Volumen diario de solicitudes",
   "dash.ai.heatmap.title": "Mapa de calor de solicitudes",
   "dash.ai.heatmap.hint": "Por día y hora",
-  "dash.ai.unit.ms": "ms"
+  "dash.ai.unit.ms": "ms",
+  "nav.layoutDefault": "Predeterminado",
+  "layouts.vertical.desc": "El armazón estándar: una barra lateral fija con navegación agrupada a la izquierda, barra superior y contenido a su derecha."
 }

@@ -3395,5 +3395,7 @@
   "dash.ai.requests.hint": "Tägliches Anfragevolumen",
   "dash.ai.heatmap.title": "Anfragen-Heatmap",
   "dash.ai.heatmap.hint": "Nach Wochentag und Stunde",
-  "dash.ai.unit.ms": "ms"
+  "dash.ai.unit.ms": "ms",
+  "nav.layoutDefault": "Standard",
+  "layouts.vertical.desc": "Die Standardhülle: eine feste Seitenleiste mit gruppierter Navigation links, Kopfleiste und Inhalt rechts daneben."
 }

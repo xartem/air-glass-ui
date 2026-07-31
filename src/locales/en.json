@@ -3395,5 +3395,7 @@
   "dash.ai.requests.hint": "Daily request volume",
   "dash.ai.heatmap.title": "Requests heatmap",
   "dash.ai.heatmap.hint": "By weekday and hour",
-  "dash.ai.unit.ms": "ms"
+  "dash.ai.unit.ms": "ms",
+  "nav.layoutDefault": "Default",
+  "layouts.vertical.desc": "The stock shell: a fixed sidebar with grouped navigation on the left, topbar and content to its right."
 }

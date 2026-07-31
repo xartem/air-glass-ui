@@ -569,6 +569,13 @@ export function buildNavGroups(): NavGroup[] {
           label: t("nav.layouts"),
           icon: LayoutGrid,
           children: [
+            // Listed first: visiting any variant persists it, so the way back to the
+            // stock sidebar shell has to live in the same menu.
+            {
+              to: "/layouts/vertical",
+              label: t("nav.layoutDefault"),
+              icon: LayoutGrid,
+            },
             {
               to: "/layouts/horizontal",
               label: t("nav.layoutHorizontal"),

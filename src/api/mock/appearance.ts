@@ -32,8 +32,10 @@ const LAYOUTS: AppearanceLayout[] = [
 export const APPEARANCE_DEFAULTS: AppearanceSettings = {
   style: "glass",
   dir: "ltr",
-  bgLight: "air",
-  bgDark: "air",
+  // 'aurora' is the vivid preset — it shows the glass surfaces off far better than
+  // the muted 'air' baseline, so it is what a fresh install (and the demo) opens with.
+  bgLight: "aurora",
+  bgDark: "aurora",
   customLight: null,
   customDark: null,
   density: "comfortable",
