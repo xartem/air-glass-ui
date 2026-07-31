@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { DEMO_CREDENTIALS, IS_DEMO } from "@/lib/demo";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
@@ -25,8 +26,11 @@ export function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // Demo deploy: the visitor should be one click away from the admin.
+  const [email, setEmail] = useState(IS_DEMO ? DEMO_CREDENTIALS.email : "");
+  const [password, setPassword] = useState(
+    IS_DEMO ? DEMO_CREDENTIALS.password : "",
+  );
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
