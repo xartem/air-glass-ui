@@ -56,6 +56,17 @@ AGENTS.md
 # Playwright MCP artifacts
 .playwright-mcp/
 
+# QA / debug captures. Screenshots belong to a session, not to the product — they
+# bloated the buyer bundle once already. Product imagery lives under documentation/
+# and preview/ (the marketplace listing assets), both negated below.
+/*.png
+/*.jpg
+/*.jpeg
+/audit/
+/screenshots/
+!/documentation/**
+!/preview/**
+
 # OS files
 .DS_Store
 .DS_Store?
