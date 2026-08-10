@@ -32,7 +32,7 @@ export function ProgressPage() {
           {values.map((value) => (
             <div key={value} className="flex items-center gap-3">
               <Progress value={value} aria-label={`${value}%`} />
-              <span className="w-10 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
+              <span className="w-10 shrink-0 text-end text-xs tabular-nums text-muted-foreground">
                 {value}%
               </span>
             </div>

@@ -80,7 +80,7 @@ export function Heatmap({
               <tr key={yLabel}>
                 <th
                   scope="row"
-                  className="pr-2 text-right font-medium text-muted-foreground whitespace-nowrap"
+                  className="pe-2 text-end font-medium text-muted-foreground whitespace-nowrap"
                 >
                   {yLabel}
                 </th>

@@ -77,11 +77,11 @@ function BubbleTooltip({
       <div className="mb-1 font-medium">{point.name}</div>
       <div className="grid grid-cols-2 gap-x-3 tabular-nums">
         <span className="text-muted-foreground">x</span>
-        <span className="text-right">{point.x}</span>
+        <span className="text-end">{point.x}</span>
         <span className="text-muted-foreground">y</span>
-        <span className="text-right">{point.y}</span>
+        <span className="text-end">{point.y}</span>
         <span className="text-muted-foreground">size</span>
-        <span className="text-right">{point.z.toLocaleString()}</span>
+        <span className="text-end">{point.z.toLocaleString()}</span>
       </div>
     </div>
   );

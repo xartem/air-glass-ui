@@ -64,9 +64,9 @@ function RangeTooltip({
       <div className="mb-1 font-medium">{point.label}</div>
       <div className="grid grid-cols-2 gap-x-3 tabular-nums">
         <span className="text-muted-foreground">High</span>
-        <span className="text-right">{point.upper}</span>
+        <span className="text-end">{point.upper}</span>
         <span className="text-muted-foreground">Low</span>
-        <span className="text-right">{point.lower}</span>
+        <span className="text-end">{point.lower}</span>
       </div>
     </div>
   );

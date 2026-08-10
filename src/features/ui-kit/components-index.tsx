@@ -30,12 +30,12 @@ export function ComponentsIndex() {
   return (
     <div className="space-y-5 pt-4">
       <div className="relative max-w-md">
-        <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Search className="pointer-events-none absolute top-1/2 start-3 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t("showcase.hub.search")}
-          className="pl-9"
+          className="ps-9"
           aria-label={t("showcase.hub.search")}
         />
       </div>
@@ -52,7 +52,7 @@ export function ComponentsIndex() {
                   <CardTitle className="flex items-center gap-2 text-sm">
                     <GroupIcon className="size-4 text-primary" />
                     {t(group.labelKey)}
-                    <span className="ml-auto text-xs font-normal text-muted-foreground">
+                    <span className="ms-auto text-xs font-normal text-muted-foreground">
                       {group.links.length}
                     </span>
                   </CardTitle>

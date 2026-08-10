@@ -116,7 +116,7 @@ export function ComponentDemo({
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-2.5 right-2.5 z-10"
+            className="absolute top-2.5 end-2.5 z-10"
             onClick={copy}
           >
             {copied ? <Check /> : <Copy />}
