@@ -56,6 +56,9 @@ AGENTS.md
 # Playwright MCP artifacts
 .playwright-mcp/
 
+# Release archives produced by `npm run package`
+/air-glass-ui-*.zip
+
 # QA / debug captures. Screenshots belong to a session, not to the product — they
 # bloated the buyer bundle once already. Product imagery lives under documentation/
 # and preview/ (the marketplace listing assets), both negated below.
