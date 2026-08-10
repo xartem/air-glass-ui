@@ -25,6 +25,7 @@ import { WIDGET_SPAN } from "@/components/widget-grid";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { t } from "@/lib/i18n";
+import { useLocale } from "@/lib/use-locale";
 
 /*
  * One dashboard widget = one independent request (UI:dashboard §2): its own
@@ -107,11 +108,15 @@ export function DashboardWidgetCard({
   meta: DashboardWidgetMeta;
   period: Period;
 }) {
+  // Widget payloads are localized by the API (the activity feed ships rendered
+  // sentences and relative dates), so the locale is part of the cache identity —
+  // otherwise a language switch keeps serving the previous language's strings.
+  const locale = useLocale();
   // Only period-aware widgets key on (and re-query with) the period; state widgets ignore it.
   const query = useQuery({
     queryKey: meta.period_aware
-      ? ["dashboard", "widget", meta.key, period]
-      : ["dashboard", "widget", meta.key],
+      ? ["dashboard", "widget", meta.key, locale, period]
+      : ["dashboard", "widget", meta.key, locale],
     queryFn: () =>
       api.dashboard.widget(meta.key, meta.period_aware ? period : undefined),
   });

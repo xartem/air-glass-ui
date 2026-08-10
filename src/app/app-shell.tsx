@@ -1090,6 +1090,14 @@ function TwoColumnNav() {
 }
 
 export function AppShell() {
+  // Subscribed at the shell root, as PublicLayout / StatusLayout / the auth and
+  // landing layouts already do. Individual components call t() during render
+  // without subscribing, so anything below a non-subscribing branch would keep
+  // the previous language until the next reload — the topbar search trigger did
+  // exactly that. One subscription here re-renders the whole authenticated tree
+  // on a language switch; it is a re-render, not a remount, so open dialogs,
+  // form state and scroll survive.
+  useLocale();
   const { dark, toggle } = useDarkMode();
   // Site-wide appearance (E1 §2.2.1) applied to <html>; topbar button quick-cycles the style.
   // clearOverride lets the Theme Customizer drop the transient style preview on commit.
