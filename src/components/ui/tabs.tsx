@@ -24,9 +24,11 @@ function Tabs({
   );
 }
 
-/* Admin default is the "line" style: text tabs with the brand blue→mint underline (E1). */
+/* Admin default is the "line" style: text tabs with the brand blue→mint underline. */
 const tabsListVariants = cva(
-  "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg p-[3px] text-muted-foreground group-data-horizontal/tabs:h-8 group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col data-[variant=line]:rounded-none",
+  // `max-w-full` + horizontal scroll: a long tab strip is otherwise sized to its
+  // content and pushes the whole page into a horizontal scroll on phones.
+  "group/tabs-list inline-flex w-fit max-w-full items-center justify-center rounded-lg p-[3px] text-muted-foreground group-data-horizontal/tabs:h-8 group-data-horizontal/tabs:overflow-x-auto group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col data-[variant=line]:rounded-none",
   {
     variants: {
       variant: {

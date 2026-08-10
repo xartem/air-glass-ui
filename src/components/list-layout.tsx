@@ -13,14 +13,14 @@ import { Panel } from "@/components/panel";
 import { BulkBar, SearchInput, type BulkAction } from "@/components/toolbar";
 
 /*
- * ListLayout (E6 §1A) — the WHOLE list-page archetype as one component:
+ * ListLayout — the WHOLE list-page archetype as one component:
  * PageHeader (title left, «Add» top-right) → Panel section whose HEADER carries
  * the search+filters cluster (search first, filters right of it, view switch
- * last — E6 §2) → DataTable in the panel body (skeleton/error/empty states,
+ * last) → DataTable in the panel body (skeleton/error/empty states,
  * «⋯» row actions) → PaginationBar (count left, pages right). The bulk panel
  * appears above the table on selection. Screens supply data and config;
  * placement stays law. Pair with useListParams (lib) so search, filters, page
- * and sort live in the URL (E2 §6).
+ * and sort live in the URL.
  */
 
 export function ListLayout<TData>({
@@ -47,7 +47,7 @@ export function ListLayout<TData>({
   getRowId,
   children,
 }: {
-  /* Header (E6 §2: primary action top-right) */
+  /* Header (primary action top-right) */
   title: string;
   icon?: ComponentType<{ className?: string }>;
   /** Panel-header subtitle (one line under the section title). */
@@ -114,12 +114,14 @@ export function ListLayout<TData>({
         title={title}
         description={description}
         actions={
-          <div className="flex flex-wrap items-center justify-end gap-2">
+          // Left-aligned and full-width once the cluster wraps onto its own rows
+          // on a phone; the pinned-right cluster is a desktop shape.
+          <div className="flex w-full flex-wrap items-center justify-start gap-2 sm:w-auto sm:justify-end">
             <SearchInput
               value={search.value}
               onChange={search.onChange}
               placeholder={search.placeholder}
-              className="w-56"
+              className="w-full sm:w-56"
             />
             {filters}
             {view}

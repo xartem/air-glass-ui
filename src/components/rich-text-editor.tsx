@@ -28,8 +28,8 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * RichTextEditor (E6 §3, E2 §7: field type `richtext`) — TipTap (E2 §2).
- * Value is an HTML string; sanitization ALWAYS happens server-side before storage (C3) —
+ * RichTextEditor (field type `richtext`) — TipTap.
+ * Value is an HTML string; sanitization ALWAYS happens server-side before storage —
  * the editor itself never trusts or cleans markup.
  */
 
@@ -126,7 +126,7 @@ export function RichTextEditor({
   className,
 }: {
   id?: string;
-  /** HTML string (sanitized server-side on save, C3). */
+  /** HTML string (sanitized server-side on save). */
   value: string;
   onChange: (html: string) => void;
   placeholder?: string;
@@ -159,8 +159,14 @@ export function RichTextEditor({
   // Sync external `value` changes (canned responses, programmatic clear after
   // send) into the editor. Guard on getHTML() so typing never triggers a reset;
   // setContent defaults to emitUpdate:false in TipTap v3, so no update loop.
+  //
+  // `isDestroyed` is not belt-and-braces: the effect can still be flushed after
+  // the view is torn down (a lazy route remounting is enough), and getHTML() on
+  // a destroyed editor serializes against a null schema and throws, which the
+  // route error boundary turns into a full-page 500.
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
+    if (!editor || editor.isDestroyed) return;
+    if (value !== editor.getHTML()) {
       editor.commands.setContent(value);
     }
   }, [editor, value]);
