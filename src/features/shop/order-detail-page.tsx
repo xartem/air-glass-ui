@@ -38,6 +38,7 @@ import { ConfirmDialog } from "@/components/confirm-dialog";
 import { formatMoney } from "@/lib/money";
 import { t, type AdminLocale } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/orders/{id} (build-demo-screen-catalog): order detail. Header carries the
@@ -114,12 +115,12 @@ export function OrderDetailPage() {
     queryFn: () => api.orders.get(orderId),
   });
 
-  console.debug("[OrderDetailPage] load", { id: orderId });
+  devDebug("[OrderDetailPage] load", { id: orderId });
 
   const statusMutation = useMutation({
     mutationFn: (status: OrderStatus) => api.orders.setStatus(orderId, status),
     onSuccess: (detail) => {
-      console.debug("[OrderDetailPage] status changed", {
+      devDebug("[OrderDetailPage] status changed", {
         id: orderId,
         status: detail.status,
       });
@@ -131,7 +132,7 @@ export function OrderDetailPage() {
   });
 
   function changeStatus(status: OrderStatus) {
-    console.debug("[OrderDetailPage] submit status", { id: orderId, status });
+    devDebug("[OrderDetailPage] submit status", { id: orderId, status });
     if (DESTRUCTIVE_STATUSES.includes(status)) {
       setPending(status);
       return;

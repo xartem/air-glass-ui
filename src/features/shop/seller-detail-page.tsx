@@ -23,6 +23,7 @@ import { useSiteDateTime } from "@/lib/datetime";
 import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/sellers/:id — vendor profile: header, KPI tiles and Products / Reviews /
@@ -77,7 +78,7 @@ export function SellerDetailPage() {
     queryFn: () => api.products.reviews(sellerId),
   });
 
-  console.debug("[SellerDetailPage] load", { id: sellerId });
+  devDebug("[SellerDetailPage] load", { id: sellerId });
 
   const columns = useMemo<ColumnDef<ProductListItem>[]>(
     () => [

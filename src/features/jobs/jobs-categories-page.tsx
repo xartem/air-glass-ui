@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /jobs/categories — CRUD over job categories: a DataTable with a create/edit
@@ -52,7 +53,7 @@ export function JobsCategoriesPage() {
     queryFn: api.jobs.categories,
   });
 
-  console.debug("[JobsCategories] query", { count: listQuery.data?.length });
+  devDebug("[JobsCategories] query", { count: listQuery.data?.length });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => api.jobs.deleteCategory(id),
@@ -201,7 +202,7 @@ function CategoryDialog({
 
   const mutation = useMutation({
     mutationFn: (values: FormValues) => {
-      console.debug("[JobsCategories] submit", { id: category?.id, values });
+      devDebug("[JobsCategories] submit", { id: category?.id, values });
       return api.jobs.saveCategory({ id: category?.id, ...values });
     },
     onSuccess: () => {

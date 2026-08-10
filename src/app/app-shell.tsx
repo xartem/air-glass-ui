@@ -88,6 +88,7 @@ import { useCan, usePermissionChecker } from "@/lib/permissions";
 import { roleDisplayName } from "@/lib/role-label";
 import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
+import { devDebug } from "@/lib/debug";
 
 /*
  * SPA layout shell (E2 §3 app/, E5): glass sidebar + glass topbar over the mesh
@@ -426,8 +427,7 @@ function SidebarNav({
     setParentOverrides((current) => {
       const stale = Object.keys(current).filter((key) => !liveKeys.has(key));
       if (stale.length === 0) return current;
-      if (import.meta.env.DEV)
-        console.warn("[nav] dropping stale parent keys:", stale);
+      devDebug("[nav] dropping stale parent keys:", stale);
       const next = { ...current };
       for (const key of stale) delete next[key];
       localStorage.setItem(NAV_PARENTS_KEY, JSON.stringify(next));

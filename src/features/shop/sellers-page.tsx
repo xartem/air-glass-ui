@@ -25,6 +25,7 @@ import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/sellers — marketplace vendor directory. Toolbar (search + status) with a
@@ -76,7 +77,7 @@ export function SellersPage() {
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
-  console.debug("[SellersPage] query", filters);
+  devDebug("[SellersPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["shop", "sellers", filters],

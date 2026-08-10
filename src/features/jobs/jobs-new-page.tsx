@@ -32,6 +32,7 @@ import {
 import { t } from "@/lib/i18n";
 
 import { JOB_DEPARTMENTS, JOB_STATUSES, JOB_TYPES } from "./jobs-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /jobs/new — post a job via react-hook-form + Zod with a requirements repeater,
@@ -109,7 +110,7 @@ export function JobsNewPage() {
           .filter(Boolean),
         status: formValues.status,
       };
-      console.debug("[JobsNew] save", { title: payload.title });
+      devDebug("[JobsNew] save", { title: payload.title });
       return api.jobs.create(payload);
     },
     onSuccess: (job) => {

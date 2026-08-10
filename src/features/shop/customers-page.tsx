@@ -24,6 +24,7 @@ import { formatMoney } from "@/lib/money";
 import { t, type AdminLocale } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/customers (build-demo-screen-catalog): CRM customer list. Name, email,
@@ -67,7 +68,7 @@ export function CustomersPage() {
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
-  console.debug("[CustomersPage] query", filters);
+  devDebug("[CustomersPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["shop", "customers", filters],
@@ -147,7 +148,7 @@ export function CustomersPage() {
       icon: <LogIn />,
       permission: "customers.impersonate",
       onSelect: (customer) => {
-        console.debug("[CustomersPage] impersonate (demo)", {
+        devDebug("[CustomersPage] impersonate (demo)", {
           id: customer.id,
         });
         toast.info(t("shop.customers.impersonate_demo"));

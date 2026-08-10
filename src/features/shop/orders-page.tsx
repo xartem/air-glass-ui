@@ -29,6 +29,7 @@ import { formatMoney } from "@/lib/money";
 import { t, type AdminLocale } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/orders (build-demo-screen-catalog): e-commerce orders list. Search +
@@ -91,7 +92,7 @@ export function OrdersPage() {
     dir: params.sort?.dir ?? ("desc" as const),
   };
 
-  console.debug("[OrdersPage] query", filters);
+  devDebug("[OrdersPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["shop", "orders", filters],
@@ -178,7 +179,7 @@ export function OrdersPage() {
       label: t("shop.orders.view"),
       icon: <Eye />,
       onSelect: (order) => {
-        console.debug("[OrdersPage] open", { id: order.id });
+        devDebug("[OrdersPage] open", { id: order.id });
         navigate(`/shop/orders/${order.id}`);
       },
     },

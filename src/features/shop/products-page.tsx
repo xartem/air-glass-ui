@@ -21,6 +21,7 @@ import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/products (build-demo-screen-catalog): products catalog list. Thumbnail,
@@ -63,7 +64,7 @@ export function ProductsPage() {
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
-  console.debug("[ProductsPage] query", filters);
+  devDebug("[ProductsPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["shop", "products", filters],

@@ -42,6 +42,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /support/tickets — helpdesk queue: KPI row, filterable ticket table and a
@@ -123,7 +124,7 @@ export function TicketListPage() {
     dir: params.sort?.dir ?? ("desc" as const),
   };
 
-  console.debug("[TicketListPage] query", filters);
+  devDebug("[TicketListPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["support", "tickets", filters],
@@ -147,7 +148,7 @@ export function TicketListPage() {
 
   const createMutation = useMutation({
     mutationFn: (values: FormValues) => {
-      console.debug("[TicketListPage] create", values);
+      devDebug("[TicketListPage] create", values);
       return api.support.create(values);
     },
     onSuccess: (ticket) => {

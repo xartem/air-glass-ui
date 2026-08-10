@@ -102,7 +102,11 @@ function CommentForm({ postId }: { postId: number }) {
       />
       <div className="flex justify-end">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : <Send className="size-4 rtl:-scale-x-100" />}
+          {isSubmitting ? (
+            <Spinner />
+          ) : (
+            <Send className="size-4 rtl:-scale-x-100" />
+          )}
           {t("blog.post.commentSubmit")}
         </Button>
       </div>

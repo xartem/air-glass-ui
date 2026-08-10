@@ -15,6 +15,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatMoney, formatNumber } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crypto/orders — open and historical trade orders across two tabs, with an
@@ -42,7 +43,7 @@ export function CryptoOrdersPage() {
 
   const cancelMutation = useMutation({
     mutationFn: (id: number) => {
-      console.debug("[CryptoOrders] cancel", { id });
+      devDebug("[CryptoOrders] cancel", { id });
       return api.crypto.cancelOrder(id);
     },
     onMutate: async (id: number) => {

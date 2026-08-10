@@ -23,6 +23,7 @@ import { formatMoney, formatNumber } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crypto/buy-sell — a trade ticket beside a market snapshot: pick a coin, an
@@ -72,7 +73,7 @@ export function CryptoBuySellPage() {
 
   const tradeMutation = useMutation({
     mutationFn: () => {
-      console.debug("[CryptoBuySell] trade", { pair, side, amount });
+      devDebug("[CryptoBuySell] trade", { pair, side, amount });
       return api.crypto.trade({ pair, side, amount });
     },
     onSuccess: () => {

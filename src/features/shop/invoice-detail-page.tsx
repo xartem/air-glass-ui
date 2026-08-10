@@ -9,6 +9,7 @@ import { Panel } from "@/components/panel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InvoiceSheet } from "@/features/shop/invoice-sheet";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/invoices/{id} (build-demo-screen-catalog): print-ready invoice rendered
@@ -25,10 +26,10 @@ export function InvoiceDetailPage() {
     queryFn: () => api.invoices.get(invoiceId),
   });
 
-  console.debug("[InvoiceDetailPage] load", { id: invoiceId });
+  devDebug("[InvoiceDetailPage] load", { id: invoiceId });
 
   function print() {
-    console.debug("[InvoiceDetailPage] print", { id: invoiceId });
+    devDebug("[InvoiceDetailPage] print", { id: invoiceId });
     window.print();
   }
 

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /tasks/:id — single task workspace: description, subtasks checklist and a
@@ -66,11 +67,11 @@ export function TaskDetailPage() {
     queryFn: () => api.tasks.get(taskId),
   });
 
-  console.debug("[TaskDetailPage] load", { id: taskId });
+  devDebug("[TaskDetailPage] load", { id: taskId });
 
   const statusMutation = useMutation({
     mutationFn: (status: TaskStatus) => {
-      console.debug("[TaskDetailPage] setStatus", { id: taskId, status });
+      devDebug("[TaskDetailPage] setStatus", { id: taskId, status });
       return api.tasks.setStatus(taskId, status);
     },
     onSuccess: () => {
@@ -81,7 +82,7 @@ export function TaskDetailPage() {
 
   const subtaskMutation = useMutation({
     mutationFn: (subtaskId: number) => {
-      console.debug("[TaskDetailPage] toggleSubtask", {
+      devDebug("[TaskDetailPage] toggleSubtask", {
         id: taskId,
         subtaskId,
       });
@@ -93,7 +94,7 @@ export function TaskDetailPage() {
 
   const commentMutation = useMutation({
     mutationFn: (body: string) => {
-      console.debug("[TaskDetailPage] comment", { id: taskId });
+      devDebug("[TaskDetailPage] comment", { id: taskId });
       return api.tasks.comment(taskId, body);
     },
     onSuccess: () => {

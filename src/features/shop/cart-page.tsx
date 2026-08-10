@@ -24,6 +24,7 @@ import {
 import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/cart — review and edit the cart before checkout. Line-items table with
@@ -47,7 +48,7 @@ export function CartPage() {
 
   const updateMutation = useMutation({
     mutationFn: ({ itemId, qty }: { itemId: number; qty: number }) => {
-      console.debug("[CartPage] updateQty", { itemId, qty });
+      devDebug("[CartPage] updateQty", { itemId, qty });
       return api.cart.update(itemId, qty);
     },
     onMutate: async ({ itemId, qty }) => {
@@ -73,7 +74,7 @@ export function CartPage() {
 
   const removeMutation = useMutation({
     mutationFn: (itemId: number) => {
-      console.debug("[CartPage] remove", { itemId });
+      devDebug("[CartPage] remove", { itemId });
       return api.cart.remove(itemId);
     },
     onMutate: async (itemId) => {
@@ -97,7 +98,7 @@ export function CartPage() {
 
   const promoMutation = useMutation({
     mutationFn: (code: string) => {
-      console.debug("[CartPage] applyPromo", { code });
+      devDebug("[CartPage] applyPromo", { code });
       return api.cart.applyPromo(code);
     },
     onSuccess: (cart) => {

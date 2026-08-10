@@ -23,6 +23,7 @@ import { formatMoney } from "@/lib/money";
 import { t, type AdminLocale } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/invoices (build-demo-screen-catalog): invoice list. Number, customer,
@@ -66,7 +67,7 @@ export function InvoicesPage() {
     dir: params.sort?.dir ?? ("desc" as const),
   };
 
-  console.debug("[InvoicesPage] query", filters);
+  devDebug("[InvoicesPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["shop", "invoices", filters],

@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/products/new · /shop/products/{id} (build-demo-screen-catalog): product
@@ -119,13 +120,13 @@ export function ProductEditorPage() {
   const saveMutation = useMutation({
     mutationFn: (values: FormValues) => {
       const payload: ProductPayload = { ...values };
-      console.debug("[ProductEditorPage] save", { id: productId, payload });
+      devDebug("[ProductEditorPage] save", { id: productId, payload });
       return isNew
         ? api.products.create(payload)
         : api.products.update(productId!, payload);
     },
     onSuccess: (product) => {
-      console.debug("[ProductEditorPage] saved", { id: product.id });
+      devDebug("[ProductEditorPage] saved", { id: product.id });
       toast.success(t("shop.products.saved"));
       void queryClient.invalidateQueries({ queryKey: ["shop", "products"] });
       navigate("/shop/products");
@@ -134,7 +135,7 @@ export function ProductEditorPage() {
   });
 
   function onSubmit(values: FormValues) {
-    console.debug("[ProductEditorPage] submit valid", { id: productId });
+    devDebug("[ProductEditorPage] submit valid", { id: productId });
     saveMutation.mutate(values);
   }
 

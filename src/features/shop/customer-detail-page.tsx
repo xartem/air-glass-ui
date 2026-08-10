@@ -29,6 +29,7 @@ import {
 import { formatMoney } from "@/lib/money";
 import { t, type AdminLocale } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/customers/{id} (build-demo-screen-catalog): CRM customer profile. Profile
@@ -74,7 +75,7 @@ export function CustomerDetailPage() {
     queryFn: () => api.customers.get(customerId),
   });
 
-  console.debug("[CustomerDetailPage] load", { id: customerId });
+  devDebug("[CustomerDetailPage] load", { id: customerId });
 
   const orderStatusKind: Record<string, StatusKind> = {
     pending: "pending",

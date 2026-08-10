@@ -31,6 +31,7 @@ import {
 import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /projects — browse projects as a card grid (default) or a table sharing one
@@ -92,7 +93,7 @@ export function ProjectsListPage() {
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
-  console.debug("[ProjectsListPage] query", filters);
+  devDebug("[ProjectsListPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["projects", filters],

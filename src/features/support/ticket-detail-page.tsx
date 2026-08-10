@@ -48,6 +48,7 @@ import {
   TICKET_PRIORITY_KIND,
   TICKET_STATUS_KIND,
 } from "./ticket-list-page";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /support/tickets/:id — single ticket conversation: agent/customer bubbles and
@@ -86,11 +87,11 @@ export function TicketDetailPage() {
     queryFn: () => api.support.get(ticketId),
   });
 
-  console.debug("[TicketDetailPage] load", { id: ticketId });
+  devDebug("[TicketDetailPage] load", { id: ticketId });
 
   const statusMutation = useMutation({
     mutationFn: (status: TicketStatus) => {
-      console.debug("[TicketDetailPage] setStatus", { id: ticketId, status });
+      devDebug("[TicketDetailPage] setStatus", { id: ticketId, status });
       return api.support.setStatus(ticketId, status);
     },
     onMutate: async (status) => {
@@ -112,7 +113,7 @@ export function TicketDetailPage() {
 
   const assignMutation = useMutation({
     mutationFn: (agent: string) => {
-      console.debug("[TicketDetailPage] assign", { id: ticketId, agent });
+      devDebug("[TicketDetailPage] assign", { id: ticketId, agent });
       return api.support.assign(ticketId, agent);
     },
     onMutate: async (agent) => {
@@ -134,7 +135,7 @@ export function TicketDetailPage() {
 
   const replyMutation = useMutation({
     mutationFn: (body: string) => {
-      console.debug("[TicketDetailPage] reply", { id: ticketId });
+      devDebug("[TicketDetailPage] reply", { id: ticketId });
       return api.support.reply(ticketId, body);
     },
     onSuccess: (ticket) => {

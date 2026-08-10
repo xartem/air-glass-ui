@@ -18,6 +18,7 @@ import { Panel } from "@/components/panel";
 import { Button } from "@/components/ui/button";
 import { t } from "@/lib/i18n";
 import type { NavIcon } from "@/app/nav";
+import { devDebug } from "@/lib/debug";
 
 /*
  * Layouts demo screens (MENU-SPEC §1.3). Each route flips the site-wide `layout` appearance
@@ -45,7 +46,8 @@ function useApplyLayout() {
         (await api.appearance.get());
       return api.appearance.save({ ...current, layout });
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["appearance"] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["appearance"] }),
   });
 }
 
@@ -57,17 +59,13 @@ function LayoutDemoPage({ variant }: { variant: AppearanceLayout }) {
   // Flip the shell to this variant on mount. The mutation identity is stable across renders.
   const applyMutate = apply.mutate;
   useEffect(() => {
-    console.debug("[layouts] applying shell layout", variant);
+    devDebug("[layouts] applying shell layout", variant);
     applyMutate(variant);
   }, [variant, applyMutate]);
 
   return (
     <div className="space-y-4">
-      <PageHeader
-        title={name}
-        subtitle={t("layouts.subtitle")}
-        icon={Icon}
-      />
+      <PageHeader title={name} subtitle={t("layouts.subtitle")} icon={Icon} />
 
       <Panel icon={Info} title={t("layouts.note.title")}>
         <div className="space-y-4">

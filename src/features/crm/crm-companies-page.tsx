@@ -38,6 +38,7 @@ import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crm/companies — accounts directory with a detail drawer (profile, related
@@ -79,7 +80,7 @@ export function CrmCompaniesPage() {
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
-  console.debug("[CrmCompaniesPage] query", filters);
+  devDebug("[CrmCompaniesPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["crm", "companies", filters],
@@ -100,7 +101,7 @@ export function CrmCompaniesPage() {
   const createMutation = useMutation({
     mutationFn: (values: FormValues) => {
       const payload: CompanyPayload = { ...values };
-      console.debug("[CrmCompaniesPage] create", payload);
+      devDebug("[CrmCompaniesPage] create", payload);
       return api.crm.companies.create(payload);
     },
     onSuccess: () => {

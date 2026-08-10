@@ -34,6 +34,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { STYLE_BASELINES, applyAppearance } from "@/lib/appearance";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { devDebug } from "@/lib/debug";
 
 /*
  * Theme Customizer (W0.5): a right-side floating drawer to live-tweak the site-wide
@@ -214,8 +215,9 @@ export function ThemeCustomizer({
       await navigator.clipboard.writeText(JSON.stringify(draft, null, 2));
       toast.success(t("customizer.copied"));
     } catch (error) {
-      // Clipboard can be blocked (permissions / insecure context) — surface it, don't crash.
-      console.error("[customizer] clipboard write failed", error);
+      // Clipboard can be blocked (permissions / insecure context) — the toast is the
+      // user-facing surface; the trace is dev-only so the shipped console stays clean.
+      devDebug("[customizer] clipboard write failed", error);
       toast.error(t("customizer.copy_failed"));
     }
   }

@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /kanban (build-demo-screen-catalog): a drag-and-drop board built on the shared
@@ -49,7 +50,7 @@ export function KanbanPage() {
       toColumn: string;
       toIndex: number;
     }) => {
-      console.debug("[KanbanPage] moveCard", {
+      devDebug("[KanbanPage] moveCard", {
         cardId,
         to: toColumn,
         index: toIndex,

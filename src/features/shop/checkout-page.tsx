@@ -36,6 +36,7 @@ import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/checkout — place an order across four steps (address, shipping, payment,
@@ -101,7 +102,7 @@ export function CheckoutPage() {
         (entry) => entry.id === shippingId,
       );
       const method = selected?.name ?? shippingId;
-      console.debug("[CheckoutPage] placeOrder", { method, payment });
+      devDebug("[CheckoutPage] placeOrder", { method, payment });
       return api.orders.place({
         address,
         shipping_method: method,
@@ -125,7 +126,7 @@ export function CheckoutPage() {
       const valid = await form.trigger();
       if (!valid) return;
     }
-    console.debug("[CheckoutPage] step", { from: step, to: step + 1 });
+    devDebug("[CheckoutPage] step", { from: step, to: step + 1 });
     setStep((current) => Math.min(STEP_KEYS.length - 1, current + 1));
   }
 

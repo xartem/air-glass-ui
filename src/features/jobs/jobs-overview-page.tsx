@@ -24,6 +24,7 @@ import {
   JOB_STATUS_KIND,
   formatSalaryRange,
 } from "./jobs-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /jobs/:id — a single posting: header with company/location/type/salary, tabbed
@@ -37,7 +38,7 @@ export function JobsOverviewPage() {
   const locale = useLocale();
   const dt = useSiteDateTime();
 
-  console.debug("[JobsOverview] query", { id });
+  devDebug("[JobsOverview] query", { id });
   const jobQuery = useQuery({
     queryKey: ["jobs", "detail", id],
     queryFn: () => api.jobs.get(id),

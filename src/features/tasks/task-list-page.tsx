@@ -28,6 +28,7 @@ import {
 import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /tasks — flat task list across projects with inline optimistic status change,
@@ -79,7 +80,7 @@ export function TaskListPage() {
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
-  console.debug("[TaskListPage] query", filters);
+  devDebug("[TaskListPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["tasks", filters],
@@ -89,7 +90,7 @@ export function TaskListPage() {
 
   const statusMutation = useMutation({
     mutationFn: ({ id, status }: { id: number; status: TaskStatus }) => {
-      console.debug("[TaskListPage] setStatus", { id, status });
+      devDebug("[TaskListPage] setStatus", { id, status });
       return api.tasks.setStatus(id, status);
     },
     onMutate: async ({ id, status }) => {

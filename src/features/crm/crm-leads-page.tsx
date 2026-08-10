@@ -22,6 +22,7 @@ import {
 import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crm/leads — inbound leads triage: filterable table with a score bar and a
@@ -54,7 +55,7 @@ export function CrmLeadsPage() {
     dir: params.sort?.dir ?? ("desc" as const),
   };
 
-  console.debug("[CrmLeadsPage] query", filters);
+  devDebug("[CrmLeadsPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["crm", "leads", filters],
@@ -64,7 +65,7 @@ export function CrmLeadsPage() {
 
   const convertMutation = useMutation({
     mutationFn: (id: number) => {
-      console.debug("[CrmLeadsPage] convert", { id });
+      devDebug("[CrmLeadsPage] convert", { id });
       return api.crm.leads.convert(id);
     },
     onSuccess: () => {

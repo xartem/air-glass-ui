@@ -23,6 +23,7 @@ import {
   StepperTitle,
 } from "@/components/ui/stepper";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /jobs/application — apply to a job across a Personal → Resume → Questions →
@@ -81,7 +82,7 @@ export function JobsApplicationPage() {
           answer: values.answers[index] ?? "",
         })),
       };
-      console.debug("[JobsApplication] submit", { email: payload.email });
+      devDebug("[JobsApplication] submit", { email: payload.email });
       return api.jobs.apply(payload);
     },
     onSuccess: () => {
@@ -111,7 +112,7 @@ export function JobsApplicationPage() {
       submitMutation.mutate();
       return;
     }
-    console.debug("[JobsApplication] step", { from: step, to: step + 1 });
+    devDebug("[JobsApplication] step", { from: step, to: step + 1 });
     setStep((current) => Math.min(STEP_KEYS.length - 1, current + 1));
   }
 

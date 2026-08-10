@@ -29,6 +29,7 @@ import {
   StepperTitle,
 } from "@/components/ui/stepper";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crypto/kyc — identity verification across an Identity → Documents → Review →
@@ -72,7 +73,7 @@ export function CryptoKycPage() {
   const submitMutation = useMutation({
     mutationFn: () => {
       const payload = { ...form.getValues(), documents };
-      console.debug("[CryptoKyc] submit", { country: payload.country });
+      devDebug("[CryptoKyc] submit", { country: payload.country });
       return api.crypto.submitKyc(payload);
     },
     onSuccess: (application) => {
@@ -97,7 +98,7 @@ export function CryptoKycPage() {
       submitMutation.mutate();
       return;
     }
-    console.debug("[CryptoKyc] step", { from: step, to: step + 1 });
+    devDebug("[CryptoKyc] step", { from: step, to: step + 1 });
     setStep((current) => Math.min(STEP_KEYS.length - 1, current + 1));
   }
 

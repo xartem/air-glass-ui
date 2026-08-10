@@ -17,6 +17,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 import { CANDIDATE_STAGE_KIND, initials } from "./jobs-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /jobs/statistics — recruitment dashboard: KPI row, applications trend, hiring
@@ -28,7 +29,7 @@ export function JobsStatisticsPage() {
   const locale = useLocale();
   const dt = useSiteDateTime();
 
-  console.debug("[JobsStatistics] query");
+  devDebug("[JobsStatistics] query");
   const statsQuery = useQuery({
     queryKey: ["jobs", "stats"],
     queryFn: api.jobs.stats,

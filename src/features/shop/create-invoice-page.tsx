@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/invoices/new — build a new invoice: a react-hook-form field-array on the
@@ -103,7 +104,7 @@ export function CreateInvoicePage() {
 
   const saveMutation = useMutation({
     mutationFn: (payload: InvoiceDraft) => {
-      console.debug("[CreateInvoicePage] save", payload);
+      devDebug("[CreateInvoicePage] save", payload);
       return api.invoices.create(payload);
     },
     onSuccess: (invoice) => {

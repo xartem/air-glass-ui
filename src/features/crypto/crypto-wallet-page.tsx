@@ -32,6 +32,7 @@ import { Sparkline } from "@/components/charts/sparkline";
 import { formatMoney, formatNumber } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crypto/wallet — portfolio value, allocation donut and per-coin holdings with
@@ -267,7 +268,7 @@ function TransferDialog({
 
   const mutation = useMutation({
     mutationFn: (values: TransferValues) => {
-      console.debug("[CryptoWallet] transfer", { mode, coin: holding.symbol });
+      devDebug("[CryptoWallet] transfer", { mode, coin: holding.symbol });
       return isWithdraw
         ? api.crypto.withdraw({
             coin: holding.symbol,

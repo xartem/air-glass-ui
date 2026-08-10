@@ -26,6 +26,7 @@ import {
   emptyEvent,
 } from "@/features/calendar/event-dialog";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /calendar — month/week/day calendar with a hand-rolled month grid, an aside
@@ -50,7 +51,7 @@ export function CalendarPage() {
 
   const saveMutation = useMutation({
     mutationFn: (payload: CalendarEventPayload) => {
-      console.debug("[CalendarPage] save", payload);
+      devDebug("[CalendarPage] save", payload);
       return api.calendar.save(payload);
     },
     onSuccess: () => {
@@ -63,7 +64,7 @@ export function CalendarPage() {
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => {
-      console.debug("[CalendarPage] delete", id);
+      devDebug("[CalendarPage] delete", id);
       return api.calendar.delete(id);
     },
     onSuccess: () => {
@@ -84,7 +85,7 @@ export function CalendarPage() {
       start: string;
       end: string;
     }) => {
-      console.debug("[CalendarPage] move", { id, start, end });
+      devDebug("[CalendarPage] move", { id, start, end });
       return api.calendar.move(id, start, end);
     },
     onSuccess: () =>

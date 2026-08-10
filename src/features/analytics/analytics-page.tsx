@@ -33,6 +33,7 @@ import { formatCompactMoney, formatMoney, formatNumber } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /analytics (build-demo-screen-catalog): a Recharts analytics dashboard. A
@@ -63,7 +64,7 @@ export function AnalyticsPage() {
   const locale = useLocale();
   const [period, setPeriod] = useState<Period>("month");
 
-  console.debug("[AnalyticsPage] period", period);
+  devDebug("[AnalyticsPage] period", period);
 
   const query = useQuery({
     queryKey: ["analytics", period],

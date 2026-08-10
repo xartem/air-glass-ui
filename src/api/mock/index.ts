@@ -1,5 +1,5 @@
 import { ApiError, ValidationError, type RequestOptions } from "../client";
-import { devDebug } from "../../lib/debug";
+import { devDebug } from "@/lib/debug";
 import type {
   ActivityEntry,
   CustomerFilters,
@@ -2569,7 +2569,7 @@ export async function handleMockRequest<T>(
         options,
         match.slice(1) as unknown as Record<string, string>,
       ) as T;
-      console.debug("[mock]", method, path);
+      devDebug("[mock]", method, path);
       return result;
     } catch (cause) {
       // Surface which server-side invariant fired (422 field codes / error codes).
@@ -2577,7 +2577,7 @@ export async function handleMockRequest<T>(
         cause instanceof ValidationError
           ? Object.values(cause.fields).join(",")
           : (cause as ApiError)?.code;
-      console.debug(
+      devDebug(
         "[mock]",
         method,
         path,
@@ -2603,7 +2603,7 @@ export async function handleMockStream(
   const emit = onEvent as (event: AiStreamEvent) => void;
   const message = path.match(/^\/ai\/conversations\/(\d+|new)\/messages$/);
   if (message) {
-    console.debug("[mock:sse]", path);
+    devDebug("[mock:sse]", path);
     const id = message[1] === "new" ? null : Number(message[1]);
     return streamAiMessage(
       id,
@@ -2614,7 +2614,7 @@ export async function handleMockStream(
   }
   const approve = path.match(/^\/ai\/plans\/(\d+)\/approve$/);
   if (approve) {
-    console.debug("[mock:sse]", path);
+    devDebug("[mock:sse]", path);
     return streamAiPlanApprove(Number(approve[1]), emit, signal);
   }
   throw new ApiError(404, `Mock stream not implemented: ${path}`);

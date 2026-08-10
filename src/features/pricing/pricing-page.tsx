@@ -9,6 +9,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /pricing (build-demo-screen-catalog): a presentational marketing/demo screen —
@@ -89,7 +90,7 @@ export function PricingPlans() {
   const locale = useLocale();
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
 
-  console.debug("[PricingPlans] billingCycle", cycle);
+  devDebug("[PricingPlans] billingCycle", cycle);
 
   return (
     <div className="space-y-6">

@@ -22,6 +22,7 @@ import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { NavIcon } from "@/app/nav";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /media (build-demo-screen-catalog): the demo file manager. A folder rail
@@ -88,7 +89,7 @@ export function MediaPage() {
   const selectedFile = files.find((file) => file.path === selected) ?? null;
 
   const browse = (nextFolder: FolderKey) => {
-    console.debug("[MediaPage] browse", { folder: nextFolder, view });
+    devDebug("[MediaPage] browse", { folder: nextFolder, view });
     setFolder(nextFolder);
     setSelected(null);
   };
@@ -103,7 +104,7 @@ export function MediaPage() {
           icon: <Upload />,
           permission: "media.manage",
           onClick: () => {
-            console.debug("[MediaPage] upload");
+            devDebug("[MediaPage] upload");
             toast.info(t("media.fm.upload_demo"));
           },
         }}

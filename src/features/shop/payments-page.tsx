@@ -31,6 +31,7 @@ import { formatMoney } from "@/lib/money";
 import { t, type AdminLocale } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/payments (build-demo-screen-catalog): transactions ledger. A KPI row
@@ -94,7 +95,7 @@ export function PaymentsPage() {
     dir: params.sort?.dir ?? ("desc" as const),
   };
 
-  console.debug("[PaymentsPage] query", filters);
+  devDebug("[PaymentsPage] query", filters);
 
   const statsQuery = useQuery({
     queryKey: ["shop", "payments", "stats"],
@@ -110,7 +111,7 @@ export function PaymentsPage() {
   const refundMutation = useMutation({
     mutationFn: (id: number) => api.payments.refund(id),
     onSuccess: () => {
-      console.debug("[PaymentsPage] refund done");
+      devDebug("[PaymentsPage] refund done");
       toast.success(t("shop.payments.refunded"));
       void queryClient.invalidateQueries({ queryKey: ["shop", "payments"] });
     },

@@ -17,6 +17,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/lib/auth";
 import { spaUrl } from "@/lib/utils";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * Re-login dialog (UI:shell-auth §2, E2 §5): opens when any request hits 401
@@ -63,8 +64,7 @@ export function ReloginDialog() {
         remember: false,
       });
       if ("mfa_required" in result) {
-        if (import.meta.env.DEV)
-          console.debug("[FIX] relogin requires 2FA challenge");
+        devDebug("[relogin] 2FA challenge required");
         setMfaStep(true);
         return;
       }

@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WizardDialog, type WizardStep } from "@/components/wizard-dialog";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /showcase/states (build-demo-screen-catalog): a one-stop demo of the
@@ -32,7 +33,7 @@ function StepBody({
   description: string;
 }) {
   useEffect(() => {
-    console.debug("[StatesPage] onboardingStep", step);
+    devDebug("[StatesPage] onboardingStep", step);
   }, [step]);
   return (
     <div className="space-y-1.5">
@@ -186,7 +187,7 @@ export function StatesPage() {
           title={t("states.wizard.title")}
           steps={wizardSteps}
           onFinish={() => {
-            console.debug("[StatesPage] onboardingStep", "finish");
+            devDebug("[StatesPage] onboardingStep", "finish");
             toast.success(t("states.onboarding_done"));
           }}
         />

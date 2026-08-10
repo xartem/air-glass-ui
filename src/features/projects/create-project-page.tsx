@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /projects/new — create a project via react-hook-form + Zod with a SaveBar.
@@ -94,7 +95,7 @@ export function CreateProjectPage() {
           .map((tag) => tag.trim())
           .filter(Boolean),
       };
-      console.debug("[CreateProjectPage] save", payload);
+      devDebug("[CreateProjectPage] save", payload);
       return api.projects.create(payload);
     },
     onSuccess: (project) => {

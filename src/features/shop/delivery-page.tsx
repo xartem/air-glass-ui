@@ -28,6 +28,7 @@ import { Switch } from "@/components/ui/switch";
 import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/delivery (build-demo-screen-catalog): a CRUD table of shipping methods.
@@ -58,12 +59,12 @@ export function DeliveryPage() {
     queryFn: api.delivery.list,
   });
 
-  console.debug("[DeliveryPage] query", { count: listQuery.data?.length });
+  devDebug("[DeliveryPage] query", { count: listQuery.data?.length });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => api.delivery.remove(id),
     onSuccess: () => {
-      console.debug("[DeliveryPage] delete done");
+      devDebug("[DeliveryPage] delete done");
       toast.success(t("shop.delivery.deleted"));
       void queryClient.invalidateQueries({ queryKey: ["shop", "delivery"] });
     },
@@ -237,7 +238,7 @@ function DeliveryDialog({
 
   const mutation = useMutation({
     mutationFn: (values: FormValues) => {
-      console.debug("[DeliveryPage] submit", { id: method?.id, values });
+      devDebug("[DeliveryPage] submit", { id: method?.id, values });
       return method
         ? api.delivery.update(method.id, values)
         : api.delivery.create(values);

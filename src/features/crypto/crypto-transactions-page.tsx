@@ -23,6 +23,7 @@ import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crypto/transactions — the crypto ledger: KPI row over a filterable, paginated
@@ -62,7 +63,7 @@ export function CryptoTransactionsPage() {
     dir: params.sort?.dir ?? ("desc" as const),
   };
 
-  console.debug("[CryptoTransactions] query", filters);
+  devDebug("[CryptoTransactions] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["crypto", "transactions", filters],

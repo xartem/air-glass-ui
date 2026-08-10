@@ -40,6 +40,7 @@ import { useSiteDateTime } from "@/lib/datetime";
 import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /projects/:id — single-project workspace: header, KPI tiles and Overview /
@@ -116,7 +117,7 @@ export function ProjectOverviewPage() {
     queryFn: () => api.projects.files(projectId),
   });
 
-  console.debug("[ProjectOverviewPage] load", { id: projectId });
+  devDebug("[ProjectOverviewPage] load", { id: projectId });
 
   const taskColumns = useMemo<ColumnDef<ProjectTaskRow>[]>(
     () => [

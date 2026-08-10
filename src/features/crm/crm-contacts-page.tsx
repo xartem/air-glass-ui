@@ -45,6 +45,7 @@ import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crm/contacts — relationship directory (distinct from the CMS /contacts inbox).
@@ -86,7 +87,7 @@ export function CrmContactsPage() {
     dir: params.sort?.dir ?? ("asc" as const),
   };
 
-  console.debug("[CrmContactsPage] query", filters);
+  devDebug("[CrmContactsPage] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["crm", "contacts", filters],
@@ -108,7 +109,7 @@ export function CrmContactsPage() {
   const createMutation = useMutation({
     mutationFn: (values: FormValues) => {
       const payload: CrmContactPayload = { ...values, tags: [] };
-      console.debug("[CrmContactsPage] create", payload);
+      devDebug("[CrmContactsPage] create", payload);
       return api.crm.contacts.create(payload);
     },
     onSuccess: () => {

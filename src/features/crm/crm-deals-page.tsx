@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /crm/deals — sales pipeline as a drag-and-drop board (shared Board) with a
@@ -66,7 +67,7 @@ export function CrmDealsPage() {
 
   const moveMutation = useMutation({
     mutationFn: ({ id, stage }: { id: number; stage: DealStage }) => {
-      console.debug("[CrmDealsPage] move", { id, stage });
+      devDebug("[CrmDealsPage] move", { id, stage });
       return api.crm.deals.move(id, stage);
     },
     onError: () => {

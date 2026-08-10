@@ -3,6 +3,7 @@ import { toast } from "sonner";
 
 import { ApiError } from "@/api";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * QueryClient defaults (cms-admin-ui rule, decision 2026-07-04):
@@ -29,8 +30,7 @@ export function createQueryClient(): QueryClient {
     mutationCache: new MutationCache({
       onError: (error, _variables, _context, mutation) => {
         if (mutation.options.onError) return;
-        if (import.meta.env.DEV)
-          console.debug("[FIX] unhandled mutation error", error);
+        devDebug("[query] unhandled mutation error", error);
         toast.error(
           error instanceof ApiError
             ? error.message

@@ -40,6 +40,7 @@ import {
 import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/discounts (build-demo-screen-catalog): a CRUD table of discount codes.
@@ -86,12 +87,12 @@ export function DiscountsPage() {
     queryFn: api.discounts.list,
   });
 
-  console.debug("[DiscountsPage] query", { count: listQuery.data?.length });
+  devDebug("[DiscountsPage] query", { count: listQuery.data?.length });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => api.discounts.remove(id),
     onSuccess: () => {
-      console.debug("[DiscountsPage] delete done");
+      devDebug("[DiscountsPage] delete done");
       toast.success(t("shop.discounts.deleted"));
       void queryClient.invalidateQueries({ queryKey: ["shop", "discounts"] });
     },
@@ -277,7 +278,7 @@ function DiscountDialog({
 
   const mutation = useMutation({
     mutationFn: (values: FormValues) => {
-      console.debug("[DiscountsPage] submit", { id: discount?.id, values });
+      devDebug("[DiscountsPage] submit", { id: discount?.id, values });
       return discount
         ? api.discounts.update(discount.id, values)
         : api.discounts.create(values);

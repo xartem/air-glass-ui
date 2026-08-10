@@ -28,6 +28,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /api-keys — API credential management: masked key table, scoped create
@@ -64,7 +65,7 @@ export function ApiKeysPage() {
 
   const createMutation = useMutation({
     mutationFn: (values: FormValues) => {
-      console.debug("[ApiKeysPage] create", values);
+      devDebug("[ApiKeysPage] create", values);
       return api.apikeys.create(values);
     },
     onSuccess: (created) => {
@@ -79,7 +80,7 @@ export function ApiKeysPage() {
 
   const revokeMutation = useMutation({
     mutationFn: (id: number) => {
-      console.debug("[ApiKeysPage] revoke", id);
+      devDebug("[ApiKeysPage] revoke", id);
       return api.apikeys.revoke(id);
     },
     onSuccess: () => {

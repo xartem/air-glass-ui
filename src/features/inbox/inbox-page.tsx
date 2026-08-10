@@ -30,6 +30,7 @@ import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { NavIcon } from "@/app/nav";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /inbox (build-demo-screen-catalog): a three-pane messaging screen — a folder
@@ -74,7 +75,7 @@ export function InboxPage() {
   });
 
   const openThread = (id: number) => {
-    console.debug("[InboxPage] openThread", { id });
+    devDebug("[InboxPage] openThread", { id });
     setSelectedId(id);
     markReadMutation.mutate(id);
   };
@@ -297,7 +298,7 @@ function ThreadPane({ id, onBack }: { id: number; onBack: () => void }) {
   const sendMutation = useMutation({
     mutationFn: (body: string) => api.inbox.send(id, body),
     onSuccess: (thread) => {
-      console.debug("[InboxPage] send done", { id });
+      devDebug("[InboxPage] send done", { id });
       queryClient.setQueryData(["inbox", "thread", id], thread);
       void queryClient.invalidateQueries({ queryKey: ["inbox", "list"] });
       setDraft("");
@@ -318,7 +319,7 @@ function ThreadPane({ id, onBack }: { id: number; onBack: () => void }) {
   const submit = () => {
     const body = draft.trim();
     if (!body) return;
-    console.debug("[InboxPage] send submit", { id });
+    devDebug("[InboxPage] send submit", { id });
     sendMutation.mutate(body);
   };
 

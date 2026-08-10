@@ -21,6 +21,7 @@ import { t } from "@/lib/i18n";
 import { useListParams } from "@/lib/list-params";
 
 import { GradientAvatar } from "./jobs-shared";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /jobs/companies — employers directory as searchable cards with a detail drawer
@@ -32,7 +33,7 @@ export function JobsCompaniesPage() {
   const navigate = useNavigate();
 
   const filters = { page: params.page, q: params.query || undefined };
-  console.debug("[JobsCompanies] query", filters);
+  devDebug("[JobsCompanies] query", filters);
 
   const listQuery = useQuery({
     queryKey: ["jobs", "companies", filters],

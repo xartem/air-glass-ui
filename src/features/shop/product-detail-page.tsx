@@ -25,6 +25,7 @@ import { formatMoney } from "@/lib/money";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /shop/products/:id — customer-style product detail (read view), distinct from
@@ -57,7 +58,7 @@ export function ProductDetailPage() {
     queryFn: () => api.products.reviews(productId),
   });
 
-  console.debug("[ProductDetailPage] load", { id: productId });
+  devDebug("[ProductDetailPage] load", { id: productId });
 
   if (productQuery.isError) {
     return (
@@ -199,7 +200,7 @@ export function ProductDetailPage() {
                   className="w-full sm:w-auto"
                   disabled={product.stock === 0}
                   onClick={() => {
-                    console.debug("[ProductDetailPage] addToCart", {
+                    devDebug("[ProductDetailPage] addToCart", {
                       id: productId,
                       variant,
                       qty,

@@ -12,6 +12,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useLocale } from "@/lib/use-locale";
 import { PermissionsProvider, useCan } from "@/lib/permissions";
 import { spaUrl } from "@/lib/utils";
+import { devDebug } from "@/lib/debug";
 
 /*
  * Session context (E2 §5): GET /api/me on SPA start feeds user, permissions,
@@ -55,9 +56,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout: async () => {
         await api.auth.logout();
         queryClient.clear();
-        // [FIX] bare '/login' escaped the SPA basename (/{admin_prefix} in prod).
-        if (import.meta.env.DEV)
-          console.debug("[FIX] logout redirect", spaUrl("/login"));
+        // A bare '/login' would escape the SPA basename, so route through spaUrl().
+        devDebug("[auth] logout redirect", spaUrl("/login"));
         window.location.assign(spaUrl("/login"));
       },
     };

@@ -37,6 +37,7 @@ import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { NavIcon } from "@/app/nav";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /email — a three-pane mailbox on the shared ThreePaneLayout: folder rail,
@@ -85,7 +86,7 @@ export function MailboxPage() {
   });
   const starMutation = useMutation({
     mutationFn: (id: number) => {
-      console.debug("[MailboxPage] star", { id });
+      devDebug("[MailboxPage] star", { id });
       return api.email.star(id);
     },
     onSuccess: () =>
@@ -94,7 +95,7 @@ export function MailboxPage() {
   });
   const moveMutation = useMutation({
     mutationFn: ({ id, to }: { id: number; to: MailFolder }) => {
-      console.debug("[MailboxPage] move", { id, to });
+      devDebug("[MailboxPage] move", { id, to });
       return api.email.move(id, to);
     },
     onSuccess: () => {
@@ -106,7 +107,7 @@ export function MailboxPage() {
   });
   const sendMutation = useMutation({
     mutationFn: (payload: { to: string; subject: string; body: string }) => {
-      console.debug("[MailboxPage] send", payload);
+      devDebug("[MailboxPage] send", payload);
       return api.email.send(payload);
     },
     onSuccess: () => {

@@ -48,6 +48,7 @@ import { useSiteDateTime } from "@/lib/datetime";
 import { createDndA11y } from "@/lib/dnd-a11y";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { devDebug } from "@/lib/debug";
 
 /*
  * /todo — personal task list grouped into Today / Upcoming / Completed with
@@ -126,7 +127,7 @@ export function TodoPage() {
 
   const addMutation = useMutation({
     mutationFn: (input: { title: string; priority: TodoPriority }) => {
-      console.debug("[TodoPage] add", input);
+      devDebug("[TodoPage] add", input);
       return api.todo.add(input.title, input.priority);
     },
     onMutate: async (input) => {
@@ -150,7 +151,7 @@ export function TodoPage() {
 
   const toggleMutation = useMutation({
     mutationFn: (id: number) => {
-      console.debug("[TodoPage] toggle", id);
+      devDebug("[TodoPage] toggle", id);
       return api.todo.toggle(id);
     },
     onMutate: async (id) => {
@@ -168,7 +169,7 @@ export function TodoPage() {
 
   const removeMutation = useMutation({
     mutationFn: (id: number) => {
-      console.debug("[TodoPage] remove", id);
+      devDebug("[TodoPage] remove", id);
       return api.todo.remove(id);
     },
     onMutate: async (id) => {
@@ -182,7 +183,7 @@ export function TodoPage() {
 
   const reorderMutation = useMutation({
     mutationFn: (ids: number[]) => {
-      console.debug("[TodoPage] reorder", ids);
+      devDebug("[TodoPage] reorder", ids);
       return api.todo.reorder(ids);
     },
     onMutate: async (ids) => {
