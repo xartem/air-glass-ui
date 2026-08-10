@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 
 import type { InvoiceDetail, InvoiceStatus } from "@/api";
 import { StatusBadge, type StatusKind } from "@/components/status-badge";
@@ -12,7 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatMoney } from "@/lib/money";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useLocale } from "@/lib/use-locale";
 
 /*
@@ -20,18 +20,6 @@ import { useLocale } from "@/lib/use-locale";
  * the create-invoice live preview. Token-only; the `.invoice-sheet` print rule
  * (src/index.css) isolates it for printing.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 const STATUS_KIND: Record<InvoiceStatus, StatusKind> = {
   paid: "success",

@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { CircleDollarSign, Undo2 } from "lucide-react";
 import { toast } from "sonner";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -28,7 +27,8 @@ import {
 } from "@/components/ui/select";
 import { DateRangePicker } from "@/components/date-range-picker";
 import { formatMoney } from "@/lib/money";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
 import { devDebug } from "@/lib/debug";
@@ -38,18 +38,6 @@ import { devDebug } from "@/lib/debug";
  * (captured / refunded / pending) sits above a filterable table; captured rows
  * expose a gated refund action (ConfirmDialog + mock mutation + toast).
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 const STATUS_KIND: Record<PaymentTxnStatus, StatusKind> = {
   captured: "success",

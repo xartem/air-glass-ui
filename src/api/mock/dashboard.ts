@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 
-import { getLocale, type AdminLocale } from "@/lib/i18n";
+import { getLocale } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { actionLabel, entityLabel, entityTitle } from "@/lib/activity-labels";
 import { ApiError } from "../client";
 import type {
@@ -29,18 +29,6 @@ import { rolesStore } from "./roles";
 
 const LAYOUTS_KEY = "mock.dashboardLayouts";
 const SIZES: WidgetSize[] = ["sm", "md", "lg", "xl"];
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 function ago(date: Date | string): string {
   return formatDistanceToNow(new Date(date), {

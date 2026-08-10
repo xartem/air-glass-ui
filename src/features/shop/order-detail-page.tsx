@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import {
   ArrowLeft,
   CreditCard,
@@ -36,7 +35,8 @@ import {
 } from "@/components/ui/table";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { formatMoney } from "@/lib/money";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useLocale } from "@/lib/use-locale";
 import { devDebug } from "@/lib/debug";
 
@@ -46,18 +46,6 @@ import { devDebug } from "@/lib/debug";
  * + toast; cancel/refund pass through ConfirmDialog). Body: line items, party
  * panels (customer/shipping/billing), a totals summary and an order timeline.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 const STATUS_KIND: Record<OrderStatus, StatusKind> = {
   pending: "pending",

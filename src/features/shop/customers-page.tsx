@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { Eye, LogIn, UserCircle } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -21,7 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatMoney } from "@/lib/money";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
 import { devDebug } from "@/lib/debug";
@@ -31,18 +31,6 @@ import { devDebug } from "@/lib/debug";
  * orders, lifetime value, status and join date; search + status filter in the URL.
  * Row "⋯" opens the profile or triggers a gated demo "impersonate" no-op.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 const STATUS_KIND: Record<CustomerStatus, StatusKind> = {
   active: "success",

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { CalendarIcon, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
@@ -18,18 +18,6 @@ import { cn } from "@/lib/utils";
  * Value is an ISO date string (yyyy-mm-dd); the display format AND the calendar
  * (weekday/month names) follow the admin UI locale.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 function toIso(date: Date): string {
   const y = date.getFullYear();

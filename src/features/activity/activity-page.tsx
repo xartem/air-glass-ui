@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { formatDistanceToNow } from "date-fns";
 import { Activity, ArrowRight, Bot, Eye, History, UserCog } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
@@ -40,7 +39,8 @@ import {
 } from "@/components/ui/tooltip";
 import { actionLabel, entityLabel, entityTitle } from "@/lib/activity-labels";
 import { useSiteDateTime } from "@/lib/datetime";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useLocale } from "@/lib/use-locale";
 
 /*
@@ -51,18 +51,6 @@ import { useLocale } from "@/lib/use-locale";
  * full metadata + the field/old/new diff; Restore is confirmed and only offered
  * on entries that carry `changes`.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 const ENTITY_TYPES = [
   "page",

@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { Eye, ReceiptText } from "lucide-react";
 import { useNavigate } from "react-router";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -20,7 +19,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatMoney } from "@/lib/money";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useListParams } from "@/lib/list-params";
 import { useLocale } from "@/lib/use-locale";
 import { devDebug } from "@/lib/debug";
@@ -30,18 +30,6 @@ import { devDebug } from "@/lib/debug";
  * issue/due dates, amount and status; search + status filter in the URL. Row "⋯"
  * opens the print-ready invoice detail.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 const STATUS_KIND: Record<InvoiceStatus, StatusKind> = {
   paid: "success",

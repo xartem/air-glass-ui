@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { formatDistanceToNow } from "date-fns";
 import { KeyRound, LogIn, Pencil, UserCheck, Users, UserX } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -27,7 +26,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { roleDisplayName } from "@/lib/role-label";
 import { useLocale } from "@/lib/use-locale";
 
@@ -37,18 +37,6 @@ import { useLocale } from "@/lib/use-locale";
  * (de)activate — impersonation and the invariant guards (self, last admin) are
  * server-enforced (D:users §4, C3 §10); ineligible actions are hidden per row.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 export function UsersListPage() {
   const locale = useLocale();

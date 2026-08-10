@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import {
   ArrowLeft,
   Mail,
@@ -27,7 +26,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatMoney } from "@/lib/money";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useLocale } from "@/lib/use-locale";
 import { devDebug } from "@/lib/debug";
 
@@ -36,18 +36,6 @@ import { devDebug } from "@/lib/debug";
  * panel (contact + status), stat tiles (orders / lifetime spend / AOV), a recent
  * orders table and a notes timeline. Read-only demo — all data from the mock.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 const STATUS_KIND = {
   active: "success",

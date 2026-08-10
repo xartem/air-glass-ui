@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ar, de, enUS, es, fr, it, pl, ru, uk } from "date-fns/locale";
 import { CalendarIcon, X } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 
@@ -10,7 +9,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { t, type AdminLocale } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
+import { DATE_LOCALES } from "@/lib/date-locale";
 import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
@@ -19,18 +19,6 @@ import { cn } from "@/lib/utils";
  * (first consumer: /system/activity per UI:shell-auth §2). Value is a pair of
  * `YYYY-MM-DD` strings so it round-trips through URL search params untouched.
  */
-
-const DATE_LOCALES: Record<AdminLocale, typeof ru> = {
-  ru,
-  en: enUS,
-  uk,
-  de,
-  fr,
-  es,
-  it,
-  pl,
-  ar,
-};
 
 export interface DateRangeValue {
   from?: string;
