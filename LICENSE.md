@@ -77,12 +77,9 @@ property of their respective authors and are licensed separately (predominantly 
 Apache-2.0, BSD, and the SIL Open Font License 1.1). Those licenses are **not** superseded
 by this license and their attribution/copyright notices must be preserved.
 
-> **Compliance note:** the current dependency audit is **PASS WITH FLAGS**. Two shipped
-> map packages (`react-leaflet`, `@react-leaflet/core`) carry the non-permissive
-> ethical-source **Hippocratic License 2.1**, which permits bundled resale with attribution
-> but attaches ethical-use conditions. Resolve or accept this flag before Envato submission
-> — see the "Flagged runtime dependencies" section of
-> [THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md).
+> **Compliance note:** the current dependency audit verdict is **PASS**. Every shipped
+> runtime dependency is permissive (MIT / ISC / Apache-2.0 / BSD), with no strong-copyleft,
+> non-commercial, or ethical-source terms anywhere in the bundle.
 
 See **[THIRD-PARTY-LICENSES.md](./THIRD-PARTY-LICENSES.md)** for the complete inventory,
 per-package copyright notices, full license texts, and the current audit verdict.

@@ -13,19 +13,16 @@ This document is separate from, and does not override, the template's own licens
 The full dependency tree (711 installed packages) and every shipped font and asset were
 audited for resale eligibility under Envato's licensing rules.
 
-- **Verdict: PASS WITH FLAGS.** No shipped component uses strong copyleft or
-  non-commercial terms, but **two shipped packages carry the non-permissive,
-  ethical-source Hippocratic License 2.1** (`react-leaflet` and its runtime helper
-  `@react-leaflet/core`). Hippocratic 2.1 *does permit* bundling, redistribution and
-  sale together with software as long as its notice/attribution travels with the copies,
-  but it is **not** an OSI-approved permissive license and it imposes ethical-use
-  conditions on the end user. This is the **single open item** to resolve before Envato
-  submission — see [Flagged runtime dependencies](#flagged-runtime-dependencies-action-required).
+- **Verdict: PASS.** Every shipped runtime dependency is permissive — **MIT**, **ISC**,
+  **Apache-2.0**, or **BSD**. No shipped component uses strong copyleft, non-commercial,
+  or ethical-source terms.
 - **Zero** GPL / LGPL / AGPL / other strong copyleft, **zero** non-commercial
   (`CC-BY-NC`) terms, and **zero** "no-redistribution / evaluation-only" clauses were
   found.
-- Every runtime dependency **except the two `react-leaflet` packages above** is
-  permissive: **MIT**, **ISC**, **Apache-2.0**, or **BSD**.
+- The previously flagged Hippocratic-2.1 packages (`react-leaflet`,
+  `@react-leaflet/core`) were **removed on 2026-08-10**. The map components now drive
+  `leaflet` (BSD-2-Clause) through its own imperative API, so the Maps feature ships with
+  no non-OSI licence attached.
 - The bundled font (Geist) is **SIL OFL 1.1**, which permits bundling and sale *with*
   software (it only forbids selling the font by itself).
 - A handful of build-time-only tooling licenses (MPL-2.0, CC-BY-4.0, CC0-1.0,
@@ -78,7 +75,6 @@ the buyer's production build. All are permissive.
 | `react-resizable-panels` | 4.12.0 | MIT | Copyright (c) 2018 Brian Vaughn |
 | `react-router` | 8.1.0 | MIT | Copyright (c) React Training LLC 2015-2019; Remix Software |
 | `recharts` | 3.8.0 | MIT | Copyright (c) 2015-present recharts group |
-| `shadcn` | 4.12.0 | MIT | Copyright (c) 2023 shadcn |
 | `sonner` | 2.0.7 | MIT | Copyright (c) 2023 Emil Kowalski |
 | `tailwind-merge` | 3.6.0 | MIT | Copyright (c) 2021 Dany Castillo |
 | `tailwindcss` | 4.3.2 | MIT | Copyright (c) Tailwind Labs, Inc. |
@@ -89,58 +85,10 @@ the buyer's production build. All are permissive.
 > `@fontsource-variable/geist` is also a runtime dependency; because it ships a font it is
 > documented in [Fonts](#fonts) below.
 >
-> `@types/leaflet` 1.9.21 (**MIT**, Copyright (c) Microsoft Corporation / DefinitelyTyped)
-> is declared under `dependencies` but contains only TypeScript type declarations; it is
-> erased at build time and never appears in the shipped bundle. It is permissive and
-> raises no resale concern.
-
-### Flagged runtime dependencies (action required)
-
-The Leaflet map components (`src/components/leaflet-map.tsx` and the Maps pages under
-`src/features/ui-kit/maps/`) pull in two packages licensed under the **Hippocratic License
-2.1**, an *ethical-source* license. Both are shipped in the buyer's production build.
-
-| Package | Version | License | Copyright / Attribution |
-| --- | --- | --- | --- |
-| `react-leaflet` | 5.0.0 | **Hippocratic-2.1** | Copyright 2020 Paul Le Cam and contributors |
-| `@react-leaflet/core` | 3.0.0 | **Hippocratic-2.1** | Copyright 2020 Paul Le Cam and contributors |
-
-**Why this is flagged:** Hippocratic 2.1 is **not** an OSI-approved permissive license. It
-grants broad, free-of-charge permission to use, modify, redistribute, **and sell** the
-software bundled with other software (so a ThemeForest sale is not prohibited), **but** it
-attaches conditions that MIT/BSD do not:
-
-- The license text and copyright notice **must travel with every copy** the buyer receives
-  (satisfied by this file — the verbatim text is in
-  [Hippocratic License 2.1](#hippocratic-license-21)).
-- It imposes **ethical-use restrictions** on the end user (no use in systems that violate
-  applicable Human Rights Laws) and an arbitration/indemnity regime.
-
-Because it is a non-standard license with usage restrictions, an Envato reviewer may query
-it, and some buyers object to ethical-source terms on principle.
-
-> **Note:** the in-repo comment in `src/components/leaflet-map.tsx` and
-> `src/features/ui-kit/changelog.txt` describe the map stack as "react-leaflet
-> (BSD-2-Clause)". That is inaccurate: **only `leaflet` is BSD-2-Clause**; `react-leaflet`
-> and `@react-leaflet/core` are Hippocratic-2.1. Correct those notes when the flag is
-> resolved.
-
-**Remediation options (pick one before submission):**
-
-1. **Recommended — drop the Hippocratic wrapper.** `leaflet` itself (BSD-2-Clause) is fully
-   permissive and already imported directly in `leaflet-map.tsx`. Reimplement the thin
-   React bindings against vanilla Leaflet (or swap to a permissively licensed wrapper) and
-   remove `react-leaflet` / `@react-leaflet/core`. This eliminates the flag while keeping
-   the Maps feature.
-2. **Drop the Maps feature.** Remove `leaflet-map.tsx`, the `src/features/ui-kit/maps/`
-   pages, and the three leaflet packages if maps are not essential to the offering.
-3. **Accept the terms as a documented business decision.** Hippocratic 2.1 permits bundled
-   resale with attribution; keep the packages, retain the verbatim license below, and
-   accept the ethical-use conditions on behalf of buyers. Lowest effort, highest reviewer
-   risk.
-
-Until one of the above is applied, the overall audit verdict is **PASS WITH FLAGS**, not
-PASS.
+> `@types/leaflet` (**MIT**, Copyright (c) Microsoft Corporation / DefinitelyTyped) was
+> moved to `devDependencies` on 2026-08-10 — it carries only TypeScript declarations, which
+> are erased at build time and never reach the shipped bundle. See
+> [Dev & tooling dependencies](#dev--tooling-dependencies-build-time-only--not-redistributed).
 
 ### Notable bundled transitive dependencies
 
@@ -163,6 +111,7 @@ listed here for transparency; they do not gate resale.
 | --- | --- | --- | --- |
 | `@testing-library/react` | 16.3.2 | MIT | Copyright (c) 2017-present Kent C. Dodds |
 | `@testing-library/user-event` | 14.6.1 | MIT | Copyright (c) 2020 Giorgio Polvara |
+| `@types/leaflet` | 1.9.22 | MIT | Copyright (c) Microsoft Corporation (DefinitelyTyped) |
 | `@types/node` | 24.13.2 | MIT | Copyright (c) Microsoft Corporation (DefinitelyTyped) |
 | `@types/react` | 19.2.17 | MIT | Copyright (c) Microsoft Corporation (DefinitelyTyped) |
 | `@types/react-dom` | 19.2.3 | MIT | Copyright (c) Microsoft Corporation (DefinitelyTyped) |
@@ -170,6 +119,7 @@ listed here for transparency; they do not gate resale.
 | `jsdom` | 29.1.1 | MIT | Copyright (c) 2010 Elijah Insua and contributors |
 | `oxlint` | 1.72.0 | MIT | Copyright (c) 2024-present VoidZero Inc. & Contributors |
 | `prettier` | 3.9.4 | MIT | Copyright © James Long and contributors |
+| `shadcn` | 4.16.2 | MIT | Copyright (c) 2023 shadcn — component-registry CLI, never imported by `src/` |
 | `typescript` | 6.0.3 | Apache-2.0 | Copyright (c) Microsoft Corporation |
 | `vite` | 8.1.3 | MIT | Copyright (c) 2019-present VoidZero Inc. and Vite contributors |
 | `vitest` | 4.1.9 | MIT | Copyright (c) 2021-present VoidZero Inc. and Vitest contributors |
@@ -368,59 +318,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
-
-## Hippocratic License 2.1
-
-Applies to the **flagged** shipped packages `react-leaflet` and `@react-leaflet/core`
-(see [Flagged runtime dependencies](#flagged-runtime-dependencies-action-required)). This
-license *requires* that its full text and the copyright notice accompany every copy, so it
-is reproduced verbatim below.
-
-```
-react-leaflet Copyright 2020 Paul Le Cam and contributors (“Licensor”)
-
-Hippocratic License Version Number: 2.1.
-
-Purpose. The purpose of this License is for the Licensor named above to permit the Licensee (as defined below) broad permission, if consistent with Human Rights Laws and Human Rights Principles (as each is defined below), to use and work with the Software (as defined below) within the full scope of Licensor’s copyright and patent rights, if any, in the Software, while ensuring attribution and protecting the Licensor from liability.
-
-Permission and Conditions. The Licensor grants permission by this license (“License”), free of charge, to the extent of Licensor’s rights under applicable copyright and patent law, to any person or entity (the “Licensee”) obtaining a copy of this software and associated documentation files (the “Software”), to do everything with the Software that would otherwise infringe (i) the Licensor’s copyright in the Software or (ii) any patent claims to the Software that the Licensor can license or becomes able to license, subject to all of the following terms and conditions:
-
-- Acceptance. This License is automatically offered to every person and entity subject to its terms and conditions. Licensee accepts this License and agrees to its terms and conditions by taking any action with the Software that, absent this License, would infringe any intellectual property right held by Licensor.
-
-- Notice. Licensee must ensure that everyone who gets a copy of any part of this Software from Licensee, with or without changes, also receives the License and the above copyright notice (and if included by the Licensor, patent, trademark and attribution notice). Licensee must cause any modified versions of the Software to carry prominent notices stating that Licensee changed the Software. For clarity, although Licensee is free to create modifications of the Software and distribute only the modified portion created by Licensee with additional or different terms, the portion of the Software not modified must be distributed pursuant to this License. If anyone notifies Licensee in writing that Licensee has not complied with this Notice section, Licensee can keep this License by taking all practical steps to comply within 30 days after the notice. If Licensee does not do so, Licensee’s License (and all rights licensed hereunder) shall end immediately.
-
-- Compliance with Human Rights Principles and Human Rights Laws.
-
-  1. Human Rights Principles.
-
-     (a) Licensee is advised to consult the articles of the United Nations Universal Declaration of Human Rights and the United Nations Global Compact that define recognized principles of international human rights (the “Human Rights Principles”). Licensee shall use the Software in a manner consistent with Human Rights Principles.
-
-     (b) Unless the Licensor and Licensee agree otherwise, any dispute, controversy, or claim arising out of or relating to (i) Section 1(a) regarding Human Rights Principles, including the breach of Section 1(a), termination of this License for breach of the Human Rights Principles, or invalidity of Section 1(a) or (ii) a determination of whether any Law is consistent or in conflict with Human Rights Principles pursuant to Section 2, below, shall be settled by arbitration in accordance with the Hague Rules on Business and Human Rights Arbitration (the “Rules”); provided, however, that Licensee may elect not to participate in such arbitration, in which event this License (and all rights licensed hereunder) shall end immediately. The number of arbitrators shall be one unless the Rules require otherwise.
-
-     Unless both the Licensor and Licensee agree to the contrary: (1) All documents and information concerning the arbitration shall be public and may be disclosed by any party; (2) The repository referred to under Article 43 of the Rules shall make available to the public in a timely manner all documents concerning the arbitration which are communicated to it, including all submissions of the parties, all evidence admitted into the record of the proceedings, all transcripts or other recordings of hearings and all orders, decisions and awards of the arbitral tribunal, subject only to the arbitral tribunal's powers to take such measures as may be necessary to safeguard the integrity of the arbitral process pursuant to Articles 18, 33, 41 and 42 of the Rules; and (3) Article 26(6) of the Rules shall not apply.
-
-  2. Human Rights Laws. The Software shall not be used by any person or entity for any systems, activities, or other uses that violate any Human Rights Laws. “Human Rights Laws” means any applicable laws, regulations, or rules (collectively, “Laws”) that protect human, civil, labor, privacy, political, environmental, security, economic, due process, or similar rights; provided, however, that such Laws are consistent and not in conflict with Human Rights Principles (a dispute over the consistency or a conflict between Laws and Human Rights Principles shall be determined by arbitration as stated above). Where the Human Rights Laws of more than one jurisdiction are applicable or in conflict with respect to the use of the Software, the Human Rights Laws that are most protective of the individuals or groups harmed shall apply.
-
-  3. Indemnity. Licensee shall hold harmless and indemnify Licensor (and any other contributor) against all losses, damages, liabilities, deficiencies, claims, actions, judgments, settlements, interest, awards, penalties, fines, costs, or expenses of whatever kind, including Licensor’s reasonable attorneys’ fees, arising out of or relating to Licensee’s use of the Software in violation of Human Rights Laws or Human Rights Principles.
-
-- Failure to Comply. Any failure of Licensee to act according to the terms and conditions of this License is both a breach of the License and an infringement of the intellectual property rights of the Licensor (subject to exceptions under Laws, e.g., fair use). In the event of a breach or infringement, the terms and conditions of this License may be enforced by Licensor under the Laws of any jurisdiction to which Licensee is subject. Licensee also agrees that the Licensor may enforce the terms and conditions of this License against Licensee through specific performance (or similar remedy under Laws) to the extent permitted by Laws. For clarity, except in the event of a breach of this License, infringement, or as otherwise stated in this License, Licensor may not terminate this License with Licensee.
-
-- Enforceability and Interpretation. If any term or provision of this License is determined to be invalid, illegal, or unenforceable by a court of competent jurisdiction, then such invalidity, illegality, or unenforceability shall not affect any other term or provision of this License or invalidate or render unenforceable such term or provision in any other jurisdiction; provided, however, subject to a court modification pursuant to the immediately following sentence, if any term or provision of this License pertaining to Human Rights Laws or Human Rights Principles is deemed invalid, illegal, or unenforceable against Licensee by a court of competent jurisdiction, all rights in the Software granted to Licensee shall be deemed null and void as between Licensor and Licensee. Upon a determination that any term or provision is invalid, illegal, or unenforceable, to the extent permitted by Laws, the court may modify this License to affect the original purpose that the Software be used in compliance with Human Rights Principles and Human Rights Laws as closely as possible. The language in this License shall be interpreted as to its fair meaning and not strictly for or against any party.
-
-- Disclaimer. TO THE FULL EXTENT ALLOWED BY LAW, THIS SOFTWARE COMES “AS IS,” WITHOUT ANY WARRANTY, EXPRESS OR IMPLIED, AND LICENSOR AND ANY OTHER CONTRIBUTOR SHALL NOT BE LIABLE TO ANYONE FOR ANY DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THIS LICENSE, UNDER ANY KIND OF LEGAL CLAIM.
-
-This Hippocratic License is an Ethical Source license (https://ethicalsource.dev) and is offered for use by licensors and licensees at their own risk, on an “AS IS” basis, and with no warranties express or implied, to the maximum extent permitted by Laws.
-
-Some portions of code from previous versions of react-leaflet are released under the MIT License (MIT):
-
-Copyright (c) 2015-2020 Paul Le Cam and contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
 ## Apache License 2.0
@@ -712,10 +609,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
 ---
 
-*Audit generated as part of the "Audit licenses and compliance" task, last re-run
-2026-07-10 against the current `package.json` + `package-lock.json` (711 installed
-packages). This pass added the Leaflet map stack — `leaflet` (BSD-2-Clause, permissive)
-plus `react-leaflet` and `@react-leaflet/core` (both flagged Hippocratic-2.1) — and moved
-the verdict to PASS WITH FLAGS. Dependency versions reflect the state of `package.json`
-and `node_modules` at audit time. Re-run the audit if dependencies change materially
-before submission.*
+*Audit generated as part of the "Audit licenses and compliance" task. Last re-run
+2026-08-10 against the current `package.json` + `package-lock.json`. This pass removed
+`react-leaflet` and `@react-leaflet/core` (both Hippocratic-2.1) by rewriting
+`src/components/leaflet-map.tsx` against `leaflet`'s own imperative API, clearing the
+only non-permissive entry in the shipped tree and moving the verdict from PASS WITH FLAGS
+to **PASS**. Dependency versions reflect the state of `package.json` and `node_modules` at
+audit time. Re-run the audit if dependencies change materially before submission.*
