@@ -93,31 +93,33 @@ function LandingHeader() {
   );
 }
 
-const FOOTER_COLUMNS: { heading: string; links: { label: string; to: string }[] }[] =
-  [
-    {
-      heading: "landing.footer.product",
-      links: [
-        { label: "landing.nav.one", to: "/landing" },
-        { label: "landing.nav.nft", to: "/landing/nft" },
-        { label: "landing.nav.job", to: "/landing/job" },
-      ],
-    },
-    {
-      heading: "landing.footer.company",
-      links: [
-        { label: "landing.cta.signin", to: "/login" },
-        { label: "landing.cta.getStarted", to: "/signup" },
-      ],
-    },
-    {
-      heading: "landing.footer.legal",
-      links: [
-        { label: "landing.footer.privacy", to: "/privacy" },
-        { label: "landing.footer.terms", to: "/terms" },
-      ],
-    },
-  ];
+const FOOTER_COLUMNS: {
+  heading: string;
+  links: { label: string; to: string }[];
+}[] = [
+  {
+    heading: "landing.footer.product",
+    links: [
+      { label: "landing.nav.one", to: "/landing" },
+      { label: "landing.nav.nft", to: "/landing/nft" },
+      { label: "landing.nav.job", to: "/landing/job" },
+    ],
+  },
+  {
+    heading: "landing.footer.company",
+    links: [
+      { label: "landing.cta.signin", to: "/login" },
+      { label: "landing.cta.getStarted", to: "/signup" },
+    ],
+  },
+  {
+    heading: "landing.footer.legal",
+    links: [
+      { label: "landing.footer.privacy", to: "/privacy" },
+      { label: "landing.footer.terms", to: "/terms" },
+    ],
+  },
+];
 
 function LandingFooter() {
   return (

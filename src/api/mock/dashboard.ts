@@ -397,14 +397,24 @@ const WIDGETS: MockWidget[] = [
     data: (_ctx, period) => {
       // Ranked leaderboard: each row carries a magnitude bar (share = views ÷
       // leader) so the list reads as a structured chart, not a flat name column.
-      const pages: Array<{ title: string; path: string; views: number; delta?: number }> = [
+      const pages: Array<{
+        title: string;
+        path: string;
+        views: number;
+        delta?: number;
+      }> = [
         { title: "Home", path: "/", views: 2431, delta: 8 },
         { title: "Products", path: "/products", views: 1204, delta: 14 },
         { title: "Pricing", path: "/pricing", views: 862, delta: -3 },
         { title: "About", path: "/about", views: 514 },
         { title: "Contact", path: "/contact", views: 447, delta: 2 },
         { title: "Blog", path: "/blog", views: 391 },
-        { title: "Getting Started", path: "/blog/getting-started", views: 356, delta: 22 },
+        {
+          title: "Getting Started",
+          path: "/blog/getting-started",
+          views: 356,
+          delta: 22,
+        },
         { title: "Documentation", path: "/docs", views: 298 },
         { title: "Shipping", path: "/shipping", views: 245 },
         { title: "Changelog", path: "/changelog", views: 203 },

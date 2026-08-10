@@ -97,10 +97,7 @@ export function OneLandingPage() {
       {/* Hero */}
       <section className="grid items-center gap-10 lg:grid-cols-2">
         <div className="space-y-6 text-center lg:text-start">
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary"
-          >
+          <Badge variant="secondary" className="bg-primary/10 text-primary">
             {t("landing.one.hero.badge")}
           </Badge>
           <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">

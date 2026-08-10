@@ -16,10 +16,7 @@ import {
 import { type JobDepartment, type JobGradient, type JobType } from "@/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  GradientAvatar,
-  formatSalaryRange,
-} from "@/features/jobs/jobs-shared";
+import { GradientAvatar, formatSalaryRange } from "@/features/jobs/jobs-shared";
 import { SectionHeading, StatBand } from "@/features/landing/landing-shared";
 import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
@@ -186,7 +183,9 @@ export function JobLandingPage() {
               <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <Icon className="size-5" />
               </span>
-              <span className="text-sm font-medium">{t(`jobs.dept.${key}`)}</span>
+              <span className="text-sm font-medium">
+                {t(`jobs.dept.${key}`)}
+              </span>
               <span className="text-xs text-muted-foreground">
                 {t("landing.job.categories.count", { count })}
               </span>

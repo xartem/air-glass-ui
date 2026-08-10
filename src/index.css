@@ -1135,8 +1135,7 @@
    * indicator. !important: hover:bg-muted lives in Tailwind's utilities layer, which
    * outranks this components layer otherwise.
    */
-  .skin-liquid
-    [data-slot="toggle-group-item"]:not([data-state="on"]):hover {
+  .skin-liquid [data-slot="toggle-group-item"]:not([data-state="on"]):hover {
     background-color: transparent !important;
   }
 }

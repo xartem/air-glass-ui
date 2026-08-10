@@ -22,10 +22,25 @@ const COLLECTIONS: {
   seed: number;
   floor: number;
 }[] = [
-  { name: "Aurora Drifts", gradient: ["#60a5fa", "#a78bfa"], seed: 7, floor: 1.24 },
+  {
+    name: "Aurora Drifts",
+    gradient: ["#60a5fa", "#a78bfa"],
+    seed: 7,
+    floor: 1.24,
+  },
   { name: "Neon Koi", gradient: ["#f472b6", "#fb923c"], seed: 13, floor: 0.86 },
-  { name: "Glass Relics", gradient: ["#34d399", "#22d3ee"], seed: 21, floor: 2.4 },
-  { name: "Pixel Nomads", gradient: ["#818cf8", "#22d3ee"], seed: 4, floor: 0.52 },
+  {
+    name: "Glass Relics",
+    gradient: ["#34d399", "#22d3ee"],
+    seed: 21,
+    floor: 2.4,
+  },
+  {
+    name: "Pixel Nomads",
+    gradient: ["#818cf8", "#22d3ee"],
+    seed: 4,
+    floor: 0.52,
+  },
 ];
 
 const CREATORS: { name: string; gradient: NftGradient; sales: number }[] = [
