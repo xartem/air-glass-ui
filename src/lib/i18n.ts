@@ -111,8 +111,17 @@ async function loadDictionary(locale: AdminLocale): Promise<boolean> {
  */
 export async function initLocale(): Promise<void> {
   const stored = readStoredLocale();
-  if (stored === "en") return;
-  if (await loadDictionary(stored)) currentLocale = stored;
+  if (stored !== "en" && (await loadDictionary(stored))) currentLocale = stored;
+  applyDocumentLang();
+}
+
+/**
+ * Keep `<html lang>` in step with the UI locale. Without it the document
+ * permanently advertises whatever is hardcoded in index.html, so a screen
+ * reader pronounces every screen in the wrong language.
+ */
+function applyDocumentLang(): void {
+  document.documentElement.lang = currentLocale;
 }
 
 export function getLocale(): AdminLocale {
@@ -130,6 +139,7 @@ export function setLocale(locale: AdminLocale): void {
   void loadDictionary(locale).then((ok) => {
     if (!ok) return;
     currentLocale = locale;
+    applyDocumentLang();
     try {
       localStorage.setItem(STORAGE_KEY, locale);
     } catch {
