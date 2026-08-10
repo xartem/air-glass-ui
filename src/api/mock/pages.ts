@@ -8,7 +8,7 @@ import type {
 } from "../types";
 
 /*
- * Fixtures for the W1 utility pages (team directory, activity timeline, FAQ).
+ * Fixtures for the utility pages (team directory, activity timeline, FAQ).
  * Deterministic, self-contained demo data — a real backend replaces this layer
  * without touching the screens.
  */
@@ -227,9 +227,9 @@ const FAQ: FaqEntry[] = [
   {
     id: 1,
     category: "general",
-    question: "What is Universal CMS?",
+    question: "What is Air Glass UI?",
     answer:
-      "Universal CMS is an accessible, fast admin template for managing content, commerce and teams from one place.",
+      "Air Glass UI is an accessible, fast admin template for managing content, commerce and teams from one place.",
   },
   {
     id: 2,

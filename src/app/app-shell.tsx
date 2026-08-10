@@ -91,10 +91,10 @@ import { cn } from "@/lib/utils";
 import { devDebug } from "@/lib/debug";
 
 /*
- * SPA layout shell (E2 §3 app/, E5): glass sidebar + glass topbar over the mesh
- * background. The mesh is painted HERE exactly once (E1 §2.1) — screens never touch it.
- * Sidebar renders the full E5 menu map filtered by permissions; collection entries
- * are dynamic from GET /api/me (new record types appear without a rebuild, E2 §4).
+ * SPA layout shell: glass sidebar + glass topbar over the mesh
+ * background. The mesh is painted HERE exactly once — screens never touch it.
+ * Sidebar renders the full menu map filtered by permissions; collection entries
+ * are dynamic from GET /api/me (new record types appear without a rebuild).
  * Desktop: collapsible groups + collapse-to-icons; below `lg` — a burger Sheet.
  */
 
@@ -102,7 +102,7 @@ function Brand() {
   return (
     <div className="flex items-center gap-2 px-2 py-2 group-data-[collapsed=true]/sidebar:justify-center group-data-[collapsed=true]/sidebar:px-0">
       <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground">
-        U
+        A
       </span>
       <span className="text-sm font-semibold group-data-[collapsed=true]/sidebar:hidden">
         {t("shell.brand")}
@@ -601,7 +601,7 @@ function MobilePaletteButton({
   );
 }
 
-/** Maintenance + impersonation banners (UI:shell-auth §2) — pinned on every screen. */
+/** Maintenance + impersonation banners — pinned on every screen. */
 function ShellBanners() {
   const { me, refresh } = useAuth();
   const canManageSettings = useCan("settings.manage");
@@ -661,7 +661,7 @@ function ShellBanners() {
   );
 }
 
-/** Subtle mesh parallax (E1 §2.3): the background drifts ~12% slower than content. */
+/** Subtle mesh parallax: the background drifts ~12% slower than content. */
 function useMeshParallax() {
   const meshRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -702,7 +702,7 @@ function HeaderBrand() {
   return (
     <div className="hidden items-center gap-2 pe-1 lg:flex">
       <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground">
-        U
+        A
       </span>
       <span className="text-sm font-semibold">{t("shell.brand")}</span>
     </div>
@@ -737,7 +737,7 @@ function MobileNavSheet() {
   );
 }
 
-/** Right-aligned topbar cluster (E5): notifications, AI, locale, skin, theme, open-site, user. */
+/** Right-aligned topbar cluster: notifications, AI, locale, skin, theme, open-site, user. */
 function TopbarControls({
   dark,
   onToggleDark,
@@ -880,7 +880,7 @@ function TopbarControls({
 }
 
 /**
- * The glass topbar (E5). `leading` injects the brand for the sidebar-less layouts.
+ * The glass topbar. `leading` injects the brand for the sidebar-less layouts.
  * `nav` embeds the horizontal menu inline (single-topbar layout). `searchAsIcon`
  * collapses the search field to an always-visible icon (for the horizontal layout,
  * where the inline menu owns the middle space). `className` tunes width/margins per
@@ -1051,7 +1051,7 @@ function TwoColumnNav() {
     <>
       <aside className="glass-panel sticky top-4 m-4 me-0 hidden h-[calc(100vh-2rem)] w-16 shrink-0 flex-col items-center gap-1 rounded-2xl p-2 lg:flex">
         <span className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground">
-          U
+          A
         </span>
         {groups.map((group) => {
           const Icon = groupIcon(group);
@@ -1099,7 +1099,7 @@ export function AppShell() {
   // form state and scroll survive.
   useLocale();
   const { dark, toggle } = useDarkMode();
-  // Site-wide appearance (E1 §2.2.1) applied to <html>; topbar button quick-cycles the style.
+  // Site-wide appearance applied to <html>; topbar button quick-cycles the style.
   // clearOverride lets the Theme Customizer drop the transient style preview on commit.
   // dir feeds the Radix DirectionProvider so overlays (menus, selects, sliders) mirror in RTL.
   // layout selects the shell chrome; below `lg` every variant is the burger drawer.
@@ -1180,7 +1180,7 @@ export function AppShell() {
         >
           {t("shell.skip_to_content")}
         </a>
-        {/* Mesh background layers — painted once for the whole SPA (E1 §2.1, §2.3).
+        {/* Mesh background layers — painted once for the whole SPA.
           The mesh is taller than the viewport so the parallax shift never reveals its edge. */}
         <div
           ref={meshRef}
@@ -1196,7 +1196,7 @@ export function AppShell() {
 
         {chrome}
 
-        {/* Theme Customizer (W0.5): global drawer reachable from every screen via a floating
+        {/* Theme Customizer: global drawer reachable from every screen via a floating
           trigger. Dark mode is shared (not forked) so the topbar sun/moon stays in sync;
           RTL-aware via the logical `end` inset. */}
         <ThemeCustomizer

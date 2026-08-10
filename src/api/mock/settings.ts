@@ -8,7 +8,7 @@ import type {
 } from "../types";
 
 /*
- * Mock of the settings schema + storage (D:settings §6, C7 §3–4).
+ * Mock of the settings schema + storage.
  * Only the "ownerless" groups live on /settings/{tab}: site, content, media,
  * code, debug. Values persist in localStorage; sensitive values are stored
  * under a shadow key and NEVER returned — the payload carries '***' / ''.
@@ -24,7 +24,7 @@ const SCHEMA: { group: string; entries: SettingSchemaEntry[] }[] = [
       {
         key: "site_name",
         type: "text",
-        default: "Universal CMS Demo",
+        default: "Air Glass UI Demo",
         section: "main",
       },
       {
@@ -128,7 +128,7 @@ const SCHEMA: { group: string; entries: SettingSchemaEntry[] }[] = [
         has_help: true,
         span: "full",
       },
-      // S3 connection (D:media, decision 2026-07-05) — shown only when driver = s3.
+      // S3 connection (decision 2026-07-05) — shown only when driver = s3.
       {
         key: "media.s3.endpoint",
         type: "url",
@@ -235,9 +235,9 @@ const SCHEMA: { group: string; entries: SettingSchemaEntry[] }[] = [
     ],
   },
   {
-    // Module-owned group: renders on /system/ai, not on the /settings tabs
-    // (D:settings §6 decision). Keys per D:ai §3; per-provider api_key entries
-    // and base_url are filtered by the screen via visibleWhen (UI:ai §4).
+    // Module-owned group: renders on /system/ai, not on the /settings tabs.
+    // Per-provider api_key entries and base_url are filtered by the screen
+    // via visibleWhen.
     group: "ai",
     entries: [
       {
@@ -371,7 +371,7 @@ const SCHEMA: { group: string; entries: SettingSchemaEntry[] }[] = [
 ];
 
 /*
- * Image presets declared by module code / the active theme (D:media §3, C2 §8).
+ * Image presets declared by module code / the active theme.
  * The settings screen shows them under SettingsGroupForm(media); operator
  * overrides persist in the `media.preset_sizes` setting as JSON.
  */
@@ -555,7 +555,7 @@ export function saveSettingsGroup(
       continue;
     }
     if (entry.sensitive) {
-      if (value === "***") continue; // "keep current" sentinel (D:settings §6)
+      if (value === "***") continue; // "keep current" sentinel
       if (value === "" || value === null) delete sensitiveStored[key];
       else sensitiveStored[key] = "(encrypted)";
     } else {

@@ -127,7 +127,7 @@ import { progressDone, progressStart } from "@/lib/progress";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * /ui-kit — the living reference (E6 §6): every archetype and shared component
+ * /ui-kit — the living reference: every archetype and shared component
  * in one place. New screens are COPIED from here, not invented from scratch.
  * Sample row data below is demo content, not UI copy — UI copy always goes via t().
  */
@@ -284,7 +284,7 @@ function FormsSection() {
   const [withError, setWithError] = useState(true);
   return (
     <Section id="forms" title={t("uikit.section.forms")}>
-      {/* Field grid per E6: short types up to 3 columns on xl+ (2 on md+),
+      {/* Field grid: short types up to 3 columns on xl+ (2 on md+),
           long types (text/url/textarea/richtext) span the full width. */}
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <FormField
@@ -361,7 +361,7 @@ function FormsSection() {
             </SelectContent>
           </Select>
         </div>
-        {/* SwitchRow (E6): labelled toggle blocks — whole row clickable, stacked with dividers. */}
+        {/* SwitchRow: labelled toggle blocks — whole row clickable, stacked with dividers. */}
         <div className="md:col-span-2 xl:col-span-3">
           <p className="mb-2 text-sm font-medium">
             {t("uikit.switchrow.title")}
@@ -406,7 +406,7 @@ function LanguageSection() {
   return (
     <Section id="language" title={t("uikit.section.language")}>
       <div className="space-y-6">
-        {/* Global editor switcher (E2 §7) — the content-editor standard. */}
+        {/* Global editor switcher — the content-editor standard. */}
         <div className="space-y-2">
           <LocaleSwitcher
             locales={[
@@ -537,7 +537,7 @@ const DEMO_MEDIA: MediaItem[] = Array.from({ length: 23 }, (_, i) => {
 
 const MEDIA_PER_PAGE = 10;
 
-/** Demo paged media source — mirrors the Admin API paginator contract (B7). */
+/** Demo paged media source — mirrors the Admin API paginator contract. */
 function loadDemoMedia(query: string, page: number): Promise<MediaPage> {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -586,7 +586,7 @@ function PickersSection() {
 
   return (
     <Section id="pickers" title={t("uikit.section.pickers")}>
-      {/* Short pickers up to 3 columns on xl+; the media grid spans full width (E6). */}
+      {/* Short pickers up to 3 columns on xl+; the media grid spans full width. */}
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <FormField name="picker-date" label={t("uikit.field.title")}>
           <DatePicker id="picker-date" value={date} onChange={setDate} />
@@ -977,7 +977,7 @@ function ListArchetypeSection() {
 
   return (
     <Section id="list" title={t("uikit.section.list")}>
-      {/* Archetype A (E6 §1A) is ONE component now: <ListLayout> wires PageHeader +
+      {/* The list archetype is ONE component now: <ListLayout> wires PageHeader +
           Panel whose header carries the search+filters cluster (+bulk panel on
           selection) + DataTable + pagination. In real screens pair it with
           useListParams (lib) so search/filters/page/sort live in the URL. */}
@@ -1156,7 +1156,7 @@ const WIDGET_DEMO_CHART = {
       ),
     },
     {
-      // Second series demos the xl-only legend (D:dashboard §4 fullest tier).
+      // Second series demos the xl-only legend (the fullest tier).
       label_key: "uikit.widget.leads",
       points: [3, 5, 4, 7, 6, 8, 5, 9, 7, 10, 8, 11, 9, 12].map((y, index) => ({
         x: WIDGET_DEMO_X[index]!,
@@ -1207,7 +1207,7 @@ const WIDGET_DEMO_STATUS = {
 function WidgetsSection() {
   return (
     <Section id="widgets" title={t("uikit.section.widgets")}>
-      {/* Archetype D (E6 §1D): the four widget archetypes (D:dashboard §4) on one 12-col grid */}
+      {/* The dashboard archetype: the four widget archetypes on one 12-col grid */}
       <WidgetGrid>
         <StatCard
           title={t("uikit.widget.pages")}
@@ -1239,7 +1239,7 @@ function WidgetsSection() {
         />
       </WidgetGrid>
       <Separator />
-      {/* Size = content tier (D:dashboard §4): one widget, a DIFFERENT result per size */}
+      {/* Size = content tier: one widget, a DIFFERENT result per size */}
       <p className="text-xs text-muted-foreground">{t("uikit.widget.sizes")}</p>
       <WidgetGrid>
         <StatCard
@@ -1325,7 +1325,7 @@ function WidgetsSection() {
         />
       </WidgetGrid>
       <Separator />
-      {/* Loading / error / empty contract of a widget card (E4 §4, UI:dashboard §2) */}
+      {/* Loading / error / empty contract of a widget card */}
       <p className="text-xs text-muted-foreground">
         {t("uikit.widget.states")}
       </p>
@@ -1380,7 +1380,7 @@ function EditorArchetypeSection() {
       </h2>
       <Card className="overflow-visible">
         <CardContent>
-          {/* Archetype B (E6 §1B) rendered in a demo frame — real editors take the full page,
+          {/* The editor archetype rendered in a demo frame — real editors take the full page,
               so the sticky bottom bar is neutralized here to stay inside the frame */}
           <EditorLayout
             className="[&>div.sticky]:static!"
@@ -1519,7 +1519,7 @@ function SettingsArchetypeSection() {
       </h2>
       <Card className="overflow-visible">
         <CardContent>
-          {/* Archetype C (E6 §1C) in a demo frame — sticky save neutralized like the editor demo */}
+          {/* The settings archetype in a demo frame — sticky save neutralized like the editor demo */}
           <SettingsLayout
             className="[&>div.sticky]:static!"
             sections={sections}
@@ -1543,7 +1543,7 @@ function SettingsArchetypeSection() {
                   >
                     <Input
                       id="settings-site-name"
-                      defaultValue="Universal CMS"
+                      defaultValue="Air Glass UI"
                       onChange={() => setDirty(true)}
                     />
                   </FormField>
@@ -1596,7 +1596,7 @@ function SettingsArchetypeSection() {
 function WizardSection() {
   return (
     <Section id="wizard" title={t("uikit.section.wizard")}>
-      {/* Archetype E (E6 §1E): step-by-step creation in the single dialog shell */}
+      {/* The wizard archetype: step-by-step creation in the single dialog shell */}
       <WizardDialog
         trigger={
           <Button>
@@ -1693,7 +1693,7 @@ function CompositionSection() {
       </h2>
       <Card>
         <CardContent className="space-y-4">
-          {/* Page composition (E2 §10): layout regions as vertical zones, dnd-sortable blocks */}
+          {/* Page composition: layout regions as vertical zones, dnd-sortable blocks */}
           {Object.entries(regions).map(([regionKey, blocks]) => (
             <div
               key={regionKey}
@@ -1757,7 +1757,7 @@ function CompositionSection() {
           </>
         }
       >
-        {/* Block fields are schema-generated in the real editor (E2 §7) */}
+        {/* Block fields are schema-generated in the real editor */}
         <FormField name="block-demo-text" label={t("uikit.field.title")}>
           <Input id="block-demo-text" defaultValue={configuring?.label} />
         </FormField>
@@ -1798,7 +1798,7 @@ function MenuBuilderSection() {
       </h2>
       <Card>
         <CardContent>
-          {/* Menu builder (E2 §10): dnd tree + link-by-reference, never raw URLs */}
+          {/* Menu builder: dnd tree + link-by-reference, never raw URLs */}
           <div className="flex flex-col gap-4 lg:flex-row">
             <div className="min-w-0 flex-1">
               <TreeList items={menu} onChange={setMenu} />
@@ -1861,7 +1861,7 @@ function MediaGridSection() {
       </h2>
       <Card>
         <CardContent className="space-y-3">
-          {/* Media library (E2 §10): same picking surface as MediaPicker, full-page */}
+          {/* Media library: same picking surface as MediaPicker, full-page */}
           <Toolbar
             search={{
               value: search,
@@ -1987,7 +1987,7 @@ function ErrorsSection() {
       <h2 className="text-lg font-semibold tracking-tight">
         {t("uikit.section.errors")}
       </h2>
-      {/* Archetype F (E6 §1F): the single full-page error view — framed compact here */}
+      {/* The error archetype: the single full-page error view — framed compact here */}
       <div className="grid gap-3 lg:grid-cols-3">
         <Card>
           <CardContent>
@@ -2019,7 +2019,7 @@ function LoginSection() {
       <h2 className="text-lg font-semibold tracking-tight">
         {t("uikit.section.login")}
       </h2>
-      {/* Login screen (E2 §5): a single glass card centered over the mesh */}
+      {/* Login screen: a single glass card centered over the mesh */}
       <div className="flex justify-center rounded-xl border border-dashed py-10">
         <Card className="w-full max-w-sm">
           <CardHeader>
