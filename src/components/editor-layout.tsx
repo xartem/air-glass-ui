@@ -10,12 +10,12 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * EditorLayout (E6 §1B, §3.1):
+ * EditorLayout:
  * <EditorLayout back title status? tabs sidebar? primaryAction dangerZone? dirty />
  * Skeleton is law: back top-left · primary action top-right AND duplicated in the sticky
  * bottom bar · tabs in fixed order (Content → … → SEO → Languages) · delete NEVER next
  * to Save — it goes into dangerZone (bottom-left), always behind a ConfirmDialog.
- * Handles the dirty guard (E4 §1) and Ctrl/Cmd+S itself.
+ * Handles the dirty guard and Ctrl/Cmd+S itself.
  */
 
 export type EditorTab = {
@@ -47,7 +47,7 @@ export function EditorLayout({
   dirty?: boolean;
   className?: string;
 }) {
-  // Dirty guard (E4 §1): warn before leaving with unsaved changes.
+  // Dirty guard: warn before leaving with unsaved changes.
   useEffect(() => {
     if (!dirty) return;
     const handler = (event: BeforeUnloadEvent) => {
@@ -64,7 +64,7 @@ export function EditorLayout({
       dirty && currentLocation.pathname !== nextLocation.pathname,
   );
 
-  // Ctrl/Cmd+S saves (E4).
+  // Ctrl/Cmd+S saves.
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s") {
@@ -107,7 +107,7 @@ export function EditorLayout({
         </Button>
       </header>
 
-      {/* Sidebar stacks under the form below lg (E1 §4) */}
+      {/* Sidebar stacks under the form below lg */}
       <div className="flex flex-1 flex-col items-stretch gap-4 lg:flex-row lg:items-start">
         <div className="min-w-0 flex-1">
           <Tabs defaultValue={tabs[0]?.key}>
@@ -131,7 +131,7 @@ export function EditorLayout({
         ) : null}
       </div>
 
-      {/* Sticky bottom bar duplicates Save; danger zone lives far left (E6 §1B) */}
+      {/* Sticky bottom bar duplicates Save; danger zone lives far left */}
       <div className="glass-header sticky bottom-0 -mx-1 mt-auto flex items-center justify-between gap-4 rounded-lg border-t-0 px-3 py-2.5">
         <div>{dangerZone}</div>
         <div className="flex items-center gap-3">

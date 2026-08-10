@@ -21,7 +21,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { t } from "@/lib/i18n";
 
 /*
- * Contextual help "?" (C11 §6, D:help §6): lives in PageHeader via the helpKey
+ * Contextual help "?": lives in PageHeader via the helpKey
  * prop. The button renders only when the screen has a matching doc page —
  * no article, no button. Opens a right Sheet; the user never leaves the screen.
  */

@@ -18,7 +18,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Scatter chart showcase (W5): Recharts ScatterChart on --chart-* tokens — a
+ * Scatter chart showcase: Recharts ScatterChart on --chart-* tokens — a
  * single cloud, a Z-axis bubble variant, and two overlaid series.
  */
 

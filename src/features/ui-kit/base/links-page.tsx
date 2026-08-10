@@ -8,7 +8,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Links showcase (W5): anchor and link styles — variants, the Button link
+ * Links showcase: anchor and link styles — variants, the Button link
  * variant and inline links inside body text. Static docs demo.
  */
 export function LinksPage() {

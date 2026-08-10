@@ -20,9 +20,9 @@ import { t } from "@/lib/i18n";
 import { devDebug } from "@/lib/debug";
 
 /*
- * Re-login dialog (UI:shell-auth §2, E2 §5): opens when any request hits 401
- * mid-session. The failed request is parked by the api client and retried after
- * a successful login — unsaved screen state is never lost. Closing by clicking
+ * Re-login dialog: opens when any request hits 401 mid-session. The failed
+ * request is parked by the api client and retried after a successful login —
+ * unsaved screen state is never lost. Closing by clicking
  * outside is disabled: the session is gone, the user must decide.
  */
 

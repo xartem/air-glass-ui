@@ -9,7 +9,7 @@ import { SHOWCASE_GROUPS } from "@/features/ui-kit/showcase-registry";
 import { t } from "@/lib/i18n";
 
 /*
- * ComponentsIndex (W5): the searchable index grid on the /ui-kit hub — links to
+ * ComponentsIndex: the searchable index grid on the /ui-kit hub — links to
  * every showcase page, grouped by the nine COMPONENTS sections. Groups with no
  * pages yet (empty registry links) are hidden; the search filters by the
  * translated page title so the grid stays useful as pages land.

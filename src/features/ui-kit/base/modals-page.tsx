@@ -16,7 +16,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Modals showcase (W5): the low-level Dialog primitive, the shared Modal shell,
+ * Modals showcase: the low-level Dialog primitive, the shared Modal shell,
  * and the ConfirmDialog for destructive actions. Trigger buttons open each one;
  * the confirm handler is a no-op here (static docs — no data flow).
  */

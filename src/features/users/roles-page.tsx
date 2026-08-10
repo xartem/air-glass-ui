@@ -46,10 +46,10 @@ import { useCan } from "@/lib/permissions";
 import { roleDisplayName } from "@/lib/role-label";
 
 /*
- * /roles (UI:users-roles §2): the role × permission matrix. Checkbox edits
- * accumulate as overrides on top of the loaded sets; SaveBar batches one PUT
- * per changed role (D:users §4 syncPermissions). Roles are created/renamed/
- * deleted via dialogs; a role that still has users can't be deleted (422 →
+ * /roles: the role × permission matrix. Checkbox edits accumulate as overrides
+ * on top of the loaded sets; SaveBar batches one PUT per changed role. Roles
+ * are created/renamed/deleted via dialogs; a role that still has users cannot
+ * be deleted (422 →
  * link to the filtered user list).
  */
 
@@ -164,7 +164,7 @@ export function RolesPage() {
               setEdits((current) => ({ ...current, [roleId]: keys }))
             }
             renderRoleMenu={(role) => {
-              // System roles only get the dashboard entry; rename/delete stay non-system (UI:users-roles §2).
+              // System roles only get the dashboard entry; rename/delete stay non-system.
               if (role.is_system && !canManageDashboard) return null;
               return (
                 <DropdownMenu>
@@ -250,7 +250,7 @@ export function RolesPage() {
         }}
       />
 
-      {/* Role still has users → cannot delete; offer to reassign them (UI:users-roles §2) */}
+      {/* Role still has users → cannot delete; offer to reassign them */}
       <Dialog
         open={blockedRole !== null}
         onOpenChange={(open) => !open && setBlockedRole(null)}

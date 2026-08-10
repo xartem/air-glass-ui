@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Maps — substitution note (W5): Velzon ships vector maps + Google Maps; this
+ * Maps — substitution note: Velzon ships vector maps + Google Maps; this
  * template standardizes on Leaflet (BSD-2-Clause, resale-safe, no API key).
  * This page states the substitution and shows the Leaflet equivalent.
  */

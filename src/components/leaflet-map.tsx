@@ -6,7 +6,7 @@ import { devDebug } from "@/lib/debug";
 import { cn } from "@/lib/utils";
 
 /*
- * LeafletMap (W5 gap primitive): a thin, token-styled wrapper around Leaflet
+ * LeafletMap: a thin, token-styled wrapper around Leaflet
  * (BSD-2-Clause — resale-safe). Driven through Leaflet's own imperative API
  * rather than a React binding, so the bundle carries no additional licence
  * beyond Leaflet itself. Uses the free OpenStreetMap tile source (attribution

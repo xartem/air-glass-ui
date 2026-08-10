@@ -14,7 +14,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Bar chart showcase (W5): horizontal bars for ranked categories. A ranked
+ * Bar chart showcase: horizontal bars for ranked categories. A ranked
  * single series via the shared CategoryBars, and a stacked composition built on
  * the chart wrapper — every fill resolves from --chart-* tokens.
  */

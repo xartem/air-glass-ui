@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 /*
- * Showcase registry (W5): the single list of every component-showcase page,
+ * Showcase registry: the single list of every component-showcase page,
  * grouped by the nine COMPONENTS sections. Consumed by the /ui-kit hub index
  * grid (searchable) so the hub, the sidebar and the ⌘K palette stay in sync.
  */

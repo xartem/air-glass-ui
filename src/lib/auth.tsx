@@ -15,7 +15,7 @@ import { spaUrl } from "@/lib/utils";
 import { devDebug } from "@/lib/debug";
 
 /*
- * Session context (E2 §5): GET /api/me on SPA start feeds user, permissions,
+ * Session context: GET /api/me on SPA start feeds user, permissions,
  * content locales and collections. 401 on initial load → redirect to /login
  * (with return path); 401 mid-work is handled by the re-login dialog instead
  * (see api/client.ts + components/relogin-dialog.tsx) — never a redirect.
@@ -32,7 +32,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
   const location = useLocation();
-  // /me carries content-localized labels (collections, C1); refetch on UI-locale
+  // /me carries content-localized labels (collections); refetch on UI-locale
   // switch so the sidebar stays in sync with chrome. keepPreviousData avoids a
   // full-screen spinner flash while the re-localized payload loads.
   const locale = useLocale();
@@ -93,7 +93,7 @@ export function useAuth(): AuthContextValue {
   return context;
 }
 
-/** Content locales from /api/me (C1) — for LocaleSwitcher and editors. */
+/** Content locales from /api/me — for LocaleSwitcher and editors. */
 export function useContentLocales() {
   return useAuth().me.locales;
 }

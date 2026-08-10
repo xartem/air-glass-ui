@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { devDebug } from "@/lib/debug";
 
 /*
- * useScrollSpy (W5 gap hook): given a list of section element ids, returns the
+ * useScrollSpy: given a list of section element ids, returns the
  * id of the section currently in view via IntersectionObserver — for anchor
  * navigation on long docs/showcase pages. Interactive, so it logs on the
  * active-section change (devDebug, dev-only).

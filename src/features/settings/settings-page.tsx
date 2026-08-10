@@ -37,8 +37,8 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * /settings/{tab} (UI:settings §3): only the "ownerless" groups live here —
- * site · content · media · code · privacy · debug (D:settings §3, §6). Module
+ * /settings/{tab}: only the "ownerless" groups live here —
+ * site · content · media · code · privacy · debug. Module
  * groups render the same SettingsGroupForm inside their own screens. Any
  * navigation away from a dirty form is guarded; the code tab adds a warning
  * alert and a line-diff confirm; media adds the image-presets table below.
@@ -99,13 +99,13 @@ export function SettingsPage() {
   const [codeDiffs, setCodeDiffs] = useState<CodeDiff[] | null>(null);
   const codeResolveRef = useRef<((confirmed: boolean) => void) | null>(null);
 
-  // Presets table (media tab) joins the form's SaveBar via extraChanged (UI:media §2)
+  // Presets table (media tab) joins the form's SaveBar via extraChanged
   const [presetOverrides, setPresetOverrides] = useState<string | null>(null);
   const [presetResetKey, setPresetResetKey] = useState(0);
   const [presetsConfirm, setPresetsConfirm] = useState(false);
   const presetsResolveRef = useRef<((confirmed: boolean) => void) | null>(null);
 
-  // Per-group variant regeneration (UI:media §2): confirm with a count, then a job.
+  // Per-group variant regeneration: confirm with a count, then a job.
   const [regenConfirm, setRegenConfirm] = useState<{
     group: string;
     count: number;
@@ -145,7 +145,7 @@ export function SettingsPage() {
     dirtyRef.current = dirty;
   }, []);
 
-  // Route-level dirty-guard (UI:settings §2 "dirty-guard on leave", E4 §1):
+  // Route-level dirty-guard on leave:
   // covers tab switches AND leaving for another screen via the sidebar.
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
@@ -208,7 +208,7 @@ export function SettingsPage() {
     codeResolveRef.current = null;
   }
 
-  /** Media tab: changed presets require a "variants will regenerate" confirm (UI:media §2). */
+  /** Media tab: changed presets require a "variants will regenerate" confirm. */
   const beforeSaveMedia = useCallback(
     (changed: Record<string, SettingValue>): Promise<boolean> => {
       if (!("media.preset_sizes" in changed)) return Promise.resolve(true);
@@ -274,7 +274,7 @@ export function SettingsPage() {
         </Alert>
       ) : null}
 
-      {/* Panel sections come from the schema (UI:settings §2) — no wrapper here.
+      {/* Panel sections come from the schema — no wrapper here.
           Bottom padding clears the sticky SaveBar for the form AND companions. */}
       <div className="space-y-4 pb-24">
         <SettingsGroupForm
@@ -313,7 +313,7 @@ export function SettingsPage() {
           onSettled={
             tab === "media" || tab === "privacy" ? onSettled : undefined
           }
-          // Media: regen status beside the form (UI:media §2). Privacy: categories at 50/50 beside consent.
+          // Media: regen status beside the form. Privacy: categories at 50/50 beside consent.
           aside={
             tab === "media" ? (
               <MediaRegenStatus
@@ -364,7 +364,7 @@ export function SettingsPage() {
         }}
       />
 
-      {/* Presets save confirmation: variants regenerate in the background (UI:media §2) */}
+      {/* Presets save confirmation: variants regenerate in the background */}
       <ConfirmDialog
         open={presetsConfirm}
         onOpenChange={(open) => !open && resolvePresetsConfirm(false)}
@@ -374,7 +374,7 @@ export function SettingsPage() {
         onConfirm={() => resolvePresetsConfirm(true)}
       />
 
-      {/* Per-group regeneration confirm with the preset count (UI:media §2) */}
+      {/* Per-group regeneration confirm with the preset count */}
       <ConfirmDialog
         open={regenConfirm !== null}
         onOpenChange={(open) => !open && setRegenConfirm(null)}
@@ -390,7 +390,7 @@ export function SettingsPage() {
         }}
       />
 
-      {/* Code save confirmation with line diff (UI:settings §3) */}
+      {/* Code save confirmation with line diff */}
       <Dialog
         open={codeDiffs !== null}
         onOpenChange={(open) => !open && resolveCodeConfirm(false)}

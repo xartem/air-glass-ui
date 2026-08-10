@@ -5,9 +5,9 @@ import { ADMIN_LOCALES, setLocale, type AdminLocale } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Guest screens layout (UI:shell-auth §2): full-viewport mesh with one centered
+ * Guest screens layout: full-viewport mesh with one centered
  * glass card — no sidebar/topbar. Guest language is auto-detected from the
- * browser across the 8 starter locales (C1 §1); after login the profile
+ * browser across the 8 starter locales; after login the profile
  * ui_locale takes over.
  */
 

@@ -60,11 +60,11 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * Widget archetypes (E6, D:dashboard §4): StatCard / ChartCard / ListCard /
- * StatusCard are the ONLY four renderers of dashboard widget data — modules
+ * Widget archetypes: StatCard / ChartCard / ListCard / StatusCard are the ONLY
+ * four renderers of dashboard widget data — modules
  * pick a type + data shape, never draw their own markup. Size is a CONTENT
  * TIER: sm = glance, md = base archetype, lg = expanded form.
- * All charts/sparklines are Recharts (E2 §2) — no hand-rolled SVG.
+ * All charts/sparklines are Recharts — no hand-rolled SVG.
  */
 
 /* ---- shared card frame ---- */
@@ -77,7 +77,7 @@ export function WidgetCardFrame({
   className,
 }: {
   title: string;
-  /** Widget route (D:dashboard §4): the title links here when set. */
+  /** Widget route: the title links here when set. */
   href?: string | null;
   /** Lucide slug from widget meta; unknown/absent → header renders without a chip. */
   icon?: string | null;
@@ -89,7 +89,7 @@ export function WidgetCardFrame({
   const ref = useRef<HTMLDivElement>(null);
   const [rowSpan, setRowSpan] = useState<number>();
 
-  // Masonry (D:dashboard §4): measure the content-height card and reserve that many
+  // Masonry: measure the content-height card and reserve that many
   // row tracks (+ one inter-card gap) so uneven cards pack without stretching.
   useLayoutEffect(() => {
     if (!masonry) return;
@@ -313,7 +313,7 @@ function StatGoal({
   );
 }
 
-/** Semantic delta pill: the module encodes "what is good" via the sign (UI:dashboard §2). */
+/** Semantic delta pill: the module encodes "what is good" via the sign. */
 function DeltaPill({ delta }: { delta: number }) {
   const Trend = delta >= 0 ? TrendingUp : TrendingDown;
   return (
@@ -412,7 +412,7 @@ export function StatCard({
     );
   }
 
-  // xl "alternate form" (D:dashboard §4): number + a full-width mini-chart. No series → inherit lg below.
+  // xl "alternate form": number + a full-width mini-chart. No series → inherit lg below.
   if (size === "xl" && data.series) {
     return (
       <WidgetCardFrame
@@ -471,7 +471,7 @@ export function StatCard({
 
 /* ---- chart ---- */
 
-/** Shared with the widget skeletons (rigid skeleton contract, E4/E6). */
+/** Shared with the widget skeletons (rigid skeleton contract). */
 export const CHART_HEIGHT: Record<WidgetSize, number> = {
   sm: 64,
   md: 180,
@@ -718,7 +718,7 @@ export function ChartCard({
 
 /* ---- list ---- */
 
-/** Shared with the widget skeletons (rigid skeleton contract, E4/E6). */
+/** Shared with the widget skeletons (rigid skeleton contract). */
 export const LIST_ROWS: Record<WidgetSize, number> = {
   sm: 2,
   md: 6,
@@ -741,7 +741,7 @@ function badgeLabel(token: string): string {
   return key ? t(key) : token;
 }
 
-/** Leading visual for a list row (D:dashboard §4): thumb → avatar → leadIcon, mutually exclusive. */
+/** Leading visual for a list row: thumb → avatar → leadIcon, mutually exclusive. */
 function RowLead({ item, compact }: { item: ListItem; compact: boolean }) {
   const size = compact ? "size-6" : "size-8";
   if (item.thumb) {
@@ -837,7 +837,7 @@ function ListRow({
   const hasLead = Boolean(item.thumb || item.avatar || item.leadIcon);
   // Single line: title fills, hint sits right (muted), then rating/metric/badge —
   // so a wide row (e.g. auth.activity) uses its full width and the hint (subject/
-  // meta) always shows, even alongside a metric (D:dashboard §4 list row).
+  // meta) always shows, even alongside a metric.
   const body = (
     <>
       {hasLead ? <RowLead item={item} compact={!rich} /> : null}
@@ -850,7 +850,7 @@ function ListRow({
       {item.rating !== undefined ? <RowRating rating={item.rating} /> : null}
       {item.metric ? <RowMetric metric={item.metric} /> : null}
       {item.badge ? (
-        // "new" is the cross-module freshness convention (UI:dashboard §3) — accent it.
+        // "new" is the cross-module freshness convention — accent it.
         <Badge
           variant="secondary"
           className={cn(item.badge === "new" && "bg-primary/10 text-primary")}
@@ -959,7 +959,7 @@ export function ListCard({
   // Ranked leaderboard (Top pages): magnitude bars per row. Skip at the sm
   // "glance" tier, where the big-count layout stays clearer than stacked bars.
   const ranked = data.variant === "ranked" && size !== "sm";
-  // xl "alternate form" (D:dashboard §4): a two-column grid uses the full width; too
+  // xl "alternate form": a two-column grid uses the full width; too
   // few items would look sparse in two columns → inherit the lg single column.
   const twoCol = size === "xl" && data.items.length > 4;
   const viewAll = href ? (
@@ -1111,7 +1111,7 @@ function StatusRowItem({ row, size }: { row: StatusRow; size: WidgetSize }) {
   );
 }
 
-/** xl "alternate form" (D:dashboard §4): rows as an aligned table — label · value · trend. */
+/** xl "alternate form": rows as an aligned table — label · value · trend. */
 function StatusTable({ rows }: { rows: StatusRow[] }) {
   return (
     <table className="w-full text-sm">
@@ -1174,7 +1174,7 @@ export function StatusCard({
   className?: string;
 }) {
   // All rows at every tier now (a compact glance is fine under masonry). xl gets
-  // the table form; too few rows → inherit the row list (D:dashboard §4 inherit-down).
+  // the table form; too few rows → inherit the row list.
   const rows = data.rows;
   const asTable = size === "xl" && rows.length >= 3;
   return (

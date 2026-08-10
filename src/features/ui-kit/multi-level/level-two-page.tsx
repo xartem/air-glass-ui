@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Multi Level — Level 2 target (W5): a leaf page sitting three levels deep in
+ * Multi Level — Level 2 target: a leaf page sitting three levels deep in
  * the sidebar (Multi Level ▸ Level 2 ▸ this), proving deep nested menus route.
  */
 export function MultiLevelTwoPage() {

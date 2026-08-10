@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Maps — base map (W5): a plain Leaflet map on free OpenStreetMap tiles.
+ * Maps — base map: a plain Leaflet map on free OpenStreetMap tiles.
  * Leaflet (BSD-2-Clause) is resale-safe; no tile API key is required.
  */
 export function MapsBasePage() {

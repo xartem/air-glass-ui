@@ -5,7 +5,7 @@ import { Slot } from "radix-ui";
 import { cn } from "@/lib/utils";
 
 /*
- * Sizing and tiers follow E1 §2: controls 38px (compact 32px), radius 10px,
+ * Sizing and tiers: controls 38px (compact 32px), radius 10px,
  * 15px medium text; primary/destructive-filled gradients and shadows live in the
  * theme (index.css) keyed by data-variant. Fills may be keyed off data-variant,
  * but every color value here must be a design token — never a raw rgba()/#hex literal.

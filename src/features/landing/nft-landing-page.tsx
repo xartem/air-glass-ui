@@ -10,7 +10,7 @@ import { useLocale } from "@/lib/use-locale";
 import type { NavIcon } from "@/app/nav";
 
 /*
- * NFT landing (W6, MENU-SPEC §2.3). Presentational marketing page on the shared LandingLayout,
+ * NFT landing. Presentational marketing page on the shared LandingLayout,
  * reusing the NFT slice's generated gradient art (no external hosts) and the ETH formatter.
  * Static fixtures — collection/creator names are proper nouns kept verbatim across locales;
  * only the surrounding chrome is translated.

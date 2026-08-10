@@ -45,7 +45,7 @@ import {
 import { roleDisplayName } from "@/lib/role-label";
 
 /*
- * /profile (UI:users-roles §2): the operator's own profile. A profile header
+ * /profile: the operator's own profile. A profile header
  * (banner, avatar, bio, stat tiles) sits above two tabs — Account (editable
  * name + UI language + password + 2FA) and Timeline (recent activity). The
  * profile card writes only name + ui_locale; the password card requires the
@@ -255,7 +255,7 @@ export function ProfilePage() {
 
           <ChangeOwnPasswordCard />
 
-          {/* "Security": 2FA self-service (D:auth §6) */}
+          {/* "Security": 2FA self-service */}
           <SecurityCard />
 
           <SaveBar

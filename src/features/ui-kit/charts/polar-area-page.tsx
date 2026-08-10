@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Polar area (Nightingale rose) showcase (W5): equal-angle sectors whose RADIUS
+ * Polar area (Nightingale rose) showcase: equal-angle sectors whose RADIUS
  * encodes the value — built from N single-datum Recharts Pie sectors so each can
  * own its outerRadius. Colors come only from the --chart-* palette.
  */

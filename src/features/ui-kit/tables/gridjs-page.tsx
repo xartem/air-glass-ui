@@ -16,7 +16,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Sortable Table showcase (W5): the <Table> primitive with client-side column
+ * Sortable Table showcase: the <Table> primitive with client-side column
  * sorting driven by local useState — the token-only replacement for Grid.js.
  * Data is LOCAL static demo content.
  */

@@ -84,7 +84,7 @@ export const ALL_PERMISSIONS = [
   "dashboard.manage",
   "ai.use",
   "ai.manage",
-  // W3 app suites
+  // App suites
   "sellers.view",
   "sellers.manage",
   "projects.view",
@@ -100,7 +100,7 @@ export const ALL_PERMISSIONS = [
   "todo.view",
   "apikeys.view",
   "apikeys.manage",
-  // W4 mono-niches
+  // Mono-niches
   "crypto.view",
   "crypto.manage",
   "nft.view",
@@ -124,7 +124,7 @@ export const EDITOR_PERMISSIONS = [
   "contacts.view",
   "activity.view",
   "ai.use",
-  // W3 app suites: the editor role manages the day-to-day app screens.
+  // App suites: the editor role manages the day-to-day app screens.
   "sellers.view",
   "projects.view",
   "projects.manage",
@@ -137,7 +137,7 @@ export const EDITOR_PERMISSIONS = [
   "support.view",
   "todo.view",
   "apikeys.view",
-  // W4 mono-niches: the editor role runs the day-to-day niche screens (view + manage).
+  // Mono-niches: the editor role runs the day-to-day niche screens (view + manage).
   "crypto.view",
   "crypto.manage",
   "nft.view",

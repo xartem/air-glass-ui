@@ -4,11 +4,11 @@ import type { WidgetSize } from "@/api";
 import { cn } from "@/lib/utils";
 
 /*
- * WidgetGrid (UI:dashboard §2): 12-column CSS grid on xl, 6 on tablet, 1 on
- * mobile. Size is a CONTENT TIER (D:dashboard §4) that also maps to a span:
+ * WidgetGrid: 12-column CSS grid on xl, 6 on tablet, 1 on
+ * mobile. Size is a CONTENT TIER that also maps to a span:
  * sm = 3/12 (half on tablet), md = 6/12, lg = 9/12, xl = full row.
  *
- * `masonry` mode (D:dashboard §4): cards are content-height and rows do NOT
+ * `masonry` mode: cards are content-height and rows do NOT
  * stretch to the tallest neighbor. A tiny `grid-auto-rows` track + a per-card
  * `grid-row: span N` (measured in WidgetCardFrame) + `grid-auto-flow: dense`
  * pack uneven-height cards tightly — no empty tails under a sparse widget.

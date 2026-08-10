@@ -12,8 +12,8 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * /forgot (UI:shell-auth §2): the success screen is IDENTICAL for any email —
- * including rate-limited attempts (anti-enumeration, D:auth §14).
+ * /forgot: the success screen is IDENTICAL for any email —
+ * including rate-limited attempts (anti-enumeration).
  */
 
 export function ForgotPage() {

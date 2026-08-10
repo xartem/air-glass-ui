@@ -21,7 +21,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * MultiSelect (E2 §7: field type `multiselect` → this widget → keys from options).
+ * MultiSelect (field type `multiselect` → this widget → keys from options).
  * Value is an array of option keys; selected options render as badges in the trigger.
  */
 

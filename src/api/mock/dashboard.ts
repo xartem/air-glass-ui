@@ -21,10 +21,10 @@ import type {
 import { rolesStore } from "./roles";
 
 /*
- * Mock of the dashboard module (D:dashboard §4/§6): the full v1 widget catalog
- * (UI:dashboard §3) + quick actions + per-role layout overrides. On the real
- * backend each widget is registered by its owning module in boot(); here the
- * registry is one table with fixture data() generators.
+ * Mock of the dashboard module: the full v1 widget catalog plus quick actions
+ * and per-role layout overrides. On the real backend each widget is registered
+ * by its owning module in boot(); here the registry is one table with fixture
+ * data() generators.
  */
 
 const LAYOUTS_KEY = "mock.dashboardLayouts";
@@ -66,7 +66,7 @@ function days(count: number): string[] {
   return out;
 }
 
-/* ---- period (D:dashboard §4): the window sets the aggregation range, never the
+/* ---- period: the window sets the aggregation range, never the
  * row/point budget. The server buckets the span so the series length stays
  * bounded — quarter yields ~13 weekly points, NOT 90 daily ones. ---- */
 
@@ -160,7 +160,7 @@ interface MockWidget {
   size: WidgetSize;
   sort: number;
   route: string | null;
-  /** Lucide slug the owning module registers with the widget (D:dashboard §4). */
+  /** Lucide slug the owning module registers with the widget. */
   icon: string;
   /** True → data() reacts to the period window; state widgets omit it and ignore the arg. */
   period_aware?: boolean;
@@ -467,7 +467,7 @@ const ACTIONS: Array<DashboardAction & { permission: string; sort: number }> = [
 
 type MockAction = (typeof ACTIONS)[number];
 
-/* ---- per-role layout overrides (settings key dashboard.layouts, D:dashboard §3) ---- */
+/* ---- per-role layout overrides (settings key dashboard.layouts) ---- */
 
 function layouts(): Record<string, LayoutOverrides> {
   try {
@@ -590,7 +590,7 @@ export function getWidgetData(
 ): WidgetData {
   const widget = WIDGETS.find((candidate) => candidate.key === key);
   if (!widget) throw new ApiError(404, "Unknown widget");
-  // RBAC is server-side per widget (D:dashboard §9) — layout can't bypass it.
+  // RBAC is server-side per widget — layout can't bypass it.
   if (!me.permissions.includes(widget.permission))
     throw new ApiError(403, "Forbidden");
   // period is already clamped by the route layer; non-period widgets ignore the arg.

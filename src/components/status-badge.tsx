@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 
 /*
- * StatusBadge (E6 §3): pill with a dot indicator.
- * Single status color map for ALL modules (E1 §2.2) — do not invent per-screen colors.
+ * StatusBadge: pill with a dot indicator.
+ * Single status color map for ALL modules — do not invent per-screen colors.
  */
 
 export type StatusKind =

@@ -9,12 +9,12 @@ import {
 import { rolesStore } from "./roles";
 
 /*
- * Mock of the users module (D:users §3–6). The list dataset persists in
- * localStorage so creates/edits survive reloads; the acting identity comes from
- * `mock.user` (aligned with MOCK_USERS ids 1–3). Invariants that the real
- * backend guards are reproduced here so the E2E checklist (UI:users-roles §5)
- * is exercisable against the mock: no self-deactivation, last active admin is
- * protected, profile is mass-assignment guarded, wrong current password → 422.
+ * Mock of the users module. The list dataset persists in localStorage so
+ * creates/edits survive reloads; the acting identity comes from `mock.user`
+ * (aligned with MOCK_USERS ids 1–3). Invariants that the real backend guards
+ * are reproduced here so the E2E checklist is exercisable against the mock:
+ * no self-deactivation, last active admin is protected, profile is
+ * mass-assignment guarded, wrong current password → 422.
  */
 
 const USERS_KEY = "mock.users";
@@ -123,7 +123,7 @@ export function listUsers(options: RequestOptions): Paginated<UserListItem> {
   if (query.active === "active") rows = rows.filter((row) => row.is_active);
   if (query.active === "inactive") rows = rows.filter((row) => !row.is_active);
   // Sortable: name / role / last_login; default — most-recent login first,
-  // nulls last (UI:users-roles §2).
+  // nulls last.
   const sort = String(query.sort ?? "last_login");
   const dir = query.dir === "asc" ? 1 : -1;
   rows.sort((a, b) => {
@@ -201,7 +201,7 @@ export function updateUser(
   const demotingRole =
     body.role_id !== undefined && Number(body.role_id) !== user.role_id;
   const deactivating = body.is_active === false;
-  // Self cannot change own role/active (D:users §4); enforced despite the UI locking them.
+  // Self cannot change own role/active; enforced despite the UI locking them.
   if (isSelf && (demotingRole || deactivating))
     throw new ValidationError("Validation failed", { role_id: "self_locked" });
   // Last active admin cannot be demoted off the admin role or deactivated.
@@ -223,7 +223,7 @@ export function updateUser(
   if (body.role_id !== undefined) user.role_id = Number(body.role_id);
   if (body.ui_locale !== undefined) user.ui_locale = String(body.ui_locale);
   if (body.is_active !== undefined) user.is_active = Boolean(body.is_active);
-  // A password change revokes the target's remember-tokens/sessions (D:users §4);
+  // A password change revokes the target's remember-tokens/sessions;
   // the mock has no session store to clear, so this is a no-op beyond acceptance.
   persist();
   return toDetail(user);
@@ -247,7 +247,7 @@ export function setUserActive(id: number, active: boolean): { ok: true } {
 }
 
 /*
- * 2FA state (D:auth §3, §6) — separate store so older persisted user fixtures
+ * 2FA state — separate store so older persisted user fixtures
  * stay valid. The mock accepts TOTP code '123456'; recovery codes are one-time.
  */
 
@@ -311,7 +311,7 @@ export function mfaConfirmEnroll(
   return { recovery_codes: codes };
 }
 
-/** TOTP or a one-time recovery code; a used recovery code is burned (D:auth §4). */
+/** TOTP or a one-time recovery code; a used recovery code is burned. */
 export function mfaVerify(userId: number, code: string): boolean {
   if (code === MOCK_TOTP) return true;
   const store = mfaStore();
@@ -343,7 +343,7 @@ export function mfaRegenerateCodes(userId: number): {
   return { recovery_codes: state.recovery };
 }
 
-/** Admin reset of a lost device (users.manage) — drops secret + codes (D:auth §6). */
+/** Admin reset of a lost device (users.manage) — drops secret + codes. */
 export function mfaReset(targetId: number): { ok: true } {
   const store = mfaStore();
   delete store[String(targetId)];
@@ -352,7 +352,7 @@ export function mfaReset(targetId: number): { ok: true } {
 }
 
 export function updateProfile(body: Record<string, unknown>): { ok: true } {
-  // Mass-assignment guard (D:users §4): only name + ui_locale are writable here.
+  // Mass-assignment guard: only name + ui_locale are writable here.
   const user = usersStore().find(
     (candidate) => candidate.id === currentUserId(),
   );

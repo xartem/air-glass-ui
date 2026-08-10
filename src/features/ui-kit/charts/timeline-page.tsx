@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Timeline chart showcase (W5): a continuous time series over dated buckets.
+ * Timeline chart showcase: a continuous time series over dated buckets.
  * A filled area for a single metric and a multi-series line comparison, both via
  * the shared TrendChart so every stroke/fill comes from a --chart-* token.
  */

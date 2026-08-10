@@ -10,7 +10,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Carousel showcase (W5): the embla-backed Carousel primitive — a basic single
+ * Carousel showcase: the embla-backed Carousel primitive — a basic single
  * slide view, a multi-item layout via basis utilities, and a vertical variant.
  * Static demos — no data flow.
  */

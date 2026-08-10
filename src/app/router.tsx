@@ -15,10 +15,10 @@ import { Spinner } from "@/components/ui/spinner";
 import { AuthProvider, GuestOnly, RequirePermission } from "@/lib/auth";
 
 /*
- * [FIX] Route-level code-splitting (was: every screen statically imported →
- * one 1.8MB chunk with TipTap/markdown/charts on the login screen). Rule
- * (E2 §4, cms-admin-ui): feature screens load lazily; only the shell, login,
- * the MFA gate and the placeholder stay eager.
+ * Route-level code-splitting. Without it every screen is statically imported
+ * into one 1.8MB chunk, dragging TipTap/markdown/charts onto the login screen.
+ * The rule: feature screens load lazily; only the shell, login, the MFA gate
+ * and the placeholder stay eager.
  */
 function lazyPage(loader: () => Promise<{ default: ComponentType }>) {
   const Page = lazy(loader);
@@ -709,7 +709,7 @@ const jobsCategoriesPage = () =>
     })),
   );
 
-// W6 — Public landing pages (marketing, no auth; rendered inside LandingLayout).
+// Public landing pages (marketing, no auth; rendered inside LandingLayout).
 const oneLandingPage = () =>
   lazyPage(() =>
     import("@/features/landing/one-landing-page").then((m) => ({
@@ -729,7 +729,7 @@ const jobLandingPage = () =>
     })),
   );
 
-// W6 — Layout demos (shell chrome variants; each flips the site-wide layout on mount).
+// Layout demos (shell chrome variants; each flips the site-wide layout on mount).
 const verticalLayoutPage = () =>
   lazyPage(() =>
     import("@/features/layouts/layout-demo-page").then((m) => ({
@@ -761,7 +761,7 @@ const hoveredLayoutPage = () =>
     })),
   );
 
-// W5 — Components showcase route table (78 static, authenticated-only pages).
+// Components showcase route table (78 static, authenticated-only pages).
 const showcaseRoutes = [
   {
     path: "/components/base/buttons",
@@ -1312,7 +1312,7 @@ const showcaseRoutes = [
 ].map(({ path, loader }) => ({ path, element: lazyPage(loader) }));
 
 /*
- * SPA routes (E2 §4). Guest screens live outside the authenticated shell;
+ * SPA routes. Guest screens live outside the authenticated shell;
  * everything under <AuthedRoot> requires a session (401 on initial load →
  * redirect to /login with return; 401 mid-work → re-login dialog). Every route
  * declares its permission; missing right renders the 403 archetype in place.
@@ -1321,7 +1321,7 @@ const showcaseRoutes = [
 function AuthedRoot() {
   return (
     <AuthProvider>
-      {/* mfa_required_roles: no shell until 2FA is enrolled (D:auth §6) */}
+      {/* mfa_required_roles: no shell until 2FA is enrolled */}
       <MfaEnrollGate>
         <AppShell />
       </MfaEnrollGate>
@@ -1380,7 +1380,7 @@ export const router = createBrowserRouter(
       ],
     },
     {
-      // W6 — Public marketing landing pages: own header/footer, no auth guard.
+      // Public marketing landing pages: own header/footer, no auth guard.
       element: <LandingLayout />,
       errorElement: <RouteErrorPage />,
       children: [
@@ -1434,18 +1434,18 @@ export const router = createBrowserRouter(
             <RequirePermission perm="ai.use">{aiPage()}</RequirePermission>
           ),
         },
-        // Help: any authenticated user, no permission gate (D:help §6).
+        // Help: any authenticated user, no permission gate.
         { path: "/help", element: helpPage() },
         { path: "/help/:module/:page", element: helpPage() },
         { path: "/ui-kit", element: uiKitPage() },
-        // W6 — Layout demos (any authenticated user, no perm gate). Each route flips the
+        // Layout demos (any authenticated user, no perm gate). Each route flips the
         // shell layout; they live under AuthedRoot so the app-shell wraps them.
         { path: "/layouts/vertical", element: verticalLayoutPage() },
         { path: "/layouts/horizontal", element: horizontalLayoutPage() },
         { path: "/layouts/detached", element: detachedLayoutPage() },
         { path: "/layouts/two-column", element: twoColumnLayoutPage() },
         { path: "/layouts/hovered", element: hoveredLayoutPage() },
-        // W5 — Components showcase (any authenticated user, no perm gate).
+        // Components showcase (any authenticated user, no perm gate).
         ...showcaseRoutes,
         {
           path: "/users",
@@ -2099,7 +2099,7 @@ export const router = createBrowserRouter(
         },
         // States showcase: presentational demo, any authenticated user (no gate).
         { path: "/showcase/states", element: statesPage() },
-        // W1 utility pages: any authenticated user (no permission gate).
+        // Utility pages: any authenticated user (no permission gate).
         { path: "/starter", element: starterPage() },
         { path: "/sitemap", element: sitemapPage() },
         { path: "/team", element: teamPage() },
@@ -2107,7 +2107,7 @@ export const router = createBrowserRouter(
         { path: "/faq", element: faqPage() },
         { path: "/search-results", element: searchResultsPage() },
         { path: "/gallery", element: galleryPage() },
-        // W1 blog: any authenticated user (no permission gate).
+        // Blog: any authenticated user (no permission gate).
         { path: "/blog/list", element: blogListPage() },
         { path: "/blog/grid", element: blogGridPage() },
         { path: "/blog/:id", element: blogOverviewPage() },

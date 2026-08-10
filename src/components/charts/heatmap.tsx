@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 /*
- * Grid heatmap (W5 charts showcase). A lightweight, dependency-free matrix whose
+ * Grid heatmap for the charts showcase. A lightweight, dependency-free matrix whose
  * cell intensity maps a value onto a single --chart-* token via color-mix — so
  * it stays on-palette in both light and dark skins. No Recharts primitive covers
  * a categorical heatmap, so this is a custom composition built on CSS grid.

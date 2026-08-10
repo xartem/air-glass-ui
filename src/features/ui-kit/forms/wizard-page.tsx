@@ -21,7 +21,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Wizard showcase (W5): the standalone Stepper indicator wired to interactive
+ * Wizard showcase: the standalone Stepper indicator wired to interactive
  * next/prev state, plus the shared WizardDialog (the modal step shell). Both are
  * the canonical primitives — screens compose these, never a bespoke wizard.
  */

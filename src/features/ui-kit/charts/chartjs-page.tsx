@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * "Chart.js" showcase (W5): this template ships Recharts, not Chart.js. This page
+ * "Chart.js" showcase: this template ships Recharts, not Chart.js. This page
  * makes the substitution explicit and renders the equivalent chart types (line,
  * bar, doughnut) with the shared Recharts compositions on --chart-* tokens.
  */

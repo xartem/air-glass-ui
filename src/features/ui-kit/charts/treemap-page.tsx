@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Treemap showcase (W5): the shared MarketTreemap composition (Recharts Treemap
+ * Treemap showcase: the shared MarketTreemap composition (Recharts Treemap
  * with a token-filled custom tile). Tiles cycle the --chart-* palette; area
  * encodes each item's share of the whole.
  */

@@ -33,11 +33,11 @@ import { DashboardCustomize } from "./dashboard-customize";
 import { DashboardWidgetCard } from "./dashboard-widget-card";
 
 /*
- * Dashboard landing (UI:dashboard §2): reachable by ANY authenticated user —
- * there is no dashboard.view permission by design (D:dashboard §9), so the
+ * Dashboard landing: reachable by ANY authenticated user —
+ * there is no dashboard.view permission by design, so the
  * post-login redirect and the 403 screen's home button can never dead-end.
  * Quick actions + a 12-col widget grid; every widget loads independently.
- * ?customize={role_key} deep-links into the per-role customize mode (E2 §6).
+ * ?customize={role_key} deep-links into the per-role customize mode.
  */
 
 /** Client mapping of `api` action slugs to api-client calls (cache.clear today). */
@@ -61,7 +61,7 @@ export function DashboardPage() {
     enabled: canManage && customizeParam !== null,
   });
 
-  // Without dashboard.manage or with an unknown role key the param is ignored (UI:dashboard §2).
+  // Without dashboard.manage or with an unknown role key the param is ignored.
   const customizeRole =
     canManage &&
     customizeParam &&
@@ -118,7 +118,7 @@ function DashboardHome({ onCustomize }: { onCustomize: () => void }) {
     queryKey: ["dashboard"],
     queryFn: () => api.dashboard.get(),
   });
-  // Global period (D:dashboard §4): the window applies uniformly; only period-aware widgets react.
+  // Global period: the window applies uniformly; only period-aware widgets react.
   const [period, setPeriod] = useState<Period>("month");
 
   const widgets = query.data?.widgets ?? [];
@@ -185,7 +185,7 @@ function DashboardHome({ onCustomize }: { onCustomize: () => void }) {
   );
 }
 
-/* ---- global period picker (UI:dashboard §2): presets only (week/month/quarter) ---- */
+/* ---- global period picker: presets only (week/month/quarter) ---- */
 
 const PERIODS: Period[] = ["week", "month", "quarter"];
 
@@ -215,7 +215,7 @@ function PeriodTabs({
   );
 }
 
-/* ---- quick actions row (UI:dashboard §2): first N inline, the rest in a Popover ---- */
+/* ---- quick actions row: first N inline, the rest in a Popover ---- */
 
 function QuickActions({ actions }: { actions: DashboardAction[] }) {
   const [confirmAction, setConfirmAction] = useState<DashboardAction | null>(
@@ -276,7 +276,7 @@ function QuickActions({ actions }: { actions: DashboardAction[] }) {
         </Popover>
       ) : null}
 
-      {/* Only cache.clear carries confirm today (UI:dashboard §4). */}
+      {/* Only cache.clear carries confirm today. */}
       <ConfirmDialog
         open={confirmAction !== null}
         onOpenChange={(open) => !open && setConfirmAction(null)}

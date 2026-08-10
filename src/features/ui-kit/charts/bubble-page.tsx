@@ -19,7 +19,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Bubble chart showcase (W5): a Recharts ScatterChart where a third dimension
+ * Bubble chart showcase: a Recharts ScatterChart where a third dimension
  * drives the marker size via ZAxis. A single series and a two-group comparison,
  * each bubble filled from a --chart-* token.
  */

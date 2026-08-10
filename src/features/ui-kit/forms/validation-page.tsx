@@ -12,7 +12,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Validation showcase (W5): a LIVE React Hook Form + Zod form. zodResolver drives
+ * Validation showcase: a LIVE React Hook Form + Zod form. zodResolver drives
  * per-field inline errors (rendered by FormField, WCAG 3.3.1), and a valid submit
  * toasts success then resets. Self-contained — nothing leaves the browser.
  */

@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router";
 import type { SortState } from "@/components/data-table";
 
 /*
- * useListParams (E2 §6): list state — search, page, sort, filters — lives in the
+ * useListParams: list state — search, page, sort, filters — lives in the
  * URL so deep-links and Back work. Changing the search text or any filter resets
  * the page; the search input is debounced (250ms) before it hits the URL/query.
  */

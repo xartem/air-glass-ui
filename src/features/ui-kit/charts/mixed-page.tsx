@@ -21,7 +21,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Mixed chart showcase (W5): Recharts ComposedChart combining columns with a
+ * Mixed chart showcase: Recharts ComposedChart combining columns with a
  * line, and columns with a trend area. Bars, line and area each resolve their
  * colour from a --chart-* token.
  */

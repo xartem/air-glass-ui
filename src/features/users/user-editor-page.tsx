@@ -30,10 +30,10 @@ import { generatePassword } from "@/lib/password";
 import { roleDisplayName } from "@/lib/role-label";
 
 /*
- * /users/new · /users/{id} (UI:users-roles §2): the user editor. Fields are
+ * /users/new · /users/{id}: the user editor. Fields are
  * plain controlled inputs (settings-group-form pattern) with per-field 422
  * mapping. On create, a generated password is shown in clear text (no email
- * channel). Editing yourself locks role + active (D:users §4), and the sole
+ * channel). Editing yourself locks role + active, and the sole
  * admin cannot be demoted — both are also server-enforced.
  */
 
@@ -285,7 +285,7 @@ export function UserEditorPage() {
     </Panel>
   );
 
-  // Lost 2FA device: users.manage resets the target's 2FA from the card (D:auth §6)
+  // Lost 2FA device: users.manage resets the target's 2FA from the card
   const securityBody =
     !isNew && !loading && userQuery.data?.mfa_enabled && !isSelf ? (
       <Panel

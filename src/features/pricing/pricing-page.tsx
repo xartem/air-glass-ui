@@ -84,7 +84,7 @@ function price(value: number, locale: string): string {
 
 /**
  * The billing toggle + three tier cards — shared by the `/pricing` screen and the public
- * landing pages (W6). Self-contained: owns its billing-cycle state and localized prices.
+ * landing pages. Self-contained: owns its billing-cycle state and localized prices.
  */
 export function PricingPlans() {
   const locale = useLocale();

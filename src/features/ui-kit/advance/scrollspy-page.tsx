@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * ScrollSpy showcase (W5): the useScrollSpy gap hook highlights the anchor for
+ * ScrollSpy showcase: the useScrollSpy gap hook highlights the anchor for
  * the section currently in view via IntersectionObserver. Clicking an anchor
  * scrolls its section into view. The hook logs its own active changes.
  */

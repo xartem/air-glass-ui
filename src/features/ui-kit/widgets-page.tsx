@@ -15,7 +15,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Widgets showcase (W5): the four dashboard widget archetypes (StatCard /
+ * Widgets showcase: the four dashboard widget archetypes (StatCard /
  * ChartCard / ListCard / StatusCard) laid out on the shared WidgetGrid, then
  * the size-tier ladder and the loading / error / empty contract. Data below is
  * LOCAL static demo content — screens feed these cards from their module payload.

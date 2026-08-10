@@ -6,11 +6,11 @@ import { html } from "@codemirror/lang-html";
 import { cn } from "@/lib/utils";
 
 /*
- * CodeEditor (E2 §2/§7): the ONLY place @codemirror/* is imported — code fields
+ * CodeEditor: the ONLY place @codemirror/* is imported — code fields
  * everywhere embed <CodeEditor>, never touch the engine directly (same rule as
  * RichTextEditor). CodeMirror 6 (MIT). `html()` also highlights embedded <script>
  * (JS) and <style> (CSS). This module is loaded lazily by consumers so the editor
- * stays out of the main bundle (E2 §2 bundle budget).
+ * stays out of the main bundle (bundle budget).
  */
 export function CodeEditor({
   value,
@@ -25,7 +25,7 @@ export function CodeEditor({
   minHeight?: number;
   className?: string;
   ariaLabel?: string;
-  /** Read-only viewer mode — used by the showcase "Show code" toggle (W5). */
+  /** Read-only viewer mode — used by the showcase "Show code" toggle. */
   readOnly?: boolean;
 }) {
   const parentRef = useRef<HTMLDivElement>(null);

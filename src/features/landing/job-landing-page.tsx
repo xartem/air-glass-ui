@@ -23,7 +23,7 @@ import { useLocale } from "@/lib/use-locale";
 import type { NavIcon } from "@/app/nav";
 
 /*
- * Job landing (W6, MENU-SPEC §2.3). Presentational job-board marketing page on the shared
+ * Job landing. Presentational job-board marketing page on the shared
  * LandingLayout, reusing the Jobs slice's gradient avatars, department/type labels and salary
  * formatter. Static fixtures — company/location names are proper nouns kept verbatim; the
  * hero search bar is decorative (no data flow).

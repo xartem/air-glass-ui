@@ -35,10 +35,10 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * /help (UI:help §2, D:help §6): user docs of enabled modules, read-only —
+ * /help: user docs of enabled modules, read-only —
  * no SaveBar/dirty-guard by design. Left panel: search (debounced, swaps the
  * tree for snippet results) + collapsible groups mirroring the menu map.
- * Right panel: the article. Selected article and query live in the URL (E4).
+ * Right panel: the article. Selected article and query live in the URL.
  */
 
 const GROUP_ICONS: Record<string, typeof FileText> = {
@@ -285,7 +285,7 @@ function ArticlePane({ module, page }: { module: string; page: string }) {
   const article = query.data;
   return (
     <article>
-      {/* Section line sits under the H1 (UI:help §2) */}
+      {/* Section line sits under the H1 */}
       <h2 className="text-[24px] leading-tight font-semibold tracking-tight text-balance">
         {article.title}
       </h2>
@@ -344,7 +344,7 @@ export function HelpPage() {
   });
   const groups = useMemo(() => treeQuery.data ?? [], [treeQuery.data]);
 
-  // Keep ?q= in the URL (deep-linkable search state, E4).
+  // Keep ?q= in the URL (deep-linkable search state).
   useEffect(() => {
     setSearchParams(
       (prev) => {
@@ -401,7 +401,7 @@ export function HelpPage() {
         {t("help.subtitle")}
       </p>
 
-      {/* Mobile: the tree lives in a Sheet behind the "Sections" button (UI:help §2). */}
+      {/* Mobile: the tree lives in a Sheet behind the "Sections" button. */}
       <div className="lg:hidden">
         <Button variant="outline" onClick={() => setMobileNavOpen(true)}>
           <ListTree />

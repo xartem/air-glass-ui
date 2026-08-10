@@ -1,11 +1,11 @@
 /*
- * Typed Admin API client (E2 §6). Screens never call fetch directly — they use
+ * Typed Admin API client. Screens never call fetch directly — they use
  * the endpoint functions from `@/api`. Cross-cutting behavior lives here:
- *   401 mid-session → re-login modal (request is parked and retried, E2 §5)
+ *   401 mid-session → re-login modal (the request is parked and retried)
  *   403             → surfaced as ApiError for the global toast handler
  *   422             → ValidationError with per-field messages for setError
- *   409             → ConflictError (optimistic-lock dialog, E4 §1)
- * CSRF: X-CSRF-Token header from the XSRF-TOKEN cookie on every mutation (B7 §2).
+ *   409             → ConflictError (optimistic-lock dialog)
+ * CSRF: X-CSRF-Token header from the XSRF-TOKEN cookie on every mutation.
  *
  * When VITE_API_REAL is not set in dev, requests are served by the in-memory
  * mock layer (`./mock`) — screens cannot tell the difference by design.
@@ -51,7 +51,7 @@ function readCookie(name: string): string | null {
   return match ? decodeURIComponent(match[1]) : null;
 }
 
-/* ---- re-login coordination (E2 §5: 401 mid-work never redirects) ---- */
+/* ---- re-login coordination (401 mid-work never redirects) ---- */
 
 type ReloginListener = () => void;
 const reloginListeners = new Set<ReloginListener>();
@@ -151,7 +151,7 @@ export async function apiFetch<T>(
   return (await response.json()) as T;
 }
 
-/* ---- SSE-over-POST (D:ai §5: the agent reply streams on the message POST) ---- */
+/* ---- SSE-over-POST (the agent reply streams on the message POST) ---- */
 
 export interface StreamOptions {
   body?: unknown;

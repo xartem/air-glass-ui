@@ -47,8 +47,8 @@ import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
 /*
- * AiChatView (UI:ai §2, D:ai §4a/§4b/§5): one conversation — SSE-streamed
- * replies, tool rows, typed blocks, the plan gate and destructive confirms.
+ * AiChatView: one conversation — SSE-streamed replies, tool rows, typed
+ * blocks, the plan gate and destructive confirms.
  * Shared by the slide-over panel and the /ai page. While a stream is active the
  * turn renders from local event state; `done` (or an abort/error) re-reads the
  * history from the server — the single source of truth.
@@ -60,7 +60,7 @@ function optionalT(key: string): string | undefined {
   return translated === key ? undefined : translated;
 }
 
-/** Up to 10 files per message (D:ai §4d). */
+/** Up to 10 files per message. */
 const MAX_ATTACHMENTS = 10;
 
 function formatSize(bytes: number): string {
@@ -70,7 +70,7 @@ function formatSize(bytes: number): string {
 }
 
 /**
- * One attachment chip (D:ai §4d): image thumbnail or type icon + name + size.
+ * One attachment chip: image thumbnail or type icon + name + size.
  * A draft chip (before send) shows the × to remove; a sent chip links to the
  * file in the media library (the attachment lives there, not as a raw blob).
  */
@@ -105,7 +105,7 @@ function AttachmentChip({
       {onRemove ? (
         <span className="flex min-w-0 items-center gap-1.5">{body}</span>
       ) : (
-        // Sent chip → the file card in the media library (UI:ai §2).
+        // Sent chip → the file card in the media library.
         <Link
           to="/media"
           className="flex min-w-0 items-center gap-1.5 hover:underline"
@@ -127,7 +127,7 @@ function AttachmentChip({
   );
 }
 
-/** Empty-chat example prompts, filtered by the user's permissions (UI:ai §2). */
+/** Empty-chat example prompts, filtered by the user's permissions. */
 const EXAMPLES: { key: string; perm?: string }[] = [
   { key: "ai.example.pages", perm: "pages.manage" },
   { key: "ai.example.products", perm: "collections.products.view" },
@@ -139,7 +139,7 @@ interface StreamState {
   status: "streaming" | "reconnecting";
   /** Optimistic echo of the just-sent user text; null for plan-approve streams. */
   userText: string | null;
-  /** Optimistic echo of the just-sent attachments (D:ai §4d). */
+  /** Optimistic echo of the just-sent attachments. */
   userAttachments: AiAttachment[];
   parts: AiMessagePart[];
 }
@@ -493,7 +493,7 @@ function MessageView({
   return (
     <div className="space-y-2">
       <AssistantParts parts={message.parts} handlers={handlers} />
-      {/* Soft daily-cap message: settings link only for ai.manage (UI:ai §2) */}
+      {/* Soft daily-cap message: settings link only for ai.manage */}
       {message.cost_limited && canManage ? (
         <Link
           to="/system/ai"
@@ -537,12 +537,12 @@ export function AiChatView({
   const [draft, setDraft] = useState("");
   const [attachments, setAttachments] = useState<AiAttachment[]>([]);
   const [stream, setStream] = useState<StreamState | null>(null);
-  // The × on the chip disables context until the end of the dialog (UI:ai §2)
+  // The × on the chip disables context until the end of the dialog
   const [contextOn, setContextOn] = useState(true);
   const [pendingTool, setPendingTool] = useState<AiBlockButton | null>(null);
   const [actionBusy, setActionBusy] = useState(false);
 
-  // Attaching goes through the media library and is gated by media.manage (D:ai §4d)
+  // Attaching goes through the media library and is gated by media.manage
   const canAttach = useCan("media.manage");
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -556,7 +556,7 @@ export function AiChatView({
     const room = MAX_ATTACHMENTS - attachments.length;
     const files = [...list];
     if (files.length > room) toast.error(t("ai.attachLimit"));
-    // Real backend: each file → MediaService.upload → media_id (D:ai §4d); the
+    // Real backend: each file → MediaService.upload → media_id; the
     // mock synthesizes that upload result locally (object URL preview for images).
     const accepted: AiAttachment[] = files
       .slice(0, Math.max(0, room))
@@ -613,7 +613,7 @@ export function AiChatView({
       });
     } catch (cause) {
       // Dropped stream → "reconnecting…", then the history refetch below
-      // restores the turn from the server (UI:ai §2)
+      // restores the turn from the server
       if (!(cause instanceof DOMException && cause.name === "AbortError")) {
         setStream((current) =>
           current ? { ...current, status: "reconnecting" } : current,
@@ -773,7 +773,7 @@ export function AiChatView({
 
       <div
         className="space-y-2 border-t p-3"
-        // Drag-drop attachments onto the input area (UI:ai §2); no-op without media.manage.
+        // Drag-drop attachments onto the input area; no-op without media.manage.
         onDragOver={canAttach ? (event) => event.preventDefault() : undefined}
         onDrop={
           canAttach
@@ -833,7 +833,7 @@ export function AiChatView({
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
             placeholder={t("ai.placeholder")}
-            // Ctrl/⌘+V of files attaches them (UI:ai §2)
+            // Ctrl/⌘+V of files attaches them
             onPaste={
               canAttach
                 ? (event) => {
@@ -889,7 +889,7 @@ export function AiChatView({
         ) : null}
       </div>
 
-      {/* Destructive suggested-tool button → standard confirm flow (D:ai §4a) */}
+      {/* Destructive suggested-tool button → standard confirm flow */}
       <ConfirmDialog
         open={pendingTool !== null}
         onOpenChange={(open) => !open && setPendingTool(null)}

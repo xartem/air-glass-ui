@@ -32,10 +32,10 @@ import { roleDisplayName } from "@/lib/role-label";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * /users (UI:users-roles §2): admin accounts. Filters (role, active, search)
+ * /users: admin accounts. Filters (role, active, search)
  * live in the URL. Row "⋯" carries edit / change-password / impersonate /
  * (de)activate — impersonation and the invariant guards (self, last admin) are
- * server-enforced (D:users §4, C3 §10); ineligible actions are hidden per row.
+ * server-enforced; ineligible actions are hidden per row.
  */
 
 export function UsersListPage() {
@@ -251,7 +251,7 @@ export function UsersListPage() {
       destructive: true,
       permission: "users.manage",
       hidden: (user) => !user.is_active,
-      // Self / last active admin: disabled with a hint, not hidden (UI:users-roles §2).
+      // Self / last active admin: disabled with a hint, not hidden.
       disabled: (user) => user.is_self || user.is_last_admin,
       disabledHint: (user) =>
         user.is_self
@@ -291,7 +291,7 @@ export function UsersListPage() {
         }}
       />
 
-      {/* Search + filters live in the panel header (E6 §1A), like /system/activity */}
+      {/* Search + filters live in the panel header, like /system/activity */}
       <Panel
         icon={Users}
         title={t("nav.users")}

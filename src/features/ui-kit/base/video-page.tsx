@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Video showcase (W5): responsive embeds that preserve their ratio via
+ * Video showcase: responsive embeds that preserve their ratio via
  * AspectRatio. A token placeholder stands in for the media — no network.
  */
 export function VideoPage() {

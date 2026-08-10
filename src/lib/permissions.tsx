@@ -1,8 +1,8 @@
 import { createContext, useContext, type ReactNode } from "react";
 
 /*
- * Permissions gating (E2 §8): useCan / <Can> is the ONLY way to check rights in the UI.
- * Real enforcement happens on the server (B7 authorize) — this is UX only.
+ * Permissions gating: useCan / <Can> is the ONLY way to check rights in the UI.
+ * Real enforcement happens on the server — this is UX only.
  * Permissions come from GET /api/me; `null` set means "allow all" (dev / ui-kit).
  */
 

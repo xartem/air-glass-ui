@@ -7,7 +7,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Buttons showcase (W5): every Button variant, size, icon layout and interactive
+ * Buttons showcase: every Button variant, size, icon layout and interactive
  * state, each as a ComponentDemo with a live preview + literal code sample.
  */
 export function ButtonsPage() {

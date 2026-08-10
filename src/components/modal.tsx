@@ -12,7 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 
 /*
- * Modal (E6 §1E): the single dialog shell — title, body, actions bottom-right
+ * Modal: the single dialog shell — title, body, actions bottom-right
  * (primary rightmost, "Cancel" to its left). Screens never style their own dialogs.
  */
 
@@ -32,7 +32,7 @@ export function Modal({
   title: string;
   description?: string;
   children?: ReactNode;
-  /** Action buttons; render primary action LAST so it sits bottom-right (E6 §1E). */
+  /** Action buttons; render primary action LAST so it sits bottom-right. */
   footer?: ReactNode;
   size?: "default" | "lg";
 }) {

@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Candlestick showcase (W5): OHLC price bars composed with the shared
+ * Candlestick showcase: OHLC price bars composed with the shared
  * Candlestick — up/down bodies use the --status-* tokens, on a --chart tokened
  * grid. A weekly and an intraday sample series.
  */

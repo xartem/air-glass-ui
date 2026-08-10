@@ -7,7 +7,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Input masks showcase (W5): the MaskedInput control formatting keystrokes for
+ * Input masks showcase: the MaskedInput control formatting keystrokes for
  * card / expiry / phone / amount masks. Each field is controlled through useState
  * and stores the already-formatted display string; unmask() recovers the raw
  * value at submit time (see src/lib/input-mask.ts).

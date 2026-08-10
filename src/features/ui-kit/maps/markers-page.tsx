@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Maps — markers & choropleth (W5): token-styled markers with popups, plus
+ * Maps — markers & choropleth: token-styled markers with popups, plus
  * graduated circles standing in for a choropleth data layer.
  */
 

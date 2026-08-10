@@ -37,7 +37,7 @@ import { cn } from "@/lib/utils";
 import { devDebug } from "@/lib/debug";
 
 /*
- * Theme Customizer (W0.5): a right-side floating drawer to live-tweak the site-wide
+ * Theme Customizer: a right-side floating drawer to live-tweak the site-wide
  * admin look from anywhere. It reuses the appearance store (api.appearance +
  * applyAppearance) rather than a parallel state layer, driving a draft-based live
  * preview and restoring the saved config when closed unsaved. Dark mode lives outside

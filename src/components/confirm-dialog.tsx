@@ -14,8 +14,8 @@ import {
 import { t } from "@/lib/i18n";
 
 /*
- * ConfirmDialog (E6 §3.1): <ConfirmDialog title description confirmLabel destructive? onConfirm />
- * Every destructive action MUST go through this dialog (E6 §2) — never a bare onClick delete.
+ * ConfirmDialog: <ConfirmDialog title description confirmLabel destructive? onConfirm />
+ * Every destructive action MUST go through this dialog — never a bare onClick delete.
  */
 
 export function ConfirmDialog({

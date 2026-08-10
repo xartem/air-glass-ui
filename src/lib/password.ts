@@ -1,7 +1,7 @@
 /*
- * Password generator for the user editor and change-password dialog
- * (UI:users-roles §2–3). 16 chars by default, shown in clear text so the
- * operator can hand it over — there is no email reset channel (D:users §6).
+ * Password generator for the user editor and change-password dialog. 16 chars
+ * by default, shown in clear text so the operator can hand it over — there is
+ * no email reset channel.
  * Uses crypto.getRandomValues (no Math.random) and an unambiguous alphabet
  * (no 0/O, 1/l/I) to keep hand-transcribed passwords reliable.
  */

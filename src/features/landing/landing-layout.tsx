@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
 /*
- * Public landing layout (W6, MENU-SPEC §2.3). A marketing chrome — own header + footer,
+ * Public landing layout. A marketing chrome — own header + footer,
  * NO sidebar and NO auth guard — sitting outside the authenticated shell (sibling of the
  * PublicLayout status/error/legal group). Fully presentational and token-styled: the mesh
  * backdrop is painted here so every landing page inherits it. Light + dark; the header

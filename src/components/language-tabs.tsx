@@ -7,7 +7,7 @@ import {
 } from "@/components/translation-dots";
 
 /*
- * LanguageTabs (E6 §3.1, C1 §5): translatable fields render inside these tabs,
+ * LanguageTabs: translatable fields render inside these tabs,
  * one tab per active content locale with a translation-state indicator.
  * Saving one locale never wipes the others — the form submits per-locale payloads.
  * Content locales come from the API (locale.active) — they are NOT the admin UI locales.

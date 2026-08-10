@@ -9,7 +9,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Highlight showcase (W5): the Highlight gap util wraps every case-insensitive
+ * Highlight showcase: the Highlight gap util wraps every case-insensitive
  * match of a live query in a token-styled <mark>. A search Input drives the
  * query; matching runs on React text nodes only (injection-safe). Static demo.
  */

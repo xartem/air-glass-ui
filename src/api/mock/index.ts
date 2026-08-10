@@ -290,7 +290,7 @@ const USER_KEY = "mock.user";
 const FAILS_KEY = "mock.loginFails";
 const MAINTENANCE_KEY = "mock.maintenance";
 const IMPERSONATE_KEY = "mock.impersonate";
-/** Password accepted, 2FA pending (D:auth §6) — holds the user key, no session yet. */
+/** Password accepted, 2FA pending — holds the user key, no session yet. */
 const PENDING_2FA_KEY = "mock.pending2fa";
 /** Scenario switch: JSON array of role keys that must have 2FA (security.mfa_required_roles). */
 const MFA_REQUIRED_ROLES_KEY = "mock.mfaRequiredRoles";
@@ -359,9 +359,9 @@ function buildMe(): Me {
     enroll_required: requiredRoles.includes(me.user.role.key) && !enabled,
   };
   // Demo default: the AI module counts as configured; 'mock.aiAvailable'='0'
-  // simulates the no-LLM-key state (panel button hidden, UI:ai §1).
+  // simulates the no-LLM-key state (panel button hidden).
   me.ai_available = localStorage.getItem("mock.aiAvailable") !== "0";
-  // Admin renders absolute times in the site timezone (C7 §4), not the operator's browser.
+  // Admin renders absolute times in the site timezone, not the operator's browser.
   me.timezone = String(storedSettingValue("site.timezone") ?? "UTC");
   return me;
 }
@@ -412,7 +412,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
         });
       }
       localStorage.removeItem(FAILS_KEY);
-      // Confirmed 2FA: password alone does not open a session (D:auth §6) —
+      // Confirmed 2FA: password alone does not open a session —
       // the pending state waits for /auth/2fa/challenge.
       if (mfaEnabled(MOCK_USERS[userKey].user.id)) {
         localStorage.setItem(PENDING_2FA_KEY, userKey);
@@ -613,7 +613,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
       return article;
     },
   },
-  /* ---- dashboard (D:dashboard §6) ---- */
+  /* ---- dashboard ---- */
   {
     method: "GET",
     pattern: /^\/dashboard$/,
@@ -690,7 +690,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
         rows = rows.filter((row) => row.created_at >= String(query.from));
       if (query.to)
         rows = rows.filter((row) => row.created_at <= `${query.to}T23:59:59Z`);
-      // Fixture is newest-first; only the date column is sortable (UI:shell-auth §2).
+      // Fixture is newest-first; only the date column is sortable.
       if (query.dir === "asc") rows.reverse();
       const page = Number(query.page ?? 1);
       const perPage = 15;
@@ -851,7 +851,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- appearance (E1 §2.2.1) ---- */
+  /* ---- appearance ---- */
   {
     method: "GET",
     pattern: /^\/appearance$/,
@@ -869,7 +869,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- users (D:users §6) ---- */
+  /* ---- users ---- */
   {
     method: "GET",
     pattern: /^\/users$/,
@@ -916,7 +916,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- roles & permissions (D:users §6) ---- */
+  /* ---- roles & permissions ---- */
   {
     method: "GET",
     pattern: /^\/roles$/,
@@ -972,7 +972,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- ai (D:ai §5; streaming endpoints live in handleMockStream below) ---- */
+  /* ---- ai (streaming endpoints live in handleMockStream below) ---- */
   {
     method: "GET",
     pattern: /^\/ai\/conversations$/,
@@ -1019,7 +1019,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     handler: (_options, params) => {
       requireSession();
       const result = confirmAiAction(Number(params[0]));
-      // Every agent action lands in the audit trail flagged as AI (C8, D:ai §10a)
+      // Every agent action lands in the audit trail flagged as AI
       pushActivity({
         actor: null,
         is_ai: true,
@@ -1088,7 +1088,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- profile & impersonation (D:users §6, D:auth §6) ---- */
+  /* ---- profile & impersonation ---- */
   {
     method: "PUT",
     pattern: /^\/profile$/,
@@ -1324,7 +1324,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- shop: ecommerce extension (W3) ---- */
+  /* ---- shop: ecommerce extension ---- */
   {
     method: "GET",
     pattern: /^\/shop\/products\/(\d+)\/reviews$/,
@@ -1439,7 +1439,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- dashboard verticals (W2) ---- */
+  /* ---- dashboard verticals ---- */
   {
     method: "GET",
     pattern: /^\/dashboards\/([a-z]+)$/,
@@ -1591,7 +1591,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- W1 utility pages (team, timeline, FAQ) ---- */
+  /* ---- utility pages (team, timeline, FAQ) ---- */
   {
     method: "GET",
     pattern: /^\/pages\/team$/,
@@ -1638,7 +1638,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- W1 blog ---- */
+  /* ---- blog ---- */
   {
     method: "GET",
     pattern: /^\/blog$/,
@@ -1676,7 +1676,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- projects (W3) ---- */
+  /* ---- projects ---- */
   {
     method: "GET",
     pattern: /^\/projects$/,
@@ -1732,7 +1732,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- tasks (W3) ---- */
+  /* ---- tasks ---- */
   {
     method: "GET",
     pattern: /^\/tasks$/,
@@ -1802,7 +1802,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- CRM (W3) ---- */
+  /* ---- CRM ---- */
   {
     method: "GET",
     pattern: /^\/crm\/contacts$/,
@@ -1924,7 +1924,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- calendar (W3) ---- */
+  /* ---- calendar ---- */
   {
     method: "GET",
     pattern: /^\/calendar\/events$/,
@@ -1959,7 +1959,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- email / mailbox (W3) ---- */
+  /* ---- email / mailbox ---- */
   {
     method: "GET",
     pattern: /^\/email$/,
@@ -2017,7 +2017,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- support tickets (W3) ---- */
+  /* ---- support tickets ---- */
   {
     method: "GET",
     pattern: /^\/support\/tickets$/,
@@ -2103,7 +2103,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- to-do (W3) ---- */
+  /* ---- to-do ---- */
   {
     method: "GET",
     pattern: /^\/todo$/,
@@ -2146,7 +2146,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- api keys (W3) ---- */
+  /* ---- api keys ---- */
   {
     method: "GET",
     pattern: /^\/api-keys$/,
@@ -2172,7 +2172,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- crypto (W4 mono-niche) ---- */
+  /* ---- crypto ---- */
   {
     method: "GET",
     pattern: /^\/crypto\/transactions$/,
@@ -2293,7 +2293,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- nft (W4 niche) ---- */
+  /* ---- nft ---- */
   {
     method: "GET",
     pattern: /^\/nft\/items$/,
@@ -2414,7 +2414,7 @@ const routes: Array<{ method: string; pattern: RegExp; handler: Handler }> = [
     },
   },
 
-  /* ---- jobs / recruitment (W4 niche) ---- */
+  /* ---- jobs / recruitment ---- */
   {
     method: "GET",
     pattern: /^\/jobs\/stats$/,
@@ -2591,7 +2591,7 @@ export async function handleMockRequest<T>(
   throw new ApiError(404, `Mock route not implemented: ${method} ${path}`);
 }
 
-/** SSE mock (D:ai §5): scripted event sequences for message send and plan approve. */
+/** SSE mock: scripted event sequences for message send and plan approve. */
 export async function handleMockStream(
   path: string,
   body: unknown,

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /*
- * EmptyState (E6 §3.1): <EmptyState icon title description action? />
+ * EmptyState: <EmptyState icon title description action? />
  * The single standard "nothing here" view — screens never build their own.
  */
 

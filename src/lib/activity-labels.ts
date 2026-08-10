@@ -2,7 +2,7 @@ import type { ActivityEntry } from "@/api";
 import { t } from "@/lib/i18n";
 
 /*
- * Shared audit-log label helpers (C8 §2): the server stores stable tokens
+ * Shared audit-log label helpers: the server stores stable tokens
  * (`action`, `entity_type`); the UI translates them via t('activity.action.*'/
  * 'activity.entity.*') and falls back to the raw token when no key exists.
  * Used by the /system/activity screen and the dashboard `auth.activity` widget.

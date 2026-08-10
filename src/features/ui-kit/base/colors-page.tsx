@@ -3,7 +3,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Colors showcase (W5): the design-token palette rendered straight from CSS
+ * Colors showcase: the design-token palette rendered straight from CSS
  * custom properties — core surface tokens, the status scale, and the chart
  * palette. Every swatch reads its color from a var(), never a hard-coded hex.
  */

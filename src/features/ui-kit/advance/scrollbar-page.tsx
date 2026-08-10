@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Scrollbar showcase (W5): styled scroll containers built on the shared
+ * Scrollbar showcase: styled scroll containers built on the shared
  * ScrollArea primitive — vertical overflow, horizontal overflow, and a
  * both-axes box. Token borders + custom thin thumbs. Static demos.
  */

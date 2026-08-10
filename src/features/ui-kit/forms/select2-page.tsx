@@ -36,7 +36,7 @@ const TECH_OPTIONS = [
 ];
 
 /*
- * Select2 showcase (W5): the modern replacement for the legacy Select2 plugin —
+ * Select2 showcase: the modern replacement for the legacy Select2 plugin —
  * a searchable single-value Combobox and a searchable multi-value MultiSelect,
  * both controlled through useState. Design-token styling, keyboard accessible.
  */

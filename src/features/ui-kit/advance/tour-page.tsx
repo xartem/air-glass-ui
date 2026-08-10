@@ -8,7 +8,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Tour showcase (W5): the Tour gap primitive — a coach-mark walkthrough over
+ * Tour showcase: the Tour gap primitive — a coach-mark walkthrough over
  * real elements on this page. Steps point at CSS selectors; open state is
  * controlled here. The primitive logs its own step changes internally.
  */

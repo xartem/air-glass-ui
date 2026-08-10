@@ -35,7 +35,7 @@ import {
 } from "lucide-react";
 
 /*
- * Server sends icon slugs (D:dashboard §4: registerWidget/registerAction meta);
+ * Server sends icon slugs (registerWidget/registerAction meta);
  * the SPA maps them to lucide here. An EXPLICIT map — never a dynamic import of
  * the whole lucide set (bundle size). Unknown/empty slug → null, callers fall
  * back silently (widgets: no chip; actions: Zap).

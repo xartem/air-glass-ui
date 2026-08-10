@@ -24,8 +24,8 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * RepeaterField (E6 §3, E2 §7: field type `repeater`) — array of sub-forms,
- * dnd-sortable, add/remove. Sub-form fields come from the field sub-schema (§7),
+ * RepeaterField (field type `repeater`) — array of sub-forms,
+ * dnd-sortable, add/remove. Sub-form fields come from the field sub-schema,
  * rendered by the caller via renderItem.
  */
 

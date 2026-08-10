@@ -1,4 +1,4 @@
-/* Shared formatting for AI usage/cost figures (UI:ai §2–4). */
+/* Shared formatting for AI usage/cost figures. */
 
 export function formatUsd(cost: number, locale: string): string {
   return new Intl.NumberFormat(locale, {

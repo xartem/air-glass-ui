@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 /*
- * ColorPicker (E2 §7: field type `color` → this widget → hex).
+ * ColorPicker (field type `color` → this widget → hex).
  * Native color input as the swatch + hex text field, one control height (42px).
  */
 

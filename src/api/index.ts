@@ -190,7 +190,7 @@ export const api = {
         body: payload,
         guest: true,
       }),
-    /** Second step after 202 mfa_required: TOTP or a one-time recovery code (D:auth §6). */
+    /** Second step after 202 mfa_required: TOTP or a one-time recovery code. */
     challenge2fa: (code: string) =>
       apiFetch<{ ok: true }>("/auth/2fa/challenge", {
         method: "POST",
@@ -244,23 +244,23 @@ export const api = {
         body: payload,
         guest: true,
       }),
-    /** Start impersonating a user (D:auth §6, C3 §10) — eligibility is server-enforced. */
+    /** Start impersonating a user — eligibility is server-enforced. */
     impersonate: (id: number) =>
       apiFetch<{ ok: true }>(`/auth/impersonate/${id}`, { method: "POST" }),
     stopImpersonation: () =>
       apiFetch<{ ok: true }>("/auth/impersonate/stop", { method: "POST" }),
   },
 
-  /* 2FA self-service (D:auth §6): no special permission, any authenticated user. */
+  /* 2FA self-service: no special permission, any authenticated user. */
   mfa: {
     enroll: () => apiFetch<MfaEnrollStart>("/mfa/enroll", { method: "POST" }),
-    /** Returns the 10 recovery codes exactly once (D:auth §4 MfaService). */
+    /** Returns the 10 recovery codes exactly once. */
     confirmEnroll: (code: string) =>
       apiFetch<MfaRecoveryCodes>("/mfa/enroll/confirm", {
         method: "POST",
         body: { code },
       }),
-    /** Disabling requires a fresh TOTP/recovery code (D:auth §6). */
+    /** Disabling requires a fresh TOTP/recovery code. */
     disable: (code: string) =>
       apiFetch<{ ok: true }>("/mfa/disable", {
         method: "POST",
@@ -270,12 +270,12 @@ export const api = {
       apiFetch<MfaRecoveryCodes>("/mfa/recovery-codes", { method: "POST" }),
   },
 
-  /* Dashboard (D:dashboard §6): meta list + per-widget data + per-role layouts. */
+  /* Dashboard: meta list + per-widget data + per-role layouts. */
   dashboard: {
     /** `role` is the customize-mode payload (dashboard.manage): that role's effective set incl. hidden. */
     get: (role?: string) =>
       apiFetch<DashboardPayload>("/dashboard", { query: { role } }),
-    /** `period` (D:dashboard §4) is sent only for period-aware widgets; the server clamps unknown values. */
+    /** `period` is sent only for period-aware widgets; the server clamps unknown values. */
     widget: (key: string, period?: Period) =>
       apiFetch<WidgetData>(`/dashboard/widgets/${key}`, { query: { period } }),
     saveLayout: (roleKey: string, overrides: LayoutOverrides) =>
@@ -289,7 +289,7 @@ export const api = {
       }),
   },
 
-  /* Quick action «Clear cache» (UI:dashboard §3) — the only cache endpoint the SPA needs today. */
+  /* Quick action «Clear cache» — the only cache endpoint the SPA needs today. */
   cache: {
     clear: () => apiFetch<{ ok: true }>("/cache/clear", { method: "POST" }),
   },
@@ -323,11 +323,11 @@ export const api = {
   media: {
     list: (q: string, page: number) =>
       apiFetch<Paginated<MediaListItem>>("/media", { query: { q, page } }),
-    /** Declared image presets + operator overrides for the /settings/media table (D:media §3). */
+    /** Declared image presets + operator overrides for the /settings/media table. */
     presets: () => apiFetch<MediaPresetsPayload>("/media/presets"),
-    /** Manual variant regeneration (D:media §4/§11) — start returns a job, then poll status. */
+    /** Manual variant regeneration — start returns a job, then poll status. */
     regenerate: {
-      /** Optional owner group — omit to rebuild every preset (D:media §11). */
+      /** Optional owner group — omit to rebuild every preset. */
       start: (group?: string) =>
         apiFetch<{ job_id: number; total: number }>("/media/regenerate", {
           method: "POST",
@@ -348,7 +348,7 @@ export const api = {
       }),
   },
 
-  /** Site-wide admin appearance (E1 §2.2.1): style, backgrounds, fine-tune tokens. */
+  /** Site-wide admin appearance: style, backgrounds, fine-tune tokens. */
   appearance: {
     get: () => apiFetch<AppearanceSettings>("/appearance"),
     save: (payload: AppearanceSettings) =>
@@ -376,14 +376,14 @@ export const api = {
       apiFetch<{ ok: true }>(`/users/${id}/deactivate`, { method: "POST" }),
     activate: (id: number) =>
       apiFetch<{ ok: true }>(`/users/${id}/activate`, { method: "POST" }),
-    /** Reset a lost 2FA device (D:auth §6): drops the secret + recovery codes; audited. */
+    /** Reset a lost 2FA device: drops the secret + recovery codes; audited. */
     resetMfa: (id: number) =>
       apiFetch<{ ok: true }>(`/users/${id}/mfa/reset`, { method: "POST" }),
   },
 
   roles: {
     all: () => apiFetch<RoleDetail[]>("/roles"),
-    /** All permission keys of enabled modules, grouped (D:users §6). */
+    /** All permission keys of enabled modules, grouped. */
     permissions: () => apiFetch<Permission[]>("/roles/permissions"),
     create: (payload: CreateRolePayload) =>
       apiFetch<RoleDetail>("/roles", { method: "POST", body: payload }),
@@ -394,7 +394,7 @@ export const api = {
       }),
     remove: (id: number) =>
       apiFetch<{ ok: true }>(`/roles/${id}`, { method: "DELETE" }),
-    /** Idempotent overwrite of a role's permission set (D:users §4 syncPermissions). */
+    /** Idempotent overwrite of a role's permission set. */
     savePermissions: (id: number, keys: string[]) =>
       apiFetch<{ ok: true }>(`/roles/${id}/permissions`, {
         method: "PUT",
@@ -412,7 +412,7 @@ export const api = {
       }),
   },
 
-  /* AI assistant (D:ai §5): conversations, SSE streaming, plan/confirm gates, settings extras. */
+  /* AI assistant: conversations, SSE streaming, plan/confirm gates, settings extras. */
   ai: {
     conversations: () =>
       apiFetch<AiConversationListItem[]>("/ai/conversations"),
@@ -423,7 +423,7 @@ export const api = {
     deleteConversation: (id: number) =>
       apiFetch<{ ok: true }>(`/ai/conversations/${id}`, { method: "DELETE" }),
     /**
-     * The agent reply streams on the POST (SSE, D:ai §5). `conversationId: null`
+     * The agent reply streams on the POST (SSE). `conversationId: null`
      * opens a new conversation server-side — the `created` event carries its id.
      */
     sendMessage: (
@@ -434,7 +434,7 @@ export const api = {
         onEvent: (event: AiStreamEvent) => void;
         signal?: AbortSignal;
       },
-      // Already uploaded to the media library (D:ai §4d) — the message carries media_id[].
+      // Already uploaded to the media library — the message carries media_id[].
       attachments?: AiAttachment[],
     ) =>
       apiStream(`/ai/conversations/${conversationId ?? "new"}/messages`, {
@@ -446,7 +446,7 @@ export const api = {
         onEvent: handlers.onEvent as (event: unknown) => void,
         signal: handlers.signal,
       }),
-    /** Approve streams the execution of the plan's write series (D:ai §4b/§5). */
+    /** Approve streams the execution of the plan's write series. */
     approvePlan: (
       planId: number,
       handlers: {
@@ -464,7 +464,7 @@ export const api = {
       apiFetch<{ ok: true }>(`/ai/actions/${id}/confirm`, { method: "POST" }),
     cancelAction: (id: number) =>
       apiFetch<{ ok: true }>(`/ai/actions/${id}/cancel`, { method: "POST" }),
-    /** Suggested-tool button click (D:ai §4a kind=tool); D:ai §5 names no endpoint yet — see spec note. */
+    /** Suggested-tool button click (block kind `tool`) — the real backend has no dedicated endpoint yet. */
     runTool: (
       conversationId: number,
       tool: string,
@@ -474,7 +474,7 @@ export const api = {
         method: "POST",
         body: { tool, args },
       }),
-    /** Test call with the saved provider/key (UI:ai §4) — toast with the result. */
+    /** Test call with the saved provider/key — toast with the result. */
     test: () => apiFetch<{ ok: boolean }>("/ai/test", { method: "POST" }),
     spend: () => apiFetch<AiSpend>("/ai/spend"),
     findings: () => apiFetch<AiFinding[]>("/ai/findings"),
@@ -532,7 +532,7 @@ export const api = {
       apiFetch<ProductReview[]>(`/shop/products/${id}/reviews`),
   },
 
-  /* Shop cart / checkout (W3): mock session-persisted cart + order placement. */
+  /* Shop cart / checkout: mock session-persisted cart + order placement. */
   cart: {
     get: () => apiFetch<Cart>("/shop/cart"),
     update: (itemId: number, qty: number) =>
@@ -550,7 +550,7 @@ export const api = {
     methods: () => apiFetch<ShippingMethod[]>("/shop/shipping"),
   },
 
-  /* Marketplace vendors (W3). */
+  /* Marketplace vendors. */
   sellers: {
     list: (filters: SellerFilters = {}) =>
       apiFetch<Paginated<SellerListItem>>("/shop/sellers", {
@@ -625,7 +625,7 @@ export const api = {
       apiFetch<AnalyticsPayload>("/analytics", { query: { period } }),
   },
 
-  /* Dashboard verticals (W2): one typed period-scoped payload per vertical. */
+  /* Dashboard verticals: one typed period-scoped payload per vertical. */
   dashboards: {
     get: <V extends DashboardVertical>(vertical: V, period: Period) =>
       apiFetch<DashboardPayloadMap[V]>(`/dashboards/${vertical}`, {
@@ -688,7 +688,7 @@ export const api = {
       }),
   },
 
-  /* W1 utility pages (any authenticated): team directory, activity timeline, FAQ. */
+  /* Utility pages (any authenticated): team directory, activity timeline, FAQ. */
   pages: {
     team: () => apiFetch<TeamMember[]>("/pages/team"),
     timeline: () => apiFetch<TimelineEvent[]>("/pages/timeline"),
@@ -697,7 +697,7 @@ export const api = {
     search: () => apiFetch<SearchResultItem[]>("/pages/search"),
   },
 
-  /* W1 blog (any authenticated): list/grid share the query; article + comments. */
+  /* Blog (any authenticated): list/grid share the query; article + comments. */
   blog: {
     list: (params: BlogListParams = {}) =>
       apiFetch<Paginated<BlogListItem>>("/blog", {
@@ -715,7 +715,7 @@ export const api = {
       }),
   },
 
-  /* Projects (W3): list/detail with tasks + files, and create. */
+  /* Projects: list/detail with tasks + files, and create. */
   projects: {
     list: (filters: ProjectFilters = {}) =>
       apiFetch<Paginated<ProjectListItem>>("/projects", {
@@ -734,7 +734,7 @@ export const api = {
       apiFetch<ProjectDetail>("/projects", { method: "POST", body: payload }),
   },
 
-  /* Tasks (W3): flat task list + details with optimistic status/subtasks. */
+  /* Tasks: flat task list + details with optimistic status/subtasks. */
   tasks: {
     list: (filters: TaskFilters = {}) =>
       apiFetch<Paginated<TaskListItem>>("/tasks", {
@@ -766,7 +766,7 @@ export const api = {
       }),
   },
 
-  /* CRM (W3): contacts, companies, deals pipeline and leads. */
+  /* CRM: contacts, companies, deals pipeline and leads. */
   crm: {
     contacts: {
       list: (filters: CrmContactFilters = {}) =>
@@ -829,7 +829,7 @@ export const api = {
     },
   },
 
-  /* Calendar (W3): events CRUD + optimistic move. */
+  /* Calendar: events CRUD + optimistic move. */
   calendar: {
     events: () => apiFetch<CalendarEvent[]>("/calendar/events"),
     save: (payload: CalendarEventPayload) =>
@@ -846,7 +846,7 @@ export const api = {
       apiFetch<{ ok: true }>(`/calendar/events/${id}`, { method: "DELETE" }),
   },
 
-  /* Email / mailbox (W3): folders, message read, send, star, mark-read, move. */
+  /* Email / mailbox: folders, message read, send, star, mark-read, move. */
   email: {
     list: (folder: MailFolder, q?: string) =>
       apiFetch<MailListPayload>("/email", { query: { folder, q } }),
@@ -864,7 +864,7 @@ export const api = {
       }),
   },
 
-  /* Support tickets (W3): helpdesk queue, conversation, status and assignment. */
+  /* Support tickets: helpdesk queue, conversation, status and assignment. */
   support: {
     list: (filters: TicketFilters = {}) =>
       apiFetch<Paginated<TicketListItem>>("/support/tickets", {
@@ -902,7 +902,7 @@ export const api = {
       }),
   },
 
-  /* To-do (W3): personal list; every mutation is optimistic in the UI. */
+  /* To-do: personal list; every mutation is optimistic in the UI. */
   todo: {
     list: () => apiFetch<TodoItem[]>("/todo"),
     add: (title: string, priority: TodoPriority) =>
@@ -918,7 +918,7 @@ export const api = {
       apiFetch<{ ok: true }>(`/todo/${id}`, { method: "DELETE" }),
   },
 
-  /* API keys (W3): masked list; the secret is returned once on create. */
+  /* API keys: masked list; the secret is returned once on create. */
   apikeys: {
     list: () => apiFetch<ApiKey[]>("/api-keys"),
     create: (payload: ApiKeyCreatePayload) =>
@@ -927,7 +927,7 @@ export const api = {
       apiFetch<ApiKey>(`/api-keys/${id}/revoke`, { method: "POST" }),
   },
 
-  /* Crypto (W4 mono-niche): transactions, trading, orders, wallet, ICOs, KYC. */
+  /* Crypto: transactions, trading, orders, wallet, ICOs, KYC. */
   crypto: {
     transactions: (filters: CryptoTxFilters = {}) =>
       apiFetch<Paginated<CryptoTx>>("/crypto/transactions", {
@@ -972,7 +972,7 @@ export const api = {
       }),
   },
 
-  /* NFT (W4 niche): marketplace, explore, auctions, item detail, collections,
+  /* NFT: marketplace, explore, auctions, item detail, collections,
    * creators, ranking and mint. Reachable with nft.view (nft.manage to mint). */
   nft: {
     items: (filters: NftItemFilters = {}) =>
@@ -1012,7 +1012,7 @@ export const api = {
       apiFetch<NftMintResult>("/nft/items", { method: "POST", body: payload }),
   },
 
-  /* Jobs / Recruitment (W4 niche): recruiter stats, postings (list/grid share one
+  /* Jobs / Recruitment: recruiter stats, postings (list/grid share one
    * query), candidates, companies directory, category CRUD and the apply form.
    * Reachable with jobs.view (jobs.manage to post jobs and manage categories). */
   jobs: {
@@ -1062,7 +1062,7 @@ export const api = {
       apiFetch<{ id: number }>(`/jobs/categories/${id}`, { method: "DELETE" }),
   },
 
-  /* Help (D:help §6): read-only, any authenticated user — no permission gates. */
+  /* Help: read-only, any authenticated user — no permission gates. */
   help: {
     tree: () => apiFetch<HelpGroup[]>("/help"),
     page: (module: string, page: string) =>

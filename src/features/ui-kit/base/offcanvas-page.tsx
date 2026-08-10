@@ -26,7 +26,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Offcanvas showcase (W5): Sheet slide-overs anchored to each edge plus a vaul
+ * Offcanvas showcase: Sheet slide-overs anchored to each edge plus a vaul
  * Drawer, each opened from a trigger button. Static docs demo — no data flow.
  */
 export function OffcanvasPage() {

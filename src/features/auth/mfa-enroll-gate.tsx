@@ -9,7 +9,7 @@ import { useAuth } from "@/lib/auth";
 import { t } from "@/lib/i18n";
 
 /*
- * Forced 2FA enroll (D:auth §3, §6): a role listed in security.mfa_required_roles
+ * Forced 2FA enroll: a role listed in security.mfa_required_roles
  * without confirmed 2FA never reaches the shell — this gate replaces it with the
  * enroll flow until 2FA is on. The only other way out is logging out.
  */

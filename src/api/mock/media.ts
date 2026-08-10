@@ -1,10 +1,10 @@
 import { MEDIA_PRESETS } from "./settings";
 
 /*
- * Mock of the media variant-regeneration job (D:media §4/§11, C10 queue).
+ * Mock of the media variant-regeneration job.
  * The real backend enqueues a RegenerateVariants job with progress; here we
  * fake a time-based progress so the settings screen can show a real progress
- * bar and completion. One in-flight job at a time (idempotent, C10).
+ * bar and completion. One in-flight job at a time (idempotent).
  */
 
 interface RegenJob {

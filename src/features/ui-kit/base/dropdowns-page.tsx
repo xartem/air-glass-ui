@@ -30,7 +30,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Dropdowns showcase (W5): the DropdownMenu primitive — a default menu with
+ * Dropdowns showcase: the DropdownMenu primitive — a default menu with
  * items, labels, separators and shortcuts, checkbox items, a radio group, and a
  * nested sub-menu. Local state here is pure UI, not data flow.
  */

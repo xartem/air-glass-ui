@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Heatmap showcase (W5): the custom grid Heatmap composition. Cell intensity
+ * Heatmap showcase: the custom grid Heatmap composition. Cell intensity
  * maps onto a single --chart-* token via color-mix, so it stays on-palette in
  * both skins. Recharts ships no categorical heatmap, hence the custom build.
  */

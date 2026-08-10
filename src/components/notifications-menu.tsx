@@ -12,7 +12,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * NotificationsMenu (C8, E5): the topbar bell. Unread dot on the trigger,
+ * NotificationsMenu: the topbar bell. Unread dot on the trigger,
  * a glass-card popover (offset clear of the topbar) with type tabs over the
  * latest admin notifications and "mark all read".
  * Items come from GET /api/notifications once the API lands — the shape below

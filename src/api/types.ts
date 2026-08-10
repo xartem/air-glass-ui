@@ -1,7 +1,6 @@
 /*
- * Admin API DTOs (B7). Shapes mirror the backend contracts from the module
- * specs (D:auth, D:search §4a, C8) — the mock layer and the future live API
- * must both satisfy these types.
+ * Admin API DTOs. Shapes mirror the backend contracts — the mock layer and the
+ * future live API must both satisfy these types.
  */
 
 export type MaintenanceMode = "off" | "read_only" | "full";
@@ -29,7 +28,7 @@ export interface MeCollection {
   slug: string;
   label: string;
   has_categories: boolean;
-  /** Menu placement (E5): 'channel' → under Posts, 'catalog' → under Catalog, 'custom' → top-level. */
+  /** Menu placement: 'channel' → under Posts, 'catalog' → under Catalog, 'custom' → top-level. */
   kind: "channel" | "catalog" | "custom";
 }
 
@@ -40,7 +39,7 @@ export interface Impersonator {
 
 export interface MeMfa {
   enabled: boolean;
-  /** Role is in security.mfa_required_roles but 2FA is off — the SPA gates into enroll (D:auth §6). */
+  /** Role is in security.mfa_required_roles but 2FA is off — the SPA gates into enroll. */
   enroll_required: boolean;
 }
 
@@ -52,9 +51,9 @@ export interface Me {
   impersonator: Impersonator | null;
   maintenance_mode: MaintenanceMode;
   mfa: MeMfa;
-  /** False when no LLM key is configured — the panel button hides (UI:ai §1). */
+  /** False when no LLM key is configured — the panel button hides. */
   ai_available: boolean;
-  /** Site timezone (C7 §4) — the admin renders absolute times in it, not the browser's. */
+  /** Site timezone — the admin renders absolute times in it, not the browser's. */
   timezone: string;
 }
 
@@ -64,7 +63,7 @@ export interface LoginPayload {
   remember: boolean;
 }
 
-/** 202 mfa_required: password is right, the session is pending the 2FA challenge (D:auth §6). */
+/** 202 mfa_required: password is right, the session is pending the 2FA challenge. */
 export type LoginResult = { ok: true } | { mfa_required: true };
 
 export interface MfaEnrollStart {
@@ -127,7 +126,7 @@ export interface ActivityFilters {
   only_ai?: boolean;
   from?: string;
   to?: string;
-  /** Only `date` is sortable (UI:shell-auth §2); default desc. */
+  /** Only `date` is sortable; default desc. */
   sort?: "date";
   dir?: "asc" | "desc";
 }
@@ -168,8 +167,8 @@ export interface MediaListItem {
   modified_at?: string;
 }
 
-/* Image presets (D:media §3): declared by module code / active theme; operator
- * overrides live in the `media.preset_sizes` setting (UI:media §2). */
+/* Image presets: declared by module code / active theme; operator
+ * overrides live in the `media.preset_sizes` setting. */
 
 export type MediaPresetMode = "cover" | "contain" | "crop";
 
@@ -195,7 +194,7 @@ export interface MediaPresetsPayload {
   overrides: Record<string, MediaPresetOverride>;
 }
 
-/** Progress of a manual variant-regeneration job (D:media §4/§11, C10 queue). */
+/** Progress of a manual variant-regeneration job. */
 export interface MediaRegenStatus {
   processed: number;
   total: number;
@@ -203,7 +202,7 @@ export interface MediaRegenStatus {
   state: "running" | "done";
 }
 
-/* ---- settings (D:settings §6, C7 §3) ---- */
+/* ---- settings ---- */
 
 export type SettingType =
   | "text"
@@ -227,7 +226,7 @@ export interface SettingSchemaEntry {
   default?: SettingValue;
   /** UI translates labels/help by convention: settings.field.{key} / settings.help.{key}. */
   has_help?: boolean;
-  /** Sub-section within the group (default 'main') — each renders as its own Panel (UI:settings §2). */
+  /** Sub-section within the group (default 'main') — each renders as its own Panel. */
   section?: string;
   /** Field width override; default derives from type (short types → half). */
   span?: "half" | "full";
@@ -244,7 +243,7 @@ export interface SettingsPayload {
   groups: SettingsGroup[];
 }
 
-/* ---- appearance (E1 §2.2.1 · UI:settings appearance) — site-wide admin look ---- */
+/* ---- appearance — site-wide admin look ---- */
 
 /** Surface recipe: glass (default air), liquid (heavy iOS frost), flat (opaque). */
 export type AppearanceStyle = "glass" | "liquid" | "flat";
@@ -294,7 +293,7 @@ export interface AppearanceSettings {
   tokens: AppearanceTokens;
 }
 
-/* ---- users & roles (D:users §3,6 · UI:users-roles) ---- */
+/* ---- users & roles ---- */
 
 export interface UserListItem {
   id: number;
@@ -303,11 +302,11 @@ export interface UserListItem {
   role: MeRole;
   is_active: boolean;
   last_login_at: string | null;
-  /** Server-decided impersonation eligibility (C3 §10): false for self, inactive, and impersonator roles. */
+  /** Server-decided impersonation eligibility: false for self, inactive, and impersonator roles. */
   impersonatable: boolean;
-  /** The acting user's own row — role/active are locked in the editor (D:users §4). */
+  /** The acting user's own row — role/active are locked in the editor. */
   is_self: boolean;
-  /** The only active user on the admin role — "Deactivate" is disabled with a hint (D:users §4). */
+  /** The only active user on the admin role — "Deactivate" is disabled with a hint. */
   is_last_admin: boolean;
 }
 
@@ -319,7 +318,7 @@ export interface UserDetail {
   ui_locale: string;
   is_active: boolean;
   is_self: boolean;
-  /** Shows the «Reset 2FA» action in the editor (D:auth §6, users.manage). */
+  /** Shows the «Reset 2FA» action in the editor (requires users.manage). */
   mfa_enabled: boolean;
 }
 
@@ -328,7 +327,7 @@ export interface UserFilters {
   q?: string;
   role?: string;
   active?: "active" | "inactive";
-  /** Sortable columns per UI:users-roles §2; default last_login desc. */
+  /** Sortable columns; default last_login desc. */
   sort?: "name" | "role" | "last_login";
   dir?: "asc" | "desc";
 }
@@ -375,22 +374,22 @@ export interface ProfilePasswordPayload {
   password: string;
 }
 
-/* ---- dashboard (D:dashboard §4/§6 · UI:dashboard §2–3) ---- */
+/* ---- dashboard ---- */
 
 export type WidgetType = "stat" | "chart" | "list" | "status";
 
-/** Size is a CONTENT TIER (D:dashboard §4), not a scale: sm = glance, md = base, lg = expanded (75%), xl = fullest (100%). */
+/** Size is a CONTENT TIER, not a scale: sm = glance, md = base, lg = expanded (75%), xl = fullest (100%). */
 export type WidgetSize = "sm" | "md" | "lg" | "xl";
 
 /**
- * Dashboard period presets (D:dashboard §4). The window sets the aggregation
+ * Dashboard period presets. The window sets the aggregation
  * range, never the row/point budget. Free date range is deferred to v2.
  */
 export type Period = "week" | "month" | "quarter";
 
 export interface DashboardWidgetMeta {
   key: string;
-  /** Translation key owned by the widget's module (D:dashboard §12). */
+  /** Translation key owned by the widget's module. */
   title_key: string;
   type: WidgetType;
   size: WidgetSize;
@@ -422,9 +421,9 @@ export interface DashboardPayload {
   actions: DashboardAction[];
 }
 
-/* Widget data shapes are fixed per archetype (D:dashboard §4) — no free markup. */
+/* Widget data shapes are fixed per archetype — no free markup. */
 
-/* Enriched archetype fields are OPTIONAL (D:dashboard §4) — a widget that
+/* Enriched archetype fields are OPTIONAL — a widget that
  * returns only the base form still renders as before (backward compatible). */
 
 export interface StatData {
@@ -478,7 +477,7 @@ export interface ListItem {
   share?: number;
 }
 
-/** ≤ 10 items (D:dashboard §4). */
+/** ≤ 10 items. */
 export interface ListData {
   items: ListItem[];
   /**
@@ -510,14 +509,14 @@ export interface WidgetLayoutOverride {
   hidden?: boolean;
 }
 
-/** Quick actions have no size tier — only order + visibility (D:dashboard §3). */
+/** Quick actions have no size tier — only order + visibility. */
 export interface ActionLayoutOverride {
   sort?: number;
   hidden?: boolean;
 }
 
 /**
- * Role layout overrides on top of registration defaults (D:dashboard §3).
+ * Role layout overrides on top of registration defaults.
  * Nested by kind so widget/action keys never collide and actions can't carry `size`.
  */
 export interface LayoutOverrides {
@@ -525,7 +524,7 @@ export interface LayoutOverrides {
   actions?: Record<string, ActionLayoutOverride>;
 }
 
-/* Help (D:help, C11): user docs of enabled modules, read-only. */
+/* Help: user docs of enabled modules, read-only. */
 
 export interface HelpArticleRef {
   module: string;
@@ -544,7 +543,7 @@ export interface HelpArticle {
   page: string;
   title: string;
   section: string;
-  /** True when ui_locale had no translation and source_locale text is shown (C11 §4). */
+  /** True when ui_locale had no translation and source_locale text is shown. */
   is_fallback: boolean;
   markdown: string;
   prev: HelpArticleRef | null;
@@ -556,13 +555,13 @@ export interface HelpSearchHit extends HelpArticleRef {
   snippet: string;
 }
 
-/* ---- ai (D:ai §3–5 · UI:ai §2–4) ---- */
+/* ---- ai ---- */
 
 export interface AiUsageSummary {
   tokens: number;
   /** Dollars; the server aggregates ai_usage.cost_minor per conversation. */
   cost: number;
-  /** Models that actually answered (ai_usage.model per call, D:ai §3). */
+  /** Models that actually answered (ai_usage.model per call). */
   models: string[];
 }
 
@@ -588,7 +587,7 @@ export interface AiToolCall {
   result?: unknown;
 }
 
-/** Server-hydrated entity card (ChatPresenters, D:ai §4a) — data fields absent on a stub. */
+/** Server-hydrated entity card (ChatPresenters) — data fields absent on a stub. */
 export interface AiCardView {
   entity_type: string;
   id: number;
@@ -608,13 +607,13 @@ export interface AiBlockButton {
   style: "primary" | "secondary" | "danger";
   route?: string;
   url?: string;
-  /** Foreign domain — rendered with an external-link icon (D:ai §4a). */
+  /** Foreign domain — rendered with an external-link icon. */
   external?: boolean;
   tool?: string;
   args?: Record<string, unknown>;
 }
 
-/** Fixed chat-block set (D:ai §4a) — rendered by fixed SPA components, never free markup. */
+/** Fixed chat-block set — rendered by fixed SPA components, never free markup. */
 export type AiBlock =
   | {
       type: "link";
@@ -645,7 +644,7 @@ export interface AiPlanStep {
 
 export type AiPlanStatus = "pending" | "approved" | "rejected" | "superseded";
 
-/** Mutation gate (D:ai §4b): shown before the first write/destructive call of a turn. */
+/** Mutation gate: shown before the first write/destructive call of a turn. */
 export interface AiPlan {
   id: number;
   description: string;
@@ -653,13 +652,13 @@ export interface AiPlan {
   /** ≈ dollars (UsageMeter::estimatePlan); null for all-read/cheap plans — no estimate shown. */
   estimated_cost: number | null;
   status: AiPlanStatus;
-  /** Actual series cost after execution — «≈ $0.03 → $0.04» (D:ai §4b). */
+  /** Actual series cost after execution — «≈ $0.03 → $0.04». */
   actual_cost: number | null;
 }
 
 export type AiConfirmStatus = "pending" | "confirmed" | "cancelled";
 
-/** Destructive-tool confirmation card (B8 §4) — nothing runs until the user answers. */
+/** Destructive-tool confirmation card — nothing runs until the user answers. */
 export interface AiConfirm {
   id: number;
   tool: string;
@@ -680,16 +679,16 @@ export interface AiMessage {
   role: "user" | "assistant";
   created_at: string;
   parts: AiMessagePart[];
-  /** Files the user attached (D:ai §4d): each already uploaded to the media library. */
+  /** Files the user attached: each already uploaded to the media library. */
   attachments?: AiAttachment[];
-  /** Final usage of the assistant turn (SSE `done`, D:ai §5). */
+  /** Final usage of the assistant turn (SSE `done`). */
   usage?: AiTurnUsage | null;
-  /** Daily cost cap hit — soft message + settings link for ai.manage (UI:ai §2). */
+  /** Daily cost cap hit — soft message + settings link for ai.manage. */
   cost_limited?: boolean;
 }
 
 /**
- * A chat attachment (D:ai §4d): the file goes through the normal MediaService
+ * A chat attachment: the file goes through the normal MediaService
  * upload (media.manage gated), so the message stores a `media_id`, never a raw
  * blob. `preview_url` is the media preset URL (an object URL in the mock).
  */
@@ -709,7 +708,7 @@ export interface AiConversationDetail {
   messages: AiMessage[];
 }
 
-/** Route + current entity of the screen under the panel (D:ai §5 screen_context). */
+/** Route + current entity of the screen under the panel, sent as screen_context. */
 export interface AiScreenContext {
   route: string;
   label: string;
@@ -718,7 +717,7 @@ export interface AiScreenContext {
   title?: string;
 }
 
-/** SSE events of POST …/messages and …/plans/{id}/approve (D:ai §5). */
+/** SSE events of POST …/messages and …/plans/{id}/approve. */
 export type AiStreamEvent =
   | { type: "created"; conversation_id: number }
   | { type: "delta"; text: string }
@@ -738,7 +737,7 @@ export type AiFindingSeverity = "error" | "critical";
 
 export type AiFindingStatus = "new" | "acknowledged" | "resolved";
 
-/** Nightly log-triage finding (D:ai §4c, ai_log_findings). */
+/** Nightly log-triage finding (ai_log_findings). */
 export interface AiFinding {
   id: number;
   severity: AiFindingSeverity;
@@ -755,12 +754,12 @@ export interface AiFinding {
 }
 
 export interface AiSpendPoint {
-  /** Day label (site timezone, C7 §4). */
+  /** Day label (site timezone). */
   date: string;
   cost: number;
 }
 
-/** UsageMeter::spend() aggregates for the /system/ai chart (D:ai §4). */
+/** UsageMeter::spend aggregates for the /system/ai chart. */
 export interface AiSpend {
   today: number;
   week: number;
@@ -1025,7 +1024,7 @@ export interface DeliveryPayload {
   active: boolean;
 }
 
-/* ---- ecommerce extension (W3): cart, checkout, sellers, reviews ---- */
+/* ---- ecommerce extension: cart, checkout, sellers, reviews ---- */
 
 export interface ProductReview {
   id: number;
@@ -1117,7 +1116,7 @@ export interface SellerFilters {
   dir?: "asc" | "desc";
 }
 
-/** Create Invoice draft payload (W3). */
+/** Create Invoice draft payload. */
 export interface InvoiceDraftLine {
   description: string;
   qty: number;
@@ -1606,7 +1605,7 @@ export interface KanbanBoard {
   cards: Record<string, KanbanCard>;
 }
 
-/* ---- W1 utility pages (team, timeline, FAQ) ---- */
+/* ---- utility pages (team, timeline, FAQ) ---- */
 
 export interface TeamMemberSocials {
   twitter?: string;
@@ -1669,7 +1668,7 @@ export interface GalleryPhoto {
   ratio: number;
 }
 
-/* ---- W1 blog ---- */
+/* ---- blog ---- */
 
 export interface BlogAuthor {
   name: string;
@@ -1710,7 +1709,7 @@ export interface BlogListParams {
   category?: string;
 }
 
-/* ---- projects (W3) ---- */
+/* ---- projects ---- */
 
 export type ProjectStatus = "planning" | "active" | "on_hold" | "completed";
 
@@ -1791,7 +1790,7 @@ export interface ProjectPayload {
   tags: string[];
 }
 
-/* ---- tasks (W3) ---- */
+/* ---- tasks ---- */
 
 export type TaskStatus = "todo" | "in_progress" | "review" | "done";
 export type TaskPriority = "low" | "medium" | "high" | "urgent";
@@ -1838,7 +1837,7 @@ export interface TaskFilters {
   dir?: "asc" | "desc";
 }
 
-/* ---- CRM (W3) ---- */
+/* ---- CRM ---- */
 
 export type DealStage =
   "new" | "qualified" | "proposal" | "negotiation" | "won";
@@ -1965,7 +1964,7 @@ export interface LeadFilters {
   dir?: "asc" | "desc";
 }
 
-/* ---- calendar (W3) ---- */
+/* ---- calendar ---- */
 
 export type EventCategory =
   "work" | "personal" | "meeting" | "reminder" | "holiday";
@@ -1991,7 +1990,7 @@ export interface CalendarEventPayload {
   description: string;
 }
 
-/* ---- email / mailbox (W3) ---- */
+/* ---- email / mailbox ---- */
 
 export type MailFolder = "inbox" | "sent" | "drafts" | "spam" | "trash";
 
@@ -2024,7 +2023,7 @@ export interface MailSendPayload {
   body: string;
 }
 
-/* ---- support tickets (W3) ---- */
+/* ---- support tickets ---- */
 
 export type TicketStatus = "open" | "pending" | "solved" | "closed";
 export type TicketPriority = "low" | "normal" | "high" | "urgent";
@@ -2084,7 +2083,7 @@ export interface TicketStats {
   avg_response: string;
 }
 
-/* ---- to-do (W3) ---- */
+/* ---- to-do ---- */
 
 export type TodoPriority = "low" | "medium" | "high";
 
@@ -2102,7 +2101,7 @@ export interface TodoStats {
   overdue: number;
 }
 
-/* ---- api keys (W3) ---- */
+/* ---- api keys ---- */
 
 export type ApiKeyStatus = "active" | "revoked";
 export type ApiKeyScope = "read" | "write" | "admin" | "billing";
@@ -2128,7 +2127,7 @@ export interface ApiKeyCreated {
   secret: string;
 }
 
-/* ---- crypto (W4 mono-niche) ---- */
+/* ---- crypto ---- */
 
 export type CryptoTxType = "buy" | "sell" | "transfer";
 export type CryptoTxStatus = "completed" | "pending" | "failed";
@@ -2262,7 +2261,7 @@ export interface KycApplication {
   submitted_at: string | null;
 }
 
-/* ---- nft (W4 niche) — own image-heavy data model; art is generated gradient
+/* ---- nft — own image-heavy data model; art is generated gradient
  * SVG (no external hosts). Token amounts (ETH) carry a fiat estimate in `currency`. */
 
 export type NftCategory =
@@ -2428,7 +2427,7 @@ export interface NftMintResult {
   token_id: string;
 }
 
-/* ---- jobs (W4 recruitment niche) — postings, candidates, companies, categories,
+/* ---- jobs (recruitment) — postings, candidates, companies, categories,
  * applications. Company/candidate avatars are generated gradient SVG (no external
  * hosts). Salaries carry an ISO currency code as elsewhere in the demo. */
 
@@ -2483,7 +2482,7 @@ export interface JobApplicant {
 }
 
 export interface JobDetail extends Job {
-  /** HTML description (sanitized server-side on save, C3). */
+  /** HTML description (sanitized server-side on save). */
   description: string;
   requirements: string[];
   responsibilities: string[];
@@ -2561,7 +2560,7 @@ export interface JobCreatePayload {
   location: string;
   salary_min: number;
   salary_max: number;
-  /** HTML description (sanitized server-side on save, C3). */
+  /** HTML description (sanitized server-side on save). */
   description: string;
   requirements: string[];
   status: JobStatus;
@@ -2588,7 +2587,7 @@ export interface ApplicationPayload {
   linkedin: string;
   /** File name of the uploaded resume (mock — no real upload). */
   resume: string;
-  /** HTML cover letter (sanitized server-side on save, C3). */
+  /** HTML cover letter (sanitized server-side on save). */
   cover_letter: string;
   answers: ApplicationQuestion[];
 }

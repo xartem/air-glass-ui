@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { applyMask, maskInputMode, type MaskKind } from "@/lib/input-mask";
 
 /*
- * MaskedInput (W5): a controlled Input that formats keystrokes through an input
+ * MaskedInput: a controlled Input that formats keystrokes through an input
  * mask (card / expiry / phone / amount). Shared by checkout, crypto amounts and
  * the Forms showcase. Emits the already-formatted display string via onChange;
  * use unmask() at submit time for the raw value.

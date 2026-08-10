@@ -12,7 +12,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Pickers showcase (W5): DatePicker, DateRangePicker and ColorPicker — every one
+ * Pickers showcase: DatePicker, DateRangePicker and ColorPicker — every one
  * controlled through useState, values round-tripping as ISO strings / hex. The
  * calendar chrome follows the active admin locale automatically.
  */

@@ -14,7 +14,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Form layouts showcase (W5): the same FormField primitive arranged three ways —
+ * Form layouts showcase: the same FormField primitive arranged three ways —
  * a label-beside-control horizontal form, a single-row inline filter, and a
  * responsive two-column grid. Layout is pure Tailwind grid/flex utilities on the
  * shared field wrapper; no new field components.

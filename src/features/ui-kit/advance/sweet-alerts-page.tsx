@@ -20,7 +20,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Sweet Alerts showcase (W5): the SweetAlert-style confirm/success/error modals
+ * Sweet Alerts showcase: the SweetAlert-style confirm/success/error modals
  * this template ships via the shared AlertDialog + ConfirmDialog primitives.
  * Each trigger opens a dialog; confirming fires a toast. Static demos.
  */

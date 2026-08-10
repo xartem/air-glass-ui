@@ -30,7 +30,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * TreeList (E6 §3): dnd tree for menus, categories, page hierarchy.
+ * TreeList: dnd tree for menus, categories, page hierarchy.
  * Reordering via drag within the same siblings group; nesting level changes via
  * explicit indent/outdent controls (deterministic, keyboard-friendly).
  */

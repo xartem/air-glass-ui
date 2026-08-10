@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 
 /*
- * TranslationDots (E6 §3, C1 §5): per-locale translation state indicator.
+ * TranslationDots: per-locale translation state indicator.
  * translated = green · missing = red · stale = amber. Used in lists and LanguageTabs.
  */
 

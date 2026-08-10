@@ -92,7 +92,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Icons showcase (W5): a single searchable grid of the lucide icon set (the
+ * Icons showcase: a single searchable grid of the lucide icon set (the
  * template's only icon library). Click any tile to copy its component name.
  * We deliberately do NOT ship Velzon's icon fonts (Remix / Boxicons / Material /
  * Feather / Line Awesome / Crypto SVG) — the page states that substitution.

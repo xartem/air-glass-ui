@@ -11,7 +11,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Radial bar showcase (W5): Recharts RadialBarChart on --chart-* tokens — a
+ * Radial bar showcase: Recharts RadialBarChart on --chart-* tokens — a
  * stacked multi-track chart and a single-value progress gauge.
  */
 

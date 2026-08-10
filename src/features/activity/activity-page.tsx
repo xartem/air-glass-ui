@@ -44,8 +44,8 @@ import { DATE_LOCALES } from "@/lib/date-locale";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * /system/activity (UI:shell-auth §2): the audit trail with restore (C8 §2).
- * Filters (actor, entity type, AI) live in the URL (deep-links, E2 §6). Entity
+ * /system/activity: the audit trail with restore.
+ * Filters (actor, entity type, AI) live in the URL (deep-links). Entity
  * types and actions are translated (t('activity.entity.*'/'activity.action.*'),
  * raw key falls back to the stable server token). Row details open a Sheet with
  * full metadata + the field/old/new diff; Restore is confirmed and only offered
@@ -254,7 +254,7 @@ export function ActivityPage() {
       label: t("activity.restore"),
       icon: <History />,
       permission: "activity.restore",
-      // Only entries carrying a field diff are restorable (UI:shell-auth §2).
+      // Only entries carrying a field diff are restorable.
       hidden: (entry) => !entry.changes,
       onSelect: (entry) => setRestoreTarget(entry),
     },
@@ -272,7 +272,7 @@ export function ActivityPage() {
   return (
     <div className="space-y-4">
       <PageHeader title={t("nav.activity")} />
-      {/* Filters live in the panel header; no text search on this screen (UI:shell-auth) */}
+      {/* Filters live in the panel header; no text search on this screen */}
       <Panel
         icon={Activity}
         title={t("nav.activity")}

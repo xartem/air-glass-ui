@@ -9,9 +9,9 @@ import { Progress } from "@/components/ui/progress";
 import { t } from "@/lib/i18n";
 
 /*
- * Regeneration STATUS panel (UI:media §2, D:media §11) — sits next to the media
- * basics form. Regeneration is triggered per preset group from the presets table
- * (each group has its own button + confirm); this panel shows the live progress
+ * Regeneration STATUS panel — sits next to the media basics form.
+ * Regeneration is triggered per preset group from the presets table (each
+ * group has its own button + confirm); this panel shows the live progress
  * of the active job and clears when it finishes.
  */
 export interface RegenJob {
@@ -36,7 +36,7 @@ export function MediaRegenStatus({
 
   useEffect(() => {
     if (job && status.data?.state === "done") {
-      // Completion also raises a C8 notification on the backend.
+      // Completion also raises a notification on the backend.
       toast.success(t("media.regen.done"));
       onDone();
     }

@@ -4,7 +4,7 @@ import { ROLE_SEED, permissionCatalogue, type MockRole } from "./data";
 import { usersStore } from "./users";
 
 /*
- * Mock of the roles/RBAC store (D:users §3–4). Roles persist in localStorage so
+ * Mock of the roles/RBAC store. Roles persist in localStorage so
  * matrix edits survive reloads. The admin (is_system) role keeps all permissions
  * and cannot be deleted or edited; roles that still have users cannot be deleted.
  */
@@ -104,7 +104,7 @@ export function deleteRole(id: number): { ok: true } {
 export function saveRolePermissions(id: number, keys: string[]): { ok: true } {
   const role = rolesStore().find((candidate) => candidate.id === id);
   if (!role) throw new ApiError(404, "Role not found");
-  // The admin role is all-permissions and read-only (D:users §3) — ignore edits.
+  // The admin role is all-permissions and read-only — ignore edits.
   if (!role.is_system) role.permissions = [...new Set(keys)];
   persist();
   return { ok: true };

@@ -11,7 +11,7 @@ import { devDebug } from "@/lib/debug";
 import { t } from "@/lib/i18n";
 
 /*
- * Tour (W5 gap primitive): a light popover-driven coach-mark walkthrough. Each
+ * Tour: a light popover-driven coach-mark walkthrough. Each
  * step points at a DOM element (CSS selector); a dimmed spotlight backdrop rings
  * the target and a Popover card carries the copy + next/prev/skip. Built on the
  * existing Popover primitive (focus is moved into the card, Escape skips).

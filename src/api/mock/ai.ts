@@ -22,9 +22,9 @@ import type {
 import { sensitiveSettingIsSet, storedSettingValue } from "./settings";
 
 /*
- * Mock of the ai module (D:ai §4a/§4b/§5): conversations persist in localStorage;
+ * Mock of the ai module: conversations persist in localStorage;
  * the SSE stream is a scripted event sequence with setTimeout delays. Scenarios
- * are keyed by the user text so the UI:ai §7 E2E checklist is exercisable:
+ * are keyed by the user text so the E2E checklist is exercisable:
  *   plan   → plan_required (approve streams tool rows + actual cost)
  *   delete → confirm_required (yellow card)
  *   blocks/product → rich reply with every block type
@@ -481,7 +481,7 @@ const blocksScenario: Scenario = async (reply, _ctx, emit, signal) => {
         badges: ["draft"],
         route: "/shop/products/9",
       },
-      // RBAC stub: the presenter refused hydration — no data leaks (D:ai §4a)
+      // RBAC stub: the presenter refused hydration — no data leaks
       { entity_type: "record", id: 11, stub: "no_access" },
     ],
   });
@@ -589,11 +589,11 @@ export async function streamAiMessage(
   }
 
   const text = String(body.message ?? "").trim();
-  // A message may be attachments-only (D:ai §4d) — reject only when both are empty.
+  // A message may be attachments-only — reject only when both are empty.
   if (!text && !body.attachments?.length)
     throw new ApiError(422, "Empty message");
 
-  // A new message automatically supersedes any pending plan (D:ai §4b)
+  // A new message automatically supersedes any pending plan
   for (const message of conversation.messages) {
     for (const part of message.parts) {
       if (part.kind === "plan" && part.plan.status === "pending")
@@ -652,7 +652,7 @@ export async function streamAiPlanApprove(
 ): Promise<void> {
   const found = findPlan(planId);
   if (!found) throw new ApiError(404, "Plan not found");
-  // Stale/superseded plan → 409 (D:ai §5)
+  // Stale/superseded plan → 409
   if (found.plan.status !== "pending")
     throw new ApiError(409, "Plan is no longer pending");
   found.plan.status = "approved";
@@ -695,7 +695,7 @@ export async function streamAiPlanApprove(
       label: "Open Oslo Sofa",
       route: "/shop/products/214",
     });
-    // Actual series cost lands on the card: «≈ $0.03 → $0.04» (D:ai §4b)
+    // Actual series cost lands on the card: «≈ $0.03 → $0.04»
     plan.actual_cost = 0.04;
     const usage: AiTurnUsage = { tokens: 1380, cost: 0.04, model: MODEL };
     reply.usage = {
@@ -801,7 +801,7 @@ export function cancelAiAction(id: number): { ok: true } {
   return { ok: true };
 }
 
-/** Suggested-tool button (D:ai §4a kind=tool): destructive raises a confirm card, the rest run. */
+/** Suggested-tool button (block kind `tool`): destructive raises a confirm card, the rest run. */
 export function runAiTool(
   conversationId: number,
   tool: string,
@@ -936,7 +936,7 @@ export function aiDashboardExtras(): {
   };
 }
 
-/* ---- findings (D:ai §4c) ---- */
+/* ---- findings ---- */
 
 function seedFindings(): AiFinding[] {
   return [
@@ -982,7 +982,7 @@ function seedFindings(): AiFinding[] {
       id: 3,
       severity: "error",
       title: "MediaResizeException: unsupported image format",
-      // summary NULL: the triage collected the group while the LLM key was absent (D:ai §4c step 2)
+      // summary NULL: the triage collected the group while the LLM key was absent
       summary: null,
       sample:
         "[2026-07-02 14:03:51] error: MediaResizeException: unsupported image format storage/media/2026/07/promo.heic at modules/media/Services/ImageProcessor.php:92",

@@ -3,7 +3,7 @@ import { Fragment, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /*
- * Highlight (W5 gap util): wraps every case-insensitive match of `query` inside
+ * Highlight: wraps every case-insensitive match of `query` inside
  * `text` in a token-styled <mark>. Operates purely on React text nodes (never
  * dangerouslySetInnerHTML), so it is inherently safe against HTML injection.
  * The regex source is escaped so user queries can't break the pattern.

@@ -8,7 +8,7 @@ import { roleDisplayName } from "@/lib/role-label";
 import { cn } from "@/lib/utils";
 
 /*
- * RoleMatrix (UI:users-roles §2 · E4 matrix archetype): roles × permission keys.
+ * RoleMatrix — the matrix archetype: roles × permission keys.
  * Rows are permission keys grouped into collapsible module sections with a
  * "whole group" checkbox (indeterminate on a partial set); columns are roles
  * with a sticky header (label + user count + a "⋯" slot). The admin (is_system)
@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 export type RolePermissionMap = Record<number, string[]>;
 
 function initialCollapsed(): boolean {
-  // Accordions start collapsed on narrow viewports (UI:users-roles §2).
+  // Accordions start collapsed on narrow viewports.
   return typeof window !== "undefined" && window.innerWidth < 768;
 }
 

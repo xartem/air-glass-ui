@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Badges showcase (W5): every Badge variant, the three sizes, icon layouts, and
+ * Badges showcase: every Badge variant, the three sizes, icon layouts, and
  * a few applied examples. Static demos — no data flow.
  */
 export function BadgesPage() {

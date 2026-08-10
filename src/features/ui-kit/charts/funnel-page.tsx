@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Funnel chart showcase (W5): stage-to-stage drop-off drawn with the shared
+ * Funnel chart showcase: stage-to-stage drop-off drawn with the shared
  * Funnel — each step is a token-filled bar (cycling --chart-* colours) scaled to
  * the widest step, with a per-step conversion percentage.
  */

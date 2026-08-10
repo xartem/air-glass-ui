@@ -7,7 +7,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Animation showcase (W5): tw-animate-css utility classes applied to a token
+ * Animation showcase: tw-animate-css utility classes applied to a token
  * box. Entrance animations replay on click (via a re-mount key); the looping
  * attention animations toggle on and off. Purely visual — no data flow.
  */

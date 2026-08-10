@@ -24,10 +24,10 @@ import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
 /*
- * /ai (UI:ai §3): conversation list (title · date · tokens · cost · «⋯») on the
+ * /ai: conversation list (title · date · tokens · cost · «⋯») on the
  * left, the selected dialog on the right — same chat component as the panel —
  * with the usage summary (tokens/cost + models that actually answered) in the
- * header. Only the user's own conversations (D:ai §5).
+ * header. Only the user's own conversations.
  */
 
 export function AiPage() {
@@ -78,7 +78,7 @@ export function AiPage() {
     onError: () => toast.error(t("common.request_failed")),
   });
 
-  // Absolute chat timestamps render in the site timezone (C7 §4), not the browser's.
+  // Absolute chat timestamps render in the site timezone, not the browser's.
   const formatTime = (iso: string) => siteTime.format(iso);
   const formatTokens = (tokens: number) =>
     new Intl.NumberFormat(locale).format(tokens);
@@ -138,7 +138,7 @@ export function AiPage() {
         </Panel>
       ) : (
         <div className="flex min-h-0 flex-1 flex-col gap-4 lg:flex-row">
-          {/* Conversation list: title · date · tokens · cost · «⋯» (UI:ai §3) */}
+          {/* Conversation list: title · date · tokens · cost · «⋯» */}
           <Panel
             className="w-full shrink-0 self-start lg:w-80"
             contentClassName="p-2"
@@ -195,7 +195,7 @@ export function AiPage() {
             </ul>
           </Panel>
 
-          {/* Selected dialog + usage summary in the header (UI:ai §3) */}
+          {/* Selected dialog + usage summary in the header */}
           <Panel
             icon={MessageSquare}
             title={selected?.title ?? t("ai.untitled")}

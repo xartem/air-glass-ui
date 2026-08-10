@@ -16,9 +16,9 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * /login (UI:shell-auth §2): glass card over the mesh. All feedback is inline —
+ * /login: glass card over the mesh. All feedback is inline —
  * no toasts. The throttle banner never reveals whether the email exists
- * (anti-enumeration, D:auth §14).
+ * (anti-enumeration).
  */
 
 export function LoginPage() {
@@ -36,7 +36,7 @@ export function LoginPage() {
   const [busy, setBusy] = useState(false);
   const [throttled, setThrottled] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
-  // 2FA step (D:auth §6): password accepted → the same card asks for a code.
+  // 2FA step: password accepted → the same card asks for a code.
   const [mfaStep, setMfaStep] = useState(false);
   const [mfaCode, setMfaCode] = useState("");
 

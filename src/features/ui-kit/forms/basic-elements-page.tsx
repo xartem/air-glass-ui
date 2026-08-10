@@ -7,7 +7,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Basic form elements showcase (W5): Input, Textarea and Label wrapped in the
+ * Basic form elements showcase: Input, Textarea and Label wrapped in the
  * shared FormField — the size scale, states, disabled and the aria-invalid error
  * path. Static demos; chrome via t(), code samples literal.
  */

@@ -13,7 +13,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * /reset/{token} (UI:shell-auth §2): password + repeat with live match check;
+ * /reset/{token}: password + repeat with live match check;
  * an expired/used token switches to the invalid state with a CTA to /forgot.
  */
 

@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Images showcase (W5): responsive image treatments — AspectRatio boxes, the
+ * Images showcase: responsive image treatments — AspectRatio boxes, the
  * object-fit cover behaviour, and rounded/shape variants. Sources are token
  * gradient placeholders or an inline SVG data-URI (no external URLs, no hex).
  */

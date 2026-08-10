@@ -7,7 +7,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Tabs showcase (W5): the Tabs primitive — the default underline (line) style,
+ * Tabs showcase: the Tabs primitive — the default underline (line) style,
  * the segmented (default) variant, triggers with icons, and a vertical
  * orientation. Static demos — no data flow.
  */

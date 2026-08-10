@@ -1,5 +1,5 @@
 /*
- * Global progress store (E1 §2.3): the api client wraps requests with
+ * Global progress store: the api client wraps requests with
  * progressStart()/progressDone(); the GlobalProgress bar subscribes here.
  * TanStack Query activity is merged in by the component itself.
  */

@@ -15,9 +15,9 @@ import { Can } from "@/lib/permissions";
 import { cn } from "@/lib/utils";
 
 /*
- * PageHeader (E6 §3.1):
+ * PageHeader:
  * <PageHeader title icon? primaryAction={{label, onClick|href, permission?}} secondaryActions? breadcrumbs? />
- * Placement is law (E6 §2): title left, PRIMARY action top-right — no exceptions.
+ * Placement is law: title left, PRIMARY action top-right — no exceptions.
  */
 
 export type HeaderAction = {
@@ -81,7 +81,7 @@ export function PageHeader({
   primaryAction?: HeaderAction;
   secondaryActions?: HeaderAction[];
   breadcrumbs?: { label: string; href?: string }[];
-  /** Screen key of a contextual help article (C11); renders the "?" button when the doc exists. */
+  /** Screen key of a contextual help article; renders the "?" button when the doc exists. */
   helpKey?: string;
   className?: string;
 }) {

@@ -1,7 +1,7 @@
 import { devDebug } from "@/lib/debug";
 
 /*
- * Input masks (W5 gap util): light, dependency-free formatters shared by the
+ * Input masks: light, dependency-free formatters shared by the
  * checkout card fields, the crypto amount inputs and the Forms showcase. Each
  * mask takes the raw user input and returns the display-formatted string; strip
  * with `unmask()` before submitting. Logs at the format boundary (dev-only).

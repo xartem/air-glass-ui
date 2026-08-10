@@ -562,7 +562,7 @@ export function buildNavGroups(): NavGroup[] {
             },
           ],
         },
-        // Layouts — shell chrome demos (MENU-SPEC §1.3). No permission gate; each route
+        // Layouts — shell chrome demos. No permission gate; each route
         // flips the site-wide layout appearance and every variant shares the single nav map.
         {
           key: "menu.layouts",
@@ -635,7 +635,7 @@ export function buildNavGroups(): NavGroup[] {
             { to: "/blog/grid", label: t("nav.blogGrid"), icon: LayoutGrid },
           ],
         },
-        // Landing — public marketing pages (MENU-SPEC §2.3). These leave the authed shell
+        // Landing — public marketing pages. These leave the authed shell
         // (they render on the public LandingLayout); no permission gate.
         {
           key: "pages.landing",
@@ -649,7 +649,7 @@ export function buildNavGroups(): NavGroup[] {
         },
       ],
     },
-    // COMPONENTS — the W5 UI showcase. Parents seed with empty children and are
+    // COMPONENTS — the UI showcase. Parents seed with empty children and are
     // populated by each group task; the app-shell hides parents/groups that have
     // no children yet, so partial waves render cleanly. Widgets and Icons are
     // single-route leaves and are added directly by their group tasks.

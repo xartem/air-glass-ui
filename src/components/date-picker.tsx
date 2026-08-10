@@ -14,7 +14,7 @@ import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
 /*
- * DatePicker (E2 §7: field type `date` → this widget → ISO string).
+ * DatePicker (field type `date` → this widget → ISO string).
  * Value is an ISO date string (yyyy-mm-dd); the display format AND the calendar
  * (weekday/month names) follow the admin UI locale.
  */

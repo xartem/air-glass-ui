@@ -932,7 +932,7 @@ export function deleteDelivery(id: number): { ok: true } {
   return { ok: true };
 }
 
-/* ---- product reviews (W3) ---- */
+/* ---- product reviews ---- */
 
 const REVIEW_AUTHORS = [
   "Olivia P.",
@@ -967,7 +967,7 @@ export function listReviews(productId: number): ProductReview[] {
   }));
 }
 
-/* ---- cart (W3) — persisted in the mock session ---- */
+/* ---- cart — persisted in the mock session ---- */
 
 const CART_KEY = "mock.shop.cart";
 const PROMO_CODES: Record<string, number> = {
@@ -1059,7 +1059,7 @@ export function applyPromo(code: string): Cart {
   return buildCart();
 }
 
-/* ---- shipping methods (W3) ---- */
+/* ---- shipping methods ---- */
 
 export function shippingMethods(): ShippingMethod[] {
   devDebug("[mock:shop] shippingMethods");
@@ -1095,7 +1095,7 @@ export function shippingMethods(): ShippingMethod[] {
   ];
 }
 
-/** Place an order from the current cart (W3); clears the cart, returns the new order. */
+/** Place an order from the current cart; clears the cart, returns the new order. */
 export function placeOrder(payload: PlaceOrderPayload): OrderDetail {
   devDebug("[mock:shop] placeOrder", payload);
   const items = cartItemsStore();
@@ -1161,7 +1161,7 @@ export function placeOrder(payload: PlaceOrderPayload): OrderDetail {
   return structuredClone(order);
 }
 
-/* ---- sellers / marketplace vendors (W3) ---- */
+/* ---- sellers / marketplace vendors ---- */
 
 const SELLER_NAMES = [
   "Northwind Goods",
@@ -1290,7 +1290,7 @@ export function listSellerProducts(id: number): ProductListItem[] {
   return all.slice(offset, offset + 6).map(toProductListItem);
 }
 
-/* ---- create invoice (W3) ---- */
+/* ---- create invoice ---- */
 
 export function createInvoice(payload: InvoiceDraft): InvoiceDetail {
   devDebug("[mock:shop] invoices.create", payload);

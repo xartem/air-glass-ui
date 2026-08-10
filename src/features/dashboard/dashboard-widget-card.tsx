@@ -28,12 +28,12 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * One dashboard widget = one independent request (UI:dashboard §2): its own
+ * One dashboard widget = one independent request: its own
  * skeleton/error states, so a slow or failing widget never blocks the screen.
  * No polling by design — refresh happens via refetchOnWindowFocus (Query default).
  */
 
-/** Rigid skeleton (E4 §4/E6): mirrors the final geometry of the archetype at this tier. */
+/** Rigid skeleton: mirrors the final geometry of the archetype at this tier. */
 export function WidgetSkeleton({
   type,
   size,

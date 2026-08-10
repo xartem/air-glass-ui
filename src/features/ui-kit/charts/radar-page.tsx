@@ -13,7 +13,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Radar chart showcase (W5): Recharts RadarChart on --chart-* tokens — a single
+ * Radar chart showcase: Recharts RadarChart on --chart-* tokens — a single
  * skill profile and a two-series comparison.
  */
 

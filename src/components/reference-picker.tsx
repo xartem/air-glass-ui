@@ -20,8 +20,8 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * ReferencePicker (E6 §3, E2 §7: field type `reference` → record id).
- * Link-by-reference, never by raw URL (E5: menu items, page parents, …).
+ * ReferencePicker (field type `reference` → record id).
+ * Link-by-reference, never by raw URL (menu items, page parents, …).
  * The search callback goes through the api client (TanStack Query in the screen hook).
  */
 

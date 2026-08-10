@@ -4,9 +4,9 @@ import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Absolute time in the admin renders in the SITE timezone (C7 §4, decision), not
+ * Absolute time in the admin renders in the SITE timezone by decision, not
  * the operator's browser — so every operator sees the same wall-clock time. The
- * DB stores UTC (B4 `datetime('now')`); these formatters convert to `me.timezone`.
+ * The DB stores UTC; these formatters convert to `me.timezone`.
  * Relative times ("5 minutes ago", date-fns) are timezone-independent and are
  * NOT routed through here.
  */

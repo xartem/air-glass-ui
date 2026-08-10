@@ -35,7 +35,7 @@ const FRAMEWORKS = [
 ];
 
 /*
- * Advanced inputs showcase (W5): the tag-style MultiSelect and the searchable
+ * Advanced inputs showcase: the tag-style MultiSelect and the searchable
  * single-value Combobox — both controlled through useState. These wrap the
  * shared multi-select / combobox primitives; screens never rebuild them.
  */

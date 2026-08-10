@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * SettingsLayout (E6 §1C): vertical section nav on the left, form on the right,
+ * SettingsLayout: vertical section nav on the left, form on the right,
  * sticky "Save" at the bottom. The single archetype for ALL settings screens.
  */
 
@@ -38,7 +38,7 @@ export function SettingsLayout({
       data-slot="settings-layout"
       className={cn("flex min-h-full flex-col gap-4", className)}
     >
-      {/* Section nav: vertical column ≥lg, horizontal scrollable strip below (E1 §4) */}
+      {/* Section nav: vertical column ≥lg, horizontal scrollable strip below */}
       <div className="flex flex-1 flex-col items-stretch gap-4 lg:flex-row lg:items-start lg:gap-6">
         <nav
           aria-label={t("settings.nav_label")}

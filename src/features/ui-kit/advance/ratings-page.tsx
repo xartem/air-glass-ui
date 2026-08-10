@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Ratings showcase (W5): the Rating primitive — read-only display, interactive
+ * Ratings showcase: the Rating primitive — read-only display, interactive
  * (click/keyboard/hover) input, and the three sizes. Local useState holds the
  * interactive value. Static demos.
  */

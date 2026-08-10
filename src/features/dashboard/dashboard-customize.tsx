@@ -64,12 +64,12 @@ import { roleDisplayName } from "@/lib/role-label";
 import { cn } from "@/lib/utils";
 
 /*
- * Customize mode (UI:dashboard §2): per-ROLE layout editing (dashboard.manage).
+ * Customize mode: per-ROLE layout editing (dashboard.manage).
  * Cards render meta only — no widget data is loaded here by design. Widgets get
  * dnd order + size menu + hide; quick actions get dnd order + hide (no size tier).
  * Hidden widgets AND actions live in one restore panel below.
  * RBAC is not editable from here: a widget/action the role has no permission for
- * is absent from the payload entirely (D:dashboard §9).
+ * is absent from the payload entirely.
  */
 
 const SIZES: WidgetSize[] = ["sm", "md", "lg", "xl"];
@@ -157,7 +157,7 @@ export function DashboardCustomize({
   const hiddenActions = actions.filter((action) => action.hidden);
 
   const sensors = useSensors(
-    // Drag only via the explicit handle; touch needs a long-press (E2 §5a).
+    // Drag only via the explicit handle; touch needs a long-press.
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(TouchSensor, {
       activationConstraint: { delay: 250, tolerance: 8 },
@@ -322,7 +322,7 @@ export function DashboardCustomize({
           value={roleKey}
           onValueChange={(key) => {
             if (key === roleKey) return;
-            // Role switch with unsaved edits → dirty-guard (UI:dashboard §2).
+            // Role switch with unsaved edits → dirty-guard.
             if (dirty) setPendingRole(key);
             else onSwitchRole(key);
           }}
@@ -374,7 +374,7 @@ export function DashboardCustomize({
             </SortableContext>
           </DndContext>
 
-          {/* Quick actions section (UI:dashboard §2): dnd order + hide, no size tier. */}
+          {/* Quick actions section: dnd order + hide, no size tier. */}
           {actions.length > 0 ? (
             <Panel icon={Zap} title={t("dashboard.customize.actions_title")}>
               {visibleActions.length === 0 ? (
@@ -463,7 +463,7 @@ export function DashboardCustomize({
             )}
           </Panel>
 
-          {/* Reset lives away from Save (E6 §2: destructive never near the primary action). */}
+          {/* Reset lives away from Save (destructive never near the primary action). */}
           <div>
             <Button
               variant="outline"

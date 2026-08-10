@@ -21,7 +21,7 @@ import type { NavIcon } from "@/app/nav";
 import { devDebug } from "@/lib/debug";
 
 /*
- * Layouts demo screens (MENU-SPEC §1.3). Each route flips the site-wide `layout` appearance
+ * Layouts demo screens. Each route flips the site-wide `layout` appearance
  * field on mount, so the surrounding app-shell re-chromes into the variant. The layout is a
  * persisted appearance setting (like density / content width): visiting a demo changes it for
  * good, so the note card explains that and offers a one-click reset back to the default.

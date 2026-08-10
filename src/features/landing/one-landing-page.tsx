@@ -33,7 +33,7 @@ import { t } from "@/lib/i18n";
 import type { NavIcon } from "@/app/nav";
 
 /*
- * One Page landing (W6, MENU-SPEC §2.3). A fully presentational marketing page rendered
+ * One Page landing. A fully presentational marketing page rendered
  * inside the public LandingLayout: hero, feature grid, screenshot showcase, pricing (reusing
  * the /pricing tier cards), a testimonials Carousel, an FAQ Accordion and a CTA band. Static
  * content, token-styled, responsive and light/dark. No data flow, no auth.

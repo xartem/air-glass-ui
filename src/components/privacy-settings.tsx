@@ -14,12 +14,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { t } from "@/lib/i18n";
 
 /*
- * Friendly editors for the two JSON privacy keys (UI:settings §privacy,
- * D:settings §3) — an operator never edits raw JSON. Split into two panels so
- * the layout can place them independently (categories beside the consent form,
- * texts full-width below, E6 §2 width rule). Each is a companion of
- * SettingsGroupForm(privacy): its serialized override rides the tab's SaveBar
- * via `extraChanged` and writes the SAME json key (contract unchanged).
+ * Friendly editors for the two JSON privacy keys — an operator never edits raw
+ * JSON. Split into two panels so the layout can place them independently
+ * (categories beside the consent form, texts full-width below, per the width
+ * rule). Each is a companion of SettingsGroupForm(privacy): its serialized
+ * override rides the tab's SaveBar via `extraChanged` and writes the SAME
+ * json key (contract unchanged).
  */
 
 interface ConsentCategory {
@@ -43,7 +43,7 @@ const TEXT_FIELDS: (keyof ConsentText)[] = [
   "settings",
 ];
 
-// Mock: real backend lists the site's active content locales (locale.active, D:i18n) —
+// Mock: real backend lists the site's active content locales (locale.active) —
 // NOT the admin UI locales (LanguageTabs contract). A representative demo set here.
 const SITE_LOCALES = ["ru", "en", "uk"] as const;
 

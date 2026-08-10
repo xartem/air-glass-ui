@@ -3,7 +3,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Utilities showcase (W5): design-token swatches for border radius, shadow,
+ * Utilities showcase: design-token swatches for border radius, shadow,
  * spacing and border width. Every value maps to a Tailwind token. Static demo.
  */
 export function UtilitiesPage() {

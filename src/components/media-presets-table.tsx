@@ -39,7 +39,7 @@ import {
 import { t } from "@/lib/i18n";
 
 /*
- * Image presets under SettingsGroupForm(media) (UI:media §2, D:media §3):
+ * Image presets under SettingsGroupForm(media):
  * declarations come from module code / the active theme (read-only name+format),
  * operator overrides ride the tab's shared SaveBar as `media.preset_sizes`.
  * This is an editable grid, not a list — DataTable does not apply (cf. role-matrix).
@@ -149,7 +149,7 @@ export function MediaPresetsTable({
     );
   }
 
-  // Grouped by owner (module rows first, theme rows carry a badge — C2 §8)
+  // Grouped by owner (module rows first, theme rows carry a badge)
   const owners: { owner: string; is_theme: boolean; rows: MediaPreset[] }[] =
     [];
   for (const preset of presets) {
@@ -197,7 +197,7 @@ export function MediaPresetsTable({
                       </Badge>
                     ) : null}
                   </span>
-                  {/* Regenerate just this group's variants (UI:media §2) — media.manage. */}
+                  {/* Regenerate just this group's variants — media.manage. */}
                   {canManage && onRegenerateGroup ? (
                     <Button
                       variant="ghost"

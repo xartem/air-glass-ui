@@ -18,7 +18,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Range-area (band) showcase (W5): the shaded region between a lower and upper
+ * Range-area (band) showcase: the shaded region between a lower and upper
  * bound, drawn as a transparent baseline area stacked under a filled band area.
  * Band fill and the mean line both resolve from --chart-* tokens.
  */

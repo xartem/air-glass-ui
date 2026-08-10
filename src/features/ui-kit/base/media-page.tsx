@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Media showcase (W5): the "media object" pattern — an avatar or thumbnail
+ * Media showcase: the "media object" pattern — an avatar or thumbnail
  * pinned to the start with a flexible title + text body. Static docs demo.
  */
 export function MediaPage() {

@@ -46,8 +46,8 @@ import { useSiteDateTime } from "@/lib/datetime";
 import { t } from "@/lib/i18n";
 
 /*
- * "Log findings" (UI:ai §4, D:ai §4c): grouped error/critical findings of the
- * nightly log triage. Row: severity badge · title/AI summary (expandable sample
+ * "Log findings": grouped error/critical findings of the nightly log triage.
+ * Row: severity badge · title/AI summary (expandable sample
  * + context) · count · first/last seen · status · «⋯» with the new→acknowledged
  * →resolved flow (resolve prompts for a note: commit/version of the fix).
  */
@@ -192,7 +192,7 @@ export function AiFindingsPanel() {
     onError: () => toast.error(t("common.request_failed")),
   });
 
-  // The real API filters server-side (D:ai §6a); the mock returns all rows
+  // The real API filters server-side; the mock returns all rows
   const rows = useMemo(
     () =>
       (findingsQuery.data ?? []).filter(
@@ -203,7 +203,7 @@ export function AiFindingsPanel() {
     [findingsQuery.data, severity, status],
   );
 
-  // Absolute times render in the site timezone (C7 §4), not the operator's browser.
+  // Absolute times render in the site timezone, not the operator's browser.
   const formatTime = (iso: string) => siteTime.format(iso);
 
   function submitResolve() {
@@ -296,7 +296,7 @@ export function AiFindingsPanel() {
         </ul>
       )}
 
-      {/* Resolve prompts for a note: commit/version of the fix (D:ai §4c) */}
+      {/* Resolve prompts for a note: commit/version of the fix */}
       <Dialog
         open={resolveTarget !== null}
         onOpenChange={(open) => !open && setResolveTarget(null)}

@@ -12,7 +12,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Pie chart showcase (W5): a filled Recharts Pie plus the shared Donut
+ * Pie chart showcase: a filled Recharts Pie plus the shared Donut
  * composition. Slice colors cycle the --chart-* palette; no hardcoded hex.
  */
 

@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * "ECharts" showcase (W5): this template ships Recharts, not ECharts. This page
+ * "ECharts" showcase: this template ships Recharts, not ECharts. This page
  * makes the substitution explicit and renders equivalent chart types (area, bar,
  * treemap) with the shared Recharts compositions on --chart-* tokens.
  */

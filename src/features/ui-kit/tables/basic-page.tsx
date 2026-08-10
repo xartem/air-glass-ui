@@ -14,9 +14,9 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Basic Tables showcase (W5): the raw <Table> primitive and its parts —
+ * Basic Tables showcase: the raw <Table> primitive and its parts —
  * header/body/footer/caption — in plain, striped and bordered layouts. Data is
- * LOCAL static demo content. For real list screens use DataTable (E6 §3.1).
+ * LOCAL static demo content. For real list screens use DataTable.
  */
 
 type Member = {

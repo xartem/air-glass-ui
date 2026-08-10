@@ -23,8 +23,8 @@ import { usePermissionChecker } from "@/lib/permissions";
 import { cn } from "@/lib/utils";
 
 /*
- * ⌘K palette (UI:shell-auth §2, E2 §5a): navigation + quick actions are local
- * (route map × permissions, instant); content results come from
+ * ⌘K palette: navigation + quick actions are local (route map × permissions,
+ * instant); content results come from
  * GET /api/admin-search (debounce 300ms, 2+ chars, top-5 per group, drafts
  * badged). Enter navigates. There is no separate results page by design.
  */

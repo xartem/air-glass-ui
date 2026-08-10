@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Grid showcase (W5): Tailwind grid/layout utilities demonstrated with bordered
+ * Grid showcase: Tailwind grid/layout utilities demonstrated with bordered
  * token boxes — column counts, gap scale, responsive spans, and an auto-fitting
  * responsive layout. Static demos — no data flow.
  */

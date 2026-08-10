@@ -25,7 +25,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * NestableList (W5 gap primitive): a nested drag-and-drop list — drag a row up
+ * NestableList: a nested drag-and-drop list — drag a row up
  * or down to reorder, drag horizontally to change its nesting depth (the
  * "Nestable" affordance Velzon ships). Built on dnd-kit's flattened-tree
  * pattern with keyboard support (via createDndA11y). Distinct from TreeList,

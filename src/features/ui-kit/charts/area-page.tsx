@@ -12,7 +12,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Area chart showcase (W5): a gradient-filled single series via the shared
+ * Area chart showcase: a gradient-filled single series via the shared
  * TrendChart, plus a stacked composition built directly on the chart wrapper.
  * All fills resolve from --chart-* tokens.
  */

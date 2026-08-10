@@ -13,7 +13,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Alerts showcase (W5): the Alert primitive across its variants, icon layouts,
+ * Alerts showcase: the Alert primitive across its variants, icon layouts,
  * a fully composed title + description + action, status-token skins, and a
  * dismissible pattern. Static demos — no data flow.
  */

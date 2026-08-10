@@ -3,7 +3,7 @@ import type { CreatePasswordPayload, RegisterPayload } from "../types";
 import { devDebug } from "../../lib/debug";
 
 /*
- * Guest/anonymous auth extensions for the W1 auth screens (sign-up, first-time
+ * Guest/anonymous auth extensions for the auth screens (sign-up, first-time
  * password, standalone 2-step verify) plus the lock-screen re-auth. Demo-only:
  * nothing persists. A couple of sentinel inputs exercise the error states so
  * the screens can be reviewed end-to-end on mock data:

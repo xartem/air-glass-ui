@@ -15,9 +15,9 @@ import { useLocale } from "@/lib/use-locale";
 import { cn } from "@/lib/utils";
 
 /*
- * DateRangePicker — shared library control (E6): a period filter for lists
- * (first consumer: /system/activity per UI:shell-auth §2). Value is a pair of
- * `YYYY-MM-DD` strings so it round-trips through URL search params untouched.
+ * DateRangePicker — the shared period filter for lists (first consumer:
+ * /system/activity). Value is a pair of `YYYY-MM-DD` strings so it round-trips
+ * through URL search params untouched.
  */
 
 export interface DateRangeValue {

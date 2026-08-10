@@ -25,10 +25,10 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * /system/ai (UI:ai §4, perm ai.manage): SettingsGroupForm(ai) with the
+ * /system/ai (perm ai.manage): SettingsGroupForm(ai) with the
  * provider-dependent fields (only the active provider's key; base URL only for
  * openai-compatible), "Test connection", the daily spend ChartCard and
- * the log-triage findings section (D:ai §4c).
+ * the log-triage findings section.
  */
 
 const SECTION_ICONS: Record<string, LucideIcon> = {
@@ -88,13 +88,13 @@ export function AiSettingsPage() {
     dirtyRef.current = dirty;
   }, []);
 
-  // Route-level dirty-guard, same contract as /settings (E4 §1)
+  // Route-level dirty-guard, same contract as /settings
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
       dirtyRef.current && currentLocation.pathname !== nextLocation.pathname,
   );
 
-  /** Only the ACTIVE provider's key; base URL only for openai-compatible (UI:ai §4). */
+  /** Only the ACTIVE provider's key; base URL only for openai-compatible. */
   const visibleWhen = useCallback(
     (key: string, values: Record<string, SettingValue>) => {
       const provider = String(values["ai.provider"] ?? "claude");

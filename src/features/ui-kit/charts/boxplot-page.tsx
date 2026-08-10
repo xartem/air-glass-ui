@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Box-and-whisker showcase (W5): five-number summaries (min, Q1, median, Q3,
+ * Box-and-whisker showcase: five-number summaries (min, Q1, median, Q3,
  * max) per category via the custom BoxPlot composition. A single-hue variant and
  * a per-category multi-colour variant, all filled from --chart-* tokens.
  */

@@ -37,16 +37,16 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * SettingsGroupForm (D:settings §6, UI:settings §2): THE settings form.
+ * SettingsGroupForm: THE settings form.
  * Screens embed <SettingsGroupForm group="…"> and never hand-build fields —
- * widgets come from the schema via the E2 §7 type→widget table. Labels and
+ * widgets come from the schema via the type→widget table. Labels and
  * help are translation keys by convention: settings.field.{key} / settings.help.{key}.
  * Saving PUTs only the changed keys; sensitive '***' means "keep current".
  */
 
 export interface SettingsGroupFormProps {
   group: string;
-  /** Dirty-guard integration for tab/route switches (UI:settings §3). */
+  /** Dirty-guard integration for tab/route switches. */
   onDirtyChange?: (dirty: boolean) => void;
   /** Return dialog copy to confirm a specific change (e.g. maintenance mode), or null. */
   confirmChange?: (
@@ -60,25 +60,25 @@ export interface SettingsGroupFormProps {
   /** Icons for section panels, keyed by section name (default 'main'). */
   sectionIcons?: Record<string, ComponentType<{ className?: string }>>;
   /**
-   * Conditional fields (UI:ai §4: base_url only for openai-compatible): entries
+   * Conditional fields (base_url only for openai-compatible): entries
    * failing the predicate over current values are not rendered; the form stays
    * schema-driven — screens filter, they never hand-build fields.
    */
   visibleWhen?: (key: string, values: Record<string, SettingValue>) => boolean;
   /**
    * Companion sections (e.g. the image-presets table on /settings/media) join the
-   * form's SaveBar: their changed keys ride in the same PUT batch (UI:media §2).
+   * form's SaveBar: their changed keys ride in the same PUT batch.
    */
   extraChanged?: Record<string, SettingValue>;
   /** Called after a successful save / explicit reset so companions clear their edits. */
   onSettled?: () => void;
   /** Side panel next to a single-section group (e.g. the media regen status) — 2-col on lg+. */
   aside?: ReactNode;
-  /** Aside layout (E6 §2 width rule): 'fixed' = form + fixed sidebar; 'half' = 50/50 peers. */
+  /** Aside layout: 'fixed' = form + fixed sidebar; 'half' = 50/50 peers. */
   asideWidth?: "fixed" | "half";
 }
 
-// Lazy so CodeMirror (E2 §2) is split out of the main bundle — only the code tab pulls it.
+// Lazy so CodeMirror is split out of the main bundle — only the code tab pulls it.
 const CodeEditor = lazy(() =>
   import("@/components/code-editor").then((module) => ({
     default: module.CodeEditor,
@@ -89,7 +89,7 @@ function slugifyKey(key: string): string {
   return key.replaceAll(".", "_");
 }
 
-/** Short types default to half a column; long types span the full row (E6 §2). */
+/** Short types default to half a column; long types span the full row. */
 function fieldSpan(entry: SettingSchemaEntry): "half" | "full" {
   if (entry.span) return entry.span;
   return entry.type === "select" ||
@@ -249,7 +249,7 @@ export function SettingsGroupForm({
     ? groupData.entries.filter((entry) => visibleWhen(entry.key, currentValues))
     : groupData.entries;
 
-  // Sub-sections from schema (UI:settings §2): each renders as its own Panel;
+  // Sub-sections from schema: each renders as its own Panel;
   // more than one section flows into a 2-column grid on xl+.
   const sections: { name: string; entries: typeof groupData.entries }[] = [];
   for (const entry of visibleEntries) {
@@ -290,7 +290,7 @@ export function SettingsGroupForm({
     </Panel>
   ));
 
-  // Width is intentional by content (E6 §2): wide content (code editors, tables)
+  // Width is intentional by content: wide content (code editors, tables)
   // fills the row; a lone short-field form gets a readable cap so inputs don't stretch.
   const wide = sections.some((section) =>
     section.entries.some((entry) => entry.type === "code"),
@@ -316,7 +316,7 @@ export function SettingsGroupForm({
           <div className={wide ? undefined : "max-w-3xl"}>{sectionPanels}</div>
         )
       ) : (
-        // Masonry (E6): multi-section groups pack by content height — a short section
+        // Masonry: multi-section groups pack by content height — a short section
         // is never held down by a taller neighbor's row (no dead space under it).
         <div className="gap-4 [column-fill:balance] xl:columns-2 [&>*]:mb-4 [&>*]:break-inside-avoid">
           {sectionPanels}
@@ -367,7 +367,7 @@ function SettingField({
   const id = slugifyKey(entry.key);
   const label = t(`settings.field.${entry.key}`);
   // Sensitive keys show the set/unset state ALONGSIDE their regular help text
-  // (UI:settings §1–2: sentry_dsn carries both the hint and "set / not set").
+  // (sentry_dsn carries both the hint and "set / not set").
   const help =
     [
       entry.has_help ? t(`settings.help.${entry.key}`) : undefined,
@@ -429,8 +429,8 @@ function SettingField({
   }
 
   if (entry.type === "code") {
-    // code_* snippets (C7 §5, NOT sanitized) — CodeMirror with HTML/JS highlight,
-    // taller than a textarea. Lazy-loaded (E2 §2 bundle budget).
+    // code_* snippets (NOT sanitized) — CodeMirror with HTML/JS highlight,
+    // taller than a textarea. Lazy-loaded to keep it out of the main bundle.
     return (
       <FormField name={id} label={label} help={help} error={error}>
         <Suspense fallback={<Skeleton className="h-44 w-full rounded-lg" />}>
@@ -461,7 +461,7 @@ function SettingField({
   }
 
   if (entry.type === "json") {
-    // json settings (D:settings §2) edit as raw JSON in v1; the server rejects
+    // json settings edit as raw JSON in v1; the server rejects
     // invalid payloads with 422 invalid_json.
     return (
       <FormField name={id} label={label} help={help} error={error}>
@@ -480,7 +480,7 @@ function SettingField({
   if (entry.sensitive) {
     // Password input, no eye toggle: the server never returns the real value.
     // Focus on the '***' sentinel clears it for a fresh entry; leaving it empty
-    // without typing restores the sentinel (= keep current, D:settings §6).
+    // without typing restores the sentinel (= keep current).
     return (
       <FormField name={id} label={label} help={help} error={error}>
         <Input

@@ -11,17 +11,17 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * LocaleSwitcher (E2 §7): the ONE global content-locale switch of an editor
+ * LocaleSwitcher: the ONE global content-locale switch of an editor
  * toolbar. Switching changes which locale every translatable field displays;
- * unsaved edits of other locales stay in the form until the common submit
- * (E4 §1). There is no "Languages" tab — this is the replacement (E6 §1B).
+ * unsaved edits of other locales stay in the form until the common submit.
+ * There is no "Languages" tab — this switcher is the replacement.
  */
 
 export interface SwitcherLocale {
   code: string;
   label: string;
   is_default: boolean;
-  /** Optional per-locale completeness for the indicator dots (C1 §5). */
+  /** Optional per-locale completeness for the indicator dots. */
   state?: TranslationState;
 }
 

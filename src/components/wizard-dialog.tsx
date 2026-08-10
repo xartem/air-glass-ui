@@ -14,7 +14,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * WizardDialog (E6 §1E): step-by-step creation in the single dialog shell.
+ * WizardDialog: step-by-step creation in the single dialog shell.
  * Actions bottom-right: primary (Next/Finish) rightmost, "Cancel" to its left,
  * "Back" on the far left. Screens never build their own wizards.
  */

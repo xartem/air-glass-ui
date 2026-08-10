@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Notifications showcase (W5): buttons that fire sonner toasts in each variant,
+ * Notifications showcase: buttons that fire sonner toasts in each variant,
  * plus description and action examples. Firing a toast is the demo's whole
  * point — no other data flow, no logging.
  */

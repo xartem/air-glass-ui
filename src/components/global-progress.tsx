@@ -4,7 +4,7 @@ import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 import { getProgressCount, onProgressChange } from "@/lib/progress";
 
 /*
- * GlobalProgress (E1 §2.3): thin accent-gradient bar at the viewport top,
+ * GlobalProgress: thin accent-gradient bar at the viewport top,
  * visible while anything loads — TanStack Query fetches/mutations or manual
  * progressStart()/progressDone() from the api client. Mounted once in the shell.
  */

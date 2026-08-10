@@ -4,9 +4,9 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 /*
- * FormField (E6 §3.1): <FormField name label required? help? error?>{widget}</FormField>
+ * FormField: <FormField name label required? help? error?>{widget}</FormField>
  * The single field wrapper — identical label/help/error placement on every screen.
- * 422 errors land here per-field (E4/E2 §6), never as a toast.
+ * 422 errors land here per-field, never as a toast.
  */
 
 export function FormField({

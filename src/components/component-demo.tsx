@@ -15,7 +15,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * ComponentDemo (W5): the atom every component-showcase page is built from —
+ * ComponentDemo: the atom every component-showcase page is built from —
  * reused ~83×. A titled glass section with a live preview, an optional "Show
  * code" toggle revealing a read-only CodeMirror sample, and an optional
  * prop/variant notes block.

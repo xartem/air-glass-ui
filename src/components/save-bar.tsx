@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * SaveBar (E4 §1): the standard save affordance for forms WITHOUT their own
+ * SaveBar: the standard save affordance for forms WITHOUT their own
  * PageHeader action (settings tabs, contacts, role matrix, menu builder).
  * Hidden while the form is clean; slides in on the first change. Full-screen
  * editors with an EditorLayout keep their own sticky bottom bar — never both.

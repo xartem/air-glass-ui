@@ -16,7 +16,7 @@ import { generatePassword } from "@/lib/password";
 import { t } from "@/lib/i18n";
 
 /*
- * ChangePasswordDialog (UI:users-roles §3): set a new password for another user
+ * ChangePasswordDialog: set a new password for another user
  * from the list "⋯". The value is shown in clear text (there is no email reset)
  * with a generator and copy button; confirming revokes the target's sessions.
  * Controlled — the caller owns open state and performs the API call in onConfirm.

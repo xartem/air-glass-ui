@@ -7,7 +7,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Range slider showcase (W5): the Radix-backed Slider — single-thumb and
+ * Range slider showcase: the Radix-backed Slider — single-thumb and
  * two-thumb range variants, stepped values and the disabled state. Controlled
  * through useState (arrays of numbers).
  */

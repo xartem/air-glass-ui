@@ -14,11 +14,11 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * MediaPicker (E6 §3, E2 §7: `media`/`gallery`/`file` → this widget → path).
- * Values are PATH-ONLY (C2) — never absolute URLs. The full-screen media library
- * (D:media) reuses this same picking surface inside a Modal.
+ * MediaPicker (`media`/`gallery`/`file` → this widget → path).
+ * Values are PATH-ONLY — never absolute URLs. The full-screen media library
+ * reuses this same picking surface inside a Modal.
  * `loadMedia` is injected by the screen hook (api client + TanStack Query) and
- * is PAGED: (query, page) → items + paginator meta (B7).
+ * is PAGED: (query, page) → items + paginator meta.
  */
 
 export type MediaItem = {
@@ -76,11 +76,11 @@ export function MediaPicker({
   resolveUrl,
   className,
 }: {
-  /** Selected media path(s) — path-only (C2). */
+  /** Selected media path(s) — path-only. */
   value: string[];
   onChange: (paths: string[]) => void;
   multiple?: boolean;
-  /** Injected paged media source: (query, page) → items + paginator meta (B7). */
+  /** Injected paged media source: (query, page) → items + paginator meta. */
   loadMedia: (query: string, page: number) => Promise<MediaPage>;
   /** Resolves a stored path to a preview URL (media provider / media_url). */
   resolveUrl?: (path: string) => string | undefined;

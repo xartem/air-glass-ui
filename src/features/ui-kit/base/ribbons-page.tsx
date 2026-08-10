@@ -10,7 +10,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Ribbons showcase (W5): corner and edge ribbons plus a floating tag, built
+ * Ribbons showcase: corner and edge ribbons plus a floating tag, built
  * from absolutely-positioned token elements layered over a Card. Static demo.
  */
 export function RibbonsPage() {

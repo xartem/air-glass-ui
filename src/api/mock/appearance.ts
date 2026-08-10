@@ -10,7 +10,7 @@ import type {
 } from "../types";
 
 /*
- * Mock of the site-wide appearance config (E1 §2.2.1). Persisted in localStorage;
+ * Mock of the site-wide appearance config. Persisted in localStorage;
  * the real backend will store these as public-safe `appearance.*` settings keys.
  */
 

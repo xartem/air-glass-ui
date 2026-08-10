@@ -21,7 +21,7 @@ import { useCan } from "@/lib/permissions";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * AiPanel (UI:ai §1–2, E5): the assistant slide-over, reachable from ANY screen
+ * AiPanel: the assistant slide-over, reachable from ANY screen
  * (topbar button + ⌘J). Hidden without ai.use OR when no LLM key is configured
  * (me.ai_available). Holds the last conversation; «+» starts a fresh chat,
  * history leads to /ai. The current screen feeds the context chip.
@@ -51,7 +51,7 @@ function deriveContext(pathname: string): AiScreenContext | null {
 export function AiPanel() {
   const { me } = useAuth();
   const canUse = useCan("ai.use");
-  // Module inactive without an LLM key — the button disappears (UI:ai §1)
+  // Module inactive without an LLM key — the button disappears
   if (!canUse || !me.ai_available) return null;
   return <AiPanelInner />;
 }
@@ -62,7 +62,7 @@ function AiPanelInner() {
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<number | null>(readStoredActive);
 
-  // Hotkey ⌘J / Ctrl+J toggles the panel (UI:ai §2); active only when the button is
+  // Hotkey ⌘J / Ctrl+J toggles the panel; active only when the button is
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "j") {
@@ -112,7 +112,7 @@ function AiPanelInner() {
           <Sparkles />
         </Button>
       </SheetTrigger>
-      {/* Full width on phones; capped panel from sm up (UI:ai §2 ~420px) */}
+      {/* Full width on phones; capped panel from sm up (~420px) */}
       <SheetContent
         side="right"
         className="flex flex-col gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-md"

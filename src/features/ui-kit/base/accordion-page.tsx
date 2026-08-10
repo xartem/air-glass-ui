@@ -9,7 +9,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Accordion showcase (W5): the Accordion primitive — single (collapsible) mode,
+ * Accordion showcase: the Accordion primitive — single (collapsible) mode,
  * multiple mode, and a FAQ-style example with a default-open item. Static demos.
  */
 export function AccordionPage() {

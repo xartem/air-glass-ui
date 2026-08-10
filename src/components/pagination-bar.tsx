@@ -3,9 +3,9 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * PaginationBar (E6 §2): count bottom-LEFT, pages bottom-RIGHT — the single
+ * PaginationBar: count bottom-LEFT, pages bottom-RIGHT — the single
  * pagination surface for DataTable, media grids and any other paged view.
- * Meta shape matches the Admin API paginator (B7 / Core\Paginator).
+ * Meta shape matches the Admin API paginator.
  */
 
 export type PaginationMeta = {

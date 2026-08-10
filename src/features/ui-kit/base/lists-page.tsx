@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Lists showcase (W5): unordered/ordered, description and divided list
+ * Lists showcase: unordered/ordered, description and divided list
  * patterns built on tokens. Static docs demo — no data flow.
  */
 export function ListsPage() {

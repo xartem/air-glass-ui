@@ -8,9 +8,9 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * Markdown body for Help articles (D:help, C11 §6) — the ONLY react-markdown
- * consumer in the SPA (E2 §2): trusted, shipped-with-code docs, never user input.
- * Blockquotes render as info callouts (the C11 "typical question" pattern).
+ * Markdown body for Help articles — the ONLY react-markdown
+ * consumer in the SPA: trusted, shipped-with-code docs, never user input.
+ * Blockquotes render as info callouts (the "typical question" pattern).
  */
 
 export function HelpArticleBody({
@@ -22,7 +22,7 @@ export function HelpArticleBody({
   isFallback?: boolean;
   className?: string;
 }) {
-  // Screenshot lightbox (UI:help §2): click opens the image in a footer-less Dialog.
+  // Screenshot lightbox: click opens the image in a footer-less Dialog.
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(
     null,
   );

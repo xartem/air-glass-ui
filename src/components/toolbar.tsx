@@ -7,7 +7,7 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * List-screen controls (E6 §1A/§2): on list screens the search+filters cluster
+ * List-screen controls: on list screens the search+filters cluster
  * lives in the Panel HEADER actions slot (search first, filters right of it) —
  * ListLayout wires that. The inline <Toolbar> row remains only for embedded
  * picking surfaces (media grid, MediaPicker) that have no Panel header of

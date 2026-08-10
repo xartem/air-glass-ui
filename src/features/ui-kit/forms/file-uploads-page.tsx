@@ -16,7 +16,7 @@ function formatSize(bytes: number): string {
 }
 
 /*
- * File uploads showcase (W5): a drag-and-drop dropzone with a drag-over accent
+ * File uploads showcase: a drag-and-drop dropzone with a drag-over accent
  * and a click-to-browse fallback. Static demo — it only reads the picked files'
  * names/sizes into state; nothing is read, uploaded or sent anywhere.
  */

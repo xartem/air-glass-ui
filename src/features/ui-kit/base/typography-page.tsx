@@ -3,7 +3,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Typography showcase (W5): the heading scale, body copy, inline elements and
+ * Typography showcase: the heading scale, body copy, inline elements and
  * block elements, all built on the font + color tokens. Static docs demo.
  */
 export function TypographyPage() {

@@ -26,9 +26,9 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * Chat blocks (D:ai §4a): the FIXED renderer set for typed agent blocks — free
+ * Chat blocks: the FIXED renderer set for typed agent blocks — free
  * markup from the LLM is impossible by design. A new block type means a row in
- * the D:ai §4a table plus a component here, never inline code. Unknown types
+ * the block-type table plus a component here, never inline code. Unknown types
  * from old history are skipped silently (forward-compat).
  */
 
@@ -54,7 +54,7 @@ function LinkBlock({ block }: { block: Extract<AiBlock, { type: "link" }> }) {
   return (
     <a href={block.url} target="_blank" rel="noopener" className={className}>
       {block.label}
-      {/* Foreign domain marker (D:ai §4a) */}
+      {/* Foreign domain marker */}
       {block.external ? (
         <ExternalLink aria-hidden className="size-3.5" />
       ) : null}
@@ -69,7 +69,7 @@ function ButtonsBlock({
   block: Extract<AiBlock, { type: "buttons" }>;
   onToolClick?: (item: AiBlockButton) => void;
 }) {
-  // ≤4 buttons by contract — extras are dropped, not wrapped (D:ai §4a)
+  // ≤4 buttons by contract — extras are dropped, not wrapped
   const items = block.items.slice(0, 4);
   return (
     <div className="flex flex-wrap gap-2">
@@ -93,7 +93,7 @@ function ButtonsBlock({
           );
         }
         // kind=tool runs only on an explicit click; destructive goes through the
-        // confirm flow implemented by the chat via onToolClick (D:ai §4a)
+        // confirm flow implemented by the chat via onToolClick
         return (
           <Button
             key={index}
@@ -182,7 +182,7 @@ function CardItem({ card }: { card: AiCardView }) {
 }
 
 function ImageBlock({ block }: { block: Extract<AiBlock, { type: "image" }> }) {
-  // Media-library only (media_id, D:ai §4a) — click leads to the library
+  // Media-library only (media_id) — click leads to the library
   return (
     <Link
       to="/media"
@@ -256,7 +256,7 @@ function FileBlock({ block }: { block: Extract<AiBlock, { type: "file" }> }) {
 }
 
 function TableBlock({ block }: { block: Extract<AiBlock, { type: "table" }> }) {
-  // Compact summary caps: ≤5 columns × ≤10 rows (D:ai §4a)
+  // Compact summary caps: ≤5 columns × ≤10 rows
   const columns = block.columns.slice(0, 5);
   return (
     <div className="max-w-full overflow-x-auto rounded-xl border bg-background/60">
@@ -338,7 +338,7 @@ export function AiBlockView({
       case "progress":
         return <ProgressBlock block={block} />;
       default:
-        return null; // unknown type in old history — skipped silently (D:ai §4a)
+        return null; // unknown type in old history — skipped silently
     }
   })();
   if (!content) return null;

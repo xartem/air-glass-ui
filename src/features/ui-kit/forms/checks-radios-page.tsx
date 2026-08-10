@@ -31,7 +31,7 @@ function SettingsRowsDemo() {
 }
 
 /*
- * Checkboxes, radios and switches showcase (W5): the boolean/choice controls
+ * Checkboxes, radios and switches showcase: the boolean/choice controls
  * across checked, indeterminate, disabled states. Static demos with
  * defaultChecked / defaultValue — no controlled state needed.
  */

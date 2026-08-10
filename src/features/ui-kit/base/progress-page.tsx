@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Progress showcase (W5): determinate Progress bars at several values and
+ * Progress showcase: determinate Progress bars at several values and
  * heights plus Spinner sizes. Static docs demo — no data flow.
  */
 export function ProgressPage() {

@@ -10,7 +10,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Swiper / Slider showcase (W5): carousels built on the shadcn Carousel (Embla)
+ * Swiper / Slider showcase: carousels built on the shadcn Carousel (Embla)
  * primitive this template ships instead of Swiper. Basic looped slider plus a
  * multi-per-view variant. Static demos.
  */

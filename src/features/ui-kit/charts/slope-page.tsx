@@ -13,7 +13,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Slope chart showcase (W5): a two-point Recharts LineChart comparing a Before
+ * Slope chart showcase: a two-point Recharts LineChart comparing a Before
  * and After period per series. Line colors come only from --chart-* tokens.
  */
 

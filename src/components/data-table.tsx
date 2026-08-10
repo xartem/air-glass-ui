@@ -46,10 +46,10 @@ import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /*
- * DataTable (E6 §3.1) — the ONLY way to render lists in the admin:
+ * DataTable — the ONLY way to render lists in the admin:
  * <DataTable columns data state rowActions selection? pagination onSort onPage emptyState />
  * Renders loading (row skeletons) / error (with retry) / empty (EmptyState) itself —
- * screens never build those states. Row actions always live in the trailing "⋯" menu (E6 §2).
+ * screens never build those states. Row actions always live in the trailing "⋯" menu.
  */
 
 export type DataTableState = "loading" | "error" | "empty" | "ready";

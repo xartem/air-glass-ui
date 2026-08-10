@@ -16,7 +16,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * DataTables showcase (W5): the full DataTable (TanStack Table) — sortable
+ * DataTables showcase: the full DataTable (TanStack Table) — sortable
  * columns, a search filter, row selection and pagination — over LOCAL static
  * rows. Mirrors the list archetype in ui-kit-page.tsx.
  */

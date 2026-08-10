@@ -14,7 +14,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Select showcase (W5): the Radix-backed Select — sizes, grouped options and
+ * Select showcase: the Radix-backed Select — sizes, grouped options and
  * disabled items/triggers. Static demos; option content is literal demo data.
  */
 export function FormSelectPage() {

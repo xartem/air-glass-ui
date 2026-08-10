@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Placeholders showcase (W5): Skeleton loaders composed into text, card and
+ * Placeholders showcase: Skeleton loaders composed into text, card and
  * list layouts that mirror real content. Static docs demo — no data flow.
  */
 export function PlaceholdersPage() {

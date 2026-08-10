@@ -4,7 +4,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Line chart showcase (W5): a single-series trend and a multi-series comparison,
+ * Line chart showcase: a single-series trend and a multi-series comparison,
  * both drawn with the shared TrendChart (line variant) so every stroke resolves
  * from the --chart-* tokens.
  */

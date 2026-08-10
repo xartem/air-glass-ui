@@ -14,7 +14,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Cards showcase (W5): the Card primitive across its variants, sizes, a fully
+ * Cards showcase: the Card primitive across its variants, sizes, a fully
  * composed header/content/footer layout, and applied examples. Static demos.
  */
 export function CardsPage() {

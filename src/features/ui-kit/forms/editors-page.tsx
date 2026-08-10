@@ -8,7 +8,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Editors showcase (W5): the two rich editing surfaces — TipTap RichTextEditor
+ * Editors showcase: the two rich editing surfaces — TipTap RichTextEditor
  * (HTML) and the CodeMirror-backed CodeEditor — both controlled through useState.
  * These are the single wrappers around their engines; screens embed them, never
  * the underlying library.

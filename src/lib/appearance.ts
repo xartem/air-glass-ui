@@ -10,7 +10,7 @@ import {
 } from "@/api";
 
 /*
- * Appearance apply layer (E1 §2.2.1). Reads the site-wide config and reflects it onto
+ * Appearance apply layer. Reads the site-wide config and reflects it onto
  * the document root: the skin-* class, data-bg-* preset attributes, inline glass/radius/
  * accent token overrides and custom background image vars. A per-browser style override
  * (topbar quick toggle) can preview a style without touching the saved site config.
@@ -111,7 +111,7 @@ export function useAppearance() {
   }
 
   // Drop the transient topbar preview so the saved config becomes authoritative —
-  // the customizer calls this when the user commits to a style there (E1 §2.2.1).
+  // the customizer calls this when the user commits to a style there.
   function clearOverride() {
     localStorage.removeItem(OVERRIDE_KEY);
     setOverride(null);

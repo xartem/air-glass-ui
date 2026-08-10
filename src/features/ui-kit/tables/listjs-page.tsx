@@ -18,7 +18,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Searchable List showcase (W5): an <Input> search box + <PaginationBar> over a
+ * Searchable List showcase: an <Input> search box + <PaginationBar> over a
  * locally filtered/paged row set (useState) — the token-only replacement for
  * List.js. Data is LOCAL static demo content.
  */

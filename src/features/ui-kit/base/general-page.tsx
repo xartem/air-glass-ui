@@ -15,7 +15,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * General showcase (W5): a gallery of small utility primitives — separators,
+ * General showcase: a gallery of small utility primitives — separators,
  * keyboard keys, tooltips and avatars. Static docs demo.
  */
 export function GeneralPage() {

@@ -1,5 +1,5 @@
 /*
- * Shared landing helpers (W6) used by the One Page, NFT and Job landings — a common
+ * Shared landing helpers used by the One Page, NFT and Job landings — a common
  * section-heading rhythm and a stats band. Purely presentational, token-styled.
  */
 

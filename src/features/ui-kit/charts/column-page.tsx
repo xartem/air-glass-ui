@@ -14,7 +14,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Column chart showcase (W5): vertical bars over a period bucket. A single
+ * Column chart showcase: vertical bars over a period bucket. A single
  * series via the shared CategoryBars, and a grouped two-series composition
  * built on the chart wrapper — all bars filled from --chart-* tokens.
  */

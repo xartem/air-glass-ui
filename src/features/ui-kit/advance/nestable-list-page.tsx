@@ -6,7 +6,7 @@ import { t } from "@/lib/i18n";
 import { useLocale } from "@/lib/use-locale";
 
 /*
- * Nestable List showcase (W5): the NestableList gap primitive — drag a row to
+ * Nestable List showcase: the NestableList gap primitive — drag a row to
  * reorder it, or drag horizontally to change its nesting depth. Local useState
  * holds the tree; the primitive logs its own drops internally.
  */
