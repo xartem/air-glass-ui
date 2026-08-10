@@ -19,7 +19,7 @@
         <div class="doc-brand-logo" aria-hidden="true">A</div>
         <div>
           <div class="doc-brand-name">Air Glass UI</div>
-          <div class="doc-brand-ver">Admin Template &middot; v0.0.0</div>
+          <div class="doc-brand-ver">Admin Template &middot; v1.0.0</div>
         </div>
       </div>
       <nav>
@@ -29,7 +29,10 @@
           <li class="doc-toc-group">Get started</li>
           <li><a href="#getting-started">Getting Started</a></li>
           <li><a href="#theming">Theming &amp; Design Tokens</a></li>
+          <li><a href="#appearance">Appearance, Customizer &amp; Layouts</a></li>
+          <li><a href="#rtl">RTL &amp; Arabic</a></li>
           <li class="doc-toc-group">Extend the template</li>
+          <li><a href="#navigation">Navigation &amp; Information Architecture</a></li>
           <li><a href="#adding-a-screen">Adding a New Screen</a></li>
           <li><a href="#mock-api">Mock API &amp; Real Backend</a></li>
           <li><a href="#i18n">Internationalization</a></li>
@@ -46,7 +49,7 @@
     <main class="doc-content">
       <div class="doc-inner">
 
-        <!-- ============================ INTRODUCTION (T2) ============================ -->
+        <!-- ============================ INTRODUCTION ============================ -->
         <section id="introduction" class="doc-section">
           <div class="doc-hero">
             <span class="doc-eyebrow">Documentation</span>
@@ -54,9 +57,11 @@
             <p>
               A premium, production-grade admin dashboard <strong>UI template</strong> built with
               React&nbsp;19, TypeScript, Vite and Tailwind CSS&nbsp;v4. It ships with a cohesive
-              &ldquo;Light Air Glass&rdquo; design system, 60+ accessible components, a broad catalog of
-              ready-made screens, full theming with dark mode, RTL-awareness, and an in-repo
-              <strong>mock API</strong> so the whole template runs and demos with <strong>zero backend</strong>.
+              &ldquo;Light Air Glass&rdquo; design system, <strong>64 accessible UI primitives</strong> plus
+              67 composed application components, <strong>196 ready-made screens</strong>, three appearance
+              styles, five shell layouts, <strong>9 languages including right-to-left Arabic</strong>, and an
+              in-repo <strong>mock API</strong> so the whole template runs and demos with
+              <strong>zero backend</strong>.
             </p>
             <button type="button" class="doc-print-btn" data-doc-print>
               &#128424;&nbsp; Print / Save as PDF
@@ -98,16 +103,24 @@
               <p>&ldquo;Light Air Glass&rdquo; tokens centralized in <code>src/index.css</code> — light &amp; dark.</p>
             </div>
             <div class="doc-card">
-              <h4>60+ UI components</h4>
-              <p>Accessible primitives in <code>src/components/ui</code> (shadcn/ui + Radix + Base UI).</p>
+              <h4>64 UI primitives</h4>
+              <p>Accessible primitives in <code>src/components/ui</code> (shadcn/ui + Radix + Base UI), plus 67 composed components.</p>
             </div>
             <div class="doc-card">
-              <h4>Ready-made screens</h4>
-              <p>Auth, dashboard, users &amp; roles, e-commerce, analytics, inbox, kanban, and more.</p>
+              <h4>196 ready-made screens</h4>
+              <p>10 dashboards, app suites (e-commerce, CRM, projects, email, support), mono-niches (crypto, NFT, jobs), auth &amp; utility pages, and a 78-page component showcase.</p>
             </div>
             <div class="doc-card">
               <h4>Mock API</h4>
               <p>A typed client + fixtures so every screen runs and demos without a server.</p>
+            </div>
+            <div class="doc-card">
+              <h4>Appearance &amp; layouts</h4>
+              <p>Three styles (<code>glass</code> / <code>liquid</code> / <code>flat</code>), five shell layouts and a live Theme Customizer drawer.</p>
+            </div>
+            <div class="doc-card">
+              <h4>9 languages, RTL-ready</h4>
+              <p>Nine dictionaries at exact key parity, including Arabic with full right-to-left mirroring.</p>
             </div>
             <div class="doc-card">
               <h4>This documentation</h4>
@@ -129,9 +142,11 @@
                 <tr><td>Data layer</td><td>TanStack Query (mock-backed), TanStack Table</td></tr>
                 <tr><td>Forms &amp; validation</td><td>react-hook-form + Zod (<code>@hookform/resolvers</code>)</td></tr>
                 <tr><td>Charts</td><td>Recharts</td></tr>
+                <tr><td>Maps</td><td>Leaflet (used directly — no React wrapper), OpenStreetMap tiles</td></tr>
                 <tr><td>Editors</td><td>TipTap (rich text), CodeMirror (HTML)</td></tr>
                 <tr><td>Drag &amp; drop</td><td>dnd-kit</td></tr>
-                <tr><td>Tooling</td><td>oxlint (lint), Prettier (format), Vitest + Testing Library + jsdom (tests)</td></tr>
+                <tr><td>Dates</td><td>date-fns (locale-aware formatting)</td></tr>
+                <tr><td>Tooling</td><td>oxlint (lint), Prettier (format), Vitest + Testing Library + jsdom (tests), a logical-property RTL guard, and a release packager</td></tr>
                 <tr><td>Backend</td><td>None — in-repo mock API only (no database)</td></tr>
               </tbody>
             </table>
@@ -155,7 +170,7 @@
           </div>
         </section>
 
-        <!-- ============================ GETTING STARTED (T3) ============================ -->
+        <!-- ============================ GETTING STARTED ============================ -->
         <section id="getting-started" class="doc-section">
           <h2>Getting Started</h2>
           <p>
@@ -206,6 +221,9 @@ npm run dev      # start the Vite dev server with hot-module reloading</code></p
                 <tr><td><code>npm run format</code></td><td>Format sources with Prettier (<code>src/**/*.{ts,tsx,css}</code>).</td></tr>
                 <tr><td><code>npm run format:check</code></td><td>Check formatting without writing changes.</td></tr>
                 <tr><td><code>npm run test</code></td><td>Run the test suite once with Vitest.</td></tr>
+                <tr><td><code>npm run lint:rtl</code></td><td>Fail on physical directional utilities (<code>ml-*</code>, <code>text-left</code>, …) that would break right-to-left layouts. See <a href="#rtl">RTL &amp; Arabic</a>.</td></tr>
+                <tr><td><code>npm run lint:rtl:all</code></td><td>The same guard across every file rather than the changed set.</td></tr>
+                <tr><td><code>npm run package</code></td><td>Run the full quality gate and, only if everything is green, assemble the distributable archive.</td></tr>
               </tbody>
             </table>
           </div>
@@ -227,23 +245,28 @@ npm run preview    # locally preview the dist/ build</code></pre>
 │   ├── app-shell.tsx    Authenticated layout: sidebar, header, ⌘K palette
 │   ├── router.tsx       react-router config; feature screens are lazy-loaded
 │   └── nav.ts           ONE navigation map (sidebar + command palette)
-├── features/         Screen-level code, one folder per domain
-│   ├── auth/            login · forgot · reset · MFA enroll · guest layout
+├── features/         Screen-level code, one folder per domain (31 slices)
+│   ├── auth/            login · signup · forgot · reset · MFA · lock · guest layout
 │   ├── dashboard/       customizable widget dashboard
-│   ├── users/          users list · editor · roles/RBAC · profile
+│   ├── dashboards/      9 vertical dashboards (CRM, ecommerce, crypto, NFT, …)
+│   ├── users/           users list · editor · roles/RBAC · profile
 │   ├── settings/        settings + appearance
 │   ├── shop/            orders, products, customers, payments, invoices, …
-│   ├── analytics/ inbox/ kanban/ media/ pricing/ ai/ help/ …
-│   ├── ui-kit/          component showcase
-│   └── placeholder/     fallback screen for un-built routes
+│   ├── crm/ projects/ tasks/ calendar/ email/ support/ todo/   app suites
+│   ├── crypto/ nft/ jobs/                                      mono-niches
+│   ├── blog/ pages-extra/ landing/ pricing/                    content & marketing
+│   ├── analytics/ inbox/ kanban/ media/ ai/ help/ activity/ …
+│   ├── layouts/         shell-layout demo screens
+│   └── ui-kit/          78-page component showcase
 ├── components/
-│   ├── ui/              60+ reusable primitives (shadcn/ui + Radix + Base UI)
+│   ├── ui/              64 reusable primitives (shadcn/ui + Radix + Base UI)
+│   ├── charts/ board/   chart compositions and the kanban board
 │   └── *.tsx            composed app widgets (data-table, page-header, …)
 ├── lib/              Cross-cutting helpers (auth, i18n, query, permissions, …)
 ├── hooks/            Shared React hooks
 ├── api/              API client + types
 │   └── mock/            in-memory fixtures (zero-backend demo)
-├── locales/          8 locale dictionaries (en, de, es, fr, it, pl, ru, uk)
+├── locales/          9 locale dictionaries (ar, de, en, es, fr, it, pl, ru, uk)
 ├── assets/           Static assets
 ├── index.css         ALL visual identity: shadcn vars + --glass-* tokens
 └── main.tsx          App entry: providers + RouterProvider</code></pre>
@@ -275,7 +298,7 @@ import { Button } from '../../../components/ui/button'
 import { Button } from '@/components/ui/button'</code></pre>
         </section>
 
-        <!-- ============================ THEMING (T4) ============================ -->
+        <!-- ============================ THEMING ============================ -->
         <section id="theming" class="doc-section">
           <h2>Theming &amp; Design Tokens</h2>
           <p>
@@ -396,7 +419,188 @@ import { Button } from '@/components/ui/button'</code></pre>
           </p>
         </section>
 
-        <!-- ============================ ADDING A SCREEN (T5) ============================ -->
+        <!-- ============================ APPEARANCE, CUSTOMIZER & LAYOUTS ============================ -->
+        <section id="appearance" class="doc-section">
+          <h2>Appearance, Customizer &amp; Layouts</h2>
+          <p>
+            Beyond light and dark, Air Glass UI ships three <strong>appearance styles</strong> and five
+            <strong>shell layouts</strong>. Both are configuration, not forks: a style is a recipe of token
+            values in <code>src/index.css</code>, and a layout re-chromes the same app shell. Nothing is a
+            separate stylesheet or a duplicated component tree, so anything you build inherits all of them
+            for free.
+          </p>
+
+          <h3>The three appearance styles</h3>
+          <p>
+            Declared in <code>src/lib/appearance.ts</code> as <code>APPEARANCE_STYLES</code>. Each style only
+            re-declares the <code>--glass-*</code> tokens and <code>--radius</code>, which is why a component that
+            consumes tokens adapts to all three automatically:
+          </p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Style</th><th>Blur</th><th>Radius</th><th>Saturation</th><th>Character</th></tr></thead>
+              <tbody>
+                <tr><td><code>glass</code> <span class="doc-badge doc-badge--green">default</span></td><td>28px</td><td>12px</td><td>160%</td><td>The signature &ldquo;Light Air Glass&rdquo; frost — translucent surfaces over the mesh background.</td></tr>
+                <tr><td><code>liquid</code></td><td>40px</td><td>18px</td><td>190%</td><td>A heavier, iOS-like frost: softer geometry, deeper blur, richer saturation.</td></tr>
+                <tr><td><code>flat</code></td><td>0</td><td>10px</td><td>100%</td><td>No blur at all — opaque surfaces that separate on borders and background alone. The fastest to paint.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="doc-warn">
+            <span class="doc-callout-label">Verify new work in <code>flat</code> too.</span>
+            <code>flat</code> has no blur, so any separation you were unconsciously getting from the frost
+            disappears. If a panel is legible in <code>flat</code>, it is legible everywhere. Never hard-code a
+            blur or radius value in a component — read <code>--glass-blur-*</code> and <code>--radius</code>, and the
+            style switch does the rest.
+          </div>
+
+          <h3>The five shell layouts</h3>
+          <p>
+            Declared as <code>APPEARANCE_LAYOUTS</code>. They change where the navigation lives, not what it
+            contains — all five read the same map from <code>src/app/nav.ts</code>:
+          </p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Layout</th><th>Shell arrangement</th></tr></thead>
+              <tbody>
+                <tr><td><code>vertical</code> <span class="doc-badge doc-badge--green">default</span></td><td>The classic left sidebar, collapsible to icons.</td></tr>
+                <tr><td><code>horizontal</code></td><td>A top menu bar with dropdowns; no sidebar.</td></tr>
+                <tr><td><code>detached</code></td><td>The sidebar floats away from the viewport edge as a separate glass card.</td></tr>
+                <tr><td><code>two-column</code></td><td>A narrow icon rail plus a contextual second column for the active section.</td></tr>
+                <tr><td><code>hovered</code></td><td>An icon rail that expands to full width on hover.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Each layout also has a demo screen under <strong>Pages › Layouts</strong> that switches the
+            site-wide layout on mount, so you can walk all five without touching settings.
+          </p>
+
+          <h3>The Theme Customizer</h3>
+          <p>
+            A floating drawer (<code>src/components/theme-customizer.tsx</code>) reachable from every screen.
+            It writes to the same appearance store the settings screen uses, previews changes live on
+            <code>&lt;html&gt;</code> while it is open, and reverts the preview if you close it without saving:
+          </p>
+          <ul>
+            <li><strong>Accent</strong> — presets plus a native color input. The whole accent family derives from <code>--primary</code> via <code>color-mix</code>, so one value re-tints buttons, links, focus rings and the nav marker.</li>
+            <li><strong>Design style</strong> — <code>glass</code> / <code>liquid</code> / <code>flat</code>. Switching adopts that style's token baseline while keeping your accent.</li>
+            <li><strong>Theme</strong> — light or dark.</li>
+            <li><strong>Content width</strong> — fluid or boxed.</li>
+            <li><strong>Layout</strong> — the five shell arrangements above.</li>
+            <li><strong>Direction</strong> — LTR or RTL, applied to <code>&lt;html dir&gt;</code> immediately.</li>
+            <li><strong>Density</strong> — comfortable or compact control sizing.</li>
+            <li><strong>Reset</strong> — back to the shipped defaults.</li>
+            <li><strong>Copy config</strong> — copies the current configuration to the clipboard so you can paste it in as your new defaults.</li>
+          </ul>
+          <div class="doc-tip">
+            <span class="doc-callout-label">Making a customizer choice permanent.</span>
+            Use <strong>Copy config</strong>, then paste the values into your appearance defaults. The drawer is
+            a preview-and-persist tool for the operator; the shipped defaults are yours to set in source.
+          </div>
+        </section>
+
+        <!-- ============================ RTL & ARABIC ============================ -->
+        <section id="rtl" class="doc-section">
+          <h2>RTL &amp; Arabic</h2>
+          <p>
+            The template mirrors properly for right-to-left languages, and ships Arabic
+            (<code>ar.json</code>) as a fully translated ninth locale to prove it. Direction is a first-class
+            setting rather than an afterthought.
+          </p>
+
+          <h3>How direction is toggled</h3>
+          <p>
+            Direction lives in the appearance store and is reflected onto <code>&lt;html dir&gt;</code>. Change it
+            from the Theme Customizer's <strong>Direction</strong> control, or from the appearance settings
+            screen. Every layout, spacing and component affordance follows, and direction-implying icons
+            (chevrons, arrows) flip with it.
+          </p>
+
+          <h3>The rule you must follow when extending</h3>
+          <p>
+            RTL only keeps working if new markup uses Tailwind's <strong>logical</strong> directional
+            utilities instead of the physical ones. This is enforced, not merely recommended:
+          </p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Use this</th><th>Never this</th></tr></thead>
+              <tbody>
+                <tr><td><code>ms-*</code> / <code>me-*</code></td><td><code>ml-*</code> / <code>mr-*</code></td></tr>
+                <tr><td><code>ps-*</code> / <code>pe-*</code></td><td><code>pl-*</code> / <code>pr-*</code></td></tr>
+                <tr><td><code>start-*</code> / <code>end-*</code></td><td><code>left-*</code> / <code>right-*</code></td></tr>
+                <tr><td><code>text-start</code> / <code>text-end</code></td><td><code>text-left</code> / <code>text-right</code></td></tr>
+                <tr><td><code>border-s</code> / <code>border-e</code></td><td><code>border-l</code> / <code>border-r</code></td></tr>
+                <tr><td><code>rounded-s-*</code> / <code>rounded-e-*</code></td><td><code>rounded-l-*</code> / <code>rounded-r-*</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <pre><code>npm run lint:rtl        # guard the files you changed
+npm run lint:rtl:all    # the same guard across the whole codebase</code></pre>
+          <p>
+            The guard (<code>scripts/check-rtl.mjs</code>) fails on any physical utility it finds. Run it
+            before you commit; a layout that mirrors correctly in Arabic is a layout that stayed logical.
+          </p>
+
+          <div class="doc-note">
+            <span class="doc-callout-label">Adding another RTL language.</span>
+            Follow the <a href="#i18n">add a locale</a> recipe, then mark the locale right-to-left so the
+            direction switches with it. Because the layout rules are already logical, a new RTL language is
+            a dictionary and a flag — not a second set of styles.
+          </div>
+        </section>
+
+        <!-- ============================ NAVIGATION & IA ============================ -->
+        <section id="navigation" class="doc-section">
+          <h2>Navigation &amp; Information Architecture</h2>
+          <p>
+            <code>src/app/nav.ts</code> is the <strong>single navigation map</strong>. The sidebar and the
+            &#8984;K command palette both consume it — there is no second list to keep in step, and adding an
+            entry there is what makes a screen appear in both surfaces at once. Parents nest arbitrarily
+            deep (the shipped map goes three levels), and only leaf entries carry a route.
+          </p>
+
+          <h3>The four top-level sections</h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Section</th><th>What belongs here</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Menu</strong></td><td>The product itself — dashboards and the application suites (e-commerce, CRM, projects, tasks, calendar, email, support, to-do) plus the mono-niche verticals.</td></tr>
+                <tr><td><strong>Pages</strong></td><td>Standalone pages: authentication variants, utility and error pages, blog, landing pages and the shell-layout demos.</td></tr>
+                <tr><td><strong>Components</strong></td><td>The UI showcase — one page per component family, doubling as living component documentation.</td></tr>
+                <tr><td><strong>Admin</strong></td><td>Air Glass configuration and maintenance: users, roles, settings, appearance, activity log, AI settings, help.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Anatomy of an entry</h3>
+          <pre><code>// A leaf — carries a route, and optionally a permission
+{ to: "/shop/orders", label: t("nav.orders"), icon: ShoppingCart, perm: "orders.view" }
+
+// A parent — a collapsible toggle with no route of its own
+{
+  key: "menu.ecommerce",          // unique; persists the open/closed state
+  label: t("nav.ecommerce"),
+  icon: Store,
+  children: [ /* leaves or further parents */ ],
+}</code></pre>
+          <p>
+            Labels are always <code>t()</code> keys, never literal strings, so the whole menu translates with
+            the UI. A leaf with a <code>perm</code> is hidden from users who lack that permission — in the
+            sidebar <em>and</em> in the palette, because both read the same filtered map.
+          </p>
+
+          <div class="doc-tip">
+            <span class="doc-callout-label">Keep the map honest.</span>
+            Run <code>node scripts/build-screen-reference.mjs</code> to print the whole tree with routes and
+            permissions, and to cross-check it against <code>src/app/router.tsx</code>. It reports drift in
+            both directions — a menu entry pointing at a route that does not exist, and a route no menu
+            entry can reach — so a broken link surfaces as a report line rather than a 404 a buyer finds.
+            Add <code>--json</code> for machine-readable output.
+          </div>
+        </section>
+
+        <!-- ============================ ADDING A SCREEN ============================ -->
         <section id="adding-a-screen" class="doc-section">
           <h2>Adding a New Screen</h2>
           <p>
@@ -528,7 +732,7 @@ export const announcements = [
           </div>
         </section>
 
-        <!-- ============================ MOCK API (T6) ============================ -->
+        <!-- ============================ MOCK API ============================ -->
         <section id="mock-api" class="doc-section">
           <h2>Mock API &amp; Swapping in a Real Backend</h2>
           <p>
@@ -565,13 +769,27 @@ const { data, isLoading } = useQuery({
 
           <h3>How the mock switch works</h3>
           <p>The client decides between mock and real in a single line (<code>src/api/client.ts</code>):</p>
-          <pre><code>const useMock = import.meta.env.DEV &amp;&amp; !import.meta.env.VITE_API_REAL
+          <pre><code>const useMock =
+  import.meta.env.VITE_DEMO === '1' ||
+  (import.meta.env.DEV &amp;&amp; !import.meta.env.VITE_API_REAL)
+
 const API_BASE = import.meta.env.VITE_API_BASE ?? '/console/api'</code></pre>
           <p>
             So by default, in <strong>development</strong> the mock layer is used; in a
             <strong>production build</strong> (<code>import.meta.env.DEV</code> is false) real HTTP is used. You can
-            also force real requests during development by setting <code>VITE_API_REAL</code>.
+            force real requests during development by setting <code>VITE_API_REAL</code>.
           </p>
+
+          <div class="doc-warn">
+            <span class="doc-callout-label">Deploying a demo? Build with <code>VITE_DEMO=1</code>.</span>
+            A plain <code>npm run build</code> deliberately leaves the mock layer <em>out</em> of the bundle —
+            that is what you want once you have a real backend, because it keeps ~200&nbsp;KB of
+            fixtures out of your production build. But it also means the resulting
+            <code>dist/</code> has nothing to answer <code>/console/api/*</code>: every screen 404s and the app
+            bounces to the login page. To publish a working, backend-free demo, build it explicitly:
+            <pre><code>VITE_DEMO=1 npm run build   # mock bundled — runs standalone</code></pre>
+            The <code>dist/</code> included in your download was built this way, so you can host it as-is.
+          </div>
 
           <h3>Swapping in a real backend</h3>
           <p>Because every screen already talks to the typed <code>api</code> surface, you have two clean options:</p>
@@ -619,13 +837,15 @@ VITE_API_BASE=https://api.example.com # your backend base URL</code></pre>
           </p>
         </section>
 
-        <!-- ============================ I18N (T7) ============================ -->
+        <!-- ============================ I18N ============================ -->
         <section id="i18n" class="doc-section">
           <h2>Internationalization (i18n)</h2>
           <p>
-            The admin UI ships in <strong>8 languages</strong>. The system is deliberately lightweight: flat
-            JSON dictionaries bundled into the app and a tiny <code>t()</code> helper. UI language is a per-user
-            preference, independent from any content locales.
+            The admin UI ships in <strong>9 languages</strong>, one of them right-to-left. The system is
+            deliberately lightweight: flat JSON dictionaries bundled into the app and a tiny
+            <code>t()</code> helper. UI language is a per-user preference, independent from any content
+            locales. Dictionaries load <strong>on demand</strong> — only the active locale is fetched, so eight
+            unused languages never reach the initial bundle.
           </p>
 
           <h3>Shipped locales</h3>
@@ -638,6 +858,7 @@ VITE_API_BASE=https://api.example.com # your backend base URL</code></pre>
                 <tr><td><code>ru.json</code></td><td>Русский</td><td><code>pl.json</code></td><td>Polski</td></tr>
                 <tr><td><code>uk.json</code></td><td>Українська</td><td><code>es.json</code></td><td>Español</td></tr>
                 <tr><td><code>de.json</code></td><td>Deutsch</td><td><code>fr.json</code></td><td>Français</td></tr>
+                <tr><td><code>ar.json</code></td><td>العربية <span class="doc-badge doc-badge--muted">RTL</span></td><td colspan="2">See <a href="#rtl">RTL &amp; Arabic</a></td></tr>
               </tbody>
             </table>
           </div>
@@ -646,6 +867,14 @@ VITE_API_BASE=https://api.example.com # your backend base URL</code></pre>
             English string when a key is missing in the active locale, and ultimately to the key itself.
             Keep <code>en.json</code> complete.
           </p>
+
+          <div class="doc-warn">
+            <span class="doc-callout-label">Key parity is enforced.</span>
+            All nine dictionaries carry the <strong>exact same key set</strong>. The release gate
+            (<code>npm run package</code>) fails if any locale gains or loses a key relative to
+            <code>en.json</code>, because a half-translated build is a visible defect rather than a silent
+            one. Add every new key to every dictionary — the merge script below does it in one pass.
+          </div>
 
           <h3>The <code>t()</code> helper</h3>
           <p>
@@ -665,11 +894,11 @@ t('users.greeting', { name: 'Ada' })     // "Welcome, Ada" (from "Welcome, {name
           <h3>Recipe: add a new key</h3>
           <ol class="doc-steps">
             <li>Choose a dotted key, e.g. <code>nav.reports</code>.</li>
-            <li>Add it to <strong>all 8</strong> dictionaries with a translated value (at minimum to <code>en.json</code>).</li>
+            <li>Add it to <strong>all 9</strong> dictionaries with a translated value.</li>
             <li>Use it in code via <code>t('nav.reports')</code>.</li>
           </ol>
           <p>
-            To avoid editing eight files by hand, author one payload and run the bundled merge script:
+            To avoid editing nine files by hand, author one payload and run the bundled merge script:
           </p>
           <pre><code>// payload.json
 {
@@ -680,7 +909,8 @@ t('users.greeting', { name: 'Ada' })     // "Welcome, Ada" (from "Welcome, {name
   "fr": { "nav.reports": "Rapports" },
   "es": { "nav.reports": "Informes" },
   "it": { "nav.reports": "Report" },
-  "pl": { "nav.reports": "Raporty" }
+  "pl": { "nav.reports": "Raporty" },
+  "ar": { "nav.reports": "التقارير" }
 }</code></pre>
           <pre><code>node scripts/i18n-merge.mjs payload.json
 # [i18n-merge] en: +1 keys (1 total in payload)
@@ -696,18 +926,24 @@ t('users.greeting', { name: 'Ada' })     // "Welcome, Ada" (from "Welcome, {name
               <code>dictionaries</code> map.
             </li>
             <li>Add the new locale key to the <code>LOCALES</code> list in <code>scripts/i18n-merge.mjs</code> so future merges include it.</li>
+            <li>
+              If the language uses a date format you care about, add its <code>date-fns</code> locale to the
+              map in <code>src/lib/date-locale.ts</code> — that single map is what every relative and absolute
+              timestamp reads.
+            </li>
+            <li>Run <code>npm run package</code> (or just the parity step) to confirm the new dictionary matches <code>en.json</code> key for key.</li>
           </ol>
 
           <div class="doc-note">
-            <span class="doc-callout-label">RTL-awareness.</span>
-            Components are built on Radix / Base UI primitives that respect the document direction, and a
-            <code>Direction</code> provider is available. For a right-to-left language, set
-            <code>dir="rtl"</code> on the document and the layout, spacing and component affordances mirror
-            accordingly.
+            <span class="doc-callout-label">Right-to-left languages.</span>
+            Components are built on Radix / Base UI primitives that respect the document direction, and the
+            appearance store drives <code>&lt;html dir&gt;</code>. Arabic ships enabled as a worked example —
+            see <a href="#rtl">RTL &amp; Arabic</a> for the direction toggle and the logical-property rule
+            your own screens must follow.
           </div>
         </section>
 
-        <!-- ============================ COMPONENT REFERENCE (T8) ============================ -->
+        <!-- ============================ COMPONENT REFERENCE ============================ -->
         <section id="component-reference" class="doc-section">
           <h2>Component Reference</h2>
           <p>
@@ -866,93 +1102,315 @@ import { Card } from '@/components/ui/card'
           </p>
         </section>
 
-        <!-- ============================ SCREEN REFERENCE (T9) ============================ -->
+        <!-- ============================ SCREEN REFERENCE ============================ -->
         <section id="screen-reference" class="doc-section">
           <h2>Screen Reference</h2>
           <p>
             Screens live under <code>src/features/*</code>; their routes are declared in
-            <code>src/app/router.tsx</code> and their sidebar labels and permissions in
-            <code>src/app/nav.ts</code>. The table below lists the fully-built screens. Routes wrapped in a
-            <code>&lt;RequirePermission&gt;</code> guard need the listed permission; screens with a dash are
-            available to any authenticated user.
+            <code>src/app/router.tsx</code> and their labels and permissions in <code>src/app/nav.ts</code>.
+            The template ships <strong>196 screens</strong>: the <strong>166</strong> reachable from the
+            navigation map, listed below by section, plus <strong>30</strong> authentication, utility and
+            &ldquo;create&rdquo; screens that are reached directly or from a list rather than the menu. On top
+            of those sit <strong>17 parameterized detail routes</strong> that render an individual record.
+          </p>
+          <p>
+            A screen with a permission is wrapped in a <code>&lt;RequirePermission&gt;</code> guard and is
+            hidden from both the sidebar and the palette for users who lack it; a dash means any
+            authenticated user can reach it.
           </p>
 
-          <h3>Authentication (guest)</h3>
+          <div class="doc-tip">
+            <span class="doc-callout-label">This table is generated.</span>
+            Run <code>node scripts/build-screen-reference.mjs</code> to reproduce it from
+            <code>src/app/nav.ts</code>. The counts here are the script&rsquo;s output, and the release gate
+            re-checks them, so this reference cannot silently drift from the product.
+          </div>
+
+          <h3>Menu <span class="doc-badge doc-badge--muted">65</span></h3>
           <div class="doc-table-wrap">
             <table class="doc-table">
-              <thead><tr><th>Route</th><th>Screen</th><th>Permission</th></tr></thead>
+              <thead><tr><th>Route</th><th>Screen</th><th>Section</th><th>Permission</th></tr></thead>
               <tbody>
-                <tr><td><code>/login</code></td><td>Sign-in (with 2FA challenge &amp; impersonation return)</td><td>—</td></tr>
-                <tr><td><code>/forgot</code></td><td>Forgot-password request</td><td>—</td></tr>
-                <tr><td><code>/reset/:token</code></td><td>Password reset</td><td>—</td></tr>
+                <tr><td><code>/</code></td><td>Default</td><td>Dashboards</td><td>&mdash;</td></tr>
+                <tr><td><code>/analytics</code></td><td>Analytics</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/dashboards/crm</code></td><td>CRM</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/dashboards/ecommerce</code></td><td>Ecommerce</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/dashboards/crypto</code></td><td>Crypto</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/dashboards/projects</code></td><td>Projects</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/dashboards/nft</code></td><td>NFT</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/dashboards/jobs</code></td><td>Jobs</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/dashboards/blog</code></td><td>Blog</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/dashboards/ai</code></td><td>AI</td><td>Dashboards</td><td><code>analytics.view</code></td></tr>
+                <tr><td><code>/inbox</code></td><td>Chat</td><td>Apps</td><td><code>inbox.view</code></td></tr>
+                <tr><td><code>/projects</code></td><td>Projects</td><td>Apps</td><td><code>projects.view</code></td></tr>
+                <tr><td><code>/tasks</code></td><td>Tasks</td><td>Apps</td><td><code>tasks.view</code></td></tr>
+                <tr><td><code>/kanban</code></td><td>Kanban</td><td>Apps</td><td><code>kanban.view</code></td></tr>
+                <tr><td><code>/media</code></td><td>File Manager</td><td>Apps</td><td><code>media.view</code></td></tr>
+                <tr><td><code>/todo</code></td><td>To Do</td><td>Apps</td><td><code>todo.view</code></td></tr>
+                <tr><td><code>/api-keys</code></td><td>API Key</td><td>Apps</td><td><code>apikeys.view</code></td></tr>
+                <tr><td><code>/calendar</code></td><td>Main calendar</td><td>Apps › Calendar</td><td><code>calendar.view</code></td></tr>
+                <tr><td><code>/calendar/month</code></td><td>Month grid</td><td>Apps › Calendar</td><td><code>calendar.view</code></td></tr>
+                <tr><td><code>/email</code></td><td>Mailbox</td><td>Apps › Email</td><td><code>email.view</code></td></tr>
+                <tr><td><code>/email/templates/basic</code></td><td>Basic</td><td>Apps › Email › Templates</td><td><code>email.view</code></td></tr>
+                <tr><td><code>/email/templates/ecommerce</code></td><td>Ecommerce</td><td>Apps › Email › Templates</td><td><code>email.view</code></td></tr>
+                <tr><td><code>/shop/products</code></td><td>Products</td><td>Apps › Ecommerce</td><td><code>products.view</code></td></tr>
+                <tr><td><code>/shop/orders</code></td><td>Orders</td><td>Apps › Ecommerce</td><td><code>orders.view</code></td></tr>
+                <tr><td><code>/shop/cart</code></td><td>Cart</td><td>Apps › Ecommerce</td><td><code>orders.view</code></td></tr>
+                <tr><td><code>/shop/checkout</code></td><td>Checkout</td><td>Apps › Ecommerce</td><td><code>orders.view</code></td></tr>
+                <tr><td><code>/shop/sellers</code></td><td>Sellers</td><td>Apps › Ecommerce</td><td><code>sellers.view</code></td></tr>
+                <tr><td><code>/shop/customers</code></td><td>Customers</td><td>Apps › Ecommerce</td><td><code>customers.view</code></td></tr>
+                <tr><td><code>/shop/invoices</code></td><td>Invoices</td><td>Apps › Ecommerce</td><td><code>invoices.view</code></td></tr>
+                <tr><td><code>/shop/payments</code></td><td>Payments</td><td>Apps › Ecommerce</td><td><code>payments.view</code></td></tr>
+                <tr><td><code>/shop/discounts</code></td><td>Discounts</td><td>Apps › Ecommerce</td><td><code>orders.discounts</code></td></tr>
+                <tr><td><code>/shop/delivery</code></td><td>Delivery</td><td>Apps › Ecommerce</td><td><code>orders.delivery</code></td></tr>
+                <tr><td><code>/crm/contacts</code></td><td>Contacts</td><td>Apps › CRM</td><td><code>contacts.view</code></td></tr>
+                <tr><td><code>/crm/companies</code></td><td>Companies</td><td>Apps › CRM</td><td><code>crm.companies</code></td></tr>
+                <tr><td><code>/crm/deals</code></td><td>Deals</td><td>Apps › CRM</td><td><code>crm.deals</code></td></tr>
+                <tr><td><code>/crm/leads</code></td><td>Leads</td><td>Apps › CRM</td><td><code>crm.leads</code></td></tr>
+                <tr><td><code>/crypto/transactions</code></td><td>Transactions</td><td>Apps › Crypto</td><td><code>crypto.view</code></td></tr>
+                <tr><td><code>/crypto/buy-sell</code></td><td>Buy &amp; Sell</td><td>Apps › Crypto</td><td><code>crypto.view</code></td></tr>
+                <tr><td><code>/crypto/orders</code></td><td>Orders</td><td>Apps › Crypto</td><td><code>crypto.view</code></td></tr>
+                <tr><td><code>/crypto/wallet</code></td><td>My Wallet</td><td>Apps › Crypto</td><td><code>crypto.view</code></td></tr>
+                <tr><td><code>/crypto/ico</code></td><td>ICO List</td><td>Apps › Crypto</td><td><code>crypto.view</code></td></tr>
+                <tr><td><code>/crypto/kyc</code></td><td>KYC Application</td><td>Apps › Crypto</td><td><code>crypto.view</code></td></tr>
+                <tr><td><code>/nft/marketplace</code></td><td>Marketplace</td><td>Apps › NFT Marketplace</td><td><code>nft.view</code></td></tr>
+                <tr><td><code>/nft/explore</code></td><td>Explore</td><td>Apps › NFT Marketplace</td><td><code>nft.view</code></td></tr>
+                <tr><td><code>/nft/auction</code></td><td>Live Auction</td><td>Apps › NFT Marketplace</td><td><code>nft.view</code></td></tr>
+                <tr><td><code>/nft/collections</code></td><td>Collections</td><td>Apps › NFT Marketplace</td><td><code>nft.view</code></td></tr>
+                <tr><td><code>/nft/creators</code></td><td>Creators</td><td>Apps › NFT Marketplace</td><td><code>nft.view</code></td></tr>
+                <tr><td><code>/nft/ranking</code></td><td>Ranking</td><td>Apps › NFT Marketplace</td><td><code>nft.view</code></td></tr>
+                <tr><td><code>/nft/wallet-connect</code></td><td>Wallet Connect</td><td>Apps › NFT Marketplace</td><td><code>nft.view</code></td></tr>
+                <tr><td><code>/nft/create</code></td><td>Create NFT</td><td>Apps › NFT Marketplace</td><td><code>nft.manage</code></td></tr>
+                <tr><td><code>/jobs/statistics</code></td><td>Statistics</td><td>Apps › Jobs</td><td><code>jobs.view</code></td></tr>
+                <tr><td><code>/jobs/list</code></td><td>Job List</td><td>Apps › Jobs</td><td><code>jobs.view</code></td></tr>
+                <tr><td><code>/jobs/grid</code></td><td>Job Grid</td><td>Apps › Jobs</td><td><code>jobs.view</code></td></tr>
+                <tr><td><code>/jobs/candidates</code></td><td>Candidates</td><td>Apps › Jobs</td><td><code>jobs.view</code></td></tr>
+                <tr><td><code>/jobs/candidates/grid</code></td><td>Candidates Grid</td><td>Apps › Jobs</td><td><code>jobs.view</code></td></tr>
+                <tr><td><code>/jobs/application</code></td><td>Application</td><td>Apps › Jobs</td><td><code>jobs.view</code></td></tr>
+                <tr><td><code>/jobs/new</code></td><td>New Job</td><td>Apps › Jobs</td><td><code>jobs.manage</code></td></tr>
+                <tr><td><code>/jobs/companies</code></td><td>Companies</td><td>Apps › Jobs</td><td><code>jobs.view</code></td></tr>
+                <tr><td><code>/jobs/categories</code></td><td>Categories</td><td>Apps › Jobs</td><td><code>jobs.manage</code></td></tr>
+                <tr><td><code>/support/tickets</code></td><td>Ticket List</td><td>Apps › Support Tickets</td><td><code>support.view</code></td></tr>
+                <tr><td><code>/layouts/vertical</code></td><td>Default</td><td>Layouts</td><td>&mdash;</td></tr>
+                <tr><td><code>/layouts/horizontal</code></td><td>Horizontal</td><td>Layouts</td><td>&mdash;</td></tr>
+                <tr><td><code>/layouts/detached</code></td><td>Detached</td><td>Layouts</td><td>&mdash;</td></tr>
+                <tr><td><code>/layouts/two-column</code></td><td>Two column</td><td>Layouts</td><td>&mdash;</td></tr>
+                <tr><td><code>/layouts/hovered</code></td><td>Hovered</td><td>Layouts</td><td>&mdash;</td></tr>
               </tbody>
             </table>
           </div>
-          <p>An MFA enrollment gate (<code>MfaEnrollGate</code>) can require 2FA setup before the shell loads.</p>
 
-          <h3>Core &amp; administration</h3>
+          <h3>Pages <span class="doc-badge doc-badge--muted">13</span></h3>
           <div class="doc-table-wrap">
             <table class="doc-table">
-              <thead><tr><th>Route</th><th>Screen</th><th>Permission</th></tr></thead>
+              <thead><tr><th>Route</th><th>Screen</th><th>Section</th><th>Permission</th></tr></thead>
               <tbody>
-                <tr><td><code>/</code></td><td>Dashboard — customizable widget grid</td><td>—</td></tr>
-                <tr><td><code>/users</code></td><td>Users list</td><td><code>users.view</code></td></tr>
-                <tr><td><code>/users/new</code>, <code>/users/:id</code></td><td>User editor</td><td><code>users.manage</code></td></tr>
-                <tr><td><code>/roles</code></td><td>Roles &amp; permissions (RBAC matrix)</td><td><code>roles.manage</code></td></tr>
-                <tr><td><code>/profile</code></td><td>My profile &amp; 2FA self-service</td><td>—</td></tr>
-                <tr><td><code>/settings/:tab?</code></td><td>Site settings (grouped tabs)</td><td><code>settings.manage</code></td></tr>
-                <tr><td><code>/appearance</code></td><td>Appearance (style, backgrounds, accent tokens)</td><td><code>settings.manage</code></td></tr>
-                <tr><td><code>/system/activity</code></td><td>Activity log</td><td><code>activity.view</code></td></tr>
+                <tr><td><code>/profile</code></td><td>Profile</td><td>Pages</td><td>&mdash;</td></tr>
+                <tr><td><code>/pricing</code></td><td>Pricing</td><td>Pages</td><td>&mdash;</td></tr>
+                <tr><td><code>/starter</code></td><td>Starter</td><td>Utility</td><td>&mdash;</td></tr>
+                <tr><td><code>/team</code></td><td>Team</td><td>Utility</td><td>&mdash;</td></tr>
+                <tr><td><code>/timeline</code></td><td>Timeline</td><td>Utility</td><td>&mdash;</td></tr>
+                <tr><td><code>/faq</code></td><td>FAQs</td><td>Utility</td><td>&mdash;</td></tr>
+                <tr><td><code>/gallery</code></td><td>Gallery</td><td>Utility</td><td>&mdash;</td></tr>
+                <tr><td><code>/sitemap</code></td><td>Sitemap</td><td>Utility</td><td>&mdash;</td></tr>
+                <tr><td><code>/blog/list</code></td><td>Blog list</td><td>Blog</td><td>&mdash;</td></tr>
+                <tr><td><code>/blog/grid</code></td><td>Blog grid</td><td>Blog</td><td>&mdash;</td></tr>
+                <tr><td><code>/landing</code></td><td>One page</td><td>Landing</td><td>&mdash;</td></tr>
+                <tr><td><code>/landing/nft</code></td><td>NFT</td><td>Landing</td><td>&mdash;</td></tr>
+                <tr><td><code>/landing/job</code></td><td>Jobs</td><td>Landing</td><td>&mdash;</td></tr>
               </tbody>
             </table>
           </div>
 
-          <h3>E-commerce (shop)</h3>
+          <h3>Components <span class="doc-badge doc-badge--muted">78</span></h3>
           <div class="doc-table-wrap">
             <table class="doc-table">
-              <thead><tr><th>Route</th><th>Screen</th><th>Permission</th></tr></thead>
+              <thead><tr><th>Route</th><th>Screen</th><th>Section</th><th>Permission</th></tr></thead>
               <tbody>
-                <tr><td><code>/shop/orders</code>, <code>/shop/orders/:id</code></td><td>Orders list &amp; detail</td><td><code>orders.view</code></td></tr>
-                <tr><td><code>/shop/products</code></td><td>Products list</td><td><code>products.view</code></td></tr>
-                <tr><td><code>/shop/products/new</code>, <code>/shop/products/:id</code></td><td>Product editor</td><td><code>products.manage</code></td></tr>
-                <tr><td><code>/shop/customers</code>, <code>/shop/customers/:id</code></td><td>Customers (CRM) list &amp; detail</td><td><code>customers.view</code></td></tr>
-                <tr><td><code>/shop/payments</code></td><td>Payments</td><td><code>payments.view</code></td></tr>
-                <tr><td><code>/shop/invoices</code>, <code>/shop/invoices/:id</code></td><td>Invoices list &amp; detail</td><td><code>invoices.view</code></td></tr>
-                <tr><td><code>/shop/discounts</code></td><td>Discounts</td><td><code>orders.discounts</code></td></tr>
-                <tr><td><code>/shop/delivery</code></td><td>Delivery methods</td><td><code>orders.delivery</code></td></tr>
+                <tr><td><code>/components/base/buttons</code></td><td>Buttons</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/alerts</code></td><td>Alerts</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/badges</code></td><td>Badges</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/colors</code></td><td>Colors</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/cards</code></td><td>Cards</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/carousel</code></td><td>Carousel</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/dropdowns</code></td><td>Dropdowns</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/grid</code></td><td>Grid</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/images</code></td><td>Images</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/tabs</code></td><td>Tabs</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/accordion</code></td><td>Accordion</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/modals</code></td><td>Modals</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/offcanvas</code></td><td>Offcanvas</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/placeholders</code></td><td>Placeholders</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/progress</code></td><td>Progress</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/notifications</code></td><td>Notifications</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/media</code></td><td>Media</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/video</code></td><td>Video</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/typography</code></td><td>Typography</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/lists</code></td><td>Lists</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/links</code></td><td>Links</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/general</code></td><td>General</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/ribbons</code></td><td>Ribbons</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/base/utilities</code></td><td>Utilities</td><td>Base UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/sweet-alerts</code></td><td>Sweet Alerts</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/nestable-list</code></td><td>Nestable List</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/scrollbar</code></td><td>Scrollbar</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/animation</code></td><td>Animation</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/tour</code></td><td>Tour</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/swiper-slider</code></td><td>Swiper / Slider</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/ratings</code></td><td>Ratings</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/highlight</code></td><td>Highlight</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/advance/scrollspy</code></td><td>ScrollSpy</td><td>Advance UI</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/widgets</code></td><td>Widgets</td><td>&mdash;</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/icons</code></td><td>Icons</td><td>&mdash;</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/basic-elements</code></td><td>Basic Elements</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/form-select</code></td><td>Select</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/checks-radios</code></td><td>Checkboxes &amp; Radios</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/pickers</code></td><td>Pickers</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/input-masks</code></td><td>Input Masks</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/advanced</code></td><td>Advanced Inputs</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/range-slider</code></td><td>Range Slider</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/validation</code></td><td>Validation</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/wizard</code></td><td>Wizard</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/editors</code></td><td>Editors</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/file-uploads</code></td><td>File Uploads</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/form-layouts</code></td><td>Form Layouts</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/forms/select2</code></td><td>Select2</td><td>Forms</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/tables/basic</code></td><td>Basic Tables</td><td>Tables</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/tables/gridjs</code></td><td>Sortable Table</td><td>Tables</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/tables/listjs</code></td><td>Searchable List</td><td>Tables</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/tables/datatables</code></td><td>Data Tables</td><td>Tables</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/line</code></td><td>Line</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/area</code></td><td>Area</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/column</code></td><td>Column</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/bar</code></td><td>Bar</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/mixed</code></td><td>Mixed</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/timeline</code></td><td>Timeline</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/range-area</code></td><td>Range area</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/funnel</code></td><td>Funnel</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/candlestick</code></td><td>Candlestick</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/boxplot</code></td><td>Box plot</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/bubble</code></td><td>Bubble</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/scatter</code></td><td>Scatter</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/heatmap</code></td><td>Heatmap</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/treemap</code></td><td>Treemap</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/pie</code></td><td>Pie</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/radialbar</code></td><td>Radial Bar</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/radar</code></td><td>Radar</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/polar-area</code></td><td>Polar Area</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/slope</code></td><td>Slope</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/chartjs</code></td><td>Chart.js</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/charts/echarts</code></td><td>ECharts</td><td>Charts</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/maps/base</code></td><td>Base map</td><td>Maps</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/maps/markers</code></td><td>Markers &amp; choropleth</td><td>Maps</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/maps/substitution</code></td><td>Vector / Google → Leaflet</td><td>Maps</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/multi-level/page-1</code></td><td>Level 1.1</td><td>Multi Level › Level 1</td><td>&mdash;</td></tr>
+                <tr><td><code>/components/multi-level/page-2</code></td><td>Level 2.1</td><td>Multi Level › Level 1 › Level 2</td><td>&mdash;</td></tr>
               </tbody>
             </table>
           </div>
 
-          <h3>Productivity, insight &amp; assistance</h3>
+          <h3>Admin <span class="doc-badge doc-badge--muted">10</span></h3>
           <div class="doc-table-wrap">
             <table class="doc-table">
-              <thead><tr><th>Route</th><th>Screen</th><th>Permission</th></tr></thead>
+              <thead><tr><th>Route</th><th>Screen</th><th>Section</th><th>Permission</th></tr></thead>
               <tbody>
-                <tr><td><code>/analytics</code></td><td>Analytics dashboard (period-scoped)</td><td><code>analytics.view</code></td></tr>
-                <tr><td><code>/inbox</code></td><td>Inbox / chat</td><td><code>inbox.view</code></td></tr>
-                <tr><td><code>/kanban</code></td><td>Kanban board (drag &amp; drop)</td><td><code>kanban.view</code></td></tr>
-                <tr><td><code>/media</code></td><td>Media / file manager</td><td><code>media.view</code></td></tr>
-                <tr><td><code>/pricing</code></td><td>Pricing page (presentational)</td><td>—</td></tr>
-                <tr><td><code>/ai</code></td><td>AI assistant (streaming chat)</td><td><code>ai.use</code></td></tr>
-                <tr><td><code>/system/ai</code></td><td>AI settings</td><td><code>ai.manage</code></td></tr>
-                <tr><td><code>/help</code>, <code>/help/:module/:page</code></td><td>Help center</td><td>—</td></tr>
-                <tr><td><code>/ui-kit</code></td><td>UI-Kit component showcase</td><td>—</td></tr>
-                <tr><td><code>/showcase/states</code></td><td>States showcase (loading/empty/error/onboarding)</td><td>—</td></tr>
+                <tr><td><code>/settings/site</code></td><td>Settings</td><td>Configuration</td><td><code>settings.manage</code></td></tr>
+                <tr><td><code>/appearance</code></td><td>Appearance</td><td>Configuration</td><td><code>settings.manage</code></td></tr>
+                <tr><td><code>/ai</code></td><td>AI assistant</td><td>Configuration</td><td><code>ai.use</code></td></tr>
+                <tr><td><code>/system/ai</code></td><td>AI settings</td><td>Configuration</td><td><code>ai.manage</code></td></tr>
+                <tr><td><code>/users</code></td><td>Users</td><td>Access</td><td><code>users.view</code></td></tr>
+                <tr><td><code>/roles</code></td><td>Roles</td><td>Access</td><td><code>roles.manage</code></td></tr>
+                <tr><td><code>/system/activity</code></td><td>Activity log</td><td>System</td><td><code>activity.view</code></td></tr>
+                <tr><td><code>/help</code></td><td>Help</td><td>System</td><td>&mdash;</td></tr>
+                <tr><td><code>/ui-kit</code></td><td>UI Kit</td><td>System</td><td>&mdash;</td></tr>
+                <tr><td><code>/showcase/states</code></td><td>States</td><td>System</td><td>&mdash;</td></tr>
               </tbody>
             </table>
           </div>
 
-          <div class="doc-note">
-            <span class="doc-callout-label">Placeholder routes.</span>
-            The navigation map also includes forward-looking routes (pages, blocks, menus, forms, SEO,
-            themes, scheduler, backups, and more) that render a stage-numbered <code>PlaceholderPage</code>. They
-            keep navigation complete out of the box and mark clear extension points — replace a placeholder
-            with a real screen using the <a href="#adding-a-screen">Adding a New Screen</a> recipe.
+          <h3>Authentication &amp; account <span class="doc-badge doc-badge--muted">18</span></h3>
+          <p>
+            Guest screens rendered outside the authenticated shell. Every one has a
+            <strong>cover</strong> variant — the same flow with a split hero panel — so you can pick the
+            look that fits your brand.
+          </p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Route</th><th>Screen</th></tr></thead>
+              <tbody>
+                <tr><td><code>/login</code></td><td>Sign-in (2FA challenge, impersonation return)</td></tr>
+                <tr><td><code>/login/cover</code></td><td>Sign-in — cover variant</td></tr>
+                <tr><td><code>/signup</code></td><td>Sign-up</td></tr>
+                <tr><td><code>/signup/cover</code></td><td>Sign-up — cover variant</td></tr>
+                <tr><td><code>/forgot</code></td><td>Forgot-password request</td></tr>
+                <tr><td><code>/forgot/cover</code></td><td>Forgot password — cover variant</td></tr>
+                <tr><td><code>/reset/:token</code></td><td>Password reset</td></tr>
+                <tr><td><code>/reset/:token/cover</code></td><td>Password reset — cover variant</td></tr>
+                <tr><td><code>/password-create</code></td><td>Create a password</td></tr>
+                <tr><td><code>/password-create/cover</code></td><td>Create a password — cover variant</td></tr>
+                <tr><td><code>/verify</code></td><td>Verify e-mail / code entry</td></tr>
+                <tr><td><code>/verify/cover</code></td><td>Verify — cover variant</td></tr>
+                <tr><td><code>/lock</code></td><td>Lock screen</td></tr>
+                <tr><td><code>/lock/cover</code></td><td>Lock screen — cover variant</td></tr>
+                <tr><td><code>/logout</code></td><td>Signed-out confirmation</td></tr>
+                <tr><td><code>/logout/cover</code></td><td>Signed out — cover variant</td></tr>
+                <tr><td><code>/auth-success</code></td><td>Success confirmation</td></tr>
+                <tr><td><code>/auth-success/cover</code></td><td>Success — cover variant</td></tr>
+              </tbody>
+            </table>
           </div>
+
+          <h3>Utility &amp; error pages <span class="doc-badge doc-badge--muted">10</span></h3>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Route</th><th>Screen</th></tr></thead>
+              <tbody>
+                <tr><td><code>/404</code></td><td>Not found</td></tr>
+                <tr><td><code>/404-alt</code></td><td>Not found — alternate illustration</td></tr>
+                <tr><td><code>/404-cover</code></td><td>Not found — cover variant</td></tr>
+                <tr><td><code>/500</code></td><td>Server error</td></tr>
+                <tr><td><code>/offline</code></td><td>Offline</td></tr>
+                <tr><td><code>/maintenance</code></td><td>Maintenance mode</td></tr>
+                <tr><td><code>/coming-soon</code></td><td>Coming soon (countdown)</td></tr>
+                <tr><td><code>/privacy</code></td><td>Privacy policy</td></tr>
+                <tr><td><code>/terms</code></td><td>Terms and conditions</td></tr>
+                <tr><td><code>/search-results</code></td><td>Search results</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Detail &amp; editor routes <span class="doc-badge doc-badge--muted">19</span></h3>
+          <p>Reached from their list screen rather than the navigation map:</p>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead><tr><th>Route</th><th>Screen</th></tr></thead>
+              <tbody>
+                <tr><td><code>/users/new</code></td><td>Create a user</td></tr>
+                <tr><td><code>/users/:id</code></td><td>Edit a user</td></tr>
+                <tr><td><code>/projects/new</code></td><td>Create a project</td></tr>
+                <tr><td><code>/projects/:id</code></td><td>Project detail</td></tr>
+                <tr><td><code>/tasks/:id</code></td><td>Task detail</td></tr>
+                <tr><td><code>/shop/products/new</code></td><td>Create a product</td></tr>
+                <tr><td><code>/shop/products/:id</code></td><td>Product detail</td></tr>
+                <tr><td><code>/shop/products/:id/edit</code></td><td>Edit a product</td></tr>
+                <tr><td><code>/shop/orders/:id</code></td><td>Order detail</td></tr>
+                <tr><td><code>/shop/customers/:id</code></td><td>Customer detail</td></tr>
+                <tr><td><code>/shop/invoices/new</code></td><td>Create an invoice</td></tr>
+                <tr><td><code>/shop/invoices/:id</code></td><td>Invoice detail</td></tr>
+                <tr><td><code>/shop/sellers/:id</code></td><td>Seller detail</td></tr>
+                <tr><td><code>/support/tickets/:id</code></td><td>Ticket conversation</td></tr>
+                <tr><td><code>/blog/:id</code></td><td>Blog article</td></tr>
+                <tr><td><code>/jobs/:id</code></td><td>Job posting detail</td></tr>
+                <tr><td><code>/nft/item/:id</code></td><td>NFT item detail</td></tr>
+                <tr><td><code>/help/:module/:page</code></td><td>Help article</td></tr>
+                <tr><td><code>/settings/:tab?</code></td><td>Settings tab</td></tr>
+              </tbody>
+            </table>
+          </div>
+
         </section>
 
-        <!-- ============================ PDF EXPORT (T10) ============================ -->
+        <!-- ============================ PDF EXPORT ============================ -->
         <section id="pdf-export" class="doc-section">
           <h2>Save as PDF</h2>
           <p>
@@ -1000,7 +1458,7 @@ wkhtmltopdf --enable-local-file-access \
 
           <hr />
           <div class="doc-footer doc-noprint">
-            Air Glass UI — Admin Dashboard Template &middot; Documentation &middot; v0.0.0.
+            Air Glass UI — Admin Dashboard Template &middot; Documentation &middot; v1.0.0.
             All content © the template author, distributed under your Envato Market license.
           </div>
         </section>

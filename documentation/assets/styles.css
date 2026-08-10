@@ -397,7 +397,21 @@ table.doc-table code { white-space: nowrap; }
   .doc-section { break-before: page; page-break-before: always; padding-top: 0; }
   .doc-section:first-of-type { break-before: auto; page-break-before: avoid; }
   h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
-  pre, table.doc-table, .doc-note, .doc-tip, .doc-warn, .doc-card { break-inside: avoid; page-break-inside: avoid; }
+  pre, .doc-note, .doc-tip, .doc-warn, .doc-card { break-inside: avoid; page-break-inside: avoid; }
+
+  /* Tables MUST be allowed to paginate: the screen reference runs to hundreds of
+     rows, and forcing `break-inside: avoid` on the table makes the renderer clip
+     the overflow instead of continuing on the next page. Protect the ROW, repeat
+     the header, and let the table itself flow. */
+  .doc-table-wrap { overflow-x: visible; }
+  /* `overflow: hidden` (which rounds the on-screen corners) clips the table
+     fragment at a page boundary, shaving the last row. Corners are not worth a
+     truncated row in print. */
+  table.doc-table { break-inside: auto; page-break-inside: auto; overflow: visible; border-radius: 0; }
+  table.doc-table tr:last-child td { border-bottom: 1px solid var(--doc-border); }
+  table.doc-table thead { display: table-header-group; }
+  table.doc-table tr { break-inside: avoid; page-break-inside: avoid; }
+
   .doc-grid { display: block; }
   .doc-grid .doc-card { margin: 0.5rem 0; }
 
