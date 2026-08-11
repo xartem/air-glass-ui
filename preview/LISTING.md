@@ -78,9 +78,31 @@ Recharts, Leaflet, TipTap, CodeMirror, dnd-kit, date-fns.
 | Bundle | 275 KB gzip over 28 entry chunks |
 | Archive | air-glass-ui-1.0.0.zip, 5.3 MB, 923 entries |
 
+## Preview assets — which file goes in which slot
+
+Cut to the spec confirmed by the author on 2026-08-11. All shot against the local
+production demo build (`VITE_DEMO=1`), English UI, no browser chrome.
+
+| Envato slot | File | Size |
+|-------------|------|------|
+| Theme search preview image | `theme-search-590x300.jpg` | 590 × 300 |
+| Video / multiclip preview image | `video-preview-2560x1440.jpg` | 2560 × 1440 |
+| Standard preview images (optional) | `01_dashboard.jpg` … `06_crm.jpg` | 1170 × 658 |
+
+Standard previews are 1170px wide — the stated width — and 658px tall, well inside the
+1500px ceiling; each is far below the 20 MB limit. Screens covered: default dashboard,
+e-commerce orders, crypto dashboard in dark, the components showcase, analytics, and the
+CRM dashboard in liquid dark.
+
+`thumbnail.jpg` (80 × 80) is left over from the older spec, which listed an 80×80
+thumbnail slot; the current spec does not. Harmless to keep, ignore it at upload.
+
+To recut after a UI change: capture with the shoot script, then rebuild — both live in
+the session scratchpad, and the whole set regenerates in under a minute.
+
 ## Before upload
 
-1. Re-verify Envato's current preview dimensions — they change, and the assets here were
-   cut to 590×300 / 80×80 / max 900px.
-2. Confirm the demo matches the submitted files (redeploy if the branch moved).
-3. Re-run `npm run package` and upload that archive, not a hand-assembled one.
+1. Confirm the demo matches the submitted files (redeploy if the branch moved).
+2. Re-run `npm run package` and upload that archive, not a hand-assembled one.
+3. Re-check the preview spec if a submission is more than a few weeks after 2026-08-11 —
+   Envato changes these numbers without notice.
