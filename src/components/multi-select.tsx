@@ -64,7 +64,9 @@ export function MultiSelect({
       <PopoverAnchor asChild>
         <div
           className={cn(
-            "flex min-h-[42px] w-full items-center gap-2 rounded-lg border border-input bg-transparent ps-3 pe-1 text-sm",
+            // Same recipe as Input: this is a form field, not a raised tile. It
+            // grows past --control-h only when the selected badges wrap.
+            "flex min-h-[var(--control-h)] w-full items-center gap-2 rounded-md border border-input bg-[var(--field-bg)] ps-3 pe-1 text-sm",
             className,
           )}
         >
