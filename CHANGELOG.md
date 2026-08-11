@@ -5,6 +5,22 @@ All notable changes to Air Glass UI are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.1 — 2026-08-11
+
+### Fixed
+
+- Glass surfaces render again on Safari 17 and older: every `backdrop-filter` declaration is
+  paired with its `-webkit-backdrop-filter` fallback (glass panel, header, card and overlay,
+  cards, floating overlays, iOS-skin widgets and button tiles, and the two rules that switch
+  the frost off).
+
+### Internal
+
+- Demo-only and customizer-only CSS is fenced by paired `@template-only` markers — the
+  horizontal-nav underline, the notifications popover, the density / content-width knobs and
+  the invoice print isolation. Projects that vendor `src/index.css` strip the fenced blocks and
+  keep the portable layer.
+
 ## 1.0.0 — 2026-08-10
 
 Initial release.
