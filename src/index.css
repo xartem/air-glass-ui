@@ -9,6 +9,10 @@
  * Admin theme — "Light Air Glass".
  * All visual identity values live in THIS file: shadcn CSS variables + --glass-* layer.
  * Screens never define their own colors, blur or mesh.
+ *
+ * Blocks fenced by the paired @template-only markers below belong to this
+ * template's demo screens and customizer knobs. Downstream projects that vendor
+ * this file strip those fences; everything outside them is the portable layer.
  */
 
 @theme inline {
@@ -569,12 +573,16 @@
     background: var(--glass-bg-panel);
     backdrop-filter: blur(var(--glass-blur-sidebar))
       saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sidebar))
+      saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
   .glass-header {
     background: var(--glass-bg-panel);
     backdrop-filter: blur(var(--glass-blur-header))
+      saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-header))
       saturate(var(--glass-saturate));
     border-bottom: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight);
@@ -583,12 +591,16 @@
     background: var(--glass-bg-card);
     backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
   .glass-overlay {
     background: var(--glass-bg-overlay);
     backdrop-filter: blur(var(--glass-blur-small))
+      saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-small))
       saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow-small);
@@ -598,6 +610,8 @@
   [data-slot="card"] {
     background: var(--glass-bg-card);
     backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
@@ -616,6 +630,8 @@
   [data-slot="command"] {
     background: var(--glass-bg-overlay);
     backdrop-filter: blur(var(--glass-blur-small))
+      saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-small))
       saturate(var(--glass-saturate));
     box-shadow: var(--glass-highlight), var(--glass-shadow-small);
   }
@@ -852,6 +868,7 @@
     background: var(--gradient-nav-active);
   }
 
+  /* @template-only:start — horizontal-nav shell layout */
   /* Horizontal header nav: the active top-level item is marked by a bottom
      underline instead of the left vertical bar. Scoped to the menu triggers so
      links inside the dropdown panel keep the standard vertical marker. */
@@ -865,6 +882,7 @@
     width: auto;
     height: 2px;
   }
+  /* @template-only:end */
 
   /*
    * iOS skin specular sheen (experimental variant).
@@ -894,6 +912,8 @@
   .skin-liquid [data-slot="widget"],
   .skin-liquid [data-slot="widget-placeholder"] {
     backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow) !important;
@@ -989,6 +1009,7 @@
       var(--glass-bg-overlay);
   }
 
+  /* @template-only:start — demo notifications popover */
   /*
    * Notifications panel — opt the topbar bell popover out of the flat overlay recipe
    * and into the stronger CARD look (denser fill, bigger blur + shadow). These rules
@@ -1000,6 +1021,8 @@
   .notifications-panel {
     background: var(--glass-bg-card);
     backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
@@ -1022,6 +1045,7 @@
       ),
       var(--glass-bg-card);
   }
+  /* @template-only:end */
 
   /*
    * iOS skin buttons — frosted-glass tile recipe (fill + top sheen + hairline + soft
@@ -1043,6 +1067,8 @@
       ),
       var(--glass-bg-card);
     backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     border-color: var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow-small);
@@ -1097,6 +1123,7 @@
        border-input utility, so the button stays fully flat in light and dark. */
     background: none !important;
     backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border-color: transparent !important;
     box-shadow: none;
   }
@@ -1123,6 +1150,7 @@
        The individual *-group-item buttons keep their own hover fill. */
     background: none;
     backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border-color: transparent;
     box-shadow: none;
   }
@@ -1140,6 +1168,7 @@
   }
 }
 
+/* @template-only:start — Theme Customizer layout knobs */
 /*
  * Layout dimensions (Theme Customizer): density + content width. Reflected onto
  * <html> as data-density / data-content-width by applyAppearance() (lib/appearance.ts),
@@ -1160,7 +1189,9 @@
   margin-inline: auto;
   width: 100%;
 }
+/* @template-only:end */
 
+/* @template-only:start — invoice demo screen print isolation */
 /*
  * Print isolation for the invoice detail (build-demo-screen-catalog): when printing,
  * hide the app chrome and expose only the `.invoice-sheet` so a clean invoice comes
@@ -1183,3 +1214,4 @@
     box-shadow: none;
   }
 }
+/* @template-only:end */
