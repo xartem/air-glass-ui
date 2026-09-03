@@ -1173,7 +1173,7 @@
   /*
    * Menu items carry data-variant too (`destructive` on Delete in a dropdown, context
    * menu or menubar), but a menu row is not a button: the tile recipe above gave it a
-   * glass fill, a hairline and a shadow, so «Удалить» sat in the list as a raised
+   * glass fill, a hairline and a shadow, so a Delete item sat in the list as a raised
    * plate while its neighbours stayed flat (most visible in dark, where the fill is
    * opaque). A destructive menu item is exactly like the others — only its text is red.
    * The `.dark` selectors repeat the specificity of the dark tile rule so they win by
