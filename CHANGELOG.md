@@ -5,6 +5,34 @@ All notable changes to Air Glass UI are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Fixed
+
+- Dark theme: no more square patches trailing the cursor while the page repaints. The mesh
+  grain (`.app-mesh-noise`) is a full-viewport element that was blended with
+  `mix-blend-mode: overlay`, which makes Blink keep a composited copy of the whole scrollable
+  document as its backdrop — an extra layer the height of the page (33 MB on the UI-kit
+  showcase), re-blended tile by tile on every hover repaint on top of four
+  `backdrop-filter: blur(28px)` surfaces. The grain now uses plain alpha, and its dark opacity
+  is the overlay equivalent (0.05 overlay ≈ 0.012 alpha against a near-black backdrop), so the
+  background looks unchanged (measured deviation ≤3/255 in both themes).
+- `.app-mesh` no longer carries a permanent `will-change: transform`. The scroll parallax sets
+  an inline transform, which promotes the layer only while it moves; the hint kept a
+  rasterised 140vh gradient on the compositor on every screen. Together the two changes drop
+  the compositor from 37 layers / 151 MB to 34 / 112 MB on the UI-kit showcase (dark, 1280).
+- iOS skin: a `destructive` menu item (Delete in `DropdownMenu`, `ContextMenu`, `Menubar`)
+  is a normal row with red text again. It carries `data-variant`, so the frosted-tile
+  button recipe painted it with a fill, a hairline and a shadow — it read as a raised
+  plate among flat neighbours, most visibly in dark, where that fill is opaque. Its own
+  focus/hover tint is untouched.
+- iOS skin, dark theme: the segmented control (`ToggleGroup`) and `ButtonGroup` no longer
+  show a solid strip behind their buttons. The wrapper carries `data-variant="outline"` for
+  its items, so `.skin-liquid.dark [data-variant="outline"]` painted it as a glass tile; the
+  rule that keeps such wrappers transparent covered only `:hover` and `[aria-expanded]` in
+  dark, not their resting state. In light both rules weigh the same and source order already
+  hid the strip — which is why it only showed in dark.
+
 ## 1.0.2 — 2026-08-11
 
 ### Fixed

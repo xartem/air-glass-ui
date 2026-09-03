@@ -375,6 +375,10 @@
   /*
    * Mesh background shell — rendered ONCE by the SPA layout (app/).
    * Gradient underlay + 4 mesh spots + light blobs; grid overlay is a separate element.
+   * Deliberately no `will-change: transform`: the scroll parallax sets an inline transform,
+   * which promotes the element only while it actually moves. A permanent hint kept a
+   * rasterised 140vh gradient on the compositor on every screen for a background that is
+   * static ~99% of the time, and paid for it in hover-repaint stutter.
    */
   .app-mesh {
     background:
@@ -409,7 +413,6 @@
         transparent 60%
       ),
       linear-gradient(180deg, #f8fbff 0%, #f3f8ff 48%, #fbf6f0 100%);
-    will-change: transform;
   }
   /*
    * Background presets — an independent axis chosen in Settings → Appearance,
@@ -542,16 +545,23 @@
     background-position: center;
     background-repeat: no-repeat;
   }
-  /* Barely-visible grain over the mesh — removes the "plastic gradient" flatness */
+  /*
+   * Barely-visible grain over the mesh — removes the "plastic gradient" flatness.
+   * Plain alpha, NOT mix-blend-mode: a full-viewport blending element forces Blink to
+   * keep a composited copy of the whole scrollable document as its backdrop (one extra
+   * layer as tall as the page — tens of megabytes on a long screen), and every hover then
+   * re-blends its tiles, which surfaced as square patches lagging behind the cursor in
+   * dark mode. The dark opacity is the overlay equivalent: overlay against a near-black
+   * backdrop scales by ~2 x backdrop luminance, so 0.05 overlay ≈ 0.012 straight alpha.
+   */
   .app-mesh-noise {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 160px 160px;
     opacity: 0.028;
-    mix-blend-mode: overlay;
     pointer-events: none;
   }
   .dark .app-mesh-noise {
-    opacity: 0.05;
+    opacity: 0.012;
   }
   /* Thin white 36px grid with a downward mask fade (opacity ~.35) */
   .app-mesh-grid {
@@ -1139,15 +1149,49 @@
   .skin-liquid [data-slot="button-group"]:hover,
   .skin-liquid [data-slot="toggle-group"][aria-expanded="true"],
   .skin-liquid [data-slot="button-group"][aria-expanded="true"],
+  .skin-liquid.dark [data-slot="toggle-group"],
+  .skin-liquid.dark [data-slot="button-group"],
   .skin-liquid.dark [data-slot="toggle-group"]:hover,
   .skin-liquid.dark [data-slot="button-group"]:hover,
   .skin-liquid.dark [data-slot="toggle-group"][aria-expanded="true"],
   .skin-liquid.dark [data-slot="button-group"][aria-expanded="true"] {
     /* Also neutralize :hover — the wrapper carries data-variant="outline", so the
        generic outline-hover rule above would otherwise repaint a strip behind the
-       whole group. The .dark variants match the specificity of the dark hover rule
-       (.skin-liquid.dark [data-variant="outline"]:hover) so they win by source order.
+       whole group. Every `.dark` selector here matches the specificity of its dark
+       counterpart above (.skin-liquid.dark [data-variant="outline"], and the same
+       with :hover / [aria-expanded]) so it wins by source order — WITHOUT the plain
+       `.skin-liquid.dark [data-slot="…-group"]` pair the resting wrapper kept the
+       dark glass fill and showed as a solid strip behind the segmented control (only
+       visible in dark, since in light both rules weigh the same and this one is last).
        The individual *-group-item buttons keep their own hover fill. */
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: transparent;
+    box-shadow: none;
+  }
+  /*
+   * Menu items carry data-variant too (`destructive` on Delete in a dropdown, context
+   * menu or menubar), but a menu row is not a button: the tile recipe above gave it a
+   * glass fill, a hairline and a shadow, so «Удалить» sat in the list as a raised
+   * plate while its neighbours stayed flat (most visible in dark, where the fill is
+   * opaque). A destructive menu item is exactly like the others — only its text is red.
+   * The `.dark` selectors repeat the specificity of the dark tile rule so they win by
+   * source order; the item's own focus/hover tint lives in Tailwind's utilities layer
+   * and still paints over this.
+   */
+  .skin-liquid [data-slot="dropdown-menu-item"],
+  .skin-liquid [data-slot="context-menu-item"],
+  .skin-liquid [data-slot="menubar-item"],
+  .skin-liquid [data-slot="dropdown-menu-item"]:hover,
+  .skin-liquid [data-slot="context-menu-item"]:hover,
+  .skin-liquid [data-slot="menubar-item"]:hover,
+  .skin-liquid.dark [data-slot="dropdown-menu-item"],
+  .skin-liquid.dark [data-slot="context-menu-item"],
+  .skin-liquid.dark [data-slot="menubar-item"],
+  .skin-liquid.dark [data-slot="dropdown-menu-item"]:hover,
+  .skin-liquid.dark [data-slot="context-menu-item"]:hover,
+  .skin-liquid.dark [data-slot="menubar-item"]:hover {
     background: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
