@@ -581,36 +581,36 @@
   /* Glass surfaces (recipe) — used by framework components only */
   .glass-panel {
     background: var(--glass-bg-panel);
-    backdrop-filter: blur(var(--glass-blur-sidebar))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-sidebar))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-sidebar))
       saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
   .glass-header {
     background: var(--glass-bg-panel);
-    backdrop-filter: blur(var(--glass-blur-header))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-header))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-header))
       saturate(var(--glass-saturate));
     border-bottom: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight);
   }
   .glass-card {
     background: var(--glass-bg-card);
-    backdrop-filter: blur(var(--glass-blur-card))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
   .glass-overlay {
     background: var(--glass-bg-overlay);
-    backdrop-filter: blur(var(--glass-blur-small))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-small))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-small))
       saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow-small);
@@ -619,9 +619,9 @@
   /* Cards are glass by default */
   [data-slot="card"] {
     background: var(--glass-bg-card);
-    backdrop-filter: blur(var(--glass-blur-card))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
@@ -639,9 +639,9 @@
   [data-slot="drawer-content"],
   [data-slot="command"] {
     background: var(--glass-bg-overlay);
-    backdrop-filter: blur(var(--glass-blur-small))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-small))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-small))
       saturate(var(--glass-saturate));
     box-shadow: var(--glass-highlight), var(--glass-shadow-small);
   }
@@ -921,9 +921,9 @@
      !important is the one clean way to replace it: drop the ring, restore highlight + float. */
   .skin-liquid [data-slot="widget"],
   .skin-liquid [data-slot="widget-placeholder"] {
-    backdrop-filter: blur(var(--glass-blur-card))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow) !important;
@@ -1030,9 +1030,9 @@
    */
   .notifications-panel {
     background: var(--glass-bg-card);
-    backdrop-filter: blur(var(--glass-blur-card))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     box-shadow: var(--glass-highlight), var(--glass-shadow);
   }
@@ -1076,9 +1076,9 @@
         rgba(255, 255, 255, 0) 75%
       ),
       var(--glass-bg-card);
-    backdrop-filter: blur(var(--glass-blur-card))
-      saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-card))
+      saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur-card))
       saturate(var(--glass-saturate));
     border-color: var(--glass-border);
     box-shadow: var(--glass-highlight), var(--glass-shadow-small);
@@ -1132,8 +1132,8 @@
     /* !important: outranks both the .skin-liquid.dark glass rule (more specific) and the
        border-input utility, so the button stays fully flat in light and dark. */
     background: none !important;
-    backdrop-filter: none;
     -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     border-color: transparent !important;
     box-shadow: none;
   }
@@ -1165,8 +1165,8 @@
        visible in dark, since in light both rules weigh the same and this one is last).
        The individual *-group-item buttons keep their own hover fill. */
     background: none;
-    backdrop-filter: none;
     -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     border-color: transparent;
     box-shadow: none;
   }
@@ -1193,8 +1193,8 @@
   .skin-liquid.dark [data-slot="context-menu-item"]:hover,
   .skin-liquid.dark [data-slot="menubar-item"]:hover {
     background: none;
-    backdrop-filter: none;
     -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     border-color: transparent;
     box-shadow: none;
   }

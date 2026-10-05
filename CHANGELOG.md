@@ -5,10 +5,16 @@ All notable changes to Air Glass UI are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 1.0.3 — 2026-10-05
 
 ### Fixed
 
+- Glass surfaces blur again in current Chrome. Every glass rule wrote `backdrop-filter` and then
+  `-webkit-backdrop-filter` with the same value; the production CSS minifier (Lightning CSS)
+  folds such a pair into the last declaration, so the build kept only the prefixed one, which
+  Chrome no longer applies — panels, cards and the sidebar showed the page through them
+  unblurred. The prefixed line now comes first and the standard one last, so both survive the
+  build (Safari 17 keeps its prefix, see 1.0.1).
 - Dark theme: no more square patches trailing the cursor while the page repaints. The mesh
   grain (`.app-mesh-noise`) is a full-viewport element that was blended with
   `mix-blend-mode: overlay`, which makes Blink keep a composited copy of the whole scrollable
