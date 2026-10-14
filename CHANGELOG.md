@@ -5,6 +5,17 @@ All notable changes to Air Glass UI are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.4 — 2026-10-14
+
+### Fixed
+
+- A tab strip wider than its container no longer hides its first tab. `TabsList` centred its
+  triggers with `justify-content: center` inside a horizontal scroll container, so an
+  overflowing strip spilled past both edges and the start half could not be scrolled to — on a
+  390 px phone the first tab was clipped. It now uses `safe center`: a short strip stays
+  centred, a long one starts at the edge and scrolls. Browsers without `safe` (Safari < 17.6)
+  drop the declaration and align to the start, which never clips.
+
 ## 1.0.3 — 2026-10-05
 
 ### Fixed

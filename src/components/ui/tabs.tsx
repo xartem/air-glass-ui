@@ -28,7 +28,10 @@ function Tabs({
 const tabsListVariants = cva(
   // `max-w-full` + horizontal scroll: a long tab strip is otherwise sized to its
   // content and pushes the whole page into a horizontal scroll on phones.
-  "group/tabs-list inline-flex w-fit max-w-full items-center justify-center rounded-lg p-[3px] text-muted-foreground group-data-horizontal/tabs:h-8 group-data-horizontal/tabs:overflow-x-auto group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col data-[variant=line]:rounded-none",
+  // `safe center`: plain `center` spills an overflow past both edges and the start
+  // half cannot be scrolled to, so the first tab was clipped. Browsers without
+  // `safe` drop the declaration and align to the start, which never clips.
+  "group/tabs-list inline-flex w-fit max-w-full items-center justify-center-safe rounded-lg p-[3px] text-muted-foreground group-data-horizontal/tabs:h-8 group-data-horizontal/tabs:overflow-x-auto group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col data-[variant=line]:rounded-none",
   {
     variants: {
       variant: {
